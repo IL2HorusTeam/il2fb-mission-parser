@@ -1,4 +1,4 @@
--il2ds-mis-parser
-=================
+IL-2 DS missions parser
+=======================
 
-Parse IL-2 DS mission file and produce detailed information about it.
+Parse IL-2 DS mission file and produce detailed information about mission.
