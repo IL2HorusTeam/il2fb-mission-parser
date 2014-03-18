@@ -1,0 +1,45 @@
+[MAIN]
+  MAP Moscow/sload.ini
+  TIME 11.75
+  CloudType 1
+  CloudHeight 1500.0
+  army 1
+  playerNum 0
+[SEASON]
+  Year 1942
+  Month 8
+  Day 25
+[RespawnTime]
+  Bigship 1000000
+  Ship 1000000
+  Aeroanchored 1000000
+  Artillery 1000000
+  Searchlight 1000000
+[MDS]
+  MDS_Radar_SetRadarToAdvanceMode 0
+  MDS_Radar_RefreshInterval 0
+  MDS_Radar_DisableVectoring 1
+  MDS_Radar_EnableTowerCommunications 1
+  MDS_Radar_ShipsAsRadar 0
+  MDS_Radar_ShipRadar_MaxRange 100
+  MDS_Radar_ShipRadar_MinHeight 100
+  MDS_Radar_ShipRadar_MaxHeight 5000
+  MDS_Radar_ShipSmallRadar_MaxRange 25
+  MDS_Radar_ShipSmallRadar_MinHeight 0
+  MDS_Radar_ShipSmallRadar_MaxHeight 2000
+  MDS_Radar_ScoutsAsRadar 0
+  MDS_Radar_ScoutRadar_MaxRange 2
+  MDS_Radar_ScoutRadar_DeltaHeight 1500
+  MDS_Radar_HideUnpopulatedAirstripsFromMinimap 1
+  MDS_Radar_ScoutGroundObjects_Alpha 5
+  MDS_Radar_ScoutCompleteRecon 0
+  MDS_Misc_DisableAIRadioChatter 1
+  MDS_Misc_DespawnAIPlanesAfterLanding 1
+  MDS_Misc_HidePlayersCountOnHomeBase 0
+  MDS_Misc_BombsCat1_CratersVisibilityMultiplier 1.0
+  MDS_Misc_BombsCat2_CratersVisibilityMultiplier 1.0
+  MDS_Misc_BombsCat3_CratersVisibilityMultiplier 1.0
+[Chiefs]
+  0_Chief Vehicles.US_Supply_Cpy 1
+  6_Chief Trains.Germany_CargoTrain/AA 2
+  10_Chief Armor.PzKp_PIVF2 2
