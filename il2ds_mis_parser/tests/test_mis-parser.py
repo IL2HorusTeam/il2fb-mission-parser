@@ -83,3 +83,70 @@ class TestParserMis(unittest.TestCase):
 
         settings = self.parser.parser(self.file_path)
         self.assertEqual(example, settings[CHIEFS])
+
+    def test_parser_buildings(self):
+        """
+        The test parse a section Buildings with parameters
+        """
+        example = {
+            '0_bld': {
+                'pos_x': 43471.34,
+                'code': 'Tent_Pyramid_US',
+                'army': 1,
+                'height': 630.00,
+                'pos_y': 57962.08,
+                'type': 'House'
+            },
+            '1_bld': {
+                'pos_x': 43506.53,
+                'code': 'FurnitureTreeBroad1',
+                'army': 1,
+                'height': 690.00,
+                'pos_y': 57926.16,
+                'type': 'House'
+            }
+        }
+
+        settings = self.parser.parser(self.file_path)
+        self.assertEqual(example, settings[BUILDINGS])
+
+    def test_parser_target(self):
+        """
+        The test parse a section Target with parameters
+        """
+        example = {
+            'FrontMarker1': {
+                'pos_x': 24063.11,
+                'pos_y': 92544.04,
+                'army': 2
+            },
+            'FrontMarker0': {
+                'pos_x': 7636.65,
+                'pos_y': 94683.02,
+                'army': 1
+            }
+        }
+
+        settings = self.parser.parser(self.file_path)
+        #self.assertEqual(example, settings[TARGET])
+        print settings[TARGET]
+
+    def test_parser_front_marker(self):
+        """
+        The test parse a section FrontMarker with parameters
+        """
+        example = {
+            'FrontMarker1': {
+                'pos_x': 24063.11,
+                'pos_y': 92544.04,
+                'army': 2
+            },
+            'FrontMarker0': {
+                'pos_x': 7636.65,
+                'pos_y': 94683.02,
+                'army': 1
+            }
+        }
+
+        settings = self.parser.parser(self.file_path)
+        self.assertEqual(example, settings[FRONT_MARKER])

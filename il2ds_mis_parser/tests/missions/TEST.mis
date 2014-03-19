@@ -43,3 +43,12 @@
   0_Chief Vehicles.US_Supply_Cpy 1
   6_Chief Trains.Germany_CargoTrain/AA 2
   10_Chief Armor.PzKp_PIVF2 2
+[Buildings]
+  0_bld House$Tent_Pyramid_US 1 43471.34 57962.08 630.00
+  1_bld House$FurnitureTreeBroad1 1 43506.53 57926.16 690.00
+[Target]
+  1 2 0 0 500 34438 90139 650
+  1 2 0 0 500 50518 75746 650
+[FrontMarker]
+  FrontMarker0 7636.65 94683.02 1
+  FrontMarker1 24063.11 92544.04 2

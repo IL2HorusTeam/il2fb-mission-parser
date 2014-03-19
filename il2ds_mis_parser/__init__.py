@@ -15,7 +15,7 @@ class MainParser(object):
     def __init__(self):
         self.settings = {}
 
-    def parser(self, line):
+    def parser(self, line, i=None):
         code, value = line.split()
         self.settings.update({code: covert_str(value)})
 
@@ -32,7 +32,7 @@ class SeasonParser(object):
     def __init__(self):
         self.settings = {}
 
-    def parser(self, line):
+    def parser(self, line, i=None):
         code, value = line.split()
         self.settings.update({code: covert_str(value)})
 
@@ -49,7 +49,7 @@ class WeatherParser(object):
     def __init__(self):
         self.settings = {}
 
-    def parser(self, line):
+    def parser(self, line, i=None):
         code, value = line.split()
         self.settings.update({code: covert_str(value)})
 
@@ -69,7 +69,7 @@ class MdsParser(object):
             'Misc': {},
         }
 
-    def parser(self, line):
+    def parser(self, line, i=None):
         if line.startswith('MDS_Radar'):
             line = line[10::]
             code, value = line.split()
@@ -92,7 +92,7 @@ class RespawnTimeParser(object):
     def __init__(self):
         self.settings = {}
 
-    def parser(self, line):
+    def parser(self, line, i=None):
         code, value = line.split()
         self.settings.update({code: covert_str(value)})
 
@@ -109,7 +109,7 @@ class ChiefsParser(object):
     def __init__(self):
         self.settings = {}
 
-    def parser(self, line):
+    def parser(self, line, i=None):
         chiefs, type_code, army = line.split()
         type_chiefs, code = type_code.split('.')
         self.settings.update(
@@ -139,6 +139,59 @@ class BuildingsParser(object):
     """
     section_name = BUILDINGS
 
+    def __init__(self):
+        self.settings = {}
+
+    def parser(self, line, i=None):
+        buildings_code, type_code, army, pos_x, pos_y, height = line.split()
+        type_buildings, code = type_code.split('$')
+        self.settings.update(
+            {
+                buildings_code: {
+                    'type': type_buildings,
+                    'code': code,
+                    'army': covert_str(army),
+                    'pos_x': covert_str(pos_x),
+                    'pos_y': covert_str(pos_y),
+                    'height': covert_str(height)
+                }
+            }
+        )
+
+    def clean(self):
+        return self.settings
+
+
+class TargetParser(object):
+    """
+    Parser configuration sections 'Buildings'
+    """
+    section_name = TARGET
+
+    def __init__(self):
+        self.settings = {}
+        self.key = 0
+
+    def parser(self, line, i=None):
+        army_defender, army_striker, p3, p4, percent_damage, pos_x, pos_y, radius = line.split()
+        self.settings.update(
+            {
+                'target%s' % i: {
+                    'army_defender': covert_str(army_defender),
+                    'army_striker': covert_str(army_striker),
+                    'p3': covert_str(p3),
+                    'p4': covert_str(p4),
+                    'percent_damage': covert_str(percent_damage),
+                    'pos_x': covert_str(pos_x),
+                    'pos_y': covert_str(pos_y),
+                    'radius': covert_str(radius)
+                }
+            }
+        )
+
+    def clean(self):
+        return self.settings
+
 
 class StaticCameraParser(object):
     """
@@ -167,6 +220,24 @@ class FrontMarkerParser(object):
     """
     section_name = FRONT_MARKER
 
+    def __init__(self):
+        self.settings = {}
+
+    def parser(self, line, i=None):
+        code, pos_x, pos_y, army = line.split()
+        self.settings.update(
+            {
+                code: {
+                    'pos_x': covert_str(pos_x),
+                    'pos_y': covert_str(pos_y),
+                    'army': covert_str(army),
+                }
+            }
+        )
+
+    def clean(self):
+        return self.settings
+
 
 class ParserRoot(object):
     """
@@ -182,6 +253,7 @@ class ParserRoot(object):
             ChiefsParser.section_name: ChiefsParser(),
             NStationaryParser.section_name: NStationaryParser(),
             BuildingsParser.section_name: BuildingsParser(),
+            TargetParser.section_name: TargetParser(),
             StaticCameraParser.section_name: StaticCameraParser(),
             BridgeParser.section_name: BridgeParser(),
             HouseParser.section_name: HouseParser(),
@@ -193,7 +265,7 @@ class ParserRoot(object):
         parser_line = None
         try:
             with open(file_path) as f:
-                for line in f:
+                for i, line in enumerate(f):
                     line = line.strip()
                     if line.startswith('['):
                         section_name = line.strip('[]')
@@ -201,7 +273,7 @@ class ParserRoot(object):
                         parser_line = self.parsers[section_name]
                     else:
                         line = line.strip()
-                        parser_line.parser(line)
+                        parser_line.parser(line, i)
                         settings[section_name].update(parser_line.clean())
 
             return settings
