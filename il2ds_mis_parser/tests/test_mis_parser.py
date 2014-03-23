@@ -4,15 +4,17 @@
 """
 import unittest
 import os
-from datetime import date
+
+from il2ds_mis_parser import parser
 
 from il2ds_mis_parser import RootParser
 
 
 class TestParserMis(unittest.TestCase):
 
-    parser = RootParser()
     file_path = os.path.join(os.path.dirname(__file__), 'missions', 'TEST.mis')
+
+
 
     def test_parser_main(self):
         """
@@ -27,7 +29,7 @@ class TestParserMis(unittest.TestCase):
             'TIME': '11.75'
         }
 
-        settings = self.parser.parser(self.file_path)
+        settings = parser(self.file_path)
         self.assertEqual(example, settings['MAIN'])
 
     def test_parser_season(self):
@@ -40,7 +42,7 @@ class TestParserMis(unittest.TestCase):
             'Year': 1942
         }
 
-        settings = self.parser.parser(self.file_path)
+        settings = parser(self.file_path)
         self.assertEqual(example, settings['SEASON'])
 
     def test_parser_mds(self):
@@ -56,7 +58,7 @@ class TestParserMis(unittest.TestCase):
         'BombsCat1_CratersVisibilityMultiplier': '1.0'
         }
 
-        settings = self.parser.parser(self.file_path)
+        settings = parser(self.file_path)
         self.assertEqual(example, settings['MDS']['Misc'])
 
     def test_parser_chiefs(self):
@@ -81,5 +83,5 @@ class TestParserMis(unittest.TestCase):
             }
         }
 
-        settings = self.parser.parser(self.file_path)
-        #self.assertEqual(example, settings['Chiefs'])
+        settings = parser(self.file_path)
+        self.assertEqual(example, settings['Chiefs'])
