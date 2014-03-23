@@ -3,7 +3,6 @@
  Testing the application il2ds-mis-parser
 """
 import unittest
-import os
 
 from il2ds_mis_parser.parsers import RootParser
 
@@ -11,7 +10,6 @@ from il2ds_mis_parser.parsers import RootParser
 class TestParseMis(unittest.TestCase):
 
     def setUp(self):
-        self.file_path = os.path.join(os.path.dirname(__file__), 'missions', 'TEST.mis')
         self.parse = RootParser()
 
     def test_parse_main(self):
