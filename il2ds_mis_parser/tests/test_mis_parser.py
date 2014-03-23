@@ -37,5 +37,4 @@ class TestParseMis(unittest.TestCase):
         parser = self.parse.parsers['MAIN']
         for line in lines:
             parser.parse(line)
-        settings = parser.clean()
-        self.assertEqual(expected, settings)
+        self.assertEqual(expected, parser.clean())
