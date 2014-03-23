@@ -36,7 +36,13 @@ class SeasonParser(object):
         self.settings.update({code: int(value)})
 
     def clean(self):
-        return self.settings
+        return {
+            'mission_date': datetime.date(
+                self.settings['Year'],
+                self.settings['Month'],
+                self.settings['Day']
+            )
+        }
 
 
 class WeatherParser(object):
@@ -193,7 +199,7 @@ class RootParser(object):
 
     def parse(self, file_path):
         settings = {}
-        parser, section_name, line = None, None, None
+        parser, section_name = None, None
         with open(file_path) as f:
             for line in f:
                 if line.strip():
@@ -210,8 +216,7 @@ class RootParser(object):
                         parser.parse(line)
 
             # The last section processing
-            if line:
-                if not line.startswith('['):
-                    settings[section_name].update(parser.clean())
+            if parser:
+                settings[section_name].update(parser.clean())
 
         return settings

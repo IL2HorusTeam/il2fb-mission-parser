@@ -4,10 +4,9 @@
 """
 import unittest
 import os
+from datetime import date
 
-from il2ds_mis_parser import parser
-
-from il2ds_mis_parser import RootParser
+from il2ds_mis_parser import parse
 
 
 class TestParserMis(unittest.TestCase):
@@ -28,7 +27,7 @@ class TestParserMis(unittest.TestCase):
             'TIME': '11.75'
         }
 
-        settings = parser(self.file_path)
+        settings = parse(self.file_path)
         if settings:
             self.assertEqual(example, settings['MAIN'])
 
@@ -36,15 +35,11 @@ class TestParserMis(unittest.TestCase):
         """
         The test parse a section SEASON with parameters
         """
-        example = {
-            'Day': 25,
-            'Month': 8,
-            'Year': 1942
-        }
+        example = date(1942, 8, 25)
 
-        settings = parser(self.file_path)
+        settings = parse(self.file_path)
         if settings:
-            self.assertEqual(example, settings['SEASON'])
+            self.assertEqual(example, settings['SEASON']['mission_date'])
 
     def test_parser_mds(self):
         """
@@ -59,7 +54,7 @@ class TestParserMis(unittest.TestCase):
         'BombsCat1_CratersVisibilityMultiplier': '1.0'
         }
 
-        settings = parser(self.file_path)
+        settings = parse(self.file_path)
         if settings:
             self.assertEqual(example, settings['MDS']['Misc'])
 
@@ -85,6 +80,6 @@ class TestParserMis(unittest.TestCase):
             }
         }
 
-        settings = parser(self.file_path)
+        settings = parse(self.file_path)
         if settings:
             self.assertEqual(example, settings['Chiefs'])
