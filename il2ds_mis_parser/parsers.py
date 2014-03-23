@@ -193,22 +193,25 @@ class RootParser(object):
 
     def parse(self, file_path):
         settings = {}
-        parser = None
+        parser, section_name, line = None, None, None
         with open(file_path) as f:
             for line in f:
-                line = line.strip()
-                if line.startswith('[') and line.endswith(']'):
-                    if parser:
-                        settings[section_name].update(parser.clean())
-                    section_name = line.strip('[]')
-                    settings.update({section_name: {}})
-                    parser = self.parsers[section_name]
-
-                else:
+                if line.strip():
                     line = line.strip()
-                    parser.parse(line)
+                    if line.startswith('[') and line.endswith(']'):
+                        if parser:
+                            settings[section_name].update(parser.clean())
+                        section_name = line.strip('[]')
+                        settings.update({section_name: {}})
+                        parser = self.parsers[section_name]
+
+                    else:
+                        line = line.strip()
+                        parser.parse(line)
 
             # The last section processing
-            settings[section_name].update(parser.clean())
+            if line:
+                if not line.startswith('['):
+                    settings[section_name].update(parser.clean())
 
         return settings
