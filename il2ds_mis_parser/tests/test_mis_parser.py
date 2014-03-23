@@ -4,13 +4,10 @@
 """
 import unittest
 
-from il2ds_mis_parser.parsers import RootParser
+from il2ds_mis_parser.parsers import MainParser
 
 
-class TestParseMis(unittest.TestCase):
-
-    def setUp(self):
-        self.parse = RootParser()
+class MissionParserTestCase(unittest.TestCase):
 
     def test_parse_main(self):
         """
@@ -34,7 +31,7 @@ class TestParseMis(unittest.TestCase):
             'TIME': '11.75'
         }
 
-        parser = self.parse.parsers['MAIN']
+        parser = MainParser()
         for line in lines:
             parser.parse(line)
         self.assertEqual(expected, parser.clean())
