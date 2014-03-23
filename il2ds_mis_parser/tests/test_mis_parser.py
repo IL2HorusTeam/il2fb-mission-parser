@@ -4,21 +4,30 @@
 """
 import unittest
 import os
-from datetime import date
 
-from il2ds_mis_parser import parse
+from il2ds_mis_parser.parsers import RootParser
 
 
-class TestParserMis(unittest.TestCase):
+class TestParseMis(unittest.TestCase):
 
     def setUp(self):
         self.file_path = os.path.join(os.path.dirname(__file__), 'missions', 'TEST.mis')
+        self.parse = RootParser()
 
-    def test_parser_main(self):
+    def test_parse_main(self):
         """
         The test parse a section MAIN with parameters
         """
-        example = {
+        lines = [
+            "MAP Moscow/sload.ini",
+            "TIME 11.75",
+            "CloudType 1",
+            "CloudHeight 1500.0",
+            "army 1",
+            "playerNum 0",
+        ]
+
+        expected = {
             'MAP': 'Moscow/sload.ini',
             'army': '1',
             'playerNum': '0',
@@ -27,59 +36,8 @@ class TestParserMis(unittest.TestCase):
             'TIME': '11.75'
         }
 
-        settings = parse(self.file_path)
-        if settings:
-            self.assertEqual(example, settings['MAIN'])
-
-    def test_parser_season(self):
-        """
-        The test parse a section SEASON with parameters
-        """
-        example = date(1942, 8, 25)
-
-        settings = parse(self.file_path)
-        if settings:
-            self.assertEqual(example, settings['SEASON']['mission_date'])
-
-    def test_parser_mds(self):
-        """
-        The test parse a section MDS with parameters Misc
-        """
-        example = {
-        'HidePlayersCountOnHomeBase': '0',
-        'DespawnAIPlanesAfterLanding': '1',
-        'DisableAIRadioChatter': '1',
-        'BombsCat3_CratersVisibilityMultiplier': '1.0',
-        'BombsCat2_CratersVisibilityMultiplier': '1.0',
-        'BombsCat1_CratersVisibilityMultiplier': '1.0'
-        }
-
-        settings = parse(self.file_path)
-        if settings:
-            self.assertEqual(example, settings['MDS']['Misc'])
-
-    def test_parser_chiefs(self):
-        """
-        The test parse a section Chiefs with parameters
-        """
-        example = {
-            '0_Chief': {
-                'code': 'US_Supply_Cpy',
-                'type': 'Vehicles',
-                'army': 1
-            },
-            '10_Chief': {
-                'code': 'PzKp_PIVF2',
-                'type': 'Armor',
-                'army': 2
-            },
-            '6_Chief': {
-                'code': 'Germany_CargoTrain/AA',
-                'type': 'Trains',
-                'army': 2
-            }
-        }
-
-        settings = parse(self.file_path)
-        if settings:
-            self.assertEqual(example, settings['Chiefs'])
+        parser = self.parse.parsers['MAIN']
+        for line in lines:
+            parser.parse(line)
+        settings = parser.clean()
+        self.assertEqual(expected, settings)
