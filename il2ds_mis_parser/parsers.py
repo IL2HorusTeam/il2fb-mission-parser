@@ -69,23 +69,25 @@ class MdsParser(object):
     section_name = "MDS"
 
     def __init__(self):
-        self.settings = {
-            'Radar': {},
-            'Misc': {},
-        }
+        self.lines = []
 
     def parse(self, line):
-        if line.startswith('MDS_Radar'):
-            line = line[10::]
-            code, value = line.split()
-            self.settings['Radar'].update({code: value})
-        elif line.startswith('MDS_Misc'):
-            line = line[9::]
-            code, value = line.split()
-            self.settings['Misc'].update({code: value})
+        self.lines.append(line)
 
     def clean(self):
-        return self.settings
+        settings = {}
+        for line in self.lines:
+            code, value = line.split()
+            code = code.split('_')
+            if not settings.has_key(code[1]):
+                settings.update({code[1]: {}})
+            if len(code) == 4:
+                if not settings[code[1]].has_key(code[2]):
+                    settings[code[1]].update({code[2]: {}})
+                settings[code[1]][code[2]].update({code[3]: value})
+            else:
+                settings[code[1]].update({code[2]: value})
+        return settings
 
 
 class RespawnTimeParser(object):
