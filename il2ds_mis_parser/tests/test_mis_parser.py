@@ -29,12 +29,12 @@ class MissionParserTestCase(unittest.TestCase):
             "playerNum 0",
         ]
         expected = {
-            'MAP': 'Moscow/sload.ini',
-            'army': '1',
-            'playerNum': '0',
-            'CloudHeight': '1500.0',
-            'CloudType': '1',
-            'TIME': '11.75',
+            'map': 'Moscow/sload.ini',
+            'army': 1,
+            'regiment_player': '0',
+            'height_clouds': 1500.0,
+            'type_clouds': 1,
+            'time': '11.75',
         }
         self._test_parser(MainParser(), lines, expected)
 

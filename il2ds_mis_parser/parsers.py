@@ -41,6 +41,19 @@ class MainParser(ValueParser):
     """
     section_name = "MAIN"
 
+    def parse(self, line):
+        super(MainParser, self).parse(line)
+
+    def clean(self):
+        return {
+            'map': self.data['MAP'],
+            'time': self.data['TIME'],
+            'type_clouds': int(self.data['CloudType']),
+            'height_clouds': float(self.data['CloudHeight']),
+            'army': int(self.data['army']),
+            'regiment_player': self.data['playerNum'],
+        }
+
 
 class SeasonParser(ValueParser):
     """
