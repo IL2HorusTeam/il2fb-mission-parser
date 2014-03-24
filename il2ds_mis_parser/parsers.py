@@ -36,13 +36,13 @@ class SeasonParser(object):
         self.settings.update({code: int(value)})
 
     def clean(self):
-        return {
-            'mission_date': datetime.date(
+        return (
+            datetime.date(
                 self.settings['Year'],
                 self.settings['Month'],
                 self.settings['Day']
             )
-        }
+        )
 
 
 class WeatherParser(object):

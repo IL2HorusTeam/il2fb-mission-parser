@@ -3,8 +3,9 @@
  Testing the application il2ds-mis-parser
 """
 import unittest
+from datetime import date
 
-from il2ds_mis_parser.parsers import MainParser
+from il2ds_mis_parser.parsers import MainParser, SeasonParser
 
 
 class MissionParserTestCase(unittest.TestCase):
@@ -32,6 +33,23 @@ class MissionParserTestCase(unittest.TestCase):
         }
 
         parser = MainParser()
+        for line in lines:
+            parser.parse(line)
+        self.assertEqual(expected, parser.clean())
+
+    def test_parse_season(self):
+        """
+        Receipt date of the mission of section SEASON
+        """
+        lines = [
+            "Year 1942",
+            "Month 8",
+            "Day 25",
+        ]
+
+        expected = date(1942, 8, 25)
+
+        parser = SeasonParser()
         for line in lines:
             parser.parse(line)
         self.assertEqual(expected, parser.clean())
