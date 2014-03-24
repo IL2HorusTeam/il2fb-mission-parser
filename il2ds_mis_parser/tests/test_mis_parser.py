@@ -5,7 +5,7 @@
 import unittest
 from datetime import date
 
-from il2ds_mis_parser.parsers import MainParser, SeasonParser
+from il2ds_mis_parser.parsers import MainParser, SeasonParser, RespawnTimeParser, WeatherParser
 
 
 class MissionParserTestCase(unittest.TestCase):
@@ -50,6 +50,54 @@ class MissionParserTestCase(unittest.TestCase):
         expected = date(1942, 8, 25)
 
         parser = SeasonParser()
+        for line in lines:
+            parser.parse(line)
+        self.assertEqual(expected, parser.clean())
+
+    def test_parse_respawn_time(self):
+        """
+        The test parse a section RespawnTime with parameters
+        """
+        lines = [
+            "Bigship 1000000",
+            "Ship 1000000",
+            "Aeroanchored 1000000",
+            "Artillery 1000000",
+            "Searchlight 1000000",
+        ]
+
+        expected = {
+            "Bigship": 1000000,
+            "Ship": 1000000,
+            "Aeroanchored": 1000000,
+            "Artillery": 1000000,
+            "Searchlight": 1000000
+        }
+
+        parser = RespawnTimeParser()
+        for line in lines:
+            parser.parse(line)
+        self.assertEqual(expected, parser.clean())
+
+    def test_parse_weather(self):
+        """
+        The test parse a section WEATHER with parameters
+        """
+        lines = [
+            "WindDirection 120.0",
+            "WindSpeed 3.0",
+            "Gust 0",
+            "Turbulence 0",
+        ]
+
+        expected = {
+            "WindDirection": "120.0",
+            "WindSpeed": "3.0",
+            "Gust": "0",
+            "Turbulence": "0"
+        }
+
+        parser = WeatherParser()
         for line in lines:
             parser.parse(line)
         self.assertEqual(expected, parser.clean())

@@ -99,7 +99,7 @@ class RespawnTimeParser(object):
 
     def parse(self, line):
         code, value = line.split()
-        self.settings.update({code: value})
+        self.settings.update({code: int(value)})
 
     def clean(self):
         return self.settings
