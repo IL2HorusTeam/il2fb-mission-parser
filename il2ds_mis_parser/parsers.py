@@ -5,186 +5,204 @@ Parser files missions and properties.
 import datetime
 
 
-class MainParser(object):
+def to_boolean(value):
+    return int(value) > 0
+
+
+class BaseParser(object):
+
+    @property
+    def section_name(self):
+        raise NotImplementedError
+
+    def parse(self, line):
+        pass
+
+    def clean(self):
+        pass
+
+
+class ValueParser(BaseParser):
+
+    def __init__(self):
+        self.data = {}
+
+    def parse(self, line):
+        code, value = line.split()
+        self.data.update({code: value})
+
+    def clean(self):
+        return self.data
+
+
+class MainParser(ValueParser):
     """
-    Parser configuration sections 'MAIN'
+    Parses 'MAIN' section.
     """
     section_name = "MAIN"
 
-    def __init__(self):
-        self.settings = {}
 
-    def parse(self, line):
-        code, value = line.split()
-        self.settings.update({code: value})
-
-    def clean(self):
-        return self.settings
-
-
-class SeasonParser(object):
+class SeasonParser(ValueParser):
     """
-    Parser configuration sections 'SEASON'
+    Parses 'SEASON' section.
     """
     section_name = "SEASON"
 
-    def __init__(self):
-        self.settings = {}
-
-    def parse(self, line):
-        code, value = line.split()
-        self.settings.update({code: int(value)})
-
     def clean(self):
-        return (
-            datetime.date(
-                self.settings['Year'],
-                self.settings['Month'],
-                self.settings['Day']
-            )
-        )
+        return datetime.date(int(self.data['Year']),
+                             int(self.data['Month']),
+                             int(self.data['Day']))
 
 
-class WeatherParser(object):
+class WeatherParser(ValueParser):
     """
-    Parser configuration sections 'WEATHER'
+    Parses 'WEATHER' section.
     """
     section_name = "WEATHER"
 
-    def __init__(self):
-        self.settings = {}
-
-    def parse(self, line):
-        code, value = line.split()
-        self.settings.update({code: value})
-
     def clean(self):
-        return self.settings
+        return {
+            'wind': {
+                'direction': float(self.data['WindDirection']),
+                'speed': float(self.data['WindSpeed']),
+            },
+            'gust': int(self.data['Gust']),
+            'turbulence': int(self.data['Turbulence']),
+        }
 
 
-class MdsParser(object):
+class MDSParser(ValueParser):
     """
-    Parser configuration sections 'MDS'
+    Parses 'MDS' section.
     """
     section_name = "MDS"
 
-    def __init__(self):
-        self.lines = []
-
     def parse(self, line):
-        self.lines.append(line)
+        super(MDSParser, self).parse(line.replace('MDS_', ''))
 
     def clean(self):
-        settings = {}
-        for line in self.lines:
-            code, value = line.split()
-            code = code.split('_')
-            if not settings.has_key(code[1]):
-                settings.update({code[1]: {}})
-            if len(code) == 4:
-                if not settings[code[1]].has_key(code[2]):
-                    settings[code[1]].update({code[2]: {}})
-                settings[code[1]][code[2]].update({code[3]: value})
-            else:
-                settings[code[1]].update({code[2]: value})
-        return settings
+        return {
+            'radar': {
+                'advance_mode': to_boolean(self.data['Radar_SetRadarToAdvanceMode']),
+                'no_vectoring': to_boolean(self.data['Radar_DisableVectoring']),
+                'ships': {
+                    'normal': {
+                        'max_range': int(self.data['Radar_ShipRadar_MaxRange']),
+                        'min_height': int(self.data['Radar_ShipRadar_MinHeight']),
+                        'max_height': int(self.data['Radar_ShipRadar_MaxHeight']),
+                    },
+                    'small': {
+                        'max_range': int(self.data['Radar_ShipSmallRadar_MaxRange']),
+                        'min_height': int(self.data['Radar_ShipSmallRadar_MinHeight']),
+                        'max_height': int(self.data['Radar_ShipSmallRadar_MaxHeight']),
+                    },
+                },
+                'scouts': {
+                    'treat_as_radar': to_boolean(self.data['Radar_ScoutsAsRadar']),
+                    'max_range': int(self.data['Radar_ScoutRadar_MaxRange']),
+                },
+            },
+            'ai': {
+                'no_radio_chatter': to_boolean(self.data['Misc_DisableAIRadioChatter']),
+                'hide_planes_after_landing': to_boolean(self.data['Misc_DespawnAIPlanesAfterLanding']),
+            },
+            'bomb_crater_visibility_muptiplier': {
+                'cat1': float(self.data['Misc_BombsCat1_CratersVisibilityMultiplier']),
+                'cat2': float(self.data['Misc_BombsCat2_CratersVisibilityMultiplier']),
+                'cat3': float(self.data['Misc_BombsCat3_CratersVisibilityMultiplier']),
+            },
+            'no_players_count_on_home_base': to_boolean(self.data['Misc_HidePlayersCountOnHomeBase']),
+        }
 
 
-class RespawnTimeParser(object):
+class RespawnTimeParser(ValueParser):
     """
-    Parser configuration sections 'RespawnTime'
+    Parses 'RespawnTime' section.
     """
     section_name = "RespawnTime"
 
-    def __init__(self):
-        self.settings = {}
-
     def parse(self, line):
         code, value = line.split()
-        self.settings.update({code: int(value)})
-
-    def clean(self):
-        return self.settings
+        self.data.update({code.lower(): int(value)})
 
 
-class ChiefsParser(object):
+class ChiefsParser(BaseParser):
     """
-    Parser configuration sections 'Chiefs'
+    Parses 'Chiefs' section.
     """
     section_name = "Chiefs"
 
     def __init__(self):
-        self.settings = {}
+        self.data = {}
 
     def parse(self, line):
         chiefs, type_code, army = line.split()
         type_chiefs, code = type_code.split('.')
-        self.settings.update(
-            {
-                chiefs: {
-                    'type': type_chiefs,
-                    'code': code,
-                    'army': int(army)
-                }
-            }
-        )
+        self.data.update({
+            chiefs: {
+                'type': type_chiefs,
+                'code': code,
+                'army': int(army),
+            },
+        })
 
     def clean(self):
-        return self.settings
+        return self.data
 
 
-class NStationaryParser(object):
+class NStationaryParser(BaseParser):
     """
-    Parser configuration sections 'NStationary'
+    Parses 'NStationary' section.
     """
     section_name = "NStationary"
 
 
-class BuildingsParser(object):
+class BuildingsParser(BaseParser):
     """
-    Parser configuration sections 'Buildings'
+    Parses 'Buildings' section.
     """
     section_name = "Buildings"
 
 
-class StaticCameraParser(object):
+class StaticCameraParser(BaseParser):
     """
-    Parser configuration sections 'StaticCamera'
+    Parses 'StaticCamera' section.
     """
     section_name = "StaticCamera"
 
 
-class BridgeParser(object):
+class BridgeParser(BaseParser):
     """
-    Parser configuration sections 'Bridge'
+    Parses 'Bridge' section.
     """
     section_name = "Bridge"
 
 
-class HouseParser(object):
+class HouseParser(BaseParser):
     """
-    Parser configuration sections 'House'
+    Parses 'House' section.
     """
     section_name = "House"
 
 
-class FrontMarkerParser(object):
+class FrontMarkerParser(BaseParser):
     """
-    Parser configuration sections 'FrontMarker'
+    Parses 'FrontMarker' section.
     """
     section_name = "FrontMarker"
 
 
-class RootParser(object):
+class FileParser(BaseParser):
     """
-    Base class for parsing file missions
+    Parses whole mission files.
     """
     def __init__(self):
+        self.data = {}
         classes = [
             MainParser,
             SeasonParser,
             WeatherParser,
-            MdsParser,
+            MDSParser,
             RespawnTimeParser,
             ChiefsParser,
             NStationaryParser,
@@ -200,25 +218,25 @@ class RootParser(object):
         }
 
     def parse(self, file_path):
-        settings = {}
         parser, section_name = None, None
+
+        def finish_section_if_any():
+            if parser:
+                self.data[section_name] = parser.clean()
+
         with open(file_path) as f:
             for line in f:
-                if line.strip():
-                    line = line.strip()
-                    if line.startswith('[') and line.endswith(']'):
-                        if parser:
-                            settings[section_name].update(parser.clean())
-                        section_name = line.strip('[]')
-                        settings.update({section_name: {}})
-                        parser = self.parsers[section_name]
+                line = line.strip()
+                if line.startswith('[') and line.endswith(']'):
+                    finish_section_if_any()
+                    section_name = line.strip('[]')
+                    parser = self.parsers.get(section_name)
+                elif parser:
+                    parser.parse(line)
+            finish_section_if_any()
 
-                    else:
-                        line = line.strip()
-                        parser.parse(line)
+        return self.clean()
 
-            # The last section processing
-            if parser:
-                settings[section_name].update(parser.clean())
-
-        return settings
+    def clean(self):
+        # TODO:
+        return self.data

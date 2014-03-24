@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from il2ds_mis_parser.parsers import RootParser
+from il2ds_mis_parser.parsers import FileParser
 
 
-parse = RootParser().parse
+parse = FileParser().parse

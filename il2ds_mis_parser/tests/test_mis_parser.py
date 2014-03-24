@@ -1,26 +1,24 @@
 # -*- coding: utf-8 -*-
 """
- Testing the application il2ds-mis-parser
+Mission parser tests.
 """
 import unittest
 from datetime import date
 
-from il2ds_mis_parser.parsers import (MainParser, SeasonParser, RespawnTimeParser,
-                                      WeatherParser,  MdsParser)
+from il2ds_mis_parser.parsers import (MainParser, SeasonParser,
+    RespawnTimeParser, WeatherParser, MDSParser, )
 
 
 class MissionParserTestCase(unittest.TestCase):
 
-    def _test_parse(self, parser, lines, expected):
-        """
-        """
+    def _test_parser(self, parser, lines, expected):
         for line in lines:
             parser.parse(line)
         self.assertEqual(expected, parser.clean())
 
-    def test_parse_main(self):
+    def test_main_parser(self):
         """
-        The test parse a section MAIN with parameters
+        Test 'MAIN' section parser.
         """
         lines = [
             "MAP Moscow/sload.ini",
@@ -30,35 +28,31 @@ class MissionParserTestCase(unittest.TestCase):
             "army 1",
             "playerNum 0",
         ]
-
         expected = {
             'MAP': 'Moscow/sload.ini',
             'army': '1',
             'playerNum': '0',
             'CloudHeight': '1500.0',
             'CloudType': '1',
-            'TIME': '11.75'
+            'TIME': '11.75',
         }
+        self._test_parser(MainParser(), lines, expected)
 
-        self._test_parse(MainParser(), lines, expected)
-
-    def test_parse_season(self):
+    def test_season_parser(self):
         """
-        Receipt date of the mission of section SEASON
+        Test 'SEASON' section parser.
         """
         lines = [
             "Year 1942",
             "Month 8",
             "Day 25",
         ]
-
         expected = date(1942, 8, 25)
+        self._test_parser(SeasonParser(), lines, expected)
 
-        self._test_parse(SeasonParser(), lines, expected)
-
-    def test_parse_weather(self):
+    def test_weather_parser(self):
         """
-        The test parse a section WEATHER with parameters
+        Test 'WEATHER' section parser.
         """
         lines = [
             "WindDirection 120.0",
@@ -66,19 +60,19 @@ class MissionParserTestCase(unittest.TestCase):
             "Gust 0",
             "Turbulence 0",
         ]
-
         expected = {
-            "WindDirection": "120.0",
-            "WindSpeed": "3.0",
-            "Gust": "0",
-            "Turbulence": "0"
+            'wind': {
+                'direction': 120.0,
+                'speed': 3.0,
+            },
+            'gust': 0,
+            'turbulence': 0,
         }
+        self._test_parser(WeatherParser(), lines, expected)
 
-        self._test_parse(WeatherParser(), lines, expected)
-
-    def test_parse_respawn_time(self):
+    def test_respawn_time_parser(self):
         """
-        The test parse a section RespawnTime with parameters
+        Test 'RespawnTime' section parser.
         """
         lines = [
             "Bigship 1000000",
@@ -87,20 +81,18 @@ class MissionParserTestCase(unittest.TestCase):
             "Artillery 1000000",
             "Searchlight 1000000",
         ]
-
         expected = {
-            "Bigship": 1000000,
-            "Ship": 1000000,
-            "Aeroanchored": 1000000,
-            "Artillery": 1000000,
-            "Searchlight": 1000000
+            'bigship': 1000000,
+            'ship': 1000000,
+            'aeroanchored': 1000000,
+            'artillery': 1000000,
+            'searchlight': 1000000,
         }
-
-        self._test_parse(RespawnTimeParser(), lines, expected)
+        self._test_parser(RespawnTimeParser(), lines, expected)
 
     def test_parse_mds(self):
         """
-
+        Test 'MDS' section parser.
         """
         lines = [
             "MDS_Radar_SetRadarToAdvanceMode 0",
@@ -120,40 +112,36 @@ class MissionParserTestCase(unittest.TestCase):
             "MDS_Misc_BombsCat2_CratersVisibilityMultiplier 1.0",
             "MDS_Misc_BombsCat3_CratersVisibilityMultiplier 1.0",
         ]
-
         expected = {
-            "Radar": {
-                "SetRadarToAdvanceMode": '0',
-                "DisableVectoring": '1',
-                "ShipRadar": {
-                    "MaxRange": '100',
-                    "MinHeight": '100',
-                    "MaxHeight": '5000'
+            'radar': {
+                'advance_mode': False,
+                'no_vectoring': True,
+                'ships': {
+                    'normal': {
+                        'max_range': 100,
+                        'min_height': 100,
+                        'max_height': 5000,
+                    },
+                    'small': {
+                        'max_range': 25,
+                        'min_height': 0,
+                        'max_height': 2000,
+                    },
                 },
-                "ShipSmallRadar": {
-                    "MaxRange": '25',
-                    "MinHeight": '0',
-                    "MaxHeight": '2000'
-                },
-                "ScoutsAsRadar": '0',
-                "ScoutRadar": {
-                    "MaxRange": '2'
+                'scouts': {
+                    'treat_as_radar': False,
+                    'max_range': 2,
                 },
             },
-            "Misc": {
-                "DisableAIRadioChatter": '1',
-                "DespawnAIPlanesAfterLanding": '1',
-                "HidePlayersCountOnHomeBase": '0',
-                "BombsCat1": {
-                    "CratersVisibilityMultiplier": '1.0'
-                },
-                "BombsCat2": {
-                    "CratersVisibilityMultiplier": '1.0'
-                },
-                "BombsCat3": {
-                    "CratersVisibilityMultiplier": '1.0'
-                },
-            }
+            'ai': {
+                'no_radio_chatter': True,
+                'hide_planes_after_landing': True,
+            },
+            'bomb_crater_visibility_muptiplier': {
+                'cat1': 1.0,
+                'cat2': 1.0,
+                'cat3': 1.0,
+            },
+            'no_players_count_on_home_base': False,
         }
-
-        self._test_parse(MdsParser(), lines, expected)
+        self._test_parser(MDSParser(), lines, expected)
