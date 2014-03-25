@@ -174,12 +174,30 @@ class NStationaryParser(BaseParser):
     """
     section_name = "NStationary"
 
+    def __init__(self):
+        self.data = []
+
+    def parse(self, line):
+        self.data.append(line)
+
+    def clean(self):
+        return self.data
+
 
 class BuildingsParser(BaseParser):
     """
     Parses 'Buildings' section.
     """
     section_name = "Buildings"
+
+    def __init__(self):
+        self.data = []
+
+    def parse(self, line):
+        self.data.append(line)
+
+    def clean(self):
+        return self.data
 
 
 class StaticCameraParser(BaseParser):
