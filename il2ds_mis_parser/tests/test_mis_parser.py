@@ -82,11 +82,11 @@ class MissionParserTestCase(unittest.TestCase):
             "Searchlight 1000000",
         ]
         expected = {
-            'bigship': 1000000,
-            'ship': 1000000,
-            'aeroanchored': 1000000,
+            'big_ship': 1000000,
+            'small_ships': 1000000,
+            'balloons': 1000000,
             'artillery': 1000000,
-            'searchlight': 1000000,
+            'floodlights': 1000000,
         }
         self._test_parser(RespawnTimeParser(), lines, expected)
 

@@ -134,9 +134,14 @@ class RespawnTimeParser(ValueParser):
     """
     section_name = "RespawnTime"
 
-    def parse(self, line):
-        code, value = line.split()
-        self.data.update({code.lower(): int(value)})
+    def clean(self):
+        return {
+            'big_ship': int(self.data['Bigship']),
+            'small_ships': int(self.data['Ship']),
+            'balloons': int(self.data['Aeroanchored']),
+            'artillery': int(self.data['Artillery']),
+            'floodlights': int(self.data['Searchlight']),
+        }
 
 
 class ChiefsParser(BaseParser):
