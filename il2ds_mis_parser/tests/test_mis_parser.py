@@ -5,9 +5,10 @@ Mission parser tests.
 import unittest
 from datetime import date
 
+from il2ds_mis_parser.constants import TARGET_TYPE
 from il2ds_mis_parser.parsers import (MainParser, SeasonParser,
     RespawnTimeParser, WeatherParser, MDSParser, NStationaryParser,
-    BuildingsParser)
+    BuildingsParser, StaticCameraParser)
 
 
 class MissionParserTestCase(unittest.TestCase):
@@ -32,7 +33,7 @@ class MissionParserTestCase(unittest.TestCase):
         expected = {
             'map': 'Moscow/sload.ini',
             'army': 1,
-            'regiment_player': '0',
+            'player_regiment': '0',
             'height_clouds': 1500.0,
             'type_clouds': 1,
             'time': '11.75',
@@ -182,3 +183,68 @@ class MissionParserTestCase(unittest.TestCase):
         ]
 
         self._test_parser(BuildingsParser(), lines, expected)
+
+    def test_parse_static_camera(self):
+        """
+        Test 'StaticCamera' section parser.
+        """
+        lines = [
+            "38426 65212 35 2",
+        ]
+
+        expected = {
+            'pos_x': 38426,
+            'pos_y': 65212,
+            'height': 35,
+            'army': 2,
+        }
+
+        self._test_parser(StaticCameraParser(), lines, expected)
+
+    def test_parse_target(self):
+        """
+        Test 'Target' section parser.
+        """
+        lines = [
+            "0 0 0 0 500 90939 91871 0",
+            "3 1 1 30 500 90681 91687 500",
+            "3 2 1 30 500 90681 91687 500 0 0_Chief 91100 91500",
+        ]
+
+        expected = {
+            'destroy': {
+                'type': "main",
+                'idle': False,
+                'timeout': '30',
+                'destruction_level': 50,
+                'pos_x': 90939,
+                'pos_y': 91871,
+                'unknown': 0,
+            },
+            'recon': [
+                {
+                    'type': "additional",
+                    'idle': True,
+                    'timeout': 30,
+                    'requires_landing': False,
+                    'pos': {
+                        'x': 90681,
+                        'y': 91687,
+                    },
+                    'radius': 500,
+                    'object': None,
+                },
+                {
+                    'type': "hidden",
+                    'idle': True,
+                    'timeout': 30,
+                    'requires_landing': False,
+                    'pos': {
+                        'x': 90681,
+                        'y': 91687,
+                    },
+                    'radius': 500,
+                    'object': "0_Chief",
+                },
+            ],
+        }

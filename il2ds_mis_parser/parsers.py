@@ -51,7 +51,7 @@ class MainParser(ValueParser):
             'type_clouds': int(self.data['CloudType']),
             'height_clouds': float(self.data['CloudHeight']),
             'army': int(self.data['army']),
-            'regiment_player': self.data['playerNum'],
+            'player_regiment': self.data['playerNum'],
         }
 
 
@@ -205,6 +205,23 @@ class StaticCameraParser(BaseParser):
     Parses 'StaticCamera' section.
     """
     section_name = "StaticCamera"
+
+    def __init__(self):
+        self.data = {}
+
+    def parse(self, line):
+        pos_x, pos_y, height, army = line.split()
+        self.data.update(
+            {
+                'pos_x': int(pos_x),
+                'pos_y': int(pos_y),
+                'height': int(height),
+                'army': int(army),
+            }
+        )
+
+    def clean(self):
+        return self.data
 
 
 class BridgeParser(BaseParser):
