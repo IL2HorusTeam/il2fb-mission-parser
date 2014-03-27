@@ -5,10 +5,9 @@ Mission parser tests.
 import unittest
 from datetime import date
 
-from il2ds_mis_parser.constants import TARGET_TYPE
 from il2ds_mis_parser.parsers import (MainParser, SeasonParser,
     RespawnTimeParser, WeatherParser, MDSParser, NStationaryParser,
-    BuildingsParser, StaticCameraParser)
+    BuildingsParser, StaticCameraParser, TargetParser)
 
 
 class MissionParserTestCase(unittest.TestCase):
@@ -212,18 +211,21 @@ class MissionParserTestCase(unittest.TestCase):
         ]
 
         expected = {
-            'destroy': {
-                'type': "main",
-                'idle': False,
-                'timeout': '30',
-                'destruction_level': 50,
-                'pos_x': 90939,
-                'pos_y': 91871,
-                'unknown': 0,
-            },
+            'destroy': [
+                {
+                    'priority': "main",
+                    'idle': False,
+                    'timeout': 0,
+                    'destruction_level': 50,
+                    'pos': {
+                        'x': 90939,
+                        'y': 91871,
+                    },
+                },
+            ],
             'recon': [
                 {
-                    'type': "additional",
+                    'priority': "additional",
                     'idle': True,
                     'timeout': 30,
                     'requires_landing': False,
@@ -235,7 +237,7 @@ class MissionParserTestCase(unittest.TestCase):
                     'object': None,
                 },
                 {
-                    'type': "hidden",
+                    'priority': "hidden",
                     'idle': True,
                     'timeout': 30,
                     'requires_landing': False,
@@ -248,3 +250,5 @@ class MissionParserTestCase(unittest.TestCase):
                 },
             ],
         }
+
+        self._test_parser(TargetParser(), lines, expected)

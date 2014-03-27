@@ -4,11 +4,11 @@ Application constants.
 """
 
 # -----------------------------------------------------------------------------
-# All target type
+# All target priority
 # -----------------------------------------------------------------------------
 
-TARGET_TYPE = {
-    0: 'main',
-    1: 'additional',
-    2: 'hidden',
+TARGET_PRIORITY = {
+    '0': 'main',
+    '1': 'additional',
+    '2': 'hidden',
 }

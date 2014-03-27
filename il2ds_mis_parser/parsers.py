@@ -4,6 +4,7 @@ Parser files missions and properties.
 """
 import datetime
 
+from il2ds_mis_parser.constants import TARGET_PRIORITY
 
 def to_boolean(value):
     return int(value) > 0
@@ -198,6 +199,76 @@ class BuildingsParser(BaseParser):
 
     def clean(self):
         return self.data
+
+
+class TargetParser(BaseParser):
+    """
+    Parses 'TARGET' section.
+    """
+    section_name = "Target"
+
+    def __init__(self):
+        self.data = []
+
+    def parse(self, line):
+        self.data.append(line)
+
+    def clean(self):
+        targets = {}
+        for line in self.data:
+            line = line.split()
+            if len(line) > 8:
+                if line[0] in ('3', '7'):
+                    if not targets.has_key('recon'):
+                        targets.update({'recon': []})
+                    targets['recon'].append(
+                        {
+                            'priority': TARGET_PRIORITY[line[1]],
+                            'idle': to_boolean(line[2]),
+                            'timeout': int(line[3]),
+                            'requires_landing': to_boolean(line[4][2]),
+                            'pos': {
+                                'x': int(line[5]),
+                                'y': int(line[6]),
+                            },
+                            'radius': int(line[7]),
+                            'object': line[9],
+                        }
+                    )
+            else:
+                if line[0] in ('0', '5'):
+                    if not targets.has_key('destroy'):
+                        targets.update({'destroy': []})
+                    targets['destroy'].append(
+                        {
+                            'priority': TARGET_PRIORITY[line[1]],
+                            'idle': to_boolean(line[2]),
+                            'timeout': int(line[3]),
+                            'destruction_level': int(line[4])/10,
+                            'pos': {
+                                'x': int(line[5]),
+                                'y': int(line[6]),
+                            },
+                        }
+                    )
+                if line[0] in ('3', '7'):
+                    if not targets.has_key('recon'):
+                        targets.update({'recon': []})
+                    targets['recon'].append(
+                        {
+                            'priority': TARGET_PRIORITY[line[1]],
+                            'idle': to_boolean(line[2]),
+                            'timeout': int(line[3]),
+                            'requires_landing': to_boolean(line[4][2]),
+                            'pos': {
+                                'x': int(line[5]),
+                                'y': int(line[6]),
+                            },
+                            'radius': int(line[7]),
+                            'object': None,
+                        }
+                    )
+        return targets
 
 
 class StaticCameraParser(BaseParser):
