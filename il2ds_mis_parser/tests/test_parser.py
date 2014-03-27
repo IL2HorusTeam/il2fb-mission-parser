@@ -7,7 +7,7 @@ from datetime import date
 
 from il2ds_mis_parser.parsers import (MainParser, SeasonParser,
     RespawnTimeParser, WeatherParser, MDSParser, NStationaryParser,
-    BuildingsParser, StaticCameraParser, TargetParser)
+    BuildingsParser, StaticCameraParser, TargetParser, FrontMarkerParser)
 
 
 class MissionParserTestCase(unittest.TestCase):
@@ -250,3 +250,24 @@ class MissionParserTestCase(unittest.TestCase):
         ]
 
         self._test_parser(TargetParser(), lines, expected)
+
+    def test_parse_front_marker(self):
+        """
+        Test 'FrontMarker' section parser.
+        """
+        lines = [
+            "FrontMarker0 7636.65 94683.02 1",
+        ]
+
+        expected = [
+            {
+                'code': "FrontMarker0",
+                'pos': {
+                    'x': 7636.65,
+                    'y': 94683.02,
+                },
+                'army': 1,
+            }
+        ]
+
+        self._test_parser(FrontMarkerParser(), lines, expected)

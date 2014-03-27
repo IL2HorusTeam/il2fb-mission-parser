@@ -305,6 +305,25 @@ class FrontMarkerParser(BaseParser):
     """
     section_name = "FrontMarker"
 
+    def __init__(self):
+        self.data = []
+
+    def parse(self, line):
+        code, pos_x, pos_y, army = line.split()
+        self.data. append(
+            {
+                'code': code,
+                'pos': {
+                    'x': float(pos_x),
+                    'y': float(pos_y)
+                },
+                'army': int(army),
+            }
+        )
+
+    def clean(self):
+        return self.data
+
 
 class FileParser(BaseParser):
     """
