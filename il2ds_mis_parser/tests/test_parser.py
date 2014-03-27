@@ -205,51 +205,50 @@ class MissionParserTestCase(unittest.TestCase):
         Test 'Target' section parser.
         """
         lines = [
-            "0 0 0 0 500 90939 91871 0 0 3_Chief 91100 91500",
+            "0 0 0 0 500 90939 91871 0",
             "3 1 1 30 500 90681 91687 500",
             "3 2 1 30 500 90681 91687 500 0 0_Chief 91100 91500",
         ]
 
-        expected = {
-            'destroy': [
-                {
-                    'priority': "main",
-                    'idle': False,
-                    'timeout': 0,
-                    'destruction_level': 50,
-                    'pos': {
-                        'x': 90939,
-                        'y': 91871,
-                    },
-                    'object': "3_Chief",
+        expected = [
+            {
+                'type': "destroy",
+                'priority': "main",
+                'sleep_mode': False,
+                'timeout': 0,
+                'destruction_level': 50,
+                'pos': {
+                    'x': 90939,
+                    'y': 91871,
                 },
-            ],
-            'recon': [
-                {
-                    'priority': "additional",
-                    'idle': True,
-                    'timeout': 30,
-                    'requires_landing': False,
-                    'pos': {
-                        'x': 90681,
-                        'y': 91687,
-                    },
-                    'radius': 500,
-                    'object': None,
+                'object': None,
+            },
+            {
+                'type': "recon",
+                'priority': "additional",
+                'sleep_mode': True,
+                'timeout': 30,
+                'requires_landing': False,
+                'pos': {
+                    'x': 90681,
+                    'y': 91687,
                 },
-                {
-                    'priority': "hidden",
-                    'idle': True,
-                    'timeout': 30,
-                    'requires_landing': False,
-                    'pos': {
-                        'x': 90681,
-                        'y': 91687,
-                    },
-                    'radius': 500,
-                    'object': "0_Chief",
+                'radius': 500,
+                'object': None,
+            },
+            {
+                'type': "recon",
+                'priority': "hidden",
+                'sleep_mode': True,
+                'timeout': 30,
+                'requires_landing': False,
+                'pos': {
+                    'x': 90681,
+                    'y': 91687,
                 },
-            ],
-        }
+                'radius': 500,
+                'object': "0_Chief",
+            },
+        ]
 
         self._test_parser(TargetParser(), lines, expected)

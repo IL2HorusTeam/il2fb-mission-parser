@@ -4,10 +4,17 @@ Parser files missions and properties.
 """
 import datetime
 
-from il2ds_mis_parser.constants import TARGET_TYPE, TARGET_PRIORITY
+from il2ds_mis_parser.constants import *
+
 
 def to_boolean(value):
     return int(value) > 0
+
+
+def parse_some_target_type(params, type_target):
+    """
+
+    """
 
 
 class BaseParser(object):
@@ -203,7 +210,7 @@ class BuildingsParser(BaseParser):
 
 class TargetParser(BaseParser):
     """
-    Parses 'TARGET' section.
+    Parses 'Target' section.
     """
     section_name = "Target"
 
@@ -211,66 +218,43 @@ class TargetParser(BaseParser):
         self.data = []
 
     def parse(self, line):
-        self.data.append(line)
+        params = line.split()
+        (type_code, priority, sleep_mode, timeout, par_1, pos_x, pos_y, par_2), object_target = params[:8], params[9:10]
+        if type_code == TARGET_TYPE_DESTROY or type_code == TARGET_TYPE_COVER:
+            self.data.append(
+                {
+                    'type': TARGET_TYPES[type_code],
+                    'priority': TARGET_PRIORITIES[priority],
+                    'sleep_mode': to_boolean(sleep_mode),
+                    'timeout': int(timeout),
+                    'destruction_level': int(par_1)/10,
+                    'pos': {
+                        'x': int(pos_x),
+                        'y': int(pos_y),
+                    },
+                    'object': object_target[0] if object_target else None,
+                }
+            )
+        if type_code == TARGET_TYPE_RECON:
+            self.data.append(
+                {
+                    'type': TARGET_TYPES[type_code],
+                    'priority': TARGET_PRIORITIES[priority],
+                    'sleep_mode': to_boolean(sleep_mode),
+                    'timeout': int(timeout),
+                    'requires_landing': to_boolean(par_1[2]),
+                    'pos': {
+                        'x': int(pos_x),
+                        'y': int(pos_y),
+                    },
+                    'radius': int(par_2),
+                    'object': object_target[0] if object_target else None,
+                }
+            )
 
     def clean(self):
-        targets = {}
-        for line in self.data:
-            line = line.split()
-            if len(line) > 8:
-                if line[0] in ('0', '5'):
-                    if not targets.has_key(TARGET_TYPE[line[0]]):
-                        targets.update({TARGET_TYPE[line[0]]: []})
-                    targets[TARGET_TYPE[line[0]]].append(
-                        {
-                            'priority': TARGET_PRIORITY[line[1]],
-                            'idle': to_boolean(line[2]),
-                            'timeout': int(line[3]),
-                            'destruction_level': int(line[4])/10,
-                            'pos': {
-                                'x': int(line[5]),
-                                'y': int(line[6]),
-                            },
-                            'object': line[9],
-                        }
-                    )
-                if line[0] == '3':
-                    if not targets.has_key(TARGET_TYPE[line[0]]):
-                        targets.update({TARGET_TYPE[line[0]]: []})
-                    targets[TARGET_TYPE[line[0]]].append(
-                        {
-                            'priority': TARGET_PRIORITY[line[1]],
-                            'idle': to_boolean(line[2]),
-                            'timeout': int(line[3]),
-                            'requires_landing': to_boolean(line[4][2]),
-                            'pos': {
-                                'x': int(line[5]),
-                                'y': int(line[6]),
-                            },
-                            'radius': int(line[7]),
-                            'object': line[9],
-                        }
-                    )
-            else:
-                if line[0] == '3':
-                    if not targets.has_key(TARGET_TYPE[line[0]]):
-                        targets.update({TARGET_TYPE[line[0]]: []})
-                    targets[TARGET_TYPE[line[0]]].append(
-                        {
-                            'priority': TARGET_PRIORITY[line[1]],
-                            'idle': to_boolean(line[2]),
-                            'timeout': int(line[3]),
-                            'requires_landing': to_boolean(line[4][2]),
-                            'pos': {
-                                'x': int(line[5]),
-                                'y': int(line[6]),
-                            },
-                            'radius': int(line[7]),
-                            'object': None,
-                        }
-                    )
-        return targets
-
+        print self.data
+        return self.data
 
 class StaticCameraParser(BaseParser):
     """
