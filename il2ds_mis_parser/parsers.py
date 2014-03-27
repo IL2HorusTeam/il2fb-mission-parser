@@ -218,7 +218,23 @@ class TargetParser(BaseParser):
         for line in self.data:
             line = line.split()
             if len(line) > 8:
-                if line[0] in ('3', '7'):
+                if line[0] in ('0', '5'):
+                    if not targets.has_key('destroy'):
+                        targets.update({'destroy': []})
+                    targets['destroy'].append(
+                        {
+                            'priority': TARGET_PRIORITY[line[1]],
+                            'idle': to_boolean(line[2]),
+                            'timeout': int(line[3]),
+                            'destruction_level': int(line[4])/10,
+                            'pos': {
+                                'x': int(line[5]),
+                                'y': int(line[6]),
+                            },
+                            'object': line[9],
+                        }
+                    )
+                if line[0] == '3':
                     if not targets.has_key('recon'):
                         targets.update({'recon': []})
                     targets['recon'].append(
@@ -236,22 +252,7 @@ class TargetParser(BaseParser):
                         }
                     )
             else:
-                if line[0] in ('0', '5'):
-                    if not targets.has_key('destroy'):
-                        targets.update({'destroy': []})
-                    targets['destroy'].append(
-                        {
-                            'priority': TARGET_PRIORITY[line[1]],
-                            'idle': to_boolean(line[2]),
-                            'timeout': int(line[3]),
-                            'destruction_level': int(line[4])/10,
-                            'pos': {
-                                'x': int(line[5]),
-                                'y': int(line[6]),
-                            },
-                        }
-                    )
-                if line[0] in ('3', '7'):
+                if line[0] == '3':
                     if not targets.has_key('recon'):
                         targets.update({'recon': []})
                     targets['recon'].append(
