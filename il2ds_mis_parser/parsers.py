@@ -11,10 +11,38 @@ def to_boolean(value):
     return int(value) > 0
 
 
-def parse_some_target_type(params, type_target):
-    """
+def parse_some_target_type(params, type_code):
+    (percent_landing, pos_x, pos_y, radius), object_target = params[:4], params[5:6]
 
-    """
+    setting = {
+        'pos': {
+            'x': int(pos_x),
+            'y': int(pos_y),
+        },
+    }
+
+    if type_code == TARGET_TYPE_RECON:
+        setting.update(
+            dict(requires_landing=to_boolean(percent_landing[2]))
+        )
+    elif type_code == TARGET_TYPE_DESTROY_BRIDGE or type_code == TARGET_TYPE_COVER_BRIDGE:
+        pass
+    else:
+        setting.update(
+            dict(destruction_level=int(percent_landing) / 10)
+        )
+
+    if type_code == TARGET_TYPE_DESTROY_AREA or type_code == TARGET_TYPE_COVER_AREA or type_code == TARGET_TYPE_RECON:
+        setting.update(
+            dict(radius=int(radius))
+        )
+
+    if object_target:
+        setting.update(
+            dict(object=object_target[0])
+        )
+
+    return setting
 
 
 class BaseParser(object):
@@ -219,42 +247,19 @@ class TargetParser(BaseParser):
 
     def parse(self, line):
         params = line.split()
-        (type_code, priority, sleep_mode, timeout, par_1, pos_x, pos_y, par_2), object_target = params[:8], params[9:10]
-        if type_code == TARGET_TYPE_DESTROY or type_code == TARGET_TYPE_COVER:
-            self.data.append(
-                {
-                    'type': TARGET_TYPES[type_code],
-                    'priority': TARGET_PRIORITIES[priority],
-                    'sleep_mode': to_boolean(sleep_mode),
-                    'timeout': int(timeout),
-                    'destruction_level': int(par_1)/10,
-                    'pos': {
-                        'x': int(pos_x),
-                        'y': int(pos_y),
-                    },
-                    'object': object_target[0] if object_target else None,
-                }
-            )
-        if type_code == TARGET_TYPE_RECON:
-            self.data.append(
-                {
-                    'type': TARGET_TYPES[type_code],
-                    'priority': TARGET_PRIORITIES[priority],
-                    'sleep_mode': to_boolean(sleep_mode),
-                    'timeout': int(timeout),
-                    'requires_landing': to_boolean(par_1[2]),
-                    'pos': {
-                        'x': int(pos_x),
-                        'y': int(pos_y),
-                    },
-                    'radius': int(par_2),
-                    'object': object_target[0] if object_target else None,
-                }
-            )
+        (type_code, priority, sleep_mode, timeout), params = params[:4], params[4:]
+        target = {
+            'type': TARGET_TYPES[type_code],
+            'priority': TARGET_PRIORITIES[priority],
+            'sleep_mode': to_boolean(sleep_mode),
+            'timeout': int(timeout),
+        }
+        target.update(parse_some_target_type(params, type_code))
+        self.data.append(target)
 
     def clean(self):
-        print self.data
         return self.data
+
 
 class StaticCameraParser(BaseParser):
     """

@@ -221,7 +221,6 @@ class MissionParserTestCase(unittest.TestCase):
                     'x': 90939,
                     'y': 91871,
                 },
-                'object': None,
             },
             {
                 'type': "recon",
@@ -234,7 +233,6 @@ class MissionParserTestCase(unittest.TestCase):
                     'y': 91687,
                 },
                 'radius': 500,
-                'object': None,
             },
             {
                 'type': "recon",
