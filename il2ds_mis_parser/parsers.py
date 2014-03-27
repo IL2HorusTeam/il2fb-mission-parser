@@ -4,7 +4,7 @@ Parser files missions and properties.
 """
 import datetime
 
-from il2ds_mis_parser.constants import TARGET_PRIORITY
+from il2ds_mis_parser.constants import TARGET_TYPE, TARGET_PRIORITY
 
 def to_boolean(value):
     return int(value) > 0
@@ -219,9 +219,9 @@ class TargetParser(BaseParser):
             line = line.split()
             if len(line) > 8:
                 if line[0] in ('0', '5'):
-                    if not targets.has_key('destroy'):
-                        targets.update({'destroy': []})
-                    targets['destroy'].append(
+                    if not targets.has_key(TARGET_TYPE[line[0]]):
+                        targets.update({TARGET_TYPE[line[0]]: []})
+                    targets[TARGET_TYPE[line[0]]].append(
                         {
                             'priority': TARGET_PRIORITY[line[1]],
                             'idle': to_boolean(line[2]),
@@ -235,9 +235,9 @@ class TargetParser(BaseParser):
                         }
                     )
                 if line[0] == '3':
-                    if not targets.has_key('recon'):
-                        targets.update({'recon': []})
-                    targets['recon'].append(
+                    if not targets.has_key(TARGET_TYPE[line[0]]):
+                        targets.update({TARGET_TYPE[line[0]]: []})
+                    targets[TARGET_TYPE[line[0]]].append(
                         {
                             'priority': TARGET_PRIORITY[line[1]],
                             'idle': to_boolean(line[2]),
@@ -253,9 +253,9 @@ class TargetParser(BaseParser):
                     )
             else:
                 if line[0] == '3':
-                    if not targets.has_key('recon'):
-                        targets.update({'recon': []})
-                    targets['recon'].append(
+                    if not targets.has_key(TARGET_TYPE[line[0]]):
+                        targets.update({TARGET_TYPE[line[0]]: []})
+                    targets[TARGET_TYPE[line[0]]].append(
                         {
                             'priority': TARGET_PRIORITY[line[1]],
                             'idle': to_boolean(line[2]),
