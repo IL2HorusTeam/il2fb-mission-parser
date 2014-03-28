@@ -7,8 +7,8 @@ import datetime
 from il2ds_mis_parser.constants import *
 
 
-def to_boolean(value):
-    return int(value) > 0
+def to_bool(value):
+    return value != '0'
 
 
 class BaseParser(object):
@@ -98,8 +98,8 @@ class MDSParser(ValueParser):
     def clean(self):
         return {
             'radar': {
-                'advance_mode': to_boolean(self.data['Radar_SetRadarToAdvanceMode']),
-                'no_vectoring': to_boolean(self.data['Radar_DisableVectoring']),
+                'advance_mode': to_bool(self.data['Radar_SetRadarToAdvanceMode']),
+                'no_vectoring': to_bool(self.data['Radar_DisableVectoring']),
                 'ships': {
                     'normal': {
                         'max_range': int(self.data['Radar_ShipRadar_MaxRange']),
@@ -113,20 +113,20 @@ class MDSParser(ValueParser):
                     },
                 },
                 'scouts': {
-                    'treat_as_radar': to_boolean(self.data['Radar_ScoutsAsRadar']),
+                    'treat_as_radar': to_bool(self.data['Radar_ScoutsAsRadar']),
                     'max_range': int(self.data['Radar_ScoutRadar_MaxRange']),
                 },
             },
             'ai': {
-                'no_radio_chatter': to_boolean(self.data['Misc_DisableAIRadioChatter']),
-                'hide_planes_after_landing': to_boolean(self.data['Misc_DespawnAIPlanesAfterLanding']),
+                'no_radio_chatter': to_bool(self.data['Misc_DisableAIRadioChatter']),
+                'hide_planes_after_landing': to_bool(self.data['Misc_DespawnAIPlanesAfterLanding']),
             },
             'bomb_crater_visibility_muptiplier': {
                 'cat1': float(self.data['Misc_BombsCat1_CratersVisibilityMultiplier']),
                 'cat2': float(self.data['Misc_BombsCat2_CratersVisibilityMultiplier']),
                 'cat3': float(self.data['Misc_BombsCat3_CratersVisibilityMultiplier']),
             },
-            'no_players_count_on_home_base': to_boolean(self.data['Misc_HidePlayersCountOnHomeBase']),
+            'no_players_count_on_home_base': to_bool(self.data['Misc_HidePlayersCountOnHomeBase']),
         }
 
 
@@ -210,6 +210,16 @@ class TargetParser(BaseParser):
 
     def __init__(self):
         self.data = []
+        self.subparsers = {
+            TARGET_TYPE_DESTROY: self.parse_destroy_or_cover,
+            TARGET_TYPE_DESTROY_BRIDGE: self.parse_destroy_or_cover_bridge,
+            TARGET_TYPE_DESTROY_AREA: self.parse_destroy_or_cover_area,
+            TARGET_TYPE_RECON: self.parse_recon,
+            TARGET_TYPE_ESCORT: self.parse_escort,
+            TARGET_TYPE_COVER: self.parse_destroy_or_cover,
+            TARGET_TYPE_COVER_AREA: self.parse_destroy_or_cover_area,
+            TARGET_TYPE_COVER_BRIDGE: self.parse_destroy_or_cover_bridge,
+        }
 
     def parse(self, line):
         params = line.split()
@@ -217,77 +227,78 @@ class TargetParser(BaseParser):
         target = {
             'type': TARGET_TYPES[type_code],
             'priority': TARGET_PRIORITIES[priority],
-            'sleep_mode': to_boolean(sleep_mode),
+            'sleep_mode': to_bool(sleep_mode),
             'timeout': int(timeout),
         }
-        target.update(parse_some_target_type(params, type_code))
+        sub_parse = self.subparsers.get(type_code)
+        target.update(sub_parse(params))
         self.data.append(target)
 
-    def parse_some_destroy(self, params):
+    def parse_destroy_or_cover(self, params):
         """
         Parses some parameters for target types "destroy" and "cover".
         """
-        type_code = [TARGET_TYPE_DESTROY, TARGET_TYPE_COVER]
-
         data = {}
         (destruction_level, pos_x, pos_y), object_target = params[:3], params[5:6]
         data['destruction_level'] = int(destruction_level)/10
-        data['pos'] = self.parse_position(pos_x, pos_y)
-        data['object'] = object_target
+        data.update(self.compose_position(pos_x, pos_y))
+        data['object'] = object_target[0]
 
         return data
 
-    def parse_some_bridge(self, params):
+    def parse_destroy_or_cover_bridge(self, params):
         """
         Parses some parameters for target types "destroy bridge" and "cover bridge".
         """
         data = {}
         (pos_x, pos_y), object_target = params[1:3], params[5:6]
-        data['pos'] = self.parse_position(pos_x, pos_y)
-        data['object'] = object_target
+        data.update(self.compose_position(pos_x, pos_y))
+        data['object'] = object_target[0]
         return data
 
-    def parse_some_area(self, params):
+    def parse_destroy_or_cover_area(self, params):
         """
         Parser of some parameters for target types "destroy area" and "cover area".
         """
         data = {}
         (destruction_level, pos_x, pos_y), object_target = params[:3], params[5:6]
         data['destruction_level'] = int(destruction_level)/10
-        data['pos'] = self.parse_position(pos_x, pos_y)
+        data.update(self.compose_position(pos_x, pos_y))
         return data
 
-    def parse_some_recon(self, params):
+    def parse_recon(self, params):
         """
         Parses some parameters for target types "recon".
         """
         data = {}
         (requires_landing, pos_x, pos_y, radius), object_target = params[:4], params[5:6]
-        data['requires_landing'] = to_boolean(requires_landing[2])
-        data['pos'] = self.parse_position(pos_x, pos_y)
+        data['requires_landing'] = to_bool(requires_landing[2])
+        data.update(self.compose_position(pos_x, pos_y))
         data['radius'] = int(radius)
         if object_target:
-            data['object'] = object_target
+            data['object'] = object_target[0]
         return data
 
-    def parse_some_escort(self, params):
+    def parse_escort(self, params):
         """
         Parses some parameters for target types "escort".
         """
         data = {}
         (destruction_level, pos_x, pos_y), object_target = params[:3], params[5:6]
         data['destruction_level'] = int(destruction_level)/10
-        data['pos'] = self.parse_position(pos_x, pos_y)
-        data['object'] = object_target
+        data.update(self.compose_position(pos_x, pos_y))
+        data['object'] = object_target[0]
         return data
 
-    def parse_position(self, pos_x, pos_y):
+    def compose_position(self, pos_x, pos_y):
         """
         Parses positions target.
         """
         return {
-            'x': int(pos_x),
-            'y': int(pos_y),
+            'pos': {
+                'x': int(pos_x),
+                'y': int(pos_y),
+            }
         }
 
     def clean(self):
@@ -301,11 +312,11 @@ class StaticCameraParser(BaseParser):
     section_name = "StaticCamera"
 
     def __init__(self):
-        self.data = {}
+        self.data = []
 
     def parse(self, line):
         pos_x, pos_y, height, army = line.split()
-        self.data.update(
+        self.data.append(
             {
                 'pos': {
                     'x': int(pos_x),
@@ -345,7 +356,7 @@ class FrontMarkerParser(BaseParser):
 
     def parse(self, line):
         code, pos_x, pos_y, army = line.split()
-        self.data. append(
+        self.data.append(
             {
                 'code': code,
                 'pos': {

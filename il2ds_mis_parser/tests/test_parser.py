@@ -191,14 +191,16 @@ class MissionParserTestCase(unittest.TestCase):
             "38426 65212 35 2",
         ]
 
-        expected = {
-            'pos': {
-                'x': 38426,
-                'y': 65212,
-            },
-            'height': 35,
-            'army': 2,
-        }
+        expected = [
+            {
+                'pos': {
+                    'x': 38426,
+                    'y': 65212,
+                },
+                'height': 35,
+                'army': 2,
+            }
+        ]
 
         self._test_parser(StaticCameraParser(), lines, expected)
 
@@ -207,7 +209,7 @@ class MissionParserTestCase(unittest.TestCase):
         Test 'Target' section parser.
         """
         lines = [
-            "0 0 0 0 500 90939 91871 0",
+            "0 0 0 0 500 90939 91871 0 0 10_Chief 91100 91500",
             "3 1 1 30 500 90681 91687 500",
             "3 2 1 30 500 90681 91687 500 0 0_Chief 91100 91500",
         ]
@@ -223,6 +225,7 @@ class MissionParserTestCase(unittest.TestCase):
                     'x': 90939,
                     'y': 91871,
                 },
+                'object': "10_Chief",
             },
             {
                 'type': "recon",
