@@ -11,7 +11,7 @@ def to_bool(value):
     return value != '0'
 
 
-def compose_position(x, y):
+def to_position(x, y):
     """
     Composes dictionary with position within.
     """
@@ -23,88 +23,117 @@ def compose_position(x, y):
     }
 
 
-class BaseParser(object):
+class SectionParser(object):
 
-    @property
-    def section_name(self):
+    data = None
+    running = False
+
+    def start(self, section_name):
+        result = self.check_section_name(section_name)
+        if result:
+            self.running = True
+            self.init_parser(section_name)
+        return result
+
+    def check_section_name(self, section_name):
         raise NotImplementedError
 
-    def parse(self, line):
-        pass
+    def init_parser(self, section_name):
+        raise NotImplementedError
 
-    def clean(self):
-        pass
+    def parse_line(self, line):
+        raise NotImplementedError
 
+    def stop(self):
+        if not self.running:
+            raise RuntimeError("Cannot stop parser which is not running")
 
-class ValueParser(BaseParser):
+        self.running = False
+        return self.process_data()
 
-    def __init__(self):
-        self.data = {}
-
-    def parse(self, line):
-        code, value = line.split()
-        self.data.update({code: value})
-
-    def clean(self):
+    def process_data(self):
         return self.data
 
 
-class MainParser(ValueParser):
+class ValuesParser(SectionParser):
+
+    def init_parser(self, section_name):
+        self.data = {}
+
+    def parse_line(self, line):
+        code, value = line.split()
+        self.data.update({code: value})
+
+
+class MainParser(ValuesParser):
     """
     Parses 'MAIN' section.
     """
-    section_name = "MAIN"
 
-    def clean(self):
+    def check_section_name(self, section_name):
+        return section_name == "MAIN"
+
+    def process_data(self):
         return {
-            'map': self.data['MAP'],
+            'loader': self.data['MAP'],
             'time': self.data['TIME'],
-            'type_clouds': int(self.data['CloudType']),
-            'height_clouds': float(self.data['CloudHeight']),
+            'clouds': {
+                'type': int(self.data['CloudType']),
+                'height': float(self.data['CloudHeight']),
+            },
             'army_code': int(self.data['army']),
             'player_regiment': self.data['playerNum'],
         }
 
 
-class SeasonParser(ValueParser):
+class SeasonParser(ValuesParser):
     """
     Parses 'SEASON' section.
     """
-    section_name = "SEASON"
 
-    def clean(self):
-        return datetime.date(int(self.data['Year']),
+    def check_section_name(self, section_name):
+        return section_name == "SEASON"
+
+    def process_data(self):
+        date = datetime.date(int(self.data['Year']),
                              int(self.data['Month']),
                              int(self.data['Day']))
+        return {'date': date, }
 
 
-class WeatherParser(ValueParser):
+class WeatherParser(ValuesParser):
     """
     Parses 'WEATHER' section.
     """
-    section_name = "WEATHER"
 
-    def clean(self):
+    def check_section_name(self, section_name):
+        return section_name == "WEATHER"
+
+    def process_data(self):
         return {
-            'wind': {
-                'direction': float(self.data['WindDirection']),
-                'speed': float(self.data['WindSpeed']),
+            'weather': {
+                'wind': {
+                    'direction': float(self.data['WindDirection']),
+                    'speed': float(self.data['WindSpeed']),
+                },
+                'gust': int(self.data['Gust']),
+                'turbulence': int(self.data['Turbulence']),
             },
-            'gust': int(self.data['Gust']),
-            'turbulence': int(self.data['Turbulence']),
         }
 
 
-class MDSParser(ValueParser):
+class MDSParser(ValuesParser):
     """
     Parses 'MDS' section.
     """
-    section_name = "MDS"
 
-    def parse(self, line):
-        super(MDSParser, self).parse(line.replace('MDS_', ''))
+    def check_section_name(self, section_name):
+        return section_name == "MDS"
 
-    def clean(self):
+    def parse_line(self, line):
+        super(MDSParser, self).parse_line(line.replace('MDS_', ''))
+
+    def process_data(self):
         return {
             'radar': {
                 'advance_mode': to_bool(self.data['Radar_SetRadarToAdvanceMode']),
@@ -139,32 +168,40 @@ class MDSParser(ValueParser):
         }
 
 
-class RespawnTimeParser(ValueParser):
+class RespawnTimeParser(ValuesParser):
     """
     Parses 'RespawnTime' section.
     """
-    section_name = "RespawnTime"
 
-    def clean(self):
+    def check_section_name(self, section_name):
+        return section_name == "RespawnTime"
+
+    def process_data(self):
         return {
-            'big_ships': int(self.data['Bigship']),
-            'small_ships': int(self.data['Ship']),
-            'balloons': int(self.data['Aeroanchored']),
-            'artillery': int(self.data['Artillery']),
-            'searchlight': int(self.data['Searchlight']),
+            'respawn': {
+                'ships': {
+                    'big': int(self.data['Bigship']),
+                    'normal': int(self.data['Ship']),
+                },
+                'balloons': int(self.data['Aeroanchored']),
+                'artillery': int(self.data['Artillery']),
+                'searchlights': int(self.data['Searchlight']),
+            },
         }
 
 
-class ChiefsParser(BaseParser):
+class ChiefsParser(SectionParser):
     """
     Parses 'Chiefs' section.
     """
-    section_name = "Chiefs"
 
-    def __init__(self):
+    def check_section_name(self, section_name):
+        return section_name == "Chiefs"
+
+    def init_parser(self, section_name):
         self.data = {}
 
-    def parse(self, line):
+    def parse_line(self, line):
         chiefs, type_code, army = line.split()
         type_chiefs, code = type_code.split('.')
         self.data.update({
@@ -175,49 +212,55 @@ class ChiefsParser(BaseParser):
             },
         })
 
-    def clean(self):
-        return self.data
+    def process_data(self):
+        return {'moving_units': self.data, }
 
 
-class NStationaryParser(BaseParser):
+class NStationaryParser(SectionParser):
     """
     Parses 'NStationary' section.
     """
-    section_name = "NStationary"
 
-    def __init__(self):
+    def check_section_name(self, section_name):
+        return section_name == "NStationary"
+
+    def init_parser(self, section_name):
         self.data = []
 
-    def parse(self, line):
-        self.data.append(line)
+    def parse_line(self, line):
+        pass
 
-    def clean(self):
-        return self.data
+    def process_data(self):
+        return {'statics': self.data, }
 
 
-class BuildingsParser(BaseParser):
+class BuildingsParser(SectionParser):
     """
     Parses 'Buildings' section.
     """
-    section_name = "Buildings"
 
-    def __init__(self):
+    def check_section_name(self, section_name):
+        return section_name == "Buildings"
+
+    def init_parser(self, section_name):
         self.data = []
 
-    def parse(self, line):
-        self.data.append(line)
+    def parse_line(self, line):
+        pass
 
-    def clean(self):
-        return self.data
+    def process_data(self):
+        return {'buildings': self.data, }
 
 
-class TargetParser(BaseParser):
+class TargetParser(SectionParser):
     """
     Parses 'Target' section.
     """
-    section_name = "Target"
 
-    def __init__(self):
+    def check_section_name(self, section_name):
+        return section_name == "Target"
+
+    def init_parser(self, section_name):
         self.data = []
         self.subparsers = {
             TARGET_TYPE_DESTROY: self._parse_destroy_or_cover,
@@ -230,7 +273,7 @@ class TargetParser(BaseParser):
             TARGET_TYPE_COVER_BRIDGE: self._parse_destroy_or_cover_bridge,
         }
 
-    def parse(self, line):
+    def parse_line(self, line):
         params = line.split()
         (type_code, priority, sleep_mode, timeout), params = params[:4], params[4:]
         target = {
@@ -254,7 +297,7 @@ class TargetParser(BaseParser):
         (destruction_level, pos_x, pos_y), target_object = params[:3], params[5]
 
         data.update(self._get_destruction_level(destruction_level))
-        data.update(compose_position(pos_x, pos_y))
+        data.update(to_position(pos_x, pos_y))
         data['object'] = target_object
 
         return data
@@ -265,7 +308,7 @@ class TargetParser(BaseParser):
         """
         data = {}
         (pos_x, pos_y), target_object = params[1:3], params[5]
-        data.update(compose_position(pos_x, pos_y))
+        data.update(to_position(pos_x, pos_y))
         data['object'] = target_object
         return data
 
@@ -276,7 +319,7 @@ class TargetParser(BaseParser):
         data = {}
         destruction_level, pos_x, pos_y = params[:3]
         data.update(self._get_destruction_level(destruction_level))
-        data.update(compose_position(pos_x, pos_y))
+        data.update(to_position(pos_x, pos_y))
         return data
 
     def _parse_recon(self, params):
@@ -287,7 +330,7 @@ class TargetParser(BaseParser):
         (requires_landing, pos_x, pos_y, radius), target_object = params[:4], params[5:6]
 
         data['requires_landing'] = to_bool(requires_landing[2])
-        data.update(compose_position(pos_x, pos_y))
+        data.update(to_position(pos_x, pos_y))
         data['radius'] = int(radius)
         if target_object:
             data['object'] = target_object[0]
@@ -301,117 +344,151 @@ class TargetParser(BaseParser):
         data = {}
         (destruction_level, pos_x, pos_y), target_object = params[:3], params[5]
         data.update(self._get_destruction_level(destruction_level))
-        data.update(compose_position(pos_x, pos_y))
+        data.update(to_position(pos_x, pos_y))
         data['object'] = target_object
         return data
 
-    def clean(self):
-        return self.data
+    def process_data(self):
+        return {'targets': self.data, }
 
 
-class StaticCameraParser(BaseParser):
+class StaticCameraParser(SectionParser):
     """
     Parses 'StaticCamera' section.
     """
-    section_name = "StaticCamera"
 
-    def __init__(self):
+    def check_section_name(self, section_name):
+        return section_name == "StaticCamera"
+
+    def init_parser(self, section_name):
         self.data = []
 
-    def parse(self, line):
+    def parse_line(self, line):
         pos_x, pos_y, height, army = line.split()
         data = {
             'height': int(height),
             'army_code': int(army),
         }
-        data.update(compose_position(pos_x, pos_y))
+        data.update(to_position(pos_x, pos_y))
         self.data.append(data)
 
-    def clean(self):
-        return self.data
+    def process_data(self):
+        return {'cameras': self.data, }
 
 
-class BridgeParser(BaseParser):
+class BridgeParser(SectionParser):
     """
     Parses 'Bridge' section.
     """
-    section_name = "Bridge"
+
+    def check_section_name(self, section_name):
+        return section_name == "Bridge"
+
+    def init_parser(self, section_name):
+        self.data = []
+
+    def parse_line(self, line):
+        pass
+
+    def process_data(self):
+        return {'bridges': self.data, }
 
 
-class HouseParser(BaseParser):
+class HouseParser(SectionParser):
     """
     Parses 'House' section.
     """
-    section_name = "House"
+
+    def check_section_name(self, section_name):
+        return section_name == "House"
+
+    def init_parser(self, section_name):
+        self.data = []
+
+    def parse_line(self, line):
+        pass
+
+    def process_data(self):
+        return {'houses': self.data, }
 
 
-class FrontMarkerParser(BaseParser):
+class FrontMarkerParser(SectionParser):
     """
     Parses 'FrontMarker' section.
     """
-    section_name = "FrontMarker"
 
-    def __init__(self):
+    def check_section_name(self, section_name):
+        return section_name == "FrontMarker"
+
+    def init_parser(self, section_name):
         self.data = []
 
-    def parse(self, line):
+    def parse_line(self, line):
         code, pos_x, pos_y, army = line.split()
         data = {
             'code': code,
             'army_code': int(army),
         }
-        data.update(compose_position(pos_x, pos_y))
+        data.update(to_position(pos_x, pos_y))
         self.data.append(data)
 
-    def clean(self):
-        return self.data
+    def process_data(self):
+        return {'markers': self.data, }
 
 
-class FileParser(BaseParser):
+class FileParser(object):
     """
     Parses whole mission files.
     """
     def __init__(self):
         self.data = {}
-        classes = [
-            MainParser,
-            SeasonParser,
-            WeatherParser,
-            MDSParser,
-            RespawnTimeParser,
-            ChiefsParser,
-            NStationaryParser,
-            BuildingsParser,
-            StaticCameraParser,
-            BridgeParser,
-            HouseParser,
-            FrontMarkerParser,
+        self.parsers = [
+            MainParser(),
+            SeasonParser(),
+            WeatherParser(),
+            MDSParser(),
+            RespawnTimeParser(),
+            ChiefsParser(),
+            NStationaryParser(),
+            BuildingsParser(),
+            StaticCameraParser(),
+            BridgeParser(),
+            HouseParser(),
+            FrontMarkerParser(),
         ]
-        self.parsers = {
-            parser_class.section_name: parser_class()
-            for parser_class in classes
-        }
 
     def parse(self, file_path):
-        parser, section_name = None, None
+        parser = None
 
-        def finish_section_if_any():
+        def safely_stop_parser():
             if parser:
-                self.data[section_name] = parser.clean()
+                self.data.update(parser.stop())
 
         with open(file_path) as f:
             for line in f:
                 line = line.strip()
-                if line.startswith('[') and line.endswith(']'):
-                    finish_section_if_any()
-                    section_name = line.strip('[]')
-                    parser = self.parsers.get(section_name)
+                if self.has_section_name(line):
+                    safely_stop_parser()
+                    section_name = self.get_section_name(line)
+                    parser = self.get_parser(section_name)
                 elif parser:
-                    parser.parse(line)
-            finish_section_if_any()
+                    parser.parse_line(line)
+            safely_stop_parser()
 
-        return self.clean()
+        return self.process_data()
 
-    def clean(self):
+    def has_section_name(self, line):
+        return line.startswith('[') and line.endswith(']')
+
+    def get_section_name(self, line):
+        return line.strip('[]')
+
+    def get_parser(self, section_name):
+        for parser in self.parsers:
+            if parser.start(section_name):
+                return parser
+        return None
+
+    def process_data(self):
         # TODO:
         return self.data

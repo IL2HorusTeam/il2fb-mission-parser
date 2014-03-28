@@ -12,10 +12,12 @@ from il2ds_mis_parser.parsers import (MainParser, SeasonParser,
 
 class MissionParserTestCase(unittest.TestCase):
 
-    def _test_parser(self, parser, lines, expected):
+    def _test_parser(self, parser_class, section_name, lines, expected):
+        parser = parser_class()
+        self.assertTrue(parser.start(section_name))
         for line in lines:
-            parser.parse(line)
-        self.assertEqual(expected, parser.clean())
+            parser.parse_line(line)
+        self.assertEqual(expected, parser.stop())
 
     def test_main_parser(self):
         """
@@ -30,14 +32,16 @@ class MissionParserTestCase(unittest.TestCase):
             "playerNum 0",
         ]
         expected = {
-            'map': 'Moscow/sload.ini',
+            'loader': 'Moscow/sload.ini',
             'army_code': 1,
             'player_regiment': '0',
-            'height_clouds': 1500.0,
-            'type_clouds': 1,
+            'clouds': {
+                'height': 1500,
+                'type': 1,
+            },
             'time': '11.75',
         }
-        self._test_parser(MainParser(), lines, expected)
+        self._test_parser(MainParser, 'MAIN', lines, expected)
 
     def test_season_parser(self):
         """
@@ -48,8 +52,10 @@ class MissionParserTestCase(unittest.TestCase):
             "Month 8",
             "Day 25",
         ]
-        expected = date(1942, 8, 25)
-        self._test_parser(SeasonParser(), lines, expected)
+        expected = {
+            'date': date(1942, 8, 25),
+        }
+        self._test_parser(SeasonParser, 'SEASON', lines, expected)
 
     def test_weather_parser(self):
         """
@@ -62,14 +68,16 @@ class MissionParserTestCase(unittest.TestCase):
             "Turbulence 0",
         ]
         expected = {
-            'wind': {
-                'direction': 120.0,
-                'speed': 3.0,
+            'weather': {
+                'wind': {
+                    'direction': 120.0,
+                    'speed': 3.0,
+                },
+                'gust': 0,
+                'turbulence': 0,
             },
-            'gust': 0,
-            'turbulence': 0,
         }
-        self._test_parser(WeatherParser(), lines, expected)
+        self._test_parser(WeatherParser, 'WEATHER', lines, expected)
 
     def test_respawn_time_parser(self):
         """
@@ -83,13 +91,17 @@ class MissionParserTestCase(unittest.TestCase):
             "Searchlight 1000000",
         ]
         expected = {
-            'big_ships': 1000000,
-            'small_ships': 1000000,
-            'balloons': 1000000,
-            'artillery': 1000000,
-            'searchlight': 1000000,
+            'respawn': {
+                'ships': {
+                    'big': 1000000,
+                    'normal': 1000000,
+                },
+                'balloons': 1000000,
+                'artillery': 1000000,
+                'searchlights': 1000000,
+            },
         }
-        self._test_parser(RespawnTimeParser(), lines, expected)
+        self._test_parser(RespawnTimeParser, 'RespawnTime', lines, expected)
 
     def test_mds_parser(self):
         """
@@ -145,7 +157,7 @@ class MissionParserTestCase(unittest.TestCase):
             },
             'no_players_count_on_home_base': False,
         }
-        self._test_parser(MDSParser(), lines, expected)
+        self._test_parser(MDSParser, 'MDS', lines, expected)
 
     def test_stationary_parser(self):
         """
@@ -156,12 +168,10 @@ class MissionParserTestCase(unittest.TestCase):
             "49_Static vehicles.stationary.Stationary$OpelBlitz6700A_fuel 2 43726.71 58239.31 540.00 0.0",
             "171_Static vehicles.stationary.Stationary$OpelBlitz6700A_fuel 2 45107.15 58463.06 600.00 0.0",
         ]
-        expected = [
-            "959_Static vehicles.artillery.Artillery$SdKfz251 2 31333.62 90757.91 600.29 0.0 0 1 1",
-            "49_Static vehicles.stationary.Stationary$OpelBlitz6700A_fuel 2 43726.71 58239.31 540.00 0.0",
-            "171_Static vehicles.stationary.Stationary$OpelBlitz6700A_fuel 2 45107.15 58463.06 600.00 0.0",
-        ]
-        self._test_parser(NStationaryParser(), lines, expected)
+        expected = {
+            'statics': [],
+        }
+        self._test_parser(NStationaryParser, 'NStationary', lines, expected)
 
     def test_buildings_parser(self):
         """
@@ -172,12 +182,10 @@ class MissionParserTestCase(unittest.TestCase):
             "12_bld House$46FTankDE 1 43722.70 58106.67 555.00",
             "38_bld House$FurnitureTreeBroad1 1 43725.10 58081.35 475.0",
         ]
-        expected = [
-            "0_bld House$Tent_Pyramid_US 1 43471.34 57962.08 630.00",
-            "12_bld House$46FTankDE 1 43722.70 58106.67 555.00",
-            "38_bld House$FurnitureTreeBroad1 1 43725.10 58081.35 475.0",
-        ]
-        self._test_parser(BuildingsParser(), lines, expected)
+        expected = {
+            'buildings': [],
+        }
+        self._test_parser(BuildingsParser, 'Buildings', lines, expected)
 
     def test_static_camera_parser(self):
         """
@@ -186,17 +194,19 @@ class MissionParserTestCase(unittest.TestCase):
         lines = [
             "38426 65212 35 2",
         ]
-        expected = [
-            {
-                'pos': {
-                    'x': 38426,
-                    'y': 65212,
+        expected = {
+            'cameras': [
+                {
+                    'pos': {
+                        'x': 38426,
+                        'y': 65212,
+                    },
+                    'height': 35,
+                    'army_code': 2,
                 },
-                'height': 35,
-                'army_code': 2,
-            }
-        ]
-        self._test_parser(StaticCameraParser(), lines, expected)
+            ],
+        }
+        self._test_parser(StaticCameraParser, 'StaticCamera', lines, expected)
 
     def test_target_parser(self):
         """
@@ -207,46 +217,48 @@ class MissionParserTestCase(unittest.TestCase):
             "3 1 1 30 500 90681 91687 500",
             "3 2 1 30 500 90681 91687 500 0 0_Chief 91100 91500",
         ]
-        expected = [
-            {
-                'type': "destroy",
-                'priority': "main",
-                'sleep_mode': False,
-                'timeout': 0,
-                'destruction_level': 50,
-                'pos': {
-                    'x': 90939,
-                    'y': 91871,
+        expected = {
+            'targets': [
+                {
+                    'type': "destroy",
+                    'priority': "main",
+                    'sleep_mode': False,
+                    'timeout': 0,
+                    'destruction_level': 50,
+                    'pos': {
+                        'x': 90939,
+                        'y': 91871,
+                    },
+                    'object': "10_Chief",
                 },
-                'object': "10_Chief",
-            },
-            {
-                'type': "recon",
-                'priority': "additional",
-                'sleep_mode': True,
-                'timeout': 30,
-                'requires_landing': False,
-                'pos': {
-                    'x': 90681,
-                    'y': 91687,
+                {
+                    'type': "recon",
+                    'priority': "additional",
+                    'sleep_mode': True,
+                    'timeout': 30,
+                    'requires_landing': False,
+                    'pos': {
+                        'x': 90681,
+                        'y': 91687,
+                    },
+                    'radius': 500,
                 },
-                'radius': 500,
-            },
-            {
-                'type': "recon",
-                'priority': "hidden",
-                'sleep_mode': True,
-                'timeout': 30,
-                'requires_landing': False,
-                'pos': {
-                    'x': 90681,
-                    'y': 91687,
+                {
+                    'type': "recon",
+                    'priority': "hidden",
+                    'sleep_mode': True,
+                    'timeout': 30,
+                    'requires_landing': False,
+                    'pos': {
+                        'x': 90681,
+                        'y': 91687,
+                    },
+                    'radius': 500,
+                    'object': "0_Chief",
                 },
-                'radius': 500,
-                'object': "0_Chief",
-            },
-        ]
-        self._test_parser(TargetParser(), lines, expected)
+            ],
+        }
+        self._test_parser(TargetParser, 'Target', lines, expected)
 
     def test_front_marker_parser(self):
         """
@@ -255,14 +267,16 @@ class MissionParserTestCase(unittest.TestCase):
         lines = [
             "FrontMarker0 7636.65 94683.02 1",
         ]
-        expected = [
-            {
-                'code': "FrontMarker0",
-                'pos': {
-                    'x': 7636.65,
-                    'y': 94683.02,
+        expected = {
+            'markers': [
+                {
+                    'code': "FrontMarker0",
+                    'pos': {
+                        'x': 7636.65,
+                        'y': 94683.02,
+                    },
+                    'army_code': 1,
                 },
-                'army_code': 1,
-            }
-        ]
-        self._test_parser(FrontMarkerParser(), lines, expected)
+            ],
+        }
+        self._test_parser(FrontMarkerParser, 'FrontMarker', lines, expected)
