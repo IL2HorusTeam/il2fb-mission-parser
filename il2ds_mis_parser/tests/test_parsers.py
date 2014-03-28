@@ -31,7 +31,7 @@ class MissionParserTestCase(unittest.TestCase):
         ]
         expected = {
             'map': 'Moscow/sload.ini',
-            'army': 1,
+            'army_code': 1,
             'player_regiment': '0',
             'height_clouds': 1500.0,
             'type_clouds': 1,
@@ -91,7 +91,7 @@ class MissionParserTestCase(unittest.TestCase):
         }
         self._test_parser(RespawnTimeParser(), lines, expected)
 
-    def test_parse_mds(self):
+    def test_mds_parser(self):
         """
         Test 'MDS' section parser.
         """
@@ -147,7 +147,7 @@ class MissionParserTestCase(unittest.TestCase):
         }
         self._test_parser(MDSParser(), lines, expected)
 
-    def test_parse_stationary(self):
+    def test_stationary_parser(self):
         """
         Test 'NStationary' section parser.
         """
@@ -156,16 +156,14 @@ class MissionParserTestCase(unittest.TestCase):
             "49_Static vehicles.stationary.Stationary$OpelBlitz6700A_fuel 2 43726.71 58239.31 540.00 0.0",
             "171_Static vehicles.stationary.Stationary$OpelBlitz6700A_fuel 2 45107.15 58463.06 600.00 0.0",
         ]
-
         expected = [
             "959_Static vehicles.artillery.Artillery$SdKfz251 2 31333.62 90757.91 600.29 0.0 0 1 1",
             "49_Static vehicles.stationary.Stationary$OpelBlitz6700A_fuel 2 43726.71 58239.31 540.00 0.0",
             "171_Static vehicles.stationary.Stationary$OpelBlitz6700A_fuel 2 45107.15 58463.06 600.00 0.0",
         ]
-
         self._test_parser(NStationaryParser(), lines, expected)
 
-    def test_parse_buildings(self):
+    def test_buildings_parser(self):
         """
         Test 'Buildings' section parser.
         """
@@ -174,23 +172,20 @@ class MissionParserTestCase(unittest.TestCase):
             "12_bld House$46FTankDE 1 43722.70 58106.67 555.00",
             "38_bld House$FurnitureTreeBroad1 1 43725.10 58081.35 475.0",
         ]
-
         expected = [
             "0_bld House$Tent_Pyramid_US 1 43471.34 57962.08 630.00",
             "12_bld House$46FTankDE 1 43722.70 58106.67 555.00",
             "38_bld House$FurnitureTreeBroad1 1 43725.10 58081.35 475.0",
         ]
-
         self._test_parser(BuildingsParser(), lines, expected)
 
-    def test_parse_static_camera(self):
+    def test_static_camera_parser(self):
         """
         Test 'StaticCamera' section parser.
         """
         lines = [
             "38426 65212 35 2",
         ]
-
         expected = [
             {
                 'pos': {
@@ -198,13 +193,12 @@ class MissionParserTestCase(unittest.TestCase):
                     'y': 65212,
                 },
                 'height': 35,
-                'army': 2,
+                'army_code': 2,
             }
         ]
-
         self._test_parser(StaticCameraParser(), lines, expected)
 
-    def test_parse_target(self):
+    def test_target_parser(self):
         """
         Test 'Target' section parser.
         """
@@ -213,7 +207,6 @@ class MissionParserTestCase(unittest.TestCase):
             "3 1 1 30 500 90681 91687 500",
             "3 2 1 30 500 90681 91687 500 0 0_Chief 91100 91500",
         ]
-
         expected = [
             {
                 'type': "destroy",
@@ -253,17 +246,15 @@ class MissionParserTestCase(unittest.TestCase):
                 'object': "0_Chief",
             },
         ]
-
         self._test_parser(TargetParser(), lines, expected)
 
-    def test_parse_front_marker(self):
+    def test_front_marker_parser(self):
         """
         Test 'FrontMarker' section parser.
         """
         lines = [
             "FrontMarker0 7636.65 94683.02 1",
         ]
-
         expected = [
             {
                 'code': "FrontMarker0",
@@ -271,8 +262,7 @@ class MissionParserTestCase(unittest.TestCase):
                     'x': 7636.65,
                     'y': 94683.02,
                 },
-                'army': 1,
+                'army_code': 1,
             }
         ]
-
         self._test_parser(FrontMarkerParser(), lines, expected)

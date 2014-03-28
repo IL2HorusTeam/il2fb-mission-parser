@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Parser files missions and properties.
+Parsers of whole missions files and separate sections.
 """
 import datetime
 
@@ -9,6 +9,18 @@ from il2ds_mis_parser.constants import *
 
 def to_bool(value):
     return value != '0'
+
+
+def compose_position(x, y):
+    """
+    Composes dictionary with position within.
+    """
+    return {
+        'pos': {
+            'x': float(x),
+            'y': float(y),
+        }
+    }
 
 
 class BaseParser(object):
@@ -43,16 +55,13 @@ class MainParser(ValueParser):
     """
     section_name = "MAIN"
 
-    def parse(self, line):
-        super(MainParser, self).parse(line)
-
     def clean(self):
         return {
             'map': self.data['MAP'],
             'time': self.data['TIME'],
             'type_clouds': int(self.data['CloudType']),
             'height_clouds': float(self.data['CloudHeight']),
-            'army': int(self.data['army']),
+            'army_code': int(self.data['army']),
             'player_regiment': self.data['playerNum'],
         }
 
@@ -162,7 +171,7 @@ class ChiefsParser(BaseParser):
             chiefs: {
                 'type': type_chiefs,
                 'code': code,
-                'army': int(army),
+                'army_code': int(army),
             },
         })
 
@@ -211,14 +220,14 @@ class TargetParser(BaseParser):
     def __init__(self):
         self.data = []
         self.subparsers = {
-            TARGET_TYPE_DESTROY: self.parse_destroy_or_cover,
-            TARGET_TYPE_DESTROY_BRIDGE: self.parse_destroy_or_cover_bridge,
-            TARGET_TYPE_DESTROY_AREA: self.parse_destroy_or_cover_area,
-            TARGET_TYPE_RECON: self.parse_recon,
-            TARGET_TYPE_ESCORT: self.parse_escort,
-            TARGET_TYPE_COVER: self.parse_destroy_or_cover,
-            TARGET_TYPE_COVER_AREA: self.parse_destroy_or_cover_area,
-            TARGET_TYPE_COVER_BRIDGE: self.parse_destroy_or_cover_bridge,
+            TARGET_TYPE_DESTROY: self._parse_destroy_or_cover,
+            TARGET_TYPE_DESTROY_BRIDGE: self._parse_destroy_or_cover_bridge,
+            TARGET_TYPE_DESTROY_AREA: self._parse_destroy_or_cover_area,
+            TARGET_TYPE_RECON: self._parse_recon,
+            TARGET_TYPE_ESCORT: self._parse_escort,
+            TARGET_TYPE_COVER: self._parse_destroy_or_cover,
+            TARGET_TYPE_COVER_AREA: self._parse_destroy_or_cover_area,
+            TARGET_TYPE_COVER_BRIDGE: self._parse_destroy_or_cover_bridge,
         }
 
     def parse(self, line):
@@ -230,76 +239,71 @@ class TargetParser(BaseParser):
             'sleep_mode': to_bool(sleep_mode),
             'timeout': int(timeout),
         }
-        sub_parse = self.subparsers.get(type_code)
-        target.update(sub_parse(params))
+        subparser = self.subparsers.get(type_code)
+        target.update(subparser(params))
         self.data.append(target)
 
-    def parse_destroy_or_cover(self, params):
+    def _get_destruction_level(self, value):
+        return {'destruction_level': int(value) / 10, }
+
+    def _parse_destroy_or_cover(self, params):
         """
         Parses some parameters for target types "destroy" and "cover".
         """
         data = {}
-        (destruction_level, pos_x, pos_y), object_target = params[:3], params[5:6]
-        data['destruction_level'] = int(destruction_level)/10
-        data.update(self.compose_position(pos_x, pos_y))
-        data['object'] = object_target[0]
+        (destruction_level, pos_x, pos_y), target_object = params[:3], params[5]
+
+        data.update(self._get_destruction_level(destruction_level))
+        data.update(compose_position(pos_x, pos_y))
+        data['object'] = target_object
 
         return data
 
-    def parse_destroy_or_cover_bridge(self, params):
+    def _parse_destroy_or_cover_bridge(self, params):
         """
         Parses some parameters for target types "destroy bridge" and "cover bridge".
         """
         data = {}
-        (pos_x, pos_y), object_target = params[1:3], params[5:6]
-        data.update(self.compose_position(pos_x, pos_y))
-        data['object'] = object_target[0]
+        (pos_x, pos_y), target_object = params[1:3], params[5]
+        data.update(compose_position(pos_x, pos_y))
+        data['object'] = target_object
         return data
 
-    def parse_destroy_or_cover_area(self, params):
+    def _parse_destroy_or_cover_area(self, params):
         """
         Parser of some parameters for target types "destroy area" and "cover area".
         """
         data = {}
-        (destruction_level, pos_x, pos_y), object_target = params[:3], params[5:6]
-        data['destruction_level'] = int(destruction_level)/10
-        data.update(self.compose_position(pos_x, pos_y))
+        destruction_level, pos_x, pos_y = params[:3]
+        data.update(self._get_destruction_level(destruction_level))
+        data.update(compose_position(pos_x, pos_y))
         return data
 
-    def parse_recon(self, params):
+    def _parse_recon(self, params):
         """
         Parses some parameters for target types "recon".
         """
         data = {}
-        (requires_landing, pos_x, pos_y, radius), object_target = params[:4], params[5:6]
+        (requires_landing, pos_x, pos_y, radius), target_object = params[:4], params[5:6]
+
         data['requires_landing'] = to_bool(requires_landing[2])
-        data.update(self.compose_position(pos_x, pos_y))
+        data.update(compose_position(pos_x, pos_y))
         data['radius'] = int(radius)
-        if object_target:
-            data['object'] = object_target[0]
+        if target_object:
+            data['object'] = target_object[0]
+
         return data
 
-    def parse_escort(self, params):
+    def _parse_escort(self, params):
         """
         Parses some parameters for target types "escort".
         """
         data = {}
-        (destruction_level, pos_x, pos_y), object_target = params[:3], params[5:6]
-        data['destruction_level'] = int(destruction_level)/10
-        data.update(self.compose_position(pos_x, pos_y))
-        data['object'] = object_target[0]
+        (destruction_level, pos_x, pos_y), target_object = params[:3], params[5]
+        data.update(self._get_destruction_level(destruction_level))
+        data.update(compose_position(pos_x, pos_y))
+        data['object'] = target_object
         return data
-
-    def compose_position(self, pos_x, pos_y):
-        """
-        Parses positions target.
-        """
-        return {
-            'pos': {
-                'x': int(pos_x),
-                'y': int(pos_y),
-            }
-        }
 
     def clean(self):
         return self.data
@@ -316,16 +320,12 @@ class StaticCameraParser(BaseParser):
 
     def parse(self, line):
         pos_x, pos_y, height, army = line.split()
-        self.data.append(
-            {
-                'pos': {
-                    'x': int(pos_x),
-                    'y': int(pos_y),
-                },
-                'height': int(height),
-                'army': int(army),
-            }
-        )
+        data = {
+            'height': int(height),
+            'army_code': int(army),
+        }
+        data.update(compose_position(pos_x, pos_y))
+        self.data.append(data)
 
     def clean(self):
         return self.data
@@ -356,16 +356,12 @@ class FrontMarkerParser(BaseParser):
 
     def parse(self, line):
         code, pos_x, pos_y, army = line.split()
-        self.data.append(
-            {
-                'code': code,
-                'pos': {
-                    'x': float(pos_x),
-                    'y': float(pos_y)
-                },
-                'army': int(army),
-            }
-        )
+        data = {
+            'code': code,
+            'army_code': int(army),
+        }
+        data.update(compose_position(pos_x, pos_y))
+        self.data.append(data)
 
     def clean(self):
         return self.data
