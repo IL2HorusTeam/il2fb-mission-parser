@@ -11,40 +11,6 @@ def to_boolean(value):
     return int(value) > 0
 
 
-def parse_some_target_type(params, type_code):
-    (percent_landing, pos_x, pos_y, radius), object_target = params[:4], params[5:6]
-
-    setting = {
-        'pos': {
-            'x': int(pos_x),
-            'y': int(pos_y),
-        },
-    }
-
-    if type_code == TARGET_TYPE_RECON:
-        setting.update(
-            dict(requires_landing=to_boolean(percent_landing[2]))
-        )
-    elif type_code == TARGET_TYPE_DESTROY_BRIDGE or type_code == TARGET_TYPE_COVER_BRIDGE:
-        pass
-    else:
-        setting.update(
-            dict(destruction_level=int(percent_landing) / 10)
-        )
-
-    if type_code == TARGET_TYPE_DESTROY_AREA or type_code == TARGET_TYPE_COVER_AREA or type_code == TARGET_TYPE_RECON:
-        setting.update(
-            dict(radius=int(radius))
-        )
-
-    if object_target:
-        setting.update(
-            dict(object=object_target[0])
-        )
-
-    return setting
-
-
 class BaseParser(object):
 
     @property
@@ -257,6 +223,73 @@ class TargetParser(BaseParser):
         target.update(parse_some_target_type(params, type_code))
         self.data.append(target)
 
+    def parse_some_destroy(self, params):
+        """
+        Parses some parameters for target types "destroy" and "cover".
+        """
+        type_code = [TARGET_TYPE_DESTROY, TARGET_TYPE_COVER]
+
+        data = {}
+        (destruction_level, pos_x, pos_y), object_target = params[:3], params[5:6]
+        data['destruction_level'] = int(destruction_level)/10
+        data['pos'] = self.parse_position(pos_x, pos_y)
+        data['object'] = object_target
+
+        return data
+
+    def parse_some_bridge(self, params):
+        """
+        Parses some parameters for target types "destroy bridge" and "cover bridge".
+        """
+        data = {}
+        (pos_x, pos_y), object_target = params[1:3], params[5:6]
+        data['pos'] = self.parse_position(pos_x, pos_y)
+        data['object'] = object_target
+        return data
+
+    def parse_some_area(self, params):
+        """
+        Parser of some parameters for target types "destroy area" and "cover area".
+        """
+        data = {}
+        (destruction_level, pos_x, pos_y), object_target = params[:3], params[5:6]
+        data['destruction_level'] = int(destruction_level)/10
+        data['pos'] = self.parse_position(pos_x, pos_y)
+        return data
+
+    def parse_some_recon(self, params):
+        """
+        Parses some parameters for target types "recon".
+        """
+        data = {}
+        (requires_landing, pos_x, pos_y, radius), object_target = params[:4], params[5:6]
+        data['requires_landing'] = to_boolean(requires_landing[2])
+        data['pos'] = self.parse_position(pos_x, pos_y)
+        data['radius'] = int(radius)
+        if object_target:
+            data['object'] = object_target
+        return data
+
+    def parse_some_escort(self, params):
+        """
+        Parses some parameters for target types "escort".
+        """
+        data = {}
+        (destruction_level, pos_x, pos_y), object_target = params[:3], params[5:6]
+        data['destruction_level'] = int(destruction_level)/10
+        data['pos'] = self.parse_position(pos_x, pos_y)
+        data['object'] = object_target
+        return data
+
+    def parse_position(self, pos_x, pos_y):
+        """
+        Parses positions target.
+        """
+        return {
+            'x': int(pos_x),
+            'y': int(pos_y),
+        }
+
     def clean(self):
         return self.data
 
@@ -274,8 +307,10 @@ class StaticCameraParser(BaseParser):
         pos_x, pos_y, height, army = line.split()
         self.data.update(
             {
-                'pos_x': int(pos_x),
-                'pos_y': int(pos_y),
+                'pos': {
+                    'x': int(pos_x),
+                    'y': int(pos_y),
+                },
                 'height': int(height),
                 'army': int(army),
             }

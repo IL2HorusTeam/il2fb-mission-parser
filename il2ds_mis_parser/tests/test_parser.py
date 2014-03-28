@@ -192,8 +192,10 @@ class MissionParserTestCase(unittest.TestCase):
         ]
 
         expected = {
-            'pos_x': 38426,
-            'pos_y': 65212,
+            'pos': {
+                'x': 38426,
+                'y': 65212,
+            },
             'height': 35,
             'army': 2,
         }
