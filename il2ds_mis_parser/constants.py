@@ -33,6 +33,6 @@ TARGET_TYPES = {
 
 TARGET_PRIORITIES = {
     '0': 'main',
-    '1': 'additional',
+    '1': 'extra',
     '2': 'hidden',
 }

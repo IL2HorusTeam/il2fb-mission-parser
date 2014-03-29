@@ -236,7 +236,7 @@ class MissionParserTestCase(unittest.TestCase):
                 },
                 {
                     'type': "recon",
-                    'priority': "additional",
+                    'priority': "extra",
                     'sleep_mode': True,
                     'timeout': 30,
                     'requires_landing': False,
