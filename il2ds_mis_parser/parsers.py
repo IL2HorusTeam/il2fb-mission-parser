@@ -381,7 +381,7 @@ class BornPlaceParser(SectionParser):
                 'value': float(friction),
             },
             'spawning': {
-                'allowed': not to_bool(disable_spawning),
+                'enabled': not to_bool(disable_spawning),
                 'return_to_start_position': to_bool(return_to_start_position),
                 'parachute': to_bool(parachute),
                 'max_allowed_pilots': int(max_allowed_pilots),

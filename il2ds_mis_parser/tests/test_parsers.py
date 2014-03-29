@@ -281,7 +281,7 @@ class MissionParserTestCase(unittest.TestCase):
                         'value': 3.8,
                     },
                     'spawning': {
-                        'allowed': True,
+                        'enabled': True,
                         'return_to_start_position': False,
                         'parachute': True,
                         'max_allowed_pilots': 0,
