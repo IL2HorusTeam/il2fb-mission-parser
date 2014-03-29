@@ -366,8 +366,8 @@ class BornPlaceParser(SectionParser):
         (army_code, radius, pos_x, pos_y, parachute, air_spawn_height,
         air_spawn_speed, air_spawn_heading, max_allowed_pilots,
         recon_min_height, recon_max_height, recon_range, air_spawn_always,
-        aircraft_limits_enabled, aircraft_limits_consider_lost,
-        disable_spawning, enable_friction, friction,
+        enable_aircraft_limits, aircraft_limits_consider_lost,
+        disable_spawning, friction_enabled, friction_value,
         aircraft_limits_consider_destroyed_stationary, show_default_icon,
         air_spawn_if_deck_is_full, spawn_in_stationary,
         return_to_start_position) = line.split()
@@ -377,8 +377,8 @@ class BornPlaceParser(SectionParser):
             'army_code': int(army_code),
             'show_default_icon': to_bool(show_default_icon),
             'friction': {
-                'enabled': to_bool(enable_friction),
-                'value': float(friction),
+                'enabled': to_bool(friction_enabled),
+                'value': float(friction_value),
             },
             'spawning': {
                 'enabled': not to_bool(disable_spawning),
@@ -386,7 +386,7 @@ class BornPlaceParser(SectionParser):
                 'parachute': to_bool(parachute),
                 'max_allowed_pilots': int(max_allowed_pilots),
                 'aircraft_limits': {
-                    'enabled': to_bool(aircraft_limits_enabled),
+                    'enabled': to_bool(enable_aircraft_limits),
                     'consider_lost': to_bool(aircraft_limits_consider_lost),
                     'consider_destroyed_stationary': to_bool(aircraft_limits_consider_destroyed_stationary),
                 },
