@@ -352,6 +352,66 @@ class TargetParser(SectionParser):
         return {'targets': self.data, }
 
 
+class BornPlaceParser(SectionParser):
+    """
+    Parses 'BornPlace' section.
+    """
+    def check_section_name(self, section_name):
+        return section_name == "BornPlace"
+
+    def init_parser(self, section_name):
+        self.data = []
+
+    def parse_line(self, line):
+        (army_code, radius, pos_x, pos_y, parachute, air_spawn_height,
+        air_spawn_speed, air_spawn_orient, max_allowed_pilots,
+        recon_min_height, recon_max_height, recon_range, air_spawn_always,
+        aircraft_limitations_enable, aircraft_limitations_looses_destroyed,
+        disable_spawning, enable_friction, friction,
+        aircraft_limitations_looses_stationary, enable_default_icons,
+        air_spawn_if_no_space, respawn_stationary_aircraft,
+        return_starting_position) = line.split()
+
+        born_place = {
+            'preference': {
+                'base': {
+                    'radius': int(radius),
+                    'army_code': int(army_code),
+                    'parachute': to_bool(parachute),
+                    'enable_friction': to_bool(enable_friction),
+                    'friction': float(friction),
+                    'disable_spawning': to_bool(disable_spawning),
+                    'respawn_stationary_aircraft': to_bool(respawn_stationary_aircraft),
+                    'return_starting_position': to_bool(return_starting_position),
+                    'enable_default_icons': to_bool(enable_default_icons),
+                    'max_allowed_pilots': int(max_allowed_pilots),
+                },
+                'aircraft_limitations': {
+                    'enable': to_bool(aircraft_limitations_enable),
+                    'looses_destroyed': to_bool(aircraft_limitations_looses_destroyed),
+                    'looses_stationary': to_bool(aircraft_limitations_looses_stationary),
+                },
+            },
+            'air_spawn': {
+                'height': int(air_spawn_height),
+                'speed': int(air_spawn_speed),
+                'orient': int(air_spawn_orient),
+                'if_no_space': to_bool(air_spawn_if_no_space),
+                'always': to_bool(air_spawn_always),
+            },
+            'recon': {
+                'range': int(recon_range),
+                'min_height': int(recon_min_height),
+                'max_height': int(recon_max_height),
+            },
+        }
+        born_place.update(to_position(pos_x, pos_y))
+        self.data.append(born_place)
+
+    def process_data(self):
+        return {'born_places': self.data, }
+
+
 class StaticCameraParser(SectionParser):
     """
     Parses 'StaticCamera' section.
@@ -451,6 +511,8 @@ class FileParser(object):
             ChiefsParser(),
             NStationaryParser(),
             BuildingsParser(),
+            TargetParser(),
+            BornPlaceParser(),
             StaticCameraParser(),
             BridgeParser(),
             HouseParser(),

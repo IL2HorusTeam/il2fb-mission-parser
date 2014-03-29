@@ -7,10 +7,13 @@ from datetime import date
 
 from il2ds_mis_parser.parsers import (MainParser, SeasonParser,
     RespawnTimeParser, WeatherParser, MDSParser, NStationaryParser,
-    BuildingsParser, StaticCameraParser, TargetParser, FrontMarkerParser)
+    BuildingsParser, StaticCameraParser, TargetParser, FrontMarkerParser,
+    BornPlaceParser, )
 
 
 class MissionParserTestCase(unittest.TestCase):
+
+    maxDiff = 5000
 
     def _test_parser(self, parser_class, section_name, lines, expected):
         parser = parser_class()
@@ -259,6 +262,56 @@ class MissionParserTestCase(unittest.TestCase):
             ],
         }
         self._test_parser(TargetParser, 'Target', lines, expected)
+
+    def test_born_place_parser(self):
+        """
+        Test 'BornPlace' section parser.
+        """
+        lines = [
+            "1 3000 121601 74883 1 1000 200 0 0 0 5000 50 0 1 1 0 0 3.8 1 0 0 0 0",
+        ]
+        expected = {
+            'born_places': [
+                {
+                    'preference': {
+                        'base': {
+                            'radius': 3000,
+                            'army_code': 1,
+                            'parachute': True,
+                            'enable_friction': False,
+                            'friction': 3.8,
+                            'disable_spawning': False,
+                            'respawn_stationary_aircraft': False,
+                            'return_starting_position': False,
+                            'enable_default_icons': False,
+                            'max_allowed_pilots': 0,
+                        },
+                        'aircraft_limitations': {
+                            'enable': True,
+                            'looses_destroyed': True,
+                            'looses_stationary': True,
+                        },
+                    },
+                    'air_spawn': {
+                        'height': 1000,
+                        'speed': 200,
+                        'orient': 0,
+                        'if_no_space': False,
+                        'always': False,
+                    },
+                    'recon': {
+                        'range': 50,
+                        'min_height': 0,
+                        'max_height': 5000,
+                    },
+                    'pos': {
+                        'x': 121601,
+                        'y': 74883,
+                    },
+                },
+            ]
+        }
+        self._test_parser(BornPlaceParser, 'BornPlace', lines, expected)
 
     def test_front_marker_parser(self):
         """
