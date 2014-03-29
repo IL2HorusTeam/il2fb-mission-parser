@@ -372,7 +372,7 @@ class BornPlaceParser(SectionParser):
         air_spawn_if_deck_is_full, spawn_in_stationary,
         return_to_start_position) = line.split()
 
-        born_place = {
+        homebase = {
             'radius': int(radius),
             'army_code': int(army_code),
             'show_default_icon': to_bool(show_default_icon),
@@ -407,8 +407,8 @@ class BornPlaceParser(SectionParser):
                 'max_height': int(recon_max_height),
             },
         }
-        born_place.update(to_pos(pos_x, pos_y))
-        self.data.append(born_place)
+        homebase.update(to_pos(pos_x, pos_y))
+        self.data.append(homebase)
 
     def process_data(self):
         return {'homebases': self.data, }
