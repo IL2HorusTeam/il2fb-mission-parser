@@ -94,14 +94,14 @@ class MissionParserTestCase(unittest.TestCase):
             "Searchlight 1000000",
         ]
         expected = {
-            'respawn': {
-                'ships': {
+            'respawn_time': {
+                'ship': {
                     'big': 1000000,
-                    'normal': 1000000,
+                    'small': 1000000,
                 },
-                'balloons': 1000000,
+                'balloon': 1000000,
                 'artillery': 1000000,
-                'searchlights': 1000000,
+                'searchlight': 1000000,
             },
         }
         self._test_parser(RespawnTimeParser, 'RespawnTime', lines, expected)
@@ -133,7 +133,7 @@ class MissionParserTestCase(unittest.TestCase):
                 'advance_mode': False,
                 'no_vectoring': True,
                 'ships': {
-                    'normal': {
+                    'big': {
                         'max_range': 100,
                         'min_height': 100,
                         'max_height': 5000,
@@ -154,9 +154,9 @@ class MissionParserTestCase(unittest.TestCase):
                 'hide_planes_after_landing': True,
             },
             'bomb_crater_visibility_muptiplier': {
-                'cat1': 1.0,
-                'cat2': 1.0,
-                'cat3': 1.0,
+                'le_100kg': 1.0,
+                'le_1000kg': 1.0,
+                'gt_1000kg': 1.0,
             },
             'no_players_count_on_home_base': False,
         }
@@ -271,33 +271,35 @@ class MissionParserTestCase(unittest.TestCase):
             "1 3000 121601 74883 1 1000 200 0 0 0 5000 50 0 1 1 0 0 3.8 1 0 0 0 0",
         ]
         expected = {
-            'born_places': [
+            'homebases': [
                 {
-                    'preference': {
-                        'base': {
-                            'radius': 3000,
-                            'army_code': 1,
-                            'parachute': True,
-                            'enable_friction': False,
-                            'friction': 3.8,
-                            'disable_spawning': False,
-                            'respawn_stationary_aircraft': False,
-                            'return_starting_position': False,
-                            'enable_default_icons': False,
-                            'max_allowed_pilots': 0,
-                        },
-                        'aircraft_limitations': {
-                            'enable': True,
-                            'looses_destroyed': True,
-                            'looses_stationary': True,
-                        },
+                    'radius': 3000,
+                    'army_code': 1,
+                    'show_default_icon': False,
+                    'friction': {
+                        'enabled': False,
+                        'value': 3.8,
                     },
-                    'air_spawn': {
-                        'height': 1000,
-                        'speed': 200,
-                        'orient': 0,
-                        'if_no_space': False,
-                        'always': False,
+                    'spawning': {
+                        'allowed': True,
+                        'return_to_start_position': False,
+                        'parachute': True,
+                        'max_allowed_pilots': 0,
+                        'aircraft_limits': {
+                            'enabled': True,
+                            'consider_lost': True,
+                            'consider_destroyed_stationary': True,
+                        },
+                        'in_stationary': False,
+                        'in_air': {
+                            'height': 1000,
+                            'speed': 200,
+                            'heading': 0,
+                            'conditions': {
+                                'always': False,
+                                'if_deck_is_full': False,
+                            },
+                        },
                     },
                     'recon': {
                         'range': 50,

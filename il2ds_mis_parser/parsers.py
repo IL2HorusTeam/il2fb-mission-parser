@@ -11,7 +11,7 @@ def to_bool(value):
     return value != '0'
 
 
-def to_position(x, y):
+def to_pos(x, y):
     """
     Composes dictionary with position within.
     """
@@ -139,7 +139,7 @@ class MDSParser(ValuesParser):
                 'advance_mode': to_bool(self.data['Radar_SetRadarToAdvanceMode']),
                 'no_vectoring': to_bool(self.data['Radar_DisableVectoring']),
                 'ships': {
-                    'normal': {
+                    'big': {
                         'max_range': int(self.data['Radar_ShipRadar_MaxRange']),
                         'min_height': int(self.data['Radar_ShipRadar_MinHeight']),
                         'max_height': int(self.data['Radar_ShipRadar_MaxHeight']),
@@ -160,9 +160,9 @@ class MDSParser(ValuesParser):
                 'hide_planes_after_landing': to_bool(self.data['Misc_DespawnAIPlanesAfterLanding']),
             },
             'bomb_crater_visibility_muptiplier': {
-                'cat1': float(self.data['Misc_BombsCat1_CratersVisibilityMultiplier']),
-                'cat2': float(self.data['Misc_BombsCat2_CratersVisibilityMultiplier']),
-                'cat3': float(self.data['Misc_BombsCat3_CratersVisibilityMultiplier']),
+                'le_100kg': float(self.data['Misc_BombsCat1_CratersVisibilityMultiplier']),
+                'le_1000kg': float(self.data['Misc_BombsCat2_CratersVisibilityMultiplier']),
+                'gt_1000kg': float(self.data['Misc_BombsCat3_CratersVisibilityMultiplier']),
             },
             'no_players_count_on_home_base': to_bool(self.data['Misc_HidePlayersCountOnHomeBase']),
         }
@@ -178,14 +178,14 @@ class RespawnTimeParser(ValuesParser):
 
     def process_data(self):
         return {
-            'respawn': {
-                'ships': {
+            'respawn_time': {
+                'ship': {
                     'big': int(self.data['Bigship']),
-                    'normal': int(self.data['Ship']),
+                    'small': int(self.data['Ship']),
                 },
-                'balloons': int(self.data['Aeroanchored']),
+                'balloon': int(self.data['Aeroanchored']),
                 'artillery': int(self.data['Artillery']),
-                'searchlights': int(self.data['Searchlight']),
+                'searchlight': int(self.data['Searchlight']),
             },
         }
 
@@ -297,7 +297,7 @@ class TargetParser(SectionParser):
         (destruction_level, pos_x, pos_y), target_object = params[:3], params[5]
 
         data.update(self._get_destruction_level(destruction_level))
-        data.update(to_position(pos_x, pos_y))
+        data.update(to_pos(pos_x, pos_y))
         data['object'] = target_object
 
         return data
@@ -308,7 +308,7 @@ class TargetParser(SectionParser):
         """
         data = {}
         (pos_x, pos_y), target_object = params[1:3], params[5]
-        data.update(to_position(pos_x, pos_y))
+        data.update(to_pos(pos_x, pos_y))
         data['object'] = target_object
         return data
 
@@ -319,7 +319,7 @@ class TargetParser(SectionParser):
         data = {}
         destruction_level, pos_x, pos_y = params[:3]
         data.update(self._get_destruction_level(destruction_level))
-        data.update(to_position(pos_x, pos_y))
+        data.update(to_pos(pos_x, pos_y))
         return data
 
     def _parse_recon(self, params):
@@ -330,7 +330,7 @@ class TargetParser(SectionParser):
         (requires_landing, pos_x, pos_y, radius), target_object = params[:4], params[5:6]
 
         data['requires_landing'] = to_bool(requires_landing[2])
-        data.update(to_position(pos_x, pos_y))
+        data.update(to_pos(pos_x, pos_y))
         data['radius'] = int(radius)
         if target_object:
             data['object'] = target_object[0]
@@ -344,7 +344,7 @@ class TargetParser(SectionParser):
         data = {}
         (destruction_level, pos_x, pos_y), target_object = params[:3], params[5]
         data.update(self._get_destruction_level(destruction_level))
-        data.update(to_position(pos_x, pos_y))
+        data.update(to_pos(pos_x, pos_y))
         data['object'] = target_object
         return data
 
@@ -364,40 +364,42 @@ class BornPlaceParser(SectionParser):
 
     def parse_line(self, line):
         (army_code, radius, pos_x, pos_y, parachute, air_spawn_height,
-        air_spawn_speed, air_spawn_orient, max_allowed_pilots,
+        air_spawn_speed, air_spawn_heading, max_allowed_pilots,
         recon_min_height, recon_max_height, recon_range, air_spawn_always,
-        aircraft_limitations_enable, aircraft_limitations_looses_destroyed,
+        aircraft_limits_enabled, aircraft_limits_consider_lost,
         disable_spawning, enable_friction, friction,
-        aircraft_limitations_looses_stationary, enable_default_icons,
-        air_spawn_if_no_space, respawn_stationary_aircraft,
-        return_starting_position) = line.split()
+        aircraft_limits_consider_destroyed_stationary, show_default_icon,
+        air_spawn_if_deck_is_full, spawn_in_stationary,
+        return_to_start_position) = line.split()
 
         born_place = {
-            'preference': {
-                'base': {
-                    'radius': int(radius),
-                    'army_code': int(army_code),
-                    'parachute': to_bool(parachute),
-                    'enable_friction': to_bool(enable_friction),
-                    'friction': float(friction),
-                    'disable_spawning': to_bool(disable_spawning),
-                    'respawn_stationary_aircraft': to_bool(respawn_stationary_aircraft),
-                    'return_starting_position': to_bool(return_starting_position),
-                    'enable_default_icons': to_bool(enable_default_icons),
-                    'max_allowed_pilots': int(max_allowed_pilots),
-                },
-                'aircraft_limitations': {
-                    'enable': to_bool(aircraft_limitations_enable),
-                    'looses_destroyed': to_bool(aircraft_limitations_looses_destroyed),
-                    'looses_stationary': to_bool(aircraft_limitations_looses_stationary),
-                },
+            'radius': int(radius),
+            'army_code': int(army_code),
+            'show_default_icon': to_bool(show_default_icon),
+            'friction': {
+                'enabled': to_bool(enable_friction),
+                'value': float(friction),
             },
-            'air_spawn': {
-                'height': int(air_spawn_height),
-                'speed': int(air_spawn_speed),
-                'orient': int(air_spawn_orient),
-                'if_no_space': to_bool(air_spawn_if_no_space),
-                'always': to_bool(air_spawn_always),
+            'spawning': {
+                'allowed': not to_bool(disable_spawning),
+                'return_to_start_position': to_bool(return_to_start_position),
+                'parachute': to_bool(parachute),
+                'max_allowed_pilots': int(max_allowed_pilots),
+                'aircraft_limits': {
+                    'enabled': to_bool(aircraft_limits_enabled),
+                    'consider_lost': to_bool(aircraft_limits_consider_lost),
+                    'consider_destroyed_stationary': to_bool(aircraft_limits_consider_destroyed_stationary),
+                },
+                'in_stationary': to_bool(spawn_in_stationary),
+                'in_air': {
+                    'height': int(air_spawn_height),
+                    'speed': int(air_spawn_speed),
+                    'heading': int(air_spawn_heading),
+                    'conditions': {
+                        'always': to_bool(air_spawn_always),
+                        'if_deck_is_full': to_bool(air_spawn_if_deck_is_full),
+                    },
+                },
             },
             'recon': {
                 'range': int(recon_range),
@@ -405,11 +407,11 @@ class BornPlaceParser(SectionParser):
                 'max_height': int(recon_max_height),
             },
         }
-        born_place.update(to_position(pos_x, pos_y))
+        born_place.update(to_pos(pos_x, pos_y))
         self.data.append(born_place)
 
     def process_data(self):
-        return {'born_places': self.data, }
+        return {'homebases': self.data, }
 
 
 class StaticCameraParser(SectionParser):
@@ -429,7 +431,7 @@ class StaticCameraParser(SectionParser):
             'height': int(height),
             'army_code': int(army),
         }
-        data.update(to_position(pos_x, pos_y))
+        data.update(to_pos(pos_x, pos_y))
         self.data.append(data)
 
     def process_data(self):
@@ -489,7 +491,7 @@ class FrontMarkerParser(SectionParser):
             'code': code,
             'army_code': int(army),
         }
-        data.update(to_position(pos_x, pos_y))
+        data.update(to_pos(pos_x, pos_y))
         self.data.append(data)
 
     def process_data(self):
