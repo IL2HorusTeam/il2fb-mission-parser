@@ -200,12 +200,12 @@ class MissionParserTestCase(unittest.TestCase):
         expected = {
             'cameras': [
                 {
+                    'army_code': 2,
                     'pos': {
                         'x': 38426,
                         'y': 65212,
+                        'z': 35,
                     },
-                    'height': 35,
-                    'army_code': 2,
                 },
             ],
         }

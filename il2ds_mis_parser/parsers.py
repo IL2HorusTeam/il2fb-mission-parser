@@ -11,16 +11,17 @@ def to_bool(value):
     return value != '0'
 
 
-def to_pos(x, y):
+def to_pos(x, y, z=None):
     """
     Composes dictionary with position within.
     """
-    return {
-        'pos': {
-            'x': float(x),
-            'y': float(y),
-        }
+    pos = {
+        'x': float(x),
+        'y': float(y),
     }
+    if z is not None:
+        pos['z'] = float(z)
+    return {'pos': pos, }
 
 
 class SectionParser(object):
@@ -426,12 +427,11 @@ class StaticCameraParser(SectionParser):
         self.data = []
 
     def parse_line(self, line):
-        pos_x, pos_y, height, army = line.split()
+        pos_x, pos_y, pos_z, army = line.split()
         data = {
-            'height': int(height),
             'army_code': int(army),
         }
-        data.update(to_pos(pos_x, pos_y))
+        data.update(to_pos(pos_x, pos_y, pos_z))
         self.data.append(data)
 
     def process_data(self):
