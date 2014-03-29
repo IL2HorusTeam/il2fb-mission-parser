@@ -137,7 +137,7 @@ class MDSParser(ValuesParser):
         return {
             'radar': {
                 'advance_mode': to_bool(self.data['Radar_SetRadarToAdvanceMode']),
-                'no_vectoring': to_bool(self.data['Radar_DisableVectoring']),
+                'vectoring': not to_bool(self.data['Radar_DisableVectoring']),
                 'ships': {
                     'big': {
                         'max_range': int(self.data['Radar_ShipRadar_MaxRange']),
@@ -159,7 +159,7 @@ class MDSParser(ValuesParser):
                 'no_radio_chatter': to_bool(self.data['Misc_DisableAIRadioChatter']),
                 'hide_planes_after_landing': to_bool(self.data['Misc_DespawnAIPlanesAfterLanding']),
             },
-            'bomb_crater_visibility_muptiplier': {
+            'bomb_crater_visibility_muptipliers': {
                 'le_100kg': float(self.data['Misc_BombsCat1_CratersVisibilityMultiplier']),
                 'le_1000kg': float(self.data['Misc_BombsCat2_CratersVisibilityMultiplier']),
                 'gt_1000kg': float(self.data['Misc_BombsCat3_CratersVisibilityMultiplier']),

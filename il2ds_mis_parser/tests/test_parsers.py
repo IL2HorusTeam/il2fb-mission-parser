@@ -131,7 +131,7 @@ class MissionParserTestCase(unittest.TestCase):
         expected = {
             'radar': {
                 'advance_mode': False,
-                'no_vectoring': True,
+                'vectoring': False,
                 'ships': {
                     'big': {
                         'max_range': 100,
@@ -153,7 +153,7 @@ class MissionParserTestCase(unittest.TestCase):
                 'no_radio_chatter': True,
                 'hide_planes_after_landing': True,
             },
-            'bomb_crater_visibility_muptiplier': {
+            'bomb_crater_visibility_muptipliers': {
                 'le_100kg': 1.0,
                 'le_1000kg': 1.0,
                 'gt_1000kg': 1.0,
