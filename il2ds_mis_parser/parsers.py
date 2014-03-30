@@ -3,6 +3,7 @@
 Parsers of whole missions files and separate sections.
 """
 import datetime
+import math
 
 from il2ds_mis_parser.constants import *
 
@@ -80,10 +81,15 @@ class MainParser(ValuesParser):
     def check_section_name(self, section_name):
         return section_name == "MAIN"
 
+    def _to_time(self, value):
+        time = float(self.data['TIME'])
+        minutes, hours = math.modf(time)
+        return datetime.time(int(hours), int(minutes*60))
+
     def process_data(self):
         return {
             'loader': self.data['MAP'],
-            'time': self.data['TIME'],
+            'time': self._to_time(self.data['TIME']),
             'clouds': {
                 'type': int(self.data['CloudType']),
                 'height': float(self.data['CloudHeight']),

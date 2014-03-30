@@ -2,9 +2,8 @@
 """
 Mission parser tests.
 """
+import datetime
 import unittest
-
-from datetime import date
 
 from il2ds_mis_parser.parsers import (
     MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
@@ -44,7 +43,7 @@ class MissionParserTestCase(unittest.TestCase):
                 'height': 1500,
                 'type': 1,
             },
-            'time': '11.75',
+            'time': datetime.time(11, 45),
         }
         self._test_parser(MainParser, 'MAIN', lines, expected)
 
@@ -58,7 +57,7 @@ class MissionParserTestCase(unittest.TestCase):
             "Day 25",
         ]
         expected = {
-            'date': date(1942, 8, 25),
+            'date': datetime.date(1942, 8, 25),
         }
         self._test_parser(SeasonParser, 'SEASON', lines, expected)
 
