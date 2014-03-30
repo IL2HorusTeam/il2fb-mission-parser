@@ -12,9 +12,6 @@ def to_bool(value):
 
 
 def to_pos(x, y, z=None):
-    """
-    Composes dictionary with position within.
-    """
     pos = {
         'x': float(x),
         'y': float(y),
