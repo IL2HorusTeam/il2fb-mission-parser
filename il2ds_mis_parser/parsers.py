@@ -197,7 +197,7 @@ class RespawnTimeParser(ValuesParser):
         }
 
 
-class ChiefsParser(SectionParser):
+class ChiefsParser(CollectingParser):
     """
     Parses 'Chiefs' section.
     """
@@ -205,22 +205,19 @@ class ChiefsParser(SectionParser):
     def check_section_name(self, section_name):
         return section_name == "Chiefs"
 
-    def init_parser(self, section_name):
-        self.data = {}
-
     def parse_line(self, line):
-        chiefs, type_code, army = line.split()
-        type_chiefs, code = type_code.split('.')
-        self.data.update({
-            chiefs: {
-                'type': type_chiefs,
-                'code': code,
-                'army_code': int(army),
-            },
+        code, type_code, army = line.split()
+        chief_type, code_name = type_code.split('.')
+
+        self.data.append({
+            'code': code,
+            'code_name': code_name,
+            'type': chief_type.lower(),
+            'army_code': int(army),
         })
 
     def process_data(self):
-        return {'moving_units': self.data, }
+        return {'chiefs': self.data, }
 
 
 class NStationaryParser(CollectingParser):

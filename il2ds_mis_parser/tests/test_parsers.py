@@ -3,12 +3,14 @@
 Mission parser tests.
 """
 import unittest
+
 from datetime import date
 
-from il2ds_mis_parser.parsers import (MainParser, SeasonParser,
-    RespawnTimeParser, WeatherParser, MDSParser, NStationaryParser,
-    BuildingsParser, StaticCameraParser, TargetParser, FrontMarkerParser,
-    BornPlaceParser, )
+from il2ds_mis_parser.parsers import (
+    MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
+    NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
+    FrontMarkerParser, BornPlaceParser, ChiefsParser,
+)
 
 
 class MissionParserTestCase(unittest.TestCase):
@@ -335,3 +337,26 @@ class MissionParserTestCase(unittest.TestCase):
             ],
         }
         self._test_parser(FrontMarkerParser, 'FrontMarker', lines, expected)
+
+    def test_chiefs_parser(self):
+        lines = [
+            "0_Chief Vehicles.US_Supply_Cpy 1",
+            "1_Chief Trains.Germany_CargoTrain/AA 2",
+        ]
+        expected = {
+            'chiefs': [
+                {
+                    'code': "0_Chief",
+                    'code_name': "US_Supply_Cpy",
+                    'type': "vehicles",
+                    'army_code': 1,
+                },
+                {
+                    'code': "1_Chief",
+                    'code_name': "Germany_CargoTrain/AA",
+                    'type': "trains",
+                    'army_code': 2,
+                },
+            ],
+        }
+        self._test_parser(ChiefsParser, 'Chiefs', lines, expected)
