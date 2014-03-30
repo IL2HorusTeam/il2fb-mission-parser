@@ -264,12 +264,12 @@ class TargetParser(SectionParser):
     def init_parser(self, section_name):
         self.data = []
         self.subparsers = {
-            TARGET_TYPE_DESTROY: self._parse_destroy_or_cover,
+            TARGET_TYPE_DESTROY: self._parse_destroy_or_cover_or_escort,
             TARGET_TYPE_DESTROY_BRIDGE: self._parse_destroy_or_cover_bridge,
             TARGET_TYPE_DESTROY_AREA: self._parse_destroy_or_cover_area,
             TARGET_TYPE_RECON: self._parse_recon,
-            TARGET_TYPE_ESCORT: self._parse_escort,
-            TARGET_TYPE_COVER: self._parse_destroy_or_cover,
+            TARGET_TYPE_ESCORT: self._parse_destroy_or_cover_or_escort,
+            TARGET_TYPE_COVER: self._parse_destroy_or_cover_or_escort,
             TARGET_TYPE_COVER_AREA: self._parse_destroy_or_cover_area,
             TARGET_TYPE_COVER_BRIDGE: self._parse_destroy_or_cover_bridge,
         }
@@ -287,66 +287,59 @@ class TargetParser(SectionParser):
         target.update(subparser(params))
         self.data.append(target)
 
-    def _get_destruction_level(self, value):
-        return {'destruction_level': int(value) / 10, }
+    def _to_destruction_level(self, value):
+        return int(value) / 10
 
-    def _parse_destroy_or_cover(self, params):
+    def _parse_destroy_or_cover_or_escort(self, params):
         """
-        Parses some parameters for target types "destroy" and "cover".
+        Parse extra parameters for targets with type 'destroy' or 'cover' or
+        'escort'.
         """
-        data = {}
         (destruction_level, pos_x, pos_y), target_object = params[:3], params[5]
-
-        data.update(self._get_destruction_level(destruction_level))
-        data['pos'] = to_pos(pos_x, pos_y)
-        data['object'] = target_object
-
-        return data
+        return {
+            'object': target_object,
+            'destruction_level': self._to_destruction_level(destruction_level),
+            'pos': to_pos(pos_x, pos_y),
+        }
 
     def _parse_destroy_or_cover_bridge(self, params):
         """
-        Parses some parameters for target types "destroy bridge" and "cover bridge".
+        Parse extra parameters for targets with type 'destroy bridge' or
+        'cover bridge'.
         """
-        data = {}
         (pos_x, pos_y), target_object = params[1:3], params[5]
-        data['pos'] = to_pos(pos_x, pos_y)
-        data['object'] = target_object
-        return data
+        return {
+            'object': target_object,
+            'pos': to_pos(pos_x, pos_y),
+        }
 
     def _parse_destroy_or_cover_area(self, params):
         """
-        Parser of some parameters for target types "destroy area" and "cover area".
+        Parse extra parameters for targets with type 'destroy area' or
+        'cover area'.
         """
-        data = {}
         destruction_level, pos_x, pos_y = params[:3]
-        data.update(self._get_destruction_level(destruction_level))
-        data['pos'] = to_pos(pos_x, pos_y)
-        return data
+        return {
+            'destruction_level': self._to_destruction_level(destruction_level),
+            'pos': to_pos(pos_x, pos_y),
+        }
 
     def _parse_recon(self, params):
         """
-        Parses some parameters for target types "recon".
+        Parse extra parameters for targets with type 'recon.
         """
-        data = {}
-        (requires_landing, pos_x, pos_y, radius), target_object = params[:4], params[5:6]
+        (requires_landing, pos_x, pos_y, radius) = params[:4]
 
-        data['requires_landing'] = to_bool(requires_landing[2])
-        data['pos'] = to_pos(pos_x, pos_y)
-        data['radius'] = int(radius)
+        data = {
+            'radius': int(radius),
+            'requires_landing': requires_landing != '500',
+            'pos': to_pos(pos_x, pos_y),
+        }
+
+        target_object = params[5:6]
         if target_object:
-            data['object'] = target_object[0]
+            (data['object'], ) = target_object
 
-        return data
-
-    def _parse_escort(self, params):
-        """
-        Parses some parameters for target types "escort".
-        """
-        data = {}
-        (destruction_level, pos_x, pos_y), target_object = params[:3], params[5]
-        data.update(self._get_destruction_level(destruction_level))
-        data['pos'] = to_pos(pos_x, pos_y)
-        data['object'] = target_object
         return data
 
     def process_data(self):
