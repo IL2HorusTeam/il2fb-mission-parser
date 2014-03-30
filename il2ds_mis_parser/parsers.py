@@ -358,13 +358,13 @@ class BornPlaceParser(SectionParser):
 
     def parse_line(self, line):
         (army_code, radius, pos_x, pos_y, parachute, air_spawn_height,
-        air_spawn_speed, air_spawn_heading, max_allowed_pilots,
-        recon_min_height, recon_max_height, recon_range, air_spawn_always,
-        enable_aircraft_limits, aircraft_limits_consider_lost,
-        disable_spawning, friction_enabled, friction_value,
-        aircraft_limits_consider_destroyed_stationary, show_default_icon,
-        air_spawn_if_deck_is_full, spawn_in_stationary,
-        return_to_start_position) = line.split()
+         air_spawn_speed, air_spawn_heading, max_allowed_pilots,
+         recon_min_height, recon_max_height, recon_range, air_spawn_always,
+         enable_aircraft_limits, aircraft_limits_consider_lost,
+         disable_spawning, friction_enabled, friction_value,
+         aircraft_limits_consider_destroyed_stationary, show_default_icon,
+         air_spawn_if_deck_is_full, spawn_in_stationary,
+         return_to_start_position) = line.split()
 
         self.data.append({
             'radius': int(radius),
