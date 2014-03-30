@@ -292,9 +292,9 @@ class TargetParser(CollectingParser):
         Parse extra parameters for targets with type 'destroy' or 'cover' or
         'escort'.
         """
-        (destruction_level, pos_x, pos_y), target_object = params[:3], params[5]
+        (destruction_level, pos_x, pos_y), object_code = params[:3], params[5]
         return {
-            'object': target_object,
+            'object_code': object_code,
             'destruction_level': self._to_destruction_level(destruction_level),
             'pos': to_pos(pos_x, pos_y),
         }
@@ -304,9 +304,9 @@ class TargetParser(CollectingParser):
         Parse extra parameters for targets with type 'destroy bridge' or
         'cover bridge'.
         """
-        (pos_x, pos_y), target_object = params[1:3], params[5]
+        (pos_x, pos_y), object_code = params[1:3], params[5]
         return {
-            'object': target_object,
+            'object_code': object_code,
             'pos': to_pos(pos_x, pos_y),
         }
 
@@ -333,9 +333,9 @@ class TargetParser(CollectingParser):
             'pos': to_pos(pos_x, pos_y),
         }
 
-        target_object = params[5:6]
-        if target_object:
-            (data['object'], ) = target_object
+        object_code = params[5:6]
+        if object_code:
+            (data['object_code'], ) = object_code
 
         return data
 

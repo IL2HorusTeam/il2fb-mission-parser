@@ -234,7 +234,7 @@ class MissionParserTestCase(unittest.TestCase):
                         'x': 90939,
                         'y': 91871,
                     },
-                    'object': "10_Chief",
+                    'object_code': "10_Chief",
                 },
                 {
                     'type': "recon",
@@ -259,7 +259,7 @@ class MissionParserTestCase(unittest.TestCase):
                         'y': 91687,
                     },
                     'radius': 500,
-                    'object': "0_Chief",
+                    'object_code': "0_Chief",
                 },
             ],
         }
