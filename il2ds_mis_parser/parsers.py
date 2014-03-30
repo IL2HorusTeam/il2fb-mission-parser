@@ -66,6 +66,15 @@ class ValuesParser(SectionParser):
         self.data.update({code: value})
 
 
+class CollectingParser(SectionParser):
+
+    def init_parser(self, section_name):
+        self.data = []
+
+    def parse_line(self, line):
+        self.data.append(line)
+
+
 class MainParser(ValuesParser):
     """
     Parses 'MAIN' section.
@@ -217,16 +226,13 @@ class ChiefsParser(SectionParser):
         return {'moving_units': self.data, }
 
 
-class NStationaryParser(SectionParser):
+class NStationaryParser(CollectingParser):
     """
     Parses 'NStationary' section.
     """
 
     def check_section_name(self, section_name):
         return section_name == "NStationary"
-
-    def init_parser(self, section_name):
-        self.data = []
 
     def parse_line(self, line):
         pass
@@ -235,16 +241,13 @@ class NStationaryParser(SectionParser):
         return {'statics': self.data, }
 
 
-class BuildingsParser(SectionParser):
+class BuildingsParser(CollectingParser):
     """
     Parses 'Buildings' section.
     """
 
     def check_section_name(self, section_name):
         return section_name == "Buildings"
-
-    def init_parser(self, section_name):
-        self.data = []
 
     def parse_line(self, line):
         pass
@@ -253,7 +256,7 @@ class BuildingsParser(SectionParser):
         return {'buildings': self.data, }
 
 
-class TargetParser(SectionParser):
+class TargetParser(CollectingParser):
     """
     Parses 'Target' section.
     """
@@ -262,7 +265,7 @@ class TargetParser(SectionParser):
         return section_name == "Target"
 
     def init_parser(self, section_name):
-        self.data = []
+        super(TargetParser, self).init_parser(section_name)
         self.subparsers = {
             TARGET_TYPE_DESTROY: self._parse_destroy_or_cover_or_escort,
             TARGET_TYPE_DESTROY_BRIDGE: self._parse_destroy_or_cover_bridge,
@@ -346,15 +349,12 @@ class TargetParser(SectionParser):
         return {'targets': self.data, }
 
 
-class BornPlaceParser(SectionParser):
+class BornPlaceParser(CollectingParser):
     """
     Parses 'BornPlace' section.
     """
     def check_section_name(self, section_name):
         return section_name == "BornPlace"
-
-    def init_parser(self, section_name):
-        self.data = []
 
     def parse_line(self, line):
         (army_code, radius, pos_x, pos_y, parachute, air_spawn_height,
@@ -407,16 +407,13 @@ class BornPlaceParser(SectionParser):
         return {'homebases': self.data, }
 
 
-class StaticCameraParser(SectionParser):
+class StaticCameraParser(CollectingParser):
     """
     Parses 'StaticCamera' section.
     """
 
     def check_section_name(self, section_name):
         return section_name == "StaticCamera"
-
-    def init_parser(self, section_name):
-        self.data = []
 
     def parse_line(self, line):
         pos_x, pos_y, pos_z, army = line.split()
@@ -429,16 +426,13 @@ class StaticCameraParser(SectionParser):
         return {'cameras': self.data, }
 
 
-class BridgeParser(SectionParser):
+class BridgeParser(CollectingParser):
     """
     Parses 'Bridge' section.
     """
 
     def check_section_name(self, section_name):
         return section_name == "Bridge"
-
-    def init_parser(self, section_name):
-        self.data = []
 
     def parse_line(self, line):
         pass
@@ -447,16 +441,13 @@ class BridgeParser(SectionParser):
         return {'bridges': self.data, }
 
 
-class HouseParser(SectionParser):
+class HouseParser(CollectingParser):
     """
     Parses 'House' section.
     """
 
     def check_section_name(self, section_name):
         return section_name == "House"
-
-    def init_parser(self, section_name):
-        self.data = []
 
     def parse_line(self, line):
         pass
@@ -465,16 +456,13 @@ class HouseParser(SectionParser):
         return {'houses': self.data, }
 
 
-class FrontMarkerParser(SectionParser):
+class FrontMarkerParser(CollectingParser):
     """
     Parses 'FrontMarker' section.
     """
 
     def check_section_name(self, section_name):
         return section_name == "FrontMarker"
-
-    def init_parser(self, section_name):
-        self.data = []
 
     def parse_line(self, line):
         code, pos_x, pos_y, army = line.split()
