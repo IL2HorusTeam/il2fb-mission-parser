@@ -21,7 +21,7 @@ def to_pos(x, y, z=None):
     }
     if z is not None:
         pos['z'] = float(z)
-    return {'pos': pos, }
+    return pos
 
 
 class SectionParser(object):
@@ -298,7 +298,7 @@ class TargetParser(SectionParser):
         (destruction_level, pos_x, pos_y), target_object = params[:3], params[5]
 
         data.update(self._get_destruction_level(destruction_level))
-        data.update(to_pos(pos_x, pos_y))
+        data['pos'] = to_pos(pos_x, pos_y)
         data['object'] = target_object
 
         return data
@@ -309,7 +309,7 @@ class TargetParser(SectionParser):
         """
         data = {}
         (pos_x, pos_y), target_object = params[1:3], params[5]
-        data.update(to_pos(pos_x, pos_y))
+        data['pos'] = to_pos(pos_x, pos_y)
         data['object'] = target_object
         return data
 
@@ -320,7 +320,7 @@ class TargetParser(SectionParser):
         data = {}
         destruction_level, pos_x, pos_y = params[:3]
         data.update(self._get_destruction_level(destruction_level))
-        data.update(to_pos(pos_x, pos_y))
+        data['pos'] = to_pos(pos_x, pos_y)
         return data
 
     def _parse_recon(self, params):
@@ -331,7 +331,7 @@ class TargetParser(SectionParser):
         (requires_landing, pos_x, pos_y, radius), target_object = params[:4], params[5:6]
 
         data['requires_landing'] = to_bool(requires_landing[2])
-        data.update(to_pos(pos_x, pos_y))
+        data['pos'] = to_pos(pos_x, pos_y)
         data['radius'] = int(radius)
         if target_object:
             data['object'] = target_object[0]
@@ -345,7 +345,7 @@ class TargetParser(SectionParser):
         data = {}
         (destruction_level, pos_x, pos_y), target_object = params[:3], params[5]
         data.update(self._get_destruction_level(destruction_level))
-        data.update(to_pos(pos_x, pos_y))
+        data['pos'] = to_pos(pos_x, pos_y)
         data['object'] = target_object
         return data
 
@@ -373,7 +373,7 @@ class BornPlaceParser(SectionParser):
         air_spawn_if_deck_is_full, spawn_in_stationary,
         return_to_start_position) = line.split()
 
-        homebase = {
+        self.data.append({
             'radius': int(radius),
             'army_code': int(army_code),
             'show_default_icon': to_bool(show_default_icon),
@@ -407,9 +407,8 @@ class BornPlaceParser(SectionParser):
                 'min_height': int(recon_min_height),
                 'max_height': int(recon_max_height),
             },
-        }
-        homebase.update(to_pos(pos_x, pos_y))
-        self.data.append(homebase)
+            'pos': to_pos(pos_x, pos_y),
+        })
 
     def process_data(self):
         return {'homebases': self.data, }
@@ -428,11 +427,10 @@ class StaticCameraParser(SectionParser):
 
     def parse_line(self, line):
         pos_x, pos_y, pos_z, army = line.split()
-        data = {
+        self.data.append({
             'army_code': int(army),
-        }
-        data.update(to_pos(pos_x, pos_y, pos_z))
-        self.data.append(data)
+            'pos': to_pos(pos_x, pos_y, pos_z),
+        })
 
     def process_data(self):
         return {'cameras': self.data, }
@@ -487,12 +485,11 @@ class FrontMarkerParser(SectionParser):
 
     def parse_line(self, line):
         code, pos_x, pos_y, army = line.split()
-        data = {
+        self.data.append({
             'code': code,
             'army_code': int(army),
-        }
-        data.update(to_pos(pos_x, pos_y))
-        self.data.append(data)
+            'pos': to_pos(pos_x, pos_y),
+        })
 
     def process_data(self):
         return {'markers': self.data, }
