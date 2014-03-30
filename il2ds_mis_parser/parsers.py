@@ -5,6 +5,8 @@ Parsers of whole missions files and separate sections.
 import datetime
 import math
 
+from abc import ABCMeta, abstractmethod
+
 from il2ds_mis_parser.constants import *
 
 
@@ -23,27 +25,48 @@ def to_pos(x, y, z=None):
 
 
 class SectionParser(object):
+    """
+    Abstract base parser of sections in mission file.
+    """
 
-    data = None
+    __metaclass__ = ABCMeta
+
     running = False
+    data = None
 
     def start(self, section_name):
+        """
+        Try to start parser. Return 'True' if 'section_name' fits parser or
+        'False' otherwise.
+        """
         result = self.check_section_name(section_name)
         if result:
             self.running = True
             self.init_parser(section_name)
         return result
 
+    @abstractmethod
     def check_section_name(self, section_name):
-        raise NotImplementedError
+        """
+        Return 'True' if 'section_name' can be parsed or 'False' otherwise.
+        """
 
+    @abstractmethod
     def init_parser(self, section_name):
-        raise NotImplementedError
+        """
+        Prepare to parse section.
+        """
 
+    @abstractmethod
     def parse_line(self, line):
-        raise NotImplementedError
+        """
+        Parse incoming line.
+        """
 
     def stop(self):
+        """
+        Stop serction parsing and return processed data.
+        """
         if not self.running:
             raise RuntimeError("Cannot stop parser which is not running")
 
@@ -51,6 +74,9 @@ class SectionParser(object):
         return self.process_data()
 
     def process_data(self):
+        """
+        Return fully parsed data.
+        """
         return self.data
 
 
