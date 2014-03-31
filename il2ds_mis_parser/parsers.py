@@ -12,12 +12,12 @@ from il2ds_mis_parser.constants import *
 
 def to_bool(value):
     """
-    Converts a string representation of the number into boolean.
+    Converts a string representation of a number into boolean.
 
-    :param str value: a string representation of the number to convert
+    :param str value: a string representation of a number to convert
 
     :returns: `False` if `value` is equal to `'0'`, `True` otherwise
-    :rtype: bool
+    :rtype: :class:`bool`
 
     **Examples:**
 
@@ -39,12 +39,12 @@ def to_pos(x, y, z=None):
 
     :param str x: a string representation of x coordinate
     :param str y: a string representation of y coordinate
-    :keyword z: a string representation of z coordinate
+    :param z: a string representation of z coordinate
     :type z: str or None
 
     :returns: a dictionary of float coordinates which can be accessed by their
               names
-    :rtype: dict
+    :rtype: :class:`dict`
 
     **Examples:**
 
