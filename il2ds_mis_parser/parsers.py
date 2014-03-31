@@ -11,10 +11,50 @@ from il2ds_mis_parser.constants import *
 
 
 def to_bool(value):
+    """
+    Converts a string representation of the number into boolean.
+
+    :param str value: a string representation of the number to convert
+
+    :returns: `False` if `value` is equal to `'0'`, `True` otherwise
+    :rtype: bool
+
+    **Examples:**
+
+    .. code-block:: python
+
+       >>> to_bool('0')
+       False
+       >>> to_bool('1')
+       True
+       >>> to_bool('-1')
+       True
+    """
     return value != '0'
 
 
 def to_pos(x, y, z=None):
+    """
+    Converts a string representation of position coordinates into dictionary.
+
+    :param str x: a string representation of x coordinate
+    :param str y: a string representation of y coordinate
+    :keyword z: a string representation of z coordinate
+    :type z: str or None
+
+    :returns: a dictionary of float coordinates which can be accessed by their
+              names
+    :rtype: dict
+
+    **Examples:**
+
+    .. code-block:: python
+
+       >>> to_pos('100', '200')
+       {'y': 200.0, 'x': 100.0}
+       >>> to_pos('100', '200', '300')
+       {'y': 200.0, 'x': 100.0, 'z': 300.0}
+    """
     pos = {
         'x': float(x),
         'y': float(y),
