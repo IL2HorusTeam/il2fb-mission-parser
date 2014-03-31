@@ -433,6 +433,41 @@ class BornPlaceParser(CollectingParser):
         return {'homebases': self.data, }
 
 
+class BornPlaceAirCraftParser(CollectingParser):
+    """
+    Parses 'BornPlaceN' section.
+    """
+    def __init__(self):
+        self.has_data = []
+
+    def check_section_name(self, section_name):
+        return section_name[:9] == "BornPlace"
+
+    def parse_line(self, line):
+        if not line.startswith('+'):
+            if self.has_data:
+                self.data.append(self.has_data)
+                self.has_data = []
+            self.has_data.extend(line.split())
+        else:
+            self.has_data.extend(line.split()[1:])
+            self.data.append(self.has_data)
+            self.has_data = []
+
+    def process_data(self):
+        if self.has_data:
+            self.data.append(self.has_data)
+        data = []
+        for line in self.data:
+            aircraft_code, limits, weapons = line[0], line[1], line[2:]
+            data.append({
+                'aircraft_code': aircraft_code,
+                'limits': int(limits) if int(limits) >= 0 else None,
+                'weapons': weapons,
+            })
+        return data
+
+
 class StaticCameraParser(CollectingParser):
     """
     Parses 'StaticCamera' section.
