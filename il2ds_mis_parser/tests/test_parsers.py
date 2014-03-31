@@ -8,7 +8,7 @@ import unittest
 from il2ds_mis_parser.parsers import (
     MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
-    FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAirCraftParser
+    FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser
 )
 
 
@@ -323,28 +323,31 @@ class MissionParserTestCase(unittest.TestCase):
             "Ju-88A-4 10 28xSC50 28xSC50_2xSC250 28xSC50_4xSC250",
             "+ 2xSC1800 2xSC2000",
         ]
-        expected = [
-            {
-                'aircraft_code': 'Bf-109F-4',
-                'limits': None,
-                'weapons': [
-                    '1sc250',
-                    '4sc50',
-                ],
-            },
-            {
-                'aircraft_code': 'Ju-88A-4',
-                'limits': 10,
-                'weapons': [
-                    '28xSC50',
-                    '28xSC50_2xSC250',
-                    '28xSC50_4xSC250',
-                    '2xSC1800',
-                    '2xSC2000',
-                ],
-            },
-        ]
-        self._test_parser(BornPlaceAirCraftParser, 'BornPlace', lines, expected)
+        expected = {
+            'homebase_aircrafts_0': [
+                {
+                    'aircraft_code': 'Bf-109F-4',
+                    'limit': None,
+                    'loadout': [
+                        '1sc250',
+                        '4sc50',
+                    ],
+                },
+                {
+                    'aircraft_code': 'Ju-88A-4',
+                    'limit': 10,
+                    'loadout': [
+                        '28xSC50',
+                        '28xSC50_2xSC250',
+                        '28xSC50_4xSC250',
+                        '2xSC1800',
+                        '2xSC2000',
+                    ],
+                },
+            ],
+        }
+        self._test_parser(BornPlaceAircraftsParser, 'BornPlace0',
+                          lines, expected)
 
     def test_front_marker_parser(self):
         """

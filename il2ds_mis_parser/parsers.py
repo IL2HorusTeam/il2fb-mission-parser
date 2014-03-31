@@ -431,39 +431,53 @@ class BornPlaceParser(CollectingParser):
         return {'homebases': self.data, }
 
 
-class BornPlaceAirCraftParser(CollectingParser):
+class BornPlaceAircraftsParser(CollectingParser):
     """
     Parses 'BornPlaceN' section.
     """
-    def __init__(self):
-        self.has_data = []
+    prefix = "BornPlace"
 
     def check_section_name(self, section_name):
-        return section_name[:9] == "BornPlace"
+        if not section_name.startswith(self.prefix):
+            return False
+        try:
+            self._extract_section_number(section_name)
+        except ValueError:
+            return False
+        else:
+            return True
+
+    def init_parser(self, section_name):
+        super(BornPlaceAircraftsParser, self).init_parser(section_name)
+        self.output_key = 'homebase_aircrafts_{0}'.format(
+                           self._extract_section_number(section_name))
+        self.aircraft = {}
+
+    def _extract_section_number(self, section_name):
+        return int(section_name.lstrip(self.prefix))
 
     def parse_line(self, line):
-        if not line.startswith('+'):
-            if self.has_data:
-                self.data.append(self.has_data)
-                self.has_data = []
-            self.has_data.extend(line.split())
+        chunks = line.split()
+
+        if chunks[0] == '+':
+            self.aircraft['loadout'].extend(chunks[1:])
         else:
-            self.has_data.extend(line.split()[1:])
-            self.data.append(self.has_data)
-            self.has_data = []
+            if self.aircraft:
+                self.data.append(self.aircraft)
+            (aircraft_code, limit), loadout = chunks[:2], chunks[2:]
+            self.aircraft = {
+                'aircraft_code': aircraft_code,
+                'limit': self._to_limit(limit),
+                'loadout': loadout,
+            }
 
     def process_data(self):
-        if self.has_data:
-            self.data.append(self.has_data)
-        data = []
-        for line in self.data:
-            aircraft_code, limits, weapons = line[0], line[1], line[2:]
-            data.append({
-                'aircraft_code': aircraft_code,
-                'limits': int(limits) if int(limits) >= 0 else None,
-                'weapons': weapons,
-            })
-        return data
+        if self.aircraft:
+            self.data.append(self.aircraft)
+        return {self.output_key: self.data, }
+
+    def _to_limit(self, value):
+        return int(value) if int(value) >= 0 else None
 
 
 class StaticCameraParser(CollectingParser):
