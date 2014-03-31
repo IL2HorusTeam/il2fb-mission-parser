@@ -36,3 +36,25 @@ TARGET_PRIORITIES = {
     '1': 'extra',
     '2': 'hidden',
 }
+
+# -----------------------------------------------------------------------------
+# Weather types
+# -----------------------------------------------------------------------------
+
+CLOUDLESS = '0'
+CLEAR_WEATHER = '1'
+HAZE = '2'
+LIGHT_FOG = '3'
+FOG = '4'
+RAIN_OR_SNOW = '5'
+THUNDERSTORM = '6'
+
+WEATHER_TYPES = {
+    CLOUDLESS: 'cloudless',
+    CLEAR_WEATHER: 'clear_weather',
+    HAZE: 'haze',
+    LIGHT_FOG: 'light_fog',
+    FOG: 'fog',
+    RAIN_OR_SNOW: 'rain or snow',
+    THUNDERSTORM: 'thunderstorm',
+}
