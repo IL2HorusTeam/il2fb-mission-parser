@@ -8,7 +8,8 @@ import unittest
 from il2ds_mis_parser.parsers import (
     MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
-    FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser
+    FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
+    BornPlaceCountriesParser
 )
 
 
@@ -347,6 +348,23 @@ class MissionParserTestCase(unittest.TestCase):
             ],
         }
         self._test_parser(BornPlaceAircraftsParser, 'BornPlace0',
+                          lines, expected)
+
+    def test_born_place_countries_parse(self):
+        """
+        Test 'BornPlaceCountriesN' section parser.
+        """
+        lines = [
+            "de",
+            "ru",
+        ]
+        expected = {
+            'homebase_countries_0': [
+                "de",
+                "ru",
+            ],
+        }
+        self._test_parser(BornPlaceCountriesParser, 'BornPlaceCountries0',
                           lines, expected)
 
     def test_front_marker_parser(self):

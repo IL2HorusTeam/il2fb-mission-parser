@@ -480,6 +480,38 @@ class BornPlaceAircraftsParser(CollectingParser):
         return int(value) if int(value) >= 0 else None
 
 
+class BornPlaceCountriesParser(CollectingParser):
+    """
+    Parses 'BornPlaceCountriesN' section.
+    """
+    prefix = "BornPlaceCountries"
+
+    def check_section_name(self, section_name):
+        if not section_name.startswith(self.prefix):
+            return False
+        try:
+            self._extract_section_number(section_name)
+        except ValueError:
+            return False
+        else:
+            return True
+
+    def init_parser(self, section_name):
+        super(BornPlaceCountriesParser, self).init_parser(section_name)
+        self.output_key = 'homebase_countries_{0}'.format(
+                           self._extract_section_number(section_name))
+        self.countries = {}
+
+    def _extract_section_number(self, section_name):
+        return int(section_name.lstrip(self.prefix))
+
+    def parse_line(self, line):
+        self.data.append(line)
+
+    def process_data(self):
+        return {self.output_key: self.data, }
+
+
 class StaticCameraParser(CollectingParser):
     """
     Parses 'StaticCamera' section.
