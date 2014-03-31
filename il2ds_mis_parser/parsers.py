@@ -116,10 +116,8 @@ class MainParser(ValuesParser):
         return {
             'loader': self.data['MAP'],
             'time': self._to_time(self.data['TIME']),
-            'clouds': {
-                'type': WEATHER_TYPES[self.data['CloudType']],
-                'height': float(self.data['CloudHeight']),
-            },
+            'weather_type': WEATHER_TYPES[self.data['CloudType']],
+            'clouds_height': float(self.data['CloudHeight']),
             'army_code': int(self.data['army']),
             'player_regiment': self.data['playerNum'],
         }

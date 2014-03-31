@@ -39,10 +39,8 @@ class MissionParserTestCase(unittest.TestCase):
             'loader': 'Moscow/sload.ini',
             'army_code': 1,
             'player_regiment': '0',
-            'clouds': {
-                'height': 1500,
-                'type': 'clear_weather',
-            },
+            'weather_type': 'clear',
+            'clouds_height': 1500,
             'time': datetime.time(11, 45),
         }
         self._test_parser(MainParser, 'MAIN', lines, expected)

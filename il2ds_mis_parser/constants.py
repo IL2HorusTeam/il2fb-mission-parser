@@ -41,20 +41,20 @@ TARGET_PRIORITIES = {
 # Weather types
 # -----------------------------------------------------------------------------
 
-CLOUDLESS = '0'
-CLEAR_WEATHER = '1'
-HAZE = '2'
-LIGHT_FOG = '3'
-FOG = '4'
-RAIN_OR_SNOW = '5'
-THUNDERSTORM = '6'
+WEATHER_CLOUDLESS = '0'
+WEATHER_CLEAR = '1'
+WEATHER_HAZE = '2'
+WEATHER_SLIGHT_FOG = '3'
+WEATHER_FOG = '4'
+WEATHER_RAIN_OR_SNOW = '5'
+WEATHER_THUNDERSTORM = '6'
 
 WEATHER_TYPES = {
-    CLOUDLESS: 'cloudless',
-    CLEAR_WEATHER: 'clear_weather',
-    HAZE: 'haze',
-    LIGHT_FOG: 'light_fog',
-    FOG: 'fog',
-    RAIN_OR_SNOW: 'rain_or_snow',
-    THUNDERSTORM: 'thunderstorm',
+    WEATHER_CLOUDLESS: 'cloudless',
+    WEATHER_CLEAR: 'clear',
+    WEATHER_HAZE: 'haze',
+    WEATHER_SLIGHT_FOG: 'slight_fog',
+    WEATHER_FOG: 'fog',
+    WEATHER_RAIN_OR_SNOW: 'rain_or_snow',
+    WEATHER_THUNDERSTORM: 'thunderstorm',
 }
