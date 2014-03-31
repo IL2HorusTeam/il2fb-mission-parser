@@ -505,9 +505,6 @@ class BornPlaceCountriesParser(CollectingParser):
     def _extract_section_number(self, section_name):
         return int(section_name.lstrip(self.prefix))
 
-    def parse_line(self, line):
-        self.data.append(line)
-
     def process_data(self):
         return {self.output_key: self.data, }
 
