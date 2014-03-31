@@ -1,0 +1,9 @@
+[run]
+source = il2ds_mis_parser
+omit = */tests/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    raise NotImplementedError
+    pass
