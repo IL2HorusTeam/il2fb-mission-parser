@@ -41,7 +41,7 @@ class MissionParserTestCase(unittest.TestCase):
             'player_regiment': '0',
             'clouds': {
                 'height': 1500,
-                'type': 1,
+                'type': 'clear_weather',
             },
             'time': datetime.time(11, 45),
         }
