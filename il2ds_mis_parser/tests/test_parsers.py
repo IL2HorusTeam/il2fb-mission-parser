@@ -8,7 +8,7 @@ import unittest
 from il2ds_mis_parser.parsers import (
     MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
-    FrontMarkerParser, BornPlaceParser, ChiefsParser,
+    FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAirCraftParser
 )
 
 
@@ -315,6 +315,38 @@ class MissionParserTestCase(unittest.TestCase):
             ]
         }
         self._test_parser(BornPlaceParser, 'BornPlace', lines, expected)
+
+    def test_born_place_aircraft_parse(self):
+        """
+        Test 'BornPlaceN' section parser.
+        """
+        lines = [
+            "Bf-109F-4 -1 1sc250 4sc50",
+            "Ju-88A-4 10 28xSC50 28xSC50_2xSC250 28xSC50_4xSC250",
+            "+ 2xSC1800 2xSC2000",
+        ]
+        expected = [
+            {
+                'aircraft_code': 'Bf-109F-4',
+                'limits': None,
+                'weapons': [
+                    '1sc250',
+                    '4sc50',
+                ],
+            },
+            {
+                'aircraft_code': 'Ju-88A-4',
+                'limits': 10,
+                'weapons': [
+                    '28xSC50',
+                    '28xSC50_2xSC250',
+                    '28xSC50_4xSC250',
+                    '2xSC1800',
+                    '2xSC2000',
+                ],
+            },
+        ]
+        self._test_parser(BornPlaceAirCraftParser, 'BornPlace', lines, expected)
 
     def test_front_marker_parser(self):
         """
