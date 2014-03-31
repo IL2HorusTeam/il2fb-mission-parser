@@ -307,25 +307,21 @@ class NStationaryParser(CollectingParser):
         return section_name == "NStationary"
 
     def parse_line(self, line):
-        statics = {}
         params = line.split()
         code, stationary_object, params = params[0], params[1], params[2:]
-        statics.update({
+        static = ({
             'code': code,
+            'code_name': self._get_code_name(stationary_object),
         })
         subparser = self.subparsers.get(self._get_subparser_name(stationary_object))
-        statics.update(subparser(params))
-        statics.update(self._get_code_name(stationary_object))
-        self.data.append(statics)
+        static.update(subparser(params))
+        self.data.append(static)
 
     def _get_subparser_name(self, subparser_name):
         return subparser_name[subparser_name.index('.')+1:subparser_name.rindex('.')]
 
     def _get_code_name(self, code):
-        code_name = code[code.index('$')+1:]
-        return {
-            'code_name': code_name,
-        }
+        return code[code.index('$')+1:]
 
     def _parse_stationary_or_siren_or_beacon(self, params):
         """
@@ -335,14 +331,14 @@ class NStationaryParser(CollectingParser):
     def _parse_artillery(self, params):
         """
         """
-        army_code, pos_x, pos_y,  pos_z, timeout, distance, skill, spotter = params[:]
+        army_code, pos_x, pos_y,  pos_z, timeout, distance, skill, spotter = params
         return {
             'army_code': int(army_code),
             'pos': to_pos(pos_x, pos_y, pos_z),
             'timeout': timeout,
-            'distance': int(distance),
-            'skill': skill,
-            'spotter': spotter,
+            'range': int(distance),
+            'skill': SKILLS[int(skill)],
+            'is_spotter': spotter,
         }
 
     def _parse_plane(self, params):

@@ -68,3 +68,9 @@ STATIONARY_TYPE_ARTILLERY = 'artillery'
 STATIONARY_TYPE_PLANES = 'planes'
 STATIONARY_TYPE_RADIOS = 'radios'
 
+SKILLS = {
+    0: 'cadet',
+    1: 'rookie',
+    2: 'veteran',
+    3: 'ace',
+}
