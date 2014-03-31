@@ -6,6 +6,8 @@ IL-2 DS Missions Parser
 Parse IL-2 DS mission file and produce detailed information about
 mission.
 
+For more information `read the docs <http://il-2-ds-missions-parser.readthedocs.org/en/latest/index.html>`_.
+
 .. |Build Status| image:: https://travis-ci.org/IL2HorusTeam/il2ds-mis-parser.svg?branch=master
    :target: https://travis-ci.org/IL2HorusTeam/il2ds-mis-parser
 .. |Coverage Status| image:: https://coveralls.io/repos/IL2HorusTeam/il2ds-mis-parser/badge.png?branch=master
