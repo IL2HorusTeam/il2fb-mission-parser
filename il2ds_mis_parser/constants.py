@@ -58,3 +58,13 @@ WEATHER_TYPES = {
     WEATHER_RAIN_OR_SNOW: 'rain_or_snow',
     WEATHER_THUNDERSTORM: 'thunderstorm',
 }
+
+# -----------------------------------------------------------------------------
+# Stationary types
+# -----------------------------------------------------------------------------
+
+STATIONARY_TYPE = 'stationary'
+STATIONARY_TYPE_ARTILLERY = 'artillery'
+STATIONARY_TYPE_PLANES = 'planes'
+STATIONARY_TYPE_RADIOS = 'radios'
+

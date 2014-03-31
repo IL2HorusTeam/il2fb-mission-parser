@@ -180,8 +180,6 @@ class MissionParserTestCase(unittest.TestCase):
         """
         lines = [
             "959_Static vehicles.artillery.Artillery$SdKfz251 2 31333.62 90757.91 600.29 0.0 0 1 1",
-            "49_Static vehicles.stationary.Stationary$OpelBlitz6700A_fuel 2 43726.71 58239.31 540.00 0.0",
-            "171_Static vehicles.stationary.Stationary$OpelBlitz6700A_fuel 2 45107.15 58463.06 600.00 0.0",
         ]
         expected = {
             'statics': [],
@@ -194,11 +192,21 @@ class MissionParserTestCase(unittest.TestCase):
         """
         lines = [
             "0_bld House$Tent_Pyramid_US 1 43471.34 57962.08 630.00",
-            "12_bld House$46FTankDE 1 43722.70 58106.67 555.00",
-            "38_bld House$FurnitureTreeBroad1 1 43725.10 58081.35 475.0",
         ]
         expected = {
-            'buildings': [],
+            'buildings': [
+                {
+                    'code': '0_bld',
+                    'type': 'House',
+                    'code_name': 'Tent_Pyramid_US',
+                    'army_code': 1,
+                    'pos': {
+                        'y': 57962.08,
+                        'x': 43471.34,
+                        'z': 630.0
+                    },
+                }
+            ],
         }
         self._test_parser(BuildingsParser, 'Buildings', lines, expected)
 

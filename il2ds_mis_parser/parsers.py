@@ -294,11 +294,60 @@ class NStationaryParser(CollectingParser):
     """
     Parses 'NStationary' section.
     """
+    def init_parser(self, section_name):
+        super(NStationaryParser, self).init_parser(section_name)
+        self.subparsers = {
+            STATIONARY_TYPE: self._parse_stationary_or_siren_or_beacon,
+            STATIONARY_TYPE_ARTILLERY: self._parse_artillery,
+            STATIONARY_TYPE_PLANES: self._parse_plane,
+            STATIONARY_TYPE_RADIOS: self._parse_stationary_or_siren_or_beacon,
+        }
 
     def check_section_name(self, section_name):
         return section_name == "NStationary"
 
     def parse_line(self, line):
+        statics = {}
+        params = line.split()
+        code, stationary_object, params = params[0], params[1], params[2:]
+        statics.update({
+            'code': code,
+        })
+        subparser = self.subparsers.get(self._get_subparser_name(stationary_object))
+        statics.update(subparser(params))
+        statics.update(self._get_code_name(stationary_object))
+        self.data.append(statics)
+
+    def _get_subparser_name(self, subparser_name):
+        return subparser_name[subparser_name.index('.')+1:subparser_name.rindex('.')]
+
+    def _get_code_name(self, code):
+        code_name = code[code.index('$')+1:]
+        return {
+            'code_name': code_name,
+        }
+
+    def _parse_stationary_or_siren_or_beacon(self, params):
+        """
+        """
+        pass
+
+    def _parse_artillery(self, params):
+        """
+        """
+        army_code, pos_x, pos_y,  pos_z, timeout, distance, skill, spotter = params[:]
+        return {
+            'army_code': int(army_code),
+            'pos': to_pos(pos_x, pos_y, pos_z),
+            'timeout': timeout,
+            'distance': int(distance),
+            'skill': skill,
+            'spotter': spotter,
+        }
+
+    def _parse_plane(self, params):
+        """
+        """
         pass
 
     def process_data(self):
@@ -314,7 +363,23 @@ class BuildingsParser(CollectingParser):
         return section_name == "Buildings"
 
     def parse_line(self, line):
-        pass
+        buildings = {}
+        code, building_object, army_code, pos_x, pos_y, pos_z = line.split()
+        building_type, code_name = building_object.split('$')
+        buildings.update({
+            'code': code,
+            'army_code': int(army_code),
+            'pos': to_pos(pos_x, pos_y, pos_z),
+        })
+        buildings.update(self._decompose_building_object(building_object))
+        self.data.append(buildings)
+
+    def _decompose_building_object(self, building_object):
+        building_type, code_name = building_object.split('$')
+        return {
+            'type': building_type,
+            'code_name': code_name,
+        }
 
     def process_data(self):
         return {'buildings': self.data, }
