@@ -337,7 +337,7 @@ class MissionParserTestCase(unittest.TestCase):
             "+ 2xSC1800 2xSC2000",
         ]
         expected = {
-            'homebase_aircrafts_0': [
+            'homebase_aircrafts_9999': [
                 {
                     'aircraft_code': 'Bf-109F-4',
                     'limit': None,
@@ -359,7 +359,7 @@ class MissionParserTestCase(unittest.TestCase):
                 },
             ],
         }
-        self._test_parser(BornPlaceAircraftsParser, 'BornPlace0',
+        self._test_parser(BornPlaceAircraftsParser, 'BornPlace9999',
                           lines, expected)
 
     def test_born_place_countries_parse(self):
@@ -371,12 +371,12 @@ class MissionParserTestCase(unittest.TestCase):
             "ru",
         ]
         expected = {
-            'homebase_countries_0': [
+            'homebase_countries_9999': [
                 "de",
                 "ru",
             ],
         }
-        self._test_parser(BornPlaceCountriesParser, 'BornPlaceCountries0',
+        self._test_parser(BornPlaceCountriesParser, 'BornPlaceCountries9999',
                           lines, expected)
 
     def test_front_marker_parser(self):
