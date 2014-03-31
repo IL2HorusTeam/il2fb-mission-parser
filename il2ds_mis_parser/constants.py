@@ -55,6 +55,6 @@ WEATHER_TYPES = {
     HAZE: 'haze',
     LIGHT_FOG: 'light_fog',
     FOG: 'fog',
-    RAIN_OR_SNOW: 'rain or snow',
+    RAIN_OR_SNOW: 'rain_or_snow',
     THUNDERSTORM: 'thunderstorm',
 }
