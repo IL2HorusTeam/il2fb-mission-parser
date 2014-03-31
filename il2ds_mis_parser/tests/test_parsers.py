@@ -5,12 +5,24 @@ Mission parser tests.
 import datetime
 import unittest
 
-from il2ds_mis_parser.parsers import (
-    MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
+from il2ds_mis_parser.parsers import (to_bool, to_pos, MainParser,
+    SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
-    BornPlaceCountriesParser
-)
+    BornPlaceCountriesParser, )
+
+
+class CommonsTestCase(unittest.TestCase):
+
+    def test_to_bool(self):
+        self.assertFalse(to_bool('0'))
+        self.assertTrue(to_bool('1'))
+        self.assertTrue(to_bool('-1'))
+
+    def test_to_pos(self):
+        self.assertEqual(to_pos('100', '200'), {'x': 100, 'y': 200, })
+        self.assertEqual(
+            to_pos('100', '200', '300'), {'x': 100, 'y': 200, 'z': 300, })
 
 
 class MissionParserTestCase(unittest.TestCase):
