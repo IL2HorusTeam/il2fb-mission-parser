@@ -180,9 +180,36 @@ class MissionParserTestCase(unittest.TestCase):
         """
         lines = [
             "959_Static vehicles.artillery.Artillery$SdKfz251 2 31333.62 90757.91 600.29 0.0 0 1 1",
+            "0_Static vehicles.planes.Plane$I_16TYPE24 2 134146.89 88005.43 336.92 0.0 de 2 1.0 I-16type24_G1_RoW3.bmp 1",
         ]
         expected = {
-            'statics': [],
+            'statics': [
+                {
+                    'army_code': 2,
+                    'code': '959_Static',
+                    'code_name': 'SdKfz251',
+                    'is_spotter': '1',
+                    'pos': {'x': 31333.62, 'y': 90757.91, 'z': 600.29},
+                    'range': 0,
+                    'skill': 'rookie',
+                    'timeout': '0.0',
+                },
+                {
+                    'air_force': 'luftwaffe',
+                    'allows_spawning': True,
+                    'army_code': 2,
+                    'camouflage': 'I-16type24_G1_RoW3.bmp',
+                    'code': '0_Static',
+                    'code_name': 'I_16TYPE24',
+                    'markings': True,
+                    'pos': {
+                        'x': 134146.89,
+                        'y': 88005.43,
+                        'z': 336.92
+                    },
+                    'restorable': True,
+                    'timeout': '0.0'}
+            ],
         }
         self._test_parser(NStationaryParser, 'NStationary', lines, expected)
 

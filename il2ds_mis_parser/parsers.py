@@ -33,7 +33,7 @@ def to_bool(value):
     return value != '0'
 
 
-def to_pos(x, y, z=None, *args, **kwargs):
+def to_pos(x, y, z=None):
     """
     Converts a string representation of position coordinates into dictionary.
 
@@ -298,7 +298,7 @@ class NStationaryParser(CollectingParser):
         super(NStationaryParser, self).init_parser(section_name)
         self.subparsers = {
             STATIONARY_TYPE_ARTILLERY: self._parse_artillery,
-            STATIONARY_TYPE_PLANES: self._parse_plane,
+            STATIONARY_TYPE_PLANES: self._parse_planes,
         }
 
     def check_section_name(self, section_name):
@@ -306,7 +306,8 @@ class NStationaryParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        code, stationary_object, army_code, pos, timeout, params = params[0], params[1], params[2], params[3:6], params[6], params[7:]
+        code, stationary_object, army_code, pos, timeout, params = params[0], params[1], params[2], \
+                                                                   params[3:6], params[6], params[7:]
         static = ({
             'code': code,
             'code_name': self._get_code_name(stationary_object),
@@ -327,18 +328,27 @@ class NStationaryParser(CollectingParser):
 
     def _parse_artillery(self, params):
         """
+        Parse additional options category "artillery"
         """
         distance, skill, spotter = params
         return {
             'range': int(distance),
-            'skill': SKILLS[int(skill)],
+            'skill': SKILLS[skill],
             'is_spotter': spotter,
         }
 
-    def _parse_plane(self, params):
+    def _parse_planes(self, params):
         """
+        Parse additional options category "planes"
         """
-        pass
+        (air_force, allows_spawning_restorable), (camouflage, markings) = params[:2], params[3:]
+        return {
+            'air_force': AIR_FORCES[air_force],
+            'allows_spawning': to_bool(allows_spawning_restorable),
+            'restorable': allows_spawning_restorable == '2',
+            'camouflage': camouflage,
+            'markings': to_bool(markings),
+        }
 
     def process_data(self):
         return {'statics': self.data, }

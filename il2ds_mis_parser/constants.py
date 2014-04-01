@@ -69,8 +69,32 @@ STATIONARY_TYPE_PLANES = 'planes'
 STATIONARY_TYPE_RADIOS = 'radios'
 
 SKILLS = {
-    0: 'cadet',
-    1: 'rookie',
-    2: 'veteran',
-    3: 'ace',
+    '0': 'cadet',
+    '1': 'rookie',
+    '2': 'veteran',
+    '3': 'ace',
+}
+
+AIR_FORCES = {
+    'ru': 'vvs_rkka',
+    'fr': 'vvs_france',
+    'pl': 'vvs_poland',
+    'gb': 'raf',
+    'du': 'vvs_holland',
+    'rz': 'rnzaf',
+    'ra': 'raaf',
+    'rn': 'royal_navy',
+    'us': 'usaaf',
+    'um': 'usmc',
+    'un': 'usn',
+    'de': 'luftwaffe',
+    'fi': 'vvs_finland',
+    'it': 'vvs_italy',
+    'ro': 'vvs_romania',
+    'hu': 'vvs_hungary',
+    'sk': 'vvs_slovakia',
+    'ja': 'ija',
+    'in': 'ijn',
+    'nn': None,
+    'null': None,
 }
