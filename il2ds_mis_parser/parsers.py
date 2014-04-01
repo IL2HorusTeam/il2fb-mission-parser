@@ -33,7 +33,7 @@ def to_bool(value):
     return value != '0'
 
 
-def to_pos(x, y, z=None):
+def to_pos(x, y, z=None, *args, **kwargs):
     """
     Converts a string representation of position coordinates into dictionary.
 
@@ -297,10 +297,8 @@ class NStationaryParser(CollectingParser):
     def init_parser(self, section_name):
         super(NStationaryParser, self).init_parser(section_name)
         self.subparsers = {
-            STATIONARY_TYPE: self._parse_stationary_or_siren_or_beacon,
             STATIONARY_TYPE_ARTILLERY: self._parse_artillery,
             STATIONARY_TYPE_PLANES: self._parse_plane,
-            STATIONARY_TYPE_RADIOS: self._parse_stationary_or_siren_or_beacon,
         }
 
     def check_section_name(self, section_name):
@@ -308,13 +306,17 @@ class NStationaryParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        code, stationary_object, params = params[0], params[1], params[2:]
+        code, stationary_object, army_code, pos, timeout, params = params[0], params[1], params[2], params[3:6], params[6], params[7:]
         static = ({
             'code': code,
             'code_name': self._get_code_name(stationary_object),
+            'army_code': int(army_code),
+            'pos': to_pos(*pos),
+            'timeout': timeout,
         })
         subparser = self.subparsers.get(self._get_subparser_name(stationary_object))
-        static.update(subparser(params))
+        if subparser:
+            static.update(subparser(params))
         self.data.append(static)
 
     def _get_subparser_name(self, subparser_name):
@@ -323,19 +325,11 @@ class NStationaryParser(CollectingParser):
     def _get_code_name(self, code):
         return code[code.index('$')+1:]
 
-    def _parse_stationary_or_siren_or_beacon(self, params):
-        """
-        """
-        pass
-
     def _parse_artillery(self, params):
         """
         """
-        army_code, pos_x, pos_y,  pos_z, timeout, distance, skill, spotter = params
+        distance, skill, spotter = params
         return {
-            'army_code': int(army_code),
-            'pos': to_pos(pos_x, pos_y, pos_z),
-            'timeout': timeout,
             'range': int(distance),
             'skill': SKILLS[int(skill)],
             'is_spotter': spotter,
