@@ -50,7 +50,7 @@ class MissionParserTestCase(unittest.TestCase):
         ]
         expected = {
             'loader': 'Moscow/sload.ini',
-            'army_code': 1,
+            'army_code': 'red',
             'player_regiment': '0',
             'weather_type': 'clear',
             'clouds_height': 1500,
@@ -181,24 +181,24 @@ class MissionParserTestCase(unittest.TestCase):
         lines = [
             "959_Static vehicles.artillery.Artillery$SdKfz251 2 31333.62 90757.91 600.29 0.0 0 1 1",
             "0_Static vehicles.planes.Plane$I_16TYPE24 2 134146.89 88005.43 336.92 0.0 de 2 1.0 I-16type24_G1_RoW3.bmp 1",
+            "1_Static ships.Ship$G5 1 83759.05 115021.15 360.00 0.0 60 3 1.4",
         ]
         expected = {
             'statics': [
                 {
-                    'army_code': 2,
+                    'army_code': 'blue',
                     'code': '959_Static',
                     'code_name': 'SdKfz251',
                     'is_spotter': '1',
                     'pos': {'x': 31333.62, 'y': 90757.91, 'z': 600.29},
                     'range': 0,
                     'skill': 'rookie',
-                    'timeout': '0.0',
                 },
                 {
                     'air_force': 'luftwaffe',
                     'allows_spawning': True,
-                    'army_code': 2,
-                    'camouflage': 'I-16type24_G1_RoW3.bmp',
+                    'army_code': 'blue',
+                    'skin': 'I-16type24_G1_RoW3.bmp',
                     'code': '0_Static',
                     'code_name': 'I_16TYPE24',
                     'markings': True,
@@ -208,7 +208,16 @@ class MissionParserTestCase(unittest.TestCase):
                         'z': 336.92
                     },
                     'restorable': True,
-                    'timeout': '0.0'}
+                },
+                {
+                    'army_code': 'red',
+                    'code': '1_Static',
+                    'code_name': 'G5',
+                    'overcharge_time': 1.4,
+                    'pos': {'x': 83759.05, 'y': 115021.15, 'z': 360.0},
+                    'skill': 'ace',
+                    'timeout': 60
+                },
             ],
         }
         self._test_parser(NStationaryParser, 'NStationary', lines, expected)
@@ -226,7 +235,7 @@ class MissionParserTestCase(unittest.TestCase):
                     'code': '0_bld',
                     'type': 'House',
                     'code_name': 'Tent_Pyramid_US',
-                    'army_code': 1,
+                    'army_code': 'red',
                     'pos': {
                         'y': 57962.08,
                         'x': 43471.34,
@@ -247,7 +256,7 @@ class MissionParserTestCase(unittest.TestCase):
         expected = {
             'cameras': [
                 {
-                    'army_code': 2,
+                    'army_code': "blue",
                     'pos': {
                         'x': 38426,
                         'y': 65212,
@@ -321,7 +330,7 @@ class MissionParserTestCase(unittest.TestCase):
             'homebases': [
                 {
                     'radius': 3000,
-                    'army_code': 1,
+                    'army_code': "red",
                     'show_default_icon': False,
                     'friction': {
                         'enabled': False,
@@ -429,7 +438,7 @@ class MissionParserTestCase(unittest.TestCase):
                         'x': 7636.65,
                         'y': 94683.02,
                     },
-                    'army_code': 1,
+                    'army_code': "red",
                 },
             ],
         }
@@ -446,13 +455,13 @@ class MissionParserTestCase(unittest.TestCase):
                     'code': "0_Chief",
                     'code_name': "US_Supply_Cpy",
                     'type': "vehicles",
-                    'army_code': 1,
+                    'army_code': "red",
                 },
                 {
                     'code': "1_Chief",
                     'code_name': "Germany_CargoTrain/AA",
                     'type': "trains",
-                    'army_code': 2,
+                    'army_code': "blue",
                 },
             ],
         }

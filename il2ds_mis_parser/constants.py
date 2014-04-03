@@ -3,6 +3,21 @@
 Application constants.
 """
 
+
+# -----------------------------------------------------------------------------
+# Armies code
+# -----------------------------------------------------------------------------
+
+ARMY_NONE = '0'
+ARMY_RED = '1'
+ARMY_BLUE = '2'
+
+ARMIES_NAME = {
+    ARMY_NONE: None,
+    ARMY_RED: 'red',
+    ARMY_BLUE: 'blue'
+}
+
 # -----------------------------------------------------------------------------
 # Target types
 # -----------------------------------------------------------------------------
@@ -67,6 +82,7 @@ STATIONARY_TYPE = 'stationary'
 STATIONARY_TYPE_ARTILLERY = 'artillery'
 STATIONARY_TYPE_PLANES = 'planes'
 STATIONARY_TYPE_RADIOS = 'radios'
+STATIONARY_TYPE_SHIPS = 'ships'
 
 SKILLS = {
     '0': 'cadet',

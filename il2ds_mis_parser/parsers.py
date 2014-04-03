@@ -158,7 +158,7 @@ class MainParser(ValuesParser):
             'time': self._to_time(self.data['TIME']),
             'weather_type': WEATHER_TYPES[self.data['CloudType']],
             'clouds_height': float(self.data['CloudHeight']),
-            'army_code': int(self.data['army']),
+            'army_code': ARMIES_NAME[self.data['army']],
             'player_regiment': self.data['playerNum'],
         }
 
@@ -276,14 +276,14 @@ class ChiefsParser(CollectingParser):
         return section_name == "Chiefs"
 
     def parse_line(self, line):
-        code, type_code, army = line.split()
+        code, type_code, army_code = line.split()
         chief_type, code_name = type_code.split('.')
 
         self.data.append({
             'code': code,
             'code_name': code_name,
             'type': chief_type.lower(),
-            'army_code': int(army),
+            'army_code': ARMIES_NAME[army_code],
         })
 
     def process_data(self):
@@ -299,6 +299,7 @@ class NStationaryParser(CollectingParser):
         self.subparsers = {
             STATIONARY_TYPE_ARTILLERY: self._parse_artillery,
             STATIONARY_TYPE_PLANES: self._parse_planes,
+            STATIONARY_TYPE_SHIPS: self._parse_ships,
         }
 
     def check_section_name(self, section_name):
@@ -306,14 +307,13 @@ class NStationaryParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        code, stationary_object, army_code, pos, timeout, params = params[0], params[1], params[2], \
-                                                                   params[3:6], params[6], params[7:]
+        code, stationary_object, army_code, pos, params = params[0], params[1], params[2], \
+                                                                   params[3:6], params[7:]
         static = ({
             'code': code,
             'code_name': self._get_code_name(stationary_object),
-            'army_code': int(army_code),
+            'army_code': ARMIES_NAME[army_code],
             'pos': to_pos(*pos),
-            'timeout': timeout,
         })
         subparser = self.subparsers.get(self._get_subparser_name(stationary_object))
         if subparser:
@@ -321,7 +321,10 @@ class NStationaryParser(CollectingParser):
         self.data.append(static)
 
     def _get_subparser_name(self, subparser_name):
-        return subparser_name[subparser_name.index('.')+1:subparser_name.rindex('.')]
+        if subparser_name.startswith('ships'):
+            return "ships"
+        else:
+            return subparser_name[subparser_name.index('.')+1:subparser_name.rindex('.')]
 
     def _get_code_name(self, code):
         return code[code.index('$')+1:]
@@ -346,8 +349,19 @@ class NStationaryParser(CollectingParser):
             'air_force': AIR_FORCES[air_force],
             'allows_spawning': to_bool(allows_spawning_restorable),
             'restorable': allows_spawning_restorable == '2',
-            'camouflage': camouflage,
+            'skin': camouflage,
             'markings': to_bool(markings),
+        }
+
+    def _parse_ships(self, params):
+        """
+        Parse additional options category "ships"
+        """
+        timeout, skill, overcharge_time = params
+        return {
+            'timeout': int(timeout),
+            'skill': SKILLS[skill],
+            'overcharge_time': float(overcharge_time),
         }
 
     def process_data(self):
@@ -368,7 +382,7 @@ class BuildingsParser(CollectingParser):
         building_type, code_name = building_object.split('$')
         buildings.update({
             'code': code,
-            'army_code': int(army_code),
+            'army_code': ARMIES_NAME[army_code],
             'pos': to_pos(pos_x, pos_y, pos_z),
         })
         buildings.update(self._decompose_building_object(building_object))
@@ -497,7 +511,7 @@ class BornPlaceParser(CollectingParser):
 
         self.data.append({
             'radius': int(radius),
-            'army_code': int(army_code),
+            'army_code': ARMIES_NAME[army_code],
             'show_default_icon': to_bool(show_default_icon),
             'friction': {
                 'enabled': to_bool(friction_enabled),
@@ -623,9 +637,9 @@ class StaticCameraParser(CollectingParser):
         return section_name == "StaticCamera"
 
     def parse_line(self, line):
-        pos_x, pos_y, pos_z, army = line.split()
+        pos_x, pos_y, pos_z, army_code = line.split()
         self.data.append({
-            'army_code': int(army),
+            'army_code': ARMIES_NAME[army_code],
             'pos': to_pos(pos_x, pos_y, pos_z),
         })
 
@@ -672,10 +686,10 @@ class FrontMarkerParser(CollectingParser):
         return section_name == "FrontMarker"
 
     def parse_line(self, line):
-        code, pos_x, pos_y, army = line.split()
+        code, pos_x, pos_y, army_code = line.split()
         self.data.append({
             'code': code,
-            'army_code': int(army),
+            'army_code': ARMIES_NAME[army_code],
             'pos': to_pos(pos_x, pos_y),
         })
 
