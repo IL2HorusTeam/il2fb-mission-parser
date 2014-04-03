@@ -697,6 +697,33 @@ class FrontMarkerParser(CollectingParser):
         return {'markers': self.data, }
 
 
+class RocketParser(CollectingParser):
+    """
+    Parses 'Rocket' section.
+    """
+
+    def check_section_name(self, section_name):
+        return section_name == "Rocket"
+
+    def parse_line(self, line):
+        params = line.split()
+        (code, code_name, army_code), pos, (timeout, amount, period), target_pos = params[0:3], params[3:6], \
+                                                                                   params[6:9], params[9:]
+        self.data.append({
+            'code': code,
+            'code_name': code_name,
+            'army_code': ARMIES_NAME[army_code],
+            'pos': to_pos(*pos),
+            'timeout': float(timeout),
+            'amount': int(amount),
+            'period': float(period),
+            'target_pos': to_pos(*target_pos) if target_pos else None
+        })
+
+    def process_data(self):
+        return {'rocket': self.data}
+
+
 class FileParser(object):
     """
     Parses whole mission files.
@@ -718,6 +745,7 @@ class FileParser(object):
             BridgeParser(),
             HouseParser(),
             FrontMarkerParser(),
+            RocketParser(),
         ]
 
     def parse(self, file_path):

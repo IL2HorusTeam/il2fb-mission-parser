@@ -9,7 +9,7 @@ from il2ds_mis_parser.parsers import (to_bool, to_pos, MainParser,
     SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
-    BornPlaceCountriesParser, )
+    BornPlaceCountriesParser, RocketParser)
 
 
 class CommonsTestCase(unittest.TestCase):
@@ -466,3 +466,45 @@ class MissionParserTestCase(unittest.TestCase):
             ],
         }
         self._test_parser(ChiefsParser, 'Chiefs', lines, expected)
+
+    def test_rocket_parser(self):
+        lines = [
+            "0_Rocket Fi103_V1_ramp 2 84141.38 114216.82 360.00 60.0 10 80.0 83433.91 115445.49",
+            "1_Rocket Fi103_V1_ramp 2 84141.38 114216.82 360.00 60.0 10 80.0",
+        ]
+        expected = {
+            'rocket': [
+                {
+                    'code': "0_Rocket",
+                    'code_name': "Fi103_V1_ramp",
+                    'army_code': "blue",
+                    'pos': {
+                        'x': 84141.38,
+                        'y': 114216.82,
+                        'z': 360.00,
+                    },
+                    'timeout': 60.0,
+                    'amount': 10,
+                    'period': 80.0,
+                    'target_pos': {
+                        'x': 83433.91,
+                        'y': 115445.49,
+                    },
+                },
+                {
+                    'code': "1_Rocket",
+                    'code_name': "Fi103_V1_ramp",
+                    'army_code': "blue",
+                    'pos': {
+                        'x': 84141.38,
+                        'y': 114216.82,
+                        'z': 360.00,
+                    },
+                    'timeout': 60.0,
+                    'amount': 10,
+                    'period': 80.0,
+                    'target_pos': None,
+                },
+            ],
+        }
+        self._test_parser(RocketParser, 'Rocket', lines, expected)
