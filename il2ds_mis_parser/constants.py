@@ -12,7 +12,7 @@ ARMY_NONE = '0'
 ARMY_RED = '1'
 ARMY_BLUE = '2'
 
-ARMIES_NAME = {
+ARMIES = {
     ARMY_NONE: None,
     ARMY_RED: 'red',
     ARMY_BLUE: 'blue'

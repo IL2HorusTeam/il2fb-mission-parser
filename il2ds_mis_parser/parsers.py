@@ -158,7 +158,7 @@ class MainParser(ValuesParser):
             'time': self._to_time(self.data['TIME']),
             'weather_type': WEATHER_TYPES[self.data['CloudType']],
             'clouds_height': float(self.data['CloudHeight']),
-            'army_code': ARMIES_NAME[self.data['army']],
+            'army': ARMIES[self.data['army']],
             'player_regiment': self.data['playerNum'],
         }
 
@@ -277,13 +277,13 @@ class ChiefsParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        (code, type_code, army_code), params = params[0:3], params[3:]
+        (code, type_code, army), params = params[0:3], params[3:]
         chief_type, code_name = type_code.split('.')
         chiefs = {
             'code': code,
             'code_name': code_name,
             'type': chief_type.lower(),
-            'army_code': ARMIES_NAME[army_code],
+            'army': ARMIES[army],
         }
         if params:
             timeout, skill, recharge_time = params
@@ -302,7 +302,7 @@ class ChiefRoadParser(CollectingParser):
     """
     Parses 'N_Chief_Road' section.
     """
-    suffix = "_Road"
+    suffix = "_Chief_Road"
 
     def check_section_name(self, section_name):
         if not section_name.endswith(self.suffix):
@@ -315,22 +315,22 @@ class ChiefRoadParser(CollectingParser):
             return True
 
     def _extract_object_code(self, section_name):
-        return section_name.rstrip(self.suffix).lower()
+        return int(section_name.rstrip(self.suffix))
 
     def init_parser(self, section_name):
         super(ChiefRoadParser, self).init_parser(section_name)
-        self.output_key = "{}_road".format(self._extract_object_code(section_name))
+        self.output_key = "{0}_chief_road".format(self._extract_object_code(section_name))
 
     def parse_line(self, line):
         params = line.split()
-        pos_x, pos_y, timeout = params[0], params[1], params[3:4]
+        pos, params = params[0:2], params[3:4]
         chief_road = {
-            'pos': to_pos(pos_x, pos_y),
+            'pos': to_pos(*pos),
         }
-        if timeout:
-            chief_road.update({
-                'timeout': int(timeout[0]),
-            })
+        if params:
+            (timeout, ) = params
+            chief_road['timeout'] = int(timeout)
+
         self.data.append(chief_road)
 
     def process_data(self):
@@ -354,12 +354,12 @@ class NStationaryParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        code, stationary_object, army_code, pos, rotation_angle, params = params[0], params[1], params[2], \
+        code, stationary_object, army, pos, rotation_angle, params = params[0], params[1], params[2], \
                                                                    params[3:5], params[5], params[7:]
         static = ({
             'code': code,
             'code_name': self._get_code_name(stationary_object),
-            'army_code': ARMIES_NAME[army_code],
+            'army': ARMIES[army],
             'pos': to_pos(*pos),
             'rotation_angle': float(rotation_angle),
         })
@@ -385,31 +385,31 @@ class NStationaryParser(CollectingParser):
         return {
             'range': int(distance),
             'skill': SKILLS[skill],
-            'is_spotter': spotter,
+            'is_spotter': to_bool(spotter),
         }
 
     def _parse_planes(self, params):
         """
         Parse additional options category "planes"
         """
-        (air_force, allows_spawning_restorable), (camouflage, markings) = params[:2], params[3:]
+        (air_force, allows_spawning_restorable), (skin, has_markings) = params[:2], params[3:]
         return {
             'air_force': AIR_FORCES[air_force],
             'allows_spawning': to_bool(allows_spawning_restorable),
             'restorable': allows_spawning_restorable == '2',
-            'skin': camouflage,
-            'markings': to_bool(markings),
+            'skin': skin,
+            'has_markings': to_bool(has_markings),
         }
 
     def _parse_ships(self, params):
         """
         Parse additional options category "ships"
         """
-        timeout, skill, overcharge_time = params
+        timeout, skill, recharge_time = params
         return {
             'timeout': int(timeout),
             'skill': SKILLS[skill],
-            'overcharge_time': float(overcharge_time),
+            'recharge_time': float(recharge_time),
         }
 
     def process_data(self):
@@ -426,11 +426,11 @@ class BuildingsParser(CollectingParser):
 
     def parse_line(self, line):
         buildings = {}
-        code, building_object, army_code, pos_x, pos_y, rotation_angle = line.split()
+        code, building_object, army, pos_x, pos_y, rotation_angle = line.split()
         building_type, code_name = building_object.split('$')
         buildings.update({
             'code': code,
-            'army_code': ARMIES_NAME[army_code],
+            'army': ARMIES[army],
             'pos': to_pos(pos_x, pos_y),
             'rotation_angle': float(rotation_angle),
         })
@@ -549,7 +549,7 @@ class BornPlaceParser(CollectingParser):
         return section_name == "BornPlace"
 
     def parse_line(self, line):
-        (army_code, radius, pos_x, pos_y, parachute, air_spawn_height,
+        (army, radius, pos_x, pos_y, parachute, air_spawn_height,
          air_spawn_speed, air_spawn_heading, max_allowed_pilots,
          recon_min_height, recon_max_height, recon_range, air_spawn_always,
          enable_aircraft_limits, aircraft_limits_consider_lost,
@@ -560,7 +560,7 @@ class BornPlaceParser(CollectingParser):
 
         self.data.append({
             'radius': int(radius),
-            'army_code': ARMIES_NAME[army_code],
+            'army': ARMIES[army],
             'show_default_icon': to_bool(show_default_icon),
             'friction': {
                 'enabled': to_bool(friction_enabled),
@@ -686,9 +686,9 @@ class StaticCameraParser(CollectingParser):
         return section_name == "StaticCamera"
 
     def parse_line(self, line):
-        pos_x, pos_y, pos_z, army_code = line.split()
+        pos_x, pos_y, pos_z, army = line.split()
         self.data.append({
-            'army_code': ARMIES_NAME[army_code],
+            'army': ARMIES[army],
             'pos': to_pos(pos_x, pos_y, pos_z),
         })
 
@@ -735,10 +735,10 @@ class FrontMarkerParser(CollectingParser):
         return section_name == "FrontMarker"
 
     def parse_line(self, line):
-        code, pos_x, pos_y, army_code = line.split()
+        code, pos_x, pos_y, army = line.split()
         self.data.append({
             'code': code,
-            'army_code': ARMIES_NAME[army_code],
+            'army': ARMIES[army],
             'pos': to_pos(pos_x, pos_y),
         })
 
@@ -756,12 +756,12 @@ class RocketParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        (code, code_name, army_code), pos, \
+        (code, code_name, army), pos, \
         (rotation_angle, timeout, amount, period), target_pos = params[0:3], params[3:5], params[5:9], params[9:]
         self.data.append({
             'code': code,
             'code_name': code_name,
-            'army_code': ARMIES_NAME[army_code],
+            'army': ARMIES[army],
             'pos': to_pos(*pos),
             'rotation_angle': float(rotation_angle),
             'timeout': float(timeout),
