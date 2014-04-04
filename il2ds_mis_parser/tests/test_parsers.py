@@ -9,7 +9,7 @@ from il2ds_mis_parser.parsers import (to_bool, to_pos, MainParser,
     SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
-    BornPlaceCountriesParser, RocketParser)
+    BornPlaceCountriesParser, RocketParser, ChiefRoadParser)
 
 
 class CommonsTestCase(unittest.TestCase):
@@ -479,11 +479,43 @@ class MissionParserTestCase(unittest.TestCase):
                     'army_code': "red",
                     'timeout': 60,
                     'skill': "rookie",
-                    'overcharge_time': 1.0,
+                    'recharge_time': 1.0,
                 },
             ],
         }
         self._test_parser(ChiefsParser, 'Chiefs', lines, expected)
+
+    def test_chiefs_road_parser(self):
+        lines = [
+            "21380.02 41700.34 120.00 10 0 3.055555582046509",
+            "21500.00 41700.00 20.00",
+            "50299.58 35699.85 120.00 10 33 2.6388890743255615",
+        ]
+        expected = {
+            '0_chief_road': [
+                {
+                    'pos': {
+                    'x': 21380.02,
+                    'y': 41700.34,
+                    },
+                    'timeout': 10,
+                },
+                {
+                    'pos': {
+                    'x': 21500.00,
+                    'y': 41700.00,
+                    },
+                },
+                {
+                    'pos': {
+                    'x': 50299.58,
+                    'y': 35699.85,
+                    },
+                    'timeout': 10,
+                },
+            ]
+        }
+        self._test_parser(ChiefRoadParser, '0_Chief_Road', lines, expected)
 
     def test_rocket_parser(self):
         lines = [

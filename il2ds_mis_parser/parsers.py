@@ -286,16 +286,55 @@ class ChiefsParser(CollectingParser):
             'army_code': ARMIES_NAME[army_code],
         }
         if params:
-            timeout, skill, overcharge_time = params
+            timeout, skill, recharge_time = params
             chiefs.update({
                 'timeout': int(timeout),
                 'skill': SKILLS[skill],
-                'overcharge_time': float(overcharge_time),
+                'recharge_time': float(recharge_time),
             })
         self.data.append(chiefs)
 
     def process_data(self):
         return {'chiefs': self.data, }
+
+
+class ChiefRoadParser(CollectingParser):
+    """
+    Parses 'N_Chief_Road' section.
+    """
+    suffix = "_Road"
+
+    def check_section_name(self, section_name):
+        if not section_name.endswith(self.suffix):
+            return False
+        try:
+            self._extract_object_code(section_name)
+        except ValueError:
+            return False
+        else:
+            return True
+
+    def _extract_object_code(self, section_name):
+        return section_name.rstrip(self.suffix).lower()
+
+    def init_parser(self, section_name):
+        super(ChiefRoadParser, self).init_parser(section_name)
+        self.output_key = "{}_road".format(self._extract_object_code(section_name))
+
+    def parse_line(self, line):
+        params = line.split()
+        pos_x, pos_y, timeout = params[0], params[1], params[3:4]
+        chief_road = {
+            'pos': to_pos(pos_x, pos_y),
+        }
+        if timeout:
+            chief_road.update({
+                'timeout': int(timeout[0]),
+            })
+        self.data.append(chief_road)
+
+    def process_data(self):
+        return {self.output_key: self.data}
 
 
 class NStationaryParser(CollectingParser):
