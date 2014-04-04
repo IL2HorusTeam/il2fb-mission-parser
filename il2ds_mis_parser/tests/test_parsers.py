@@ -190,7 +190,11 @@ class MissionParserTestCase(unittest.TestCase):
                     'code': '959_Static',
                     'code_name': 'SdKfz251',
                     'is_spotter': '1',
-                    'pos': {'x': 31333.62, 'y': 90757.91, 'z': 600.29},
+                    'pos': {
+                        'x': 31333.62,
+                        'y': 90757.91,
+                    },
+                    'rotation_angle': 600.29,
                     'range': 0,
                     'skill': 'rookie',
                 },
@@ -205,8 +209,8 @@ class MissionParserTestCase(unittest.TestCase):
                     'pos': {
                         'x': 134146.89,
                         'y': 88005.43,
-                        'z': 336.92
                     },
+                    'rotation_angle': 336.92,
                     'restorable': True,
                 },
                 {
@@ -214,7 +218,11 @@ class MissionParserTestCase(unittest.TestCase):
                     'code': '1_Static',
                     'code_name': 'G5',
                     'overcharge_time': 1.4,
-                    'pos': {'x': 83759.05, 'y': 115021.15, 'z': 360.0},
+                    'pos': {
+                        'x': 83759.05,
+                        'y': 115021.15,
+                    },
+                    'rotation_angle': 360.00,
                     'skill': 'ace',
                     'timeout': 60
                 },
@@ -239,8 +247,8 @@ class MissionParserTestCase(unittest.TestCase):
                     'pos': {
                         'y': 57962.08,
                         'x': 43471.34,
-                        'z': 630.0
                     },
+                    'rotation_angle': 630.00
                 }
             ],
         }
@@ -481,8 +489,8 @@ class MissionParserTestCase(unittest.TestCase):
                     'pos': {
                         'x': 84141.38,
                         'y': 114216.82,
-                        'z': 360.00,
                     },
+                    'rotation_angle': 360.00,
                     'timeout': 60.0,
                     'amount': 10,
                     'period': 80.0,
@@ -498,8 +506,8 @@ class MissionParserTestCase(unittest.TestCase):
                     'pos': {
                         'x': 84141.38,
                         'y': 114216.82,
-                        'z': 360.00,
                     },
+                    'rotation_angle': 360.00,
                     'timeout': 60.0,
                     'amount': 10,
                     'period': 80.0,

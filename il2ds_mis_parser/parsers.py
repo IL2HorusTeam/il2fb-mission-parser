@@ -307,13 +307,14 @@ class NStationaryParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        code, stationary_object, army_code, pos, params = params[0], params[1], params[2], \
-                                                                   params[3:6], params[7:]
+        code, stationary_object, army_code, pos, rotation_angle, params = params[0], params[1], params[2], \
+                                                                   params[3:5], params[5], params[7:]
         static = ({
             'code': code,
             'code_name': self._get_code_name(stationary_object),
             'army_code': ARMIES_NAME[army_code],
             'pos': to_pos(*pos),
+            'rotation_angle': float(rotation_angle),
         })
         subparser = self.subparsers.get(self._get_subparser_name(stationary_object))
         if subparser:
@@ -378,12 +379,13 @@ class BuildingsParser(CollectingParser):
 
     def parse_line(self, line):
         buildings = {}
-        code, building_object, army_code, pos_x, pos_y, pos_z = line.split()
+        code, building_object, army_code, pos_x, pos_y, rotation_angle = line.split()
         building_type, code_name = building_object.split('$')
         buildings.update({
             'code': code,
             'army_code': ARMIES_NAME[army_code],
-            'pos': to_pos(pos_x, pos_y, pos_z),
+            'pos': to_pos(pos_x, pos_y),
+            'rotation_angle': float(rotation_angle),
         })
         buildings.update(self._decompose_building_object(building_object))
         self.data.append(buildings)
@@ -707,13 +709,14 @@ class RocketParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        (code, code_name, army_code), pos, (timeout, amount, period), target_pos = params[0:3], params[3:6], \
-                                                                                   params[6:9], params[9:]
+        (code, code_name, army_code), pos, \
+        (rotation_angle, timeout, amount, period), target_pos = params[0:3], params[3:5], params[5:9], params[9:]
         self.data.append({
             'code': code,
             'code_name': code_name,
             'army_code': ARMIES_NAME[army_code],
             'pos': to_pos(*pos),
+            'rotation_angle': float(rotation_angle),
             'timeout': float(timeout),
             'amount': int(amount),
             'period': float(period),
