@@ -771,7 +771,7 @@ class RocketParser(CollectingParser):
         })
 
     def process_data(self):
-        return {'rocket': self.data}
+        return {'rockets': self.data}
 
 
 class FileParser(object):

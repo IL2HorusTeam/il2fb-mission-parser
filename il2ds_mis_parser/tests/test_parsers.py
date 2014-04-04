@@ -379,7 +379,7 @@ class MissionParserTestCase(unittest.TestCase):
         }
         self._test_parser(BornPlaceParser, 'BornPlace', lines, expected)
 
-    def test_born_place_aircraft_parse(self):
+    def test_born_place_aircraft_parser(self):
         """
         Test 'BornPlaceN' section parser.
         """
@@ -414,7 +414,7 @@ class MissionParserTestCase(unittest.TestCase):
         self._test_parser(BornPlaceAircraftsParser, 'BornPlace9999',
                           lines, expected)
 
-    def test_born_place_countries_parse(self):
+    def test_born_place_countries_parser(self):
         """
         Test 'BornPlaceCountriesN' section parser.
         """
@@ -523,7 +523,7 @@ class MissionParserTestCase(unittest.TestCase):
             "1_Rocket Fi103_V1_ramp 2 84141.38 114216.82 360.00 60.0 10 80.0",
         ]
         expected = {
-            'rocket': [
+            'rockets': [
                 {
                     'code': "0_Rocket",
                     'code_name': "Fi103_V1_ramp",
