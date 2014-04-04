@@ -456,6 +456,7 @@ class MissionParserTestCase(unittest.TestCase):
         lines = [
             "0_Chief Vehicles.US_Supply_Cpy 1",
             "1_Chief Trains.Germany_CargoTrain/AA 2",
+            "2_Chief Ships.G5 1 60 1 1.0",
         ]
         expected = {
             'chiefs': [
@@ -470,6 +471,15 @@ class MissionParserTestCase(unittest.TestCase):
                     'code_name': "Germany_CargoTrain/AA",
                     'type': "trains",
                     'army_code': "blue",
+                },
+                {
+                    'code': "2_Chief",
+                    'code_name': "G5",
+                    'type': "ships",
+                    'army_code': "red",
+                    'timeout': 60,
+                    'skill': "rookie",
+                    'overcharge_time': 1.0,
                 },
             ],
         }

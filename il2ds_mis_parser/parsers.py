@@ -276,15 +276,23 @@ class ChiefsParser(CollectingParser):
         return section_name == "Chiefs"
 
     def parse_line(self, line):
-        code, type_code, army_code = line.split()
+        params = line.split()
+        (code, type_code, army_code), params = params[0:3], params[3:]
         chief_type, code_name = type_code.split('.')
-
-        self.data.append({
+        chiefs = {
             'code': code,
             'code_name': code_name,
             'type': chief_type.lower(),
             'army_code': ARMIES_NAME[army_code],
-        })
+        }
+        if params:
+            timeout, skill, overcharge_time = params
+            chiefs.update({
+                'timeout': int(timeout),
+                'skill': SKILLS[skill],
+                'overcharge_time': float(overcharge_time),
+            })
+        self.data.append(chiefs)
 
     def process_data(self):
         return {'chiefs': self.data, }
