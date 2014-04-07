@@ -141,27 +141,18 @@ class CollectingParser(SectionParser):
 
 class MainParser(ValuesParser):
     """
-    Parses 'MAIN' section.
+    ## Parses 'MAIN' section.
 
-    The possible settings in the file:
-
-        MAP - Map, which will be held mission.
-
-        TIME - The time of day on the map during mission start.
-
-        TIMECONSTANT - Fixed time of day.
-
-        WEAPONSCONSTANT - Fixed type of weapons.
-
-        CloudType - Weather conditions during the mission.
-
-        CloudHeight - The lower bound of clouds.
-
-        player - The option that describes the configuration of the aircraft or flight player. Used in the offline mode
-
-        army - The color of the army(red or blue). Used in the offline mode
-
-        playerNum - Unknown option.
+    ### The possible settings in the file:
+    - MAP - Map, which will be held mission.
+    - TIME - The time of day on the map during mission start.
+    - TIMECONSTANT - Fixed time of day.
+    - WEAPONSCONSTANT - Fixed type of weapons.
+    - CloudType - Weather conditions during the mission.
+    - CloudHeight - The lower bound of clouds.
+    - player - The option that describes the configuration of the aircraft or flight player. Used in the offline mode
+    - army - The color of the army(red or blue). Used in the offline mode
+    - playerNum - Unknown option.
     """
 
     def check_section_name(self, section_name):
