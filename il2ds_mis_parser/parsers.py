@@ -781,14 +781,6 @@ class WingParser(CollectingParser):
     def check_section_name(self, section_name):
         return section_name == "Wing"
 
-    def parse_line(self, line):
-        self.data.append({
-            'regiment_code': line,
-            'regiment_name': line[:-2],
-            'squadron': int(line[-2])+1,
-            'flight': int(line[-1])+1,
-        })
-
     def process_data(self):
         return {'regiments': self.data}
 

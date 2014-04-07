@@ -560,27 +560,14 @@ class MissionParserTestCase(unittest.TestCase):
         self._test_parser(RocketParser, 'Rocket', lines, expected)
 
     def test_wing_parser(self):
-        """
-
-        """
         lines = [
             "1GvIAP12",
             "1GvIAP13",
         ]
         expected = {
             'regiments': [
-                {
-                    'regiment_code': "1GvIAP12",
-                    'regiment_name': "1GvIAP",
-                    'squadron': 2,
-                    'flight': 3,
-                },
-                {
-                    'regiment_code': "1GvIAP13",
-                    'regiment_name': "1GvIAP",
-                    'squadron': 2,
-                    'flight': 4,
-                },
+                "1GvIAP12",
+                "1GvIAP13",
             ],
         }
         self._test_parser(WingParser, 'Wing', lines, expected)
