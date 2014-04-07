@@ -43,18 +43,24 @@ class MissionParserTestCase(unittest.TestCase):
         lines = [
             "MAP Moscow/sload.ini",
             "TIME 11.75",
+            "TIMECONSTANT 1",
+            "WEAPONSCONSTANT 1",
             "CloudType 1",
             "CloudHeight 1500.0",
+            "player fiLLv24fi00",
             "army 1",
             "playerNum 0",
         ]
         expected = {
             'loader': 'Moscow/sload.ini',
-            'army': 'red',
-            'player_regiment': '0',
+            'time': datetime.time(11, 45),
+            'fixed_time': True,
+            'fixed_weapon': True,
             'weather_type': 'clear',
             'clouds_height': 1500,
-            'time': datetime.time(11, 45),
+            'player_regiment': "fiLLv24fi00",
+            'army': 'red',
+            'player_num': '0',
         }
         self._test_parser(MainParser, 'MAIN', lines, expected)
 
