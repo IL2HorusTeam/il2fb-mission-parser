@@ -141,9 +141,10 @@ class CollectingParser(SectionParser):
 
 class MainParser(ValuesParser):
     """
-    ## Parses 'MAIN' section.
+    **Parses 'MAIN' section.**
 
-    ### The possible settings in the file:
+    The possible settings in the file:
+
     - MAP - Map, which will be held mission.
     - TIME - The time of day on the map during mission start.
     - TIMECONSTANT - Fixed time of day.
