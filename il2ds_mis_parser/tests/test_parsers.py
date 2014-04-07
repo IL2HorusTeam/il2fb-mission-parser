@@ -9,7 +9,7 @@ from il2ds_mis_parser.parsers import (to_bool, to_pos, MainParser,
     SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
-    BornPlaceCountriesParser, RocketParser, ChiefRoadParser)
+    BornPlaceCountriesParser, RocketParser, ChiefRoadParser, WingParser)
 
 
 class CommonsTestCase(unittest.TestCase):
@@ -558,3 +558,29 @@ class MissionParserTestCase(unittest.TestCase):
             ],
         }
         self._test_parser(RocketParser, 'Rocket', lines, expected)
+
+    def test_wing_parser(self):
+        """
+
+        """
+        lines = [
+            "1GvIAP12",
+            "1GvIAP13",
+        ]
+        expected = {
+            'regiments': [
+                {
+                    'regiment_code': "1GvIAP12",
+                    'regiment_name': "1GvIAP",
+                    'squadron': 2,
+                    'flight': 3,
+                },
+                {
+                    'regiment_code': "1GvIAP13",
+                    'regiment_name': "1GvIAP",
+                    'squadron': 2,
+                    'flight': 4,
+                },
+            ],
+        }
+        self._test_parser(WingParser, 'Wing', lines, expected)
