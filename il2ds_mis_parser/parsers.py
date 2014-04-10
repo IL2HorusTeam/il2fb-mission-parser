@@ -887,12 +887,33 @@ class MDSScoutsParser(CollectingParser):
         return {self.output_key: self.data}
 
 
+class FlightDetailsParser(ValuesParser):
+    """
+    Parses description of moving planes or groups of aircraft.
+    """
+
+    def check_section_name(self, section_name):
+        return True
+
+    def init_parser(self, section_name):
+        super(FlightDetailsParser, self).init_parser(section_name)
+        self.output_key = "{0}_details".format(section_name)
+
+    def process_data(self):
+        return {
+            self.output_key: {
+                'aircrafts_quantity': int(self.data['Planes']),
+            }
+        }
+
+
 class FileParser(object):
     """
     Parses whole mission files.
     """
     def __init__(self):
         self.data = {}
+        self.flight_parser = FlightDetailsParser()
         self.parsers = [
             MainParser(),
             SeasonParser(),
@@ -940,6 +961,10 @@ class FileParser(object):
         return line.strip('[]')
 
     def get_parser(self, section_name):
+        flight_codes = self.data.get('flights')
+        if flight_codes is not None and section_name in flight_codes:
+            self.flight_parser.start(section_name)
+            return self.flight_parser
         for parser in self.parsers:
             if parser.start(section_name):
                 return parser
