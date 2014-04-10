@@ -3,13 +3,19 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to IL-2 DS Missions Parser's documentation!
-===================================================
+IL-2 DS Missions Parser's documentation
+=======================================
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
+   :numbered:
+
+   introduction
+   installation
+   usage
+
 
 Modules:
 
@@ -18,6 +24,9 @@ Modules:
 
    modules.rst
 
+Project's repository:
+
+    https://github.com/IL2HorusTeam/il2ds-mis-parser
 
 Indices and tables
 ==================
