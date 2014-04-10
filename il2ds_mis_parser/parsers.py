@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Parsers of whole missions files and separate sections.
+This module provides a set of parsers which can be used to obtain information
+about IL-2 FB missions. Every parser is a one-pass parser. They can be used to
+parse a whole mission file or to parse a single given section as well.
 """
 import datetime
 import math
@@ -66,18 +68,54 @@ def to_pos(x, y, z=None):
 
 class SectionParser(object):
     """
-    Abstract base parser of sections in mission file.
+    Abstract base parser of a single section in a mission file.
+
+    .. _parsers-usage:
+
+    A common approach to parse a section can be described in the following way:
+
+    #. Pass a section name (e.g. 'MAIN') to :meth:`start` method. If parser can
+       process a section with such name, it will return `True` and then you can
+       proceed.
+    #. Pass section lines one-by-one to :meth:`parse_line`.
+    #. When you are done, get your parsed data by calling :meth:`stop`. This
+       will tell the parser that no more data will be given and the parsing can
+       be finished.
+
+    |
+    Example:
+
+    .. code-block:: python
+
+       section_name = "Test section"
+       lines = ["foo", "bar", "baz", "qux", ]
+       parser = SomeParser()
+
+       if parser.start(section_name):
+           for line in lines:
+              parser.parse_line(line)
+           result = parser.stop()
     """
 
     __metaclass__ = ABCMeta
 
+    #: Tells whether a parser was started.
     running = False
+
+    #: An internal buffer which can be redefined.
     data = None
 
     def start(self, section_name):
         """
-        Try to start parser. Return 'True' if 'section_name' fits parser or
-        'False' otherwise.
+        Try to start a parser. If a section with given name can be parsed, the
+        parser will initialize it's internal data structures and set
+        :attr:`running` to `True`.
+
+        :param str section_name: a name of section which is going to be parsed
+
+        :returns: `True` if section with a given name can be parsed by parser,
+                  `False` otherwise
+        :rtype: :class:`bool`
         """
         result = self.check_section_name(section_name)
         if result:
@@ -88,24 +126,44 @@ class SectionParser(object):
     @abstractmethod
     def check_section_name(self, section_name):
         """
-        Return 'True' if 'section_name' can be parsed or 'False' otherwise.
+        Check whether a section with a given name can be parsed.
+
+        :param str section_name: a name of section which is going to be parsed
+
+        :returns: `True` if section with a given name can be parsed by parser,
+                  `False` otherwise
+        :rtype: :class:`bool`
         """
 
     @abstractmethod
     def init_parser(self, section_name):
         """
-        Prepare to parse section.
+        Abstract method which is called by :meth:`start` to initialize
+        internal data structures.
+
+        :param str section_name: a name of section which is going to be parsed
+
+        :returns: nothing
         """
 
     @abstractmethod
     def parse_line(self, line):
         """
-        Parse incoming line.
+        Abstract method which is called manually to parse a line from mission
+        section.
+
+        :param str line: a single line to parse
+
+        :returns: nothing
         """
 
     def stop(self):
         """
-        Stop serction parsing and return processed data.
+        Stops parser and returns fully processed data.
+
+        :returns: a data structure returned by :meth:`process_data` method
+
+        :raises RuntimeError: if parser was not started
         """
         if not self.running:
             raise RuntimeError("Cannot stop parser which is not running")
@@ -115,7 +173,9 @@ class SectionParser(object):
 
     def process_data(self):
         """
-        Return fully parsed data.
+        Returns fully parsed data. Is called by :meth:`stop` method.
+
+        :returns: a data structure which is specific for every subclass
         """
         return self.data
 
