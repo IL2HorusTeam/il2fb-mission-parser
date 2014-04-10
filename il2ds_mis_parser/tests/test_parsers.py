@@ -10,7 +10,7 @@ from il2ds_mis_parser.parsers import (to_bool, to_pos, SectionParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
     BornPlaceCountriesParser, RocketParser, ChiefRoadParser, WingParser,
-    MDSScoutsParser, )
+    MDSScoutsParser, FlightDetailsParser,)
 
 
 class CommonsTestCase(unittest.TestCase):
@@ -619,3 +619,15 @@ class MissionParserTestCase(unittest.TestCase):
             ]
         }
         self._test_parser(MDSScoutsParser, 'MDS_Scouts_Red', lines, expected)
+
+    def test_flight_details_parser(self):
+        lines = [
+            "Planes 1",
+        ]
+
+        expected = {
+            'r0100_details': {
+                'aircrafts_quantity': 1,
+            }
+        }
+        self._test_parser(FlightDetailsParser, 'r0100', lines, expected)
