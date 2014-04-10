@@ -860,6 +860,33 @@ class WingParser(CollectingParser):
         return {'regiments': self.data}
 
 
+class MDSScoutsParser(CollectingParser):
+    """
+    Parses 'MDS_Scouts_' section.
+    """
+    prefix = "MDS_Scouts_"
+
+    def check_section_name(self, section_name):
+        if not section_name.startswith(self.prefix):
+            return False
+        try:
+            self._extract_section_suffix(section_name).lower()
+        except ValueError:
+            return False
+        else:
+            return True
+
+    def init_parser(self, section_name):
+        super(MDSScoutsParser, self).init_parser(section_name)
+        self.output_key = 'scout_plane_%s' % self._extract_section_suffix(section_name).lower()
+
+    def _extract_section_suffix(self, section_name):
+        return section_name.lstrip(self.prefix)
+
+    def process_data(self):
+        return {self.output_key: self.data}
+
+
 class FileParser(object):
     """
     Parses whole mission files.
@@ -883,6 +910,7 @@ class FileParser(object):
             FrontMarkerParser(),
             RocketParser(),
             WingParser(),
+            MDSScoutsParser(),
         ]
 
     def parse(self, file_path):
