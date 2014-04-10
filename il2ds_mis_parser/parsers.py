@@ -42,7 +42,7 @@ def to_pos(x, y, z=None):
     :param str x: a string representation of x coordinate
     :param str y: a string representation of y coordinate
     :param z: a string representation of z coordinate
-    :type z: str or None
+    :type z: :class:`str` or ``None``
 
     :returns: a dictionary of float coordinates which can be accessed by their
               names
@@ -142,7 +142,7 @@ class SectionParser(object):
 
         :param str section_name: a name of section which is going to be parsed
 
-        :returns: nothing
+        :returns: ``None``
         """
 
     @abstractmethod
@@ -153,7 +153,7 @@ class SectionParser(object):
 
         :param str line: a single line to parse
 
-        :returns: nothing
+        :returns: ``None``
         """
 
     def stop(self):
