@@ -70,8 +70,6 @@ class SectionParser(object):
     """
     Abstract base parser of a single section in a mission file.
 
-    .. _parsers-usage:
-
     A common approach to parse a section can be described in the following way:
 
     #. Pass a section name (e.g. 'MAIN') to :meth:`start` method. If parser can
@@ -83,7 +81,7 @@ class SectionParser(object):
        be finished.
 
     |
-    Example:
+    **Example**:
 
     .. code-block:: python
 
@@ -95,6 +93,7 @@ class SectionParser(object):
            for line in lines:
               parser.parse_line(line)
            result = parser.stop()
+
     """
 
     __metaclass__ = ABCMeta
@@ -181,11 +180,26 @@ class SectionParser(object):
 
 
 class ValuesParser(SectionParser):
-
+    """
+    This parser assumes that a section which going to be parsed consists of
+    key-value pairs with unique keys, one pair per line.
+    """
     def init_parser(self, section_name):
+        """
+        Implements abstract method. See :meth:`SectionParser.init_parser` for
+        semantics.
+
+        Initializes dictionary to store raw keys and their values.
+        """
         self.data = {}
 
     def parse_line(self, line):
+        """
+        Implements abstract method. See :meth:`SectionParser.parse_line` for
+        semantics.
+
+        Splits line into key-value pair and puts it into internal dictionary.
+        """
         code, value = line.split()
         self.data.update({code: value})
 
