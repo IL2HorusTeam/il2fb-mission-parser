@@ -949,6 +949,10 @@ class FlightDetailsParser(ValuesParser):
         return {
             self.output_key: {
                 'aircrafts_quantity': int(self.data['Planes']),
+                'skill': SKILLS[self.data['Skill']],
+                'aircraft_code': self.data['Class'][self.data['Class'].index('.')+1:],
+                'fuel': int(self.data['Fuel']),
+                'weapons': self.data['weapons'],
             }
         }
 

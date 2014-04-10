@@ -623,11 +623,19 @@ class MissionParserTestCase(unittest.TestCase):
     def test_flight_details_parser(self):
         lines = [
             "Planes 1",
+            "Skill 1",
+            "Class air.A_20C",
+            "Fuel 100",
+            "weapons default",
         ]
 
         expected = {
             'r0100_details': {
                 'aircrafts_quantity': 1,
+                'skill': "rookie",
+                'aircraft_code': "A_20C",
+                'fuel': 100,
+                'weapons': "default",
             }
         }
         self._test_parser(FlightDetailsParser, 'r0100', lines, expected)
