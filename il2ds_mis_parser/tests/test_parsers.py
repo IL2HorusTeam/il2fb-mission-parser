@@ -5,12 +5,12 @@ Mission parser tests.
 import datetime
 import unittest
 
-from il2ds_mis_parser.parsers import (to_bool, to_pos, MainParser,
-    SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
+from il2ds_mis_parser.parsers import (to_bool, to_pos, SectionParser,
+    MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
     BornPlaceCountriesParser, RocketParser, ChiefRoadParser, WingParser,
-    MDSScoutsParser)
+    MDSScoutsParser, )
 
 
 class CommonsTestCase(unittest.TestCase):
@@ -24,6 +24,31 @@ class CommonsTestCase(unittest.TestCase):
         self.assertEqual(to_pos('100', '200'), {'x': 100, 'y': 200, })
         self.assertEqual(
             to_pos('100', '200', '300'), {'x': 100, 'y': 200, 'z': 300, })
+
+
+class SectionParserTestCase(unittest.TestCase):
+
+    class FooParser(SectionParser):
+
+        def check_section_name(self, section_name):
+            return True
+
+        def init_parser(self, section_name):
+            pass
+
+        def parse_line(self, line):
+            pass
+
+    def setUp(self):
+        self.parser = SectionParserTestCase.FooParser()
+
+    def test_process_data(self):
+        self.parser.start("foo")
+        result = self.parser.stop()
+        self.assertIsNone(result)
+
+    def test_stop_with_failure(self):
+        self.assertRaises(RuntimeError, self.parser.stop)
 
 
 class MissionParserTestCase(unittest.TestCase):
