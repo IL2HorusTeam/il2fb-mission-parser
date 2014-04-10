@@ -181,15 +181,23 @@ class SectionParser(object):
 
 class ValuesParser(SectionParser):
     """
-    This parser assumes that a section which going to be parsed consists of
-    key-value pairs with unique keys, one pair per line.
+    This is a base class for parsers which assume that a section, which is going
+    to be parsed, consists of key-value pairs with unique keys, one pair per
+    line.
+
+    **Section definition example**::
+
+       [some section name]
+       key1 value1
+       key2 value2
+       key3 value3
     """
     def init_parser(self, section_name):
         """
         Implements abstract method. See :meth:`SectionParser.init_parser` for
         semantics.
 
-        Initializes dictionary to store raw keys and their values.
+        Initializes a dictionary to store raw keys and their values.
         """
         self.data = {}
 
@@ -205,11 +213,35 @@ class ValuesParser(SectionParser):
 
 
 class CollectingParser(SectionParser):
+    """
+    This is a base class for parsers which assume that a section, which is
+    going to be parsed, consists of homogeneous lines which describe different
+    objects with one set of attributes.
 
+    **Section definition example**::
+
+       [some section name]
+       object1_attr1 object1_attr2 object1_attr3 object1_attr4
+       object2_attr1 object2_attr2 object2_attr3 object2_attr4
+       object3_attr1 object3_attr2 object3_attr3 object3_attr4
+    """
     def init_parser(self, section_name):
+        """
+        Implements abstract method. See :meth:`SectionParser.init_parser` for
+        semantics.
+
+        Initializes a list for storing collection of objects.
+        """
         self.data = []
 
     def parse_line(self, line):
+        """
+        Implements abstract method. See :meth:`SectionParser.parse_line` for
+        semantics.
+
+        Just puts entire line to internal buffer. You probably will want to
+        redefine this method to do some extra job on each line.
+        """
         self.data.append(line)
 
 
