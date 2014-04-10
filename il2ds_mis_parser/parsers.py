@@ -70,8 +70,6 @@ class SectionParser(object):
     """
     Abstract base parser of a single section in a mission file.
 
-    .. _parsers-usage:
-
     A common approach to parse a section can be described in the following way:
 
     #. Pass a section name (e.g. 'MAIN') to :meth:`start` method. If parser can
@@ -83,7 +81,7 @@ class SectionParser(object):
        be finished.
 
     |
-    Example:
+    **Example**:
 
     .. code-block:: python
 
@@ -95,6 +93,7 @@ class SectionParser(object):
            for line in lines:
               parser.parse_line(line)
            result = parser.stop()
+
     """
 
     __metaclass__ = ABCMeta
@@ -181,21 +180,68 @@ class SectionParser(object):
 
 
 class ValuesParser(SectionParser):
+    """
+    This is a base class for parsers which assume that a section, which is going
+    to be parsed, consists of key-value pairs with unique keys, one pair per
+    line.
 
+    **Section definition example**::
+
+       [some section name]
+       key1 value1
+       key2 value2
+       key3 value3
+    """
     def init_parser(self, section_name):
+        """
+        Implements abstract method. See :meth:`SectionParser.init_parser` for
+        semantics.
+
+        Initializes a dictionary to store raw keys and their values.
+        """
         self.data = {}
 
     def parse_line(self, line):
+        """
+        Implements abstract method. See :meth:`SectionParser.parse_line` for
+        semantics.
+
+        Splits line into key-value pair and puts it into internal dictionary.
+        """
         code, value = line.split()
         self.data.update({code: value})
 
 
 class CollectingParser(SectionParser):
+    """
+    This is a base class for parsers which assume that a section, which is
+    going to be parsed, consists of homogeneous lines which describe different
+    objects with one set of attributes.
 
+    **Section definition example**::
+
+       [some section name]
+       object1_attr1 object1_attr2 object1_attr3 object1_attr4
+       object2_attr1 object2_attr2 object2_attr3 object2_attr4
+       object3_attr1 object3_attr2 object3_attr3 object3_attr4
+    """
     def init_parser(self, section_name):
+        """
+        Implements abstract method. See :meth:`SectionParser.init_parser` for
+        semantics.
+
+        Initializes a list for storing collection of objects.
+        """
         self.data = []
 
     def parse_line(self, line):
+        """
+        Implements abstract method. See :meth:`SectionParser.parse_line` for
+        semantics.
+
+        Just puts entire line to internal buffer. You probably will want to
+        redefine this method to do some extra job on each line.
+        """
         self.data.append(line)
 
 
