@@ -151,12 +151,12 @@ WEATHER_RAIN_OR_SNOW = 'rain_or_snow'
 WEATHER_THUNDERSTORM = 'thunderstorm'
 
 WEATHER_TYPES_NAMES = {
-    WEATHER_CLEAR: _("cloudless"),
-    WEATHER_GOOD: _("clear"),
-    WEATHER_HAZY: _("haze"),
-    WEATHER_POOR: _("slight_fog"),
-    WEATHER_BLIND: _("fog"),
-    WEATHER_RAIN_OR_SNOW: _("rain_or_snow"),
+    WEATHER_CLEAR: _("clear"),
+    WEATHER_GOOD: _("good"),
+    WEATHER_HAZY: _("hazy"),
+    WEATHER_POOR: _("poor"),
+    WEATHER_BLIND: _("blind"),
+    WEATHER_RAIN_OR_SNOW: _("rain or snow"),
     WEATHER_THUNDERSTORM: _("thunderstorm"),
 }
 
@@ -202,7 +202,7 @@ TURBULENCE_TYPES_NAMES = {
     TURBULENCE_LOW: _("low"),
     TURBULENCE_MODERATE: _("moderate"),
     TURBULENCE_STRONG: _("strong"),
-    TURBULENCE_VERY_STRONG: _("very_strong"),
+    TURBULENCE_VERY_STRONG: _("very strong"),
 }
 
 TURBULENCE_TYPES_MAP = {
