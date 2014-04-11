@@ -22,6 +22,7 @@ ARMY_NONE = '0'
 ARMY_RED = '1'
 ARMY_BLUE = '2'
 
+#: Maps string values of army codes into army code names
 ARMIES = {
     ARMY_NONE: None,
     ARMY_RED: 'red',
@@ -74,6 +75,7 @@ WEATHER_FOG = '4'
 WEATHER_RAIN_OR_SNOW = '5'
 WEATHER_THUNDERSTORM = '6'
 
+#: Maps string values of weather types into weather code names
 WEATHER_TYPES = {
     WEATHER_CLOUDLESS: 'cloudless',
     WEATHER_CLEAR: 'clear',

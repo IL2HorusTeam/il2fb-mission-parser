@@ -11,37 +11,16 @@ start::
     >>> mission = il2ds_mis_parser.parse('path/to/your/mission.mis')
 
 This will put a big dictionary into a ``mission`` variable. That's it. You do
-not need to do something else. Go formard to :ref:`output-format` to know what
-is contained inside ``mission`` or you can dig around next 2 sections.
+not need to do something else. Go formard to
+:doc:`output format description <parsers/file_parser>` to know what is
+contained inside ``mission`` or you can dig around next 2 sections.
 
 Where it comes from
 ^^^^^^^^^^^^^^^^^^^
 
 Let's talk about what's going on above. This library provides a Python module
 called :mod:`il2ds_mis_parser.parsers` which has a lot of parsers for each kind
-of section in mission files. There are:
-
-#. MainParser
-#. SeasonParser
-#. WeatherParser
-#. MDSParser
-#. MDSScoutsParser
-#. RespawnTimeParser
-#. ChiefsParser
-#. ChiefRoadParser
-#. NStationaryParser
-#. BuildingsParser
-#. TargetParser
-#. BornPlaceParser
-#. BornPlaceAircraftsParser
-#. BornPlaceCountriesParser
-#. StaticCameraParser
-#. BridgeParser
-#. HouseParser
-#. FrontMarkerParser
-#. RocketParser
-#. WingParser
-#. FileParser
+of section in mission files (see :doc:`all of them <output_format>`).
 
 The function :func:`~il2ds_mis_parser.parse`, which was used above, is a
 reference to :meth:`~il2ds_mis_parser.parsers.FileParser.parse` method which
@@ -120,8 +99,3 @@ it in any suitable manner.
 When you have passed all the data, call
 :meth:`~il2ds_mis_parser.parsers.SectionParser.stop` method to stop parsing.
 This method will return fully-parsed data which is a dictionary in general.
-
-.. _output-format:
-
-Output format
-^^^^^^^^^^^^^

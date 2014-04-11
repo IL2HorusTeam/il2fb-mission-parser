@@ -247,19 +247,7 @@ class CollectingParser(SectionParser):
 
 class MainParser(ValuesParser):
     """
-    **Parses 'MAIN' section.**
-
-    The possible settings in the file:
-
-    - MAP - Map, which will be held mission.
-    - TIME - The time of day on the map during mission start.
-    - TIMECONSTANT - Fixed time of day.
-    - WEAPONSCONSTANT - Fixed type of weapons.
-    - CloudType - Weather conditions during the mission.
-    - CloudHeight - The lower bound of clouds.
-    - player - The option that describes the configuration of the aircraft or flight player. Used in the offline mode
-    - army - The color of the army(red or blue). Used in the offline mode
-    - playerNum - Unknown option.
+    Parses ``MAIN`` section. :ref:`More info <main-parser>`.
     """
 
     def check_section_name(self, section_name):
@@ -273,14 +261,18 @@ class MainParser(ValuesParser):
     def process_data(self):
         return {
             'loader': self.data['MAP'],
-            'time': self._to_time(self.data['TIME']),
-            'fixed_time': self.data.has_key('TIMECONSTANT'),
-            'fixed_weapon': self.data.has_key('WEAPONSCONSTANT'),
+            'time': {
+                'value': self._to_time(self.data['TIME']),
+                'is_fixed': self.data.has_key('TIMECONSTANT'),
+            },
+            'fixed_loadout': self.data.has_key('WEAPONSCONSTANT'),
             'weather_type': WEATHER_TYPES[self.data['CloudType']],
             'clouds_height': float(self.data['CloudHeight']),
-            'player_regiment': None if not self.data.has_key('player') else self.data['player'],
-            'army': ARMIES[self.data['army']],
-            'player_num': self.data['playerNum'],
+            'player': {
+                'army': ARMIES[self.data['army']],
+                'regiment': None if not self.data.has_key('player') else self.data['player'],
+                'number': int(self.data['playerNum']),
+            },
         }
 
 

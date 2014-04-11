@@ -9,12 +9,13 @@ IL-2 DS Missions Parser's documentation
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :numbered:
 
    introduction
    installation
    usage
+   output_format
 
 
 Modules:
