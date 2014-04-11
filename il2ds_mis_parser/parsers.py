@@ -990,16 +990,14 @@ class FlightDetailsParser(ValuesParser):
     def _flight(self, aircrafts_count):
         self.flight_details['aircrafts'] = []
         for number in range(0, aircrafts_count):
-            self.flight_details['aircrafts'].append(
-                {
-                    'number': number+1,
-                    'skill': self._get_skill_code('Skill{0}'.format(number)),
-                    'aircraft_skin': self._get_skin_code('skin{0}'.format(number)),
-                    'pilot_skin': self._get_skin_code('pilot{0}'.format(number)),
-                    'has_markings': not self.data.has_key('numberOn{0}'.format(number)),
-                    'spawn_point': self._get_spawn_point('spawn{0}'.format(number)),
-                },
-            )
+            self.flight_details['aircrafts'].append({
+                'number': number+1,
+                'skill': self._get_skill_code('Skill{0}'.format(number)),
+                'aircraft_skin': self._get_skin_code('skin{0}'.format(number)),
+                'pilot_skin': self._get_skin_code('pilot{0}'.format(number)),
+                'has_markings': not self.data.has_key('numberOn{0}'.format(number)),
+                'spawn_point': self._get_spawn_point('spawn{0}'.format(number)),
+            })
 
     def process_data(self):
         aircrafts_count = int(self.data['Planes'])
