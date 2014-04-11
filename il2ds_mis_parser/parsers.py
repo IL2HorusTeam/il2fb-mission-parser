@@ -247,7 +247,8 @@ class CollectingParser(SectionParser):
 
 class MainParser(ValuesParser):
     """
-    Parses ``MAIN`` section. View :ref:`detailed description <main-parser>`.
+    Parses ``MAIN`` section.
+    View :ref:`detailed description <main-parser>`.
     """
 
     def check_section_name(self, section_name):
@@ -286,7 +287,8 @@ class MainParser(ValuesParser):
 
 class SeasonParser(ValuesParser):
     """
-    Parses ``SEASON`` section. View :ref:`detailed description <season-parser>`.
+    Parses ``SEASON`` section.
+    View :ref:`detailed description <season-parser>`.
     """
 
     def check_section_name(self, section_name):
@@ -311,7 +313,7 @@ class SeasonParser(ValuesParser):
 
 class WeatherParser(ValuesParser):
     """
-    Parses 'WEATHER' section.
+    Parses ``WEATHER`` section.
     """
 
     def check_section_name(self, section_name):
@@ -332,7 +334,7 @@ class WeatherParser(ValuesParser):
 
 class MDSParser(ValuesParser):
     """
-    Parses 'MDS' section.
+    Parses ``MDS`` section.
     """
 
     def check_section_name(self, section_name):
@@ -378,7 +380,7 @@ class MDSParser(ValuesParser):
 
 class RespawnTimeParser(ValuesParser):
     """
-    Parses 'RespawnTime' section.
+    Parses ``RespawnTime`` section.
     """
 
     def check_section_name(self, section_name):
@@ -400,7 +402,7 @@ class RespawnTimeParser(ValuesParser):
 
 class ChiefsParser(CollectingParser):
     """
-    Parses 'Chiefs' section.
+    Parses ``Chiefs`` section.
     """
 
     def check_section_name(self, section_name):
@@ -431,7 +433,7 @@ class ChiefsParser(CollectingParser):
 
 class ChiefRoadParser(CollectingParser):
     """
-    Parses 'N_Chief_Road' section.
+    Parses ``N_Chief_Road`` section.
     """
     suffix = "_Chief_Road"
 
@@ -450,9 +452,13 @@ class ChiefRoadParser(CollectingParser):
 
     def init_parser(self, section_name):
         super(ChiefRoadParser, self).init_parser(section_name)
-        self.output_key = "{0}_chief_road".format(self._extract_object_code(section_name))
+        object_code = self._extract_object_code(section_name)
+        self.output_key = "{0}_chief_road".format(object_code)
 
     def parse_line(self, line):
+        """
+        .. todo:: mark user-defined points
+        """
         params = line.split()
         pos, params = params[0:2], params[3:4]
         chief_road = {
@@ -470,7 +476,7 @@ class ChiefRoadParser(CollectingParser):
 
 class NStationaryParser(CollectingParser):
     """
-    Parses 'NStationary' section.
+    Parses ``NStationary`` section.
     """
     def init_parser(self, section_name):
         super(NStationaryParser, self).init_parser(section_name)
@@ -485,8 +491,8 @@ class NStationaryParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        code, stationary_object, army, pos, rotation_angle, params = params[0], params[1], params[2], \
-                                                                   params[3:5], params[5], params[7:]
+        code, stationary_object, army, pos, rotation_angle, params = \
+            params[0], params[1], params[2], params[3:5], params[5], params[7:]
         static = ({
             'code': code,
             'code_name': self._get_code_name(stationary_object),
@@ -510,7 +516,7 @@ class NStationaryParser(CollectingParser):
 
     def _parse_artillery(self, params):
         """
-        Parse additional options category "artillery"
+        Parse additional options for ``artillery`` category
         """
         distance, skill, spotter = params
         return {
@@ -521,7 +527,7 @@ class NStationaryParser(CollectingParser):
 
     def _parse_planes(self, params):
         """
-        Parse additional options category "planes"
+        Parse additional options for ``planes`` category
         """
         (air_force, allows_spawning_restorable), (skin, has_markings) = params[:2], params[3:]
         return {
@@ -534,7 +540,7 @@ class NStationaryParser(CollectingParser):
 
     def _parse_ships(self, params):
         """
-        Parse additional options category "ships"
+        Parse additional options for ``ships`` category
         """
         timeout, skill, recharge_time = params
         return {
@@ -549,7 +555,7 @@ class NStationaryParser(CollectingParser):
 
 class BuildingsParser(CollectingParser):
     """
-    Parses 'Buildings' section.
+    Parses ``Buildings`` section.
     """
 
     def check_section_name(self, section_name):
@@ -581,7 +587,7 @@ class BuildingsParser(CollectingParser):
 
 class TargetParser(CollectingParser):
     """
-    Parses 'Target' section.
+    Parses ``Target`` section.
     """
 
     def check_section_name(self, section_name):
@@ -652,7 +658,7 @@ class TargetParser(CollectingParser):
 
     def _parse_recon(self, params):
         """
-        Parse extra parameters for targets with type 'recon.
+        Parse extra parameters for targets with 'recon' type.
         """
         (requires_landing, pos_x, pos_y, radius) = params[:4]
 
@@ -674,7 +680,7 @@ class TargetParser(CollectingParser):
 
 class BornPlaceParser(CollectingParser):
     """
-    Parses 'BornPlace' section.
+    Parses ``BornPlace`` section.
     """
     def check_section_name(self, section_name):
         return section_name == "BornPlace"
@@ -732,7 +738,7 @@ class BornPlaceParser(CollectingParser):
 
 class BornPlaceAircraftsParser(CollectingParser):
     """
-    Parses 'BornPlaceN' section.
+    Parses ``BornPlaceN`` section.
     """
     prefix = "BornPlace"
 
@@ -781,7 +787,7 @@ class BornPlaceAircraftsParser(CollectingParser):
 
 class BornPlaceCountriesParser(CollectingParser):
     """
-    Parses 'BornPlaceCountriesN' section.
+    Parses ``BornPlaceCountriesN`` section.
     """
     prefix = "BornPlaceCountries"
 
@@ -810,7 +816,7 @@ class BornPlaceCountriesParser(CollectingParser):
 
 class StaticCameraParser(CollectingParser):
     """
-    Parses 'StaticCamera' section.
+    Parses ``StaticCamera`` section.
     """
 
     def check_section_name(self, section_name):
@@ -829,7 +835,7 @@ class StaticCameraParser(CollectingParser):
 
 class BridgeParser(CollectingParser):
     """
-    Parses 'Bridge' section.
+    Parses ``Bridge`` section.
     """
 
     def check_section_name(self, section_name):
@@ -844,7 +850,7 @@ class BridgeParser(CollectingParser):
 
 class HouseParser(CollectingParser):
     """
-    Parses 'House' section.
+    Parses ``House`` section.
     """
 
     def check_section_name(self, section_name):
@@ -859,7 +865,7 @@ class HouseParser(CollectingParser):
 
 class FrontMarkerParser(CollectingParser):
     """
-    Parses 'FrontMarker' section.
+    Parses ``FrontMarker`` section.
     """
 
     def check_section_name(self, section_name):
@@ -879,7 +885,7 @@ class FrontMarkerParser(CollectingParser):
 
 class RocketParser(CollectingParser):
     """
-    Parses 'Rocket' section.
+    Parses ``Rocket`` section.
     """
 
     def check_section_name(self, section_name):
@@ -907,7 +913,7 @@ class RocketParser(CollectingParser):
 
 class WingParser(CollectingParser):
     """
-    Parses 'Wing' section.
+    Parses ``Wing`` section.
     """
     def check_section_name(self, section_name):
         return section_name == "Wing"
@@ -918,7 +924,7 @@ class WingParser(CollectingParser):
 
 class MDSScoutsParser(CollectingParser):
     """
-    Parses 'MDS_Scouts_' section.
+    Parses ``MDS_Scouts`` section.
     """
     prefix = "MDS_Scouts_"
 
@@ -945,7 +951,7 @@ class MDSScoutsParser(CollectingParser):
 
 class FlightDetailsParser(ValuesParser):
     """
-    Parses description of moving planes or groups of aircraft.
+    Parses settings for a moving flight group.
     """
 
     def check_section_name(self, section_name):
@@ -1018,7 +1024,7 @@ class FlightDetailsParser(ValuesParser):
 
 class FileParser(object):
     """
-    Parses whole mission files.
+    Parses a whole mission file.
     """
     def __init__(self):
         self.data = {}
@@ -1080,5 +1086,7 @@ class FileParser(object):
         return None
 
     def process_data(self):
-        # TODO:
+        """
+        .. todo:: organize final output
+        """
         return self.data
