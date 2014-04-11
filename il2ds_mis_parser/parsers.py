@@ -993,22 +993,21 @@ class FlightDetailsParser(ValuesParser):
             return None
 
     def _get_skill_code(self, skill_key):
-        if self.data.has_key(skill_key):
-            return SKILLS[self.data[skill_key]]
+        if self.data.has_key('Skill'):
+            return SKILLS[self.data['Skill']]
         else:
-            return "default"
+            return SKILLS[self.data[skill_key]]
 
     def _flight(self, aircrafts_count):
+        self.flight_details['aircrafts'] = []
         for number in range(0, aircrafts_count):
-            aircraft_key = 'aircraft_%s' % (number + 1)
-            self.flight_details.update({
-                aircraft_key: {
-                    'skill': self._get_skill_code('Skill{0}'.format(number)),
-                    'aircraft_skin': self._get_skin_code('skin{0}'.format(number)),
-                    'pilot_skin': self._get_skin_code('pilot{0}'.format(number)),
-                    'markings': not self.data.has_key('numberOn{0}'.format(number)),
-                    'spawn_point': self._get_spawn_point('spawn{0}'.format(number)),
-                }
+            self.flight_details['aircrafts'].append({
+                'number': number+1,
+                'skill': self._get_skill_code('Skill{0}'.format(number)),
+                'aircraft_skin': self._get_skin_code('skin{0}'.format(number)),
+                'pilot_skin': self._get_skin_code('pilot{0}'.format(number)),
+                'has_markings': not self.data.has_key('numberOn{0}'.format(number)),
+                'spawn_point': self._get_spawn_point('spawn{0}'.format(number)),
             })
 
     def process_data(self):
@@ -1023,16 +1022,8 @@ class FlightDetailsParser(ValuesParser):
             'parachute_present': self.data.has_key('Parachute') == False,
             'only_ai': self.data.has_key('OnlyAI') == True,
         })
-        if aircrafts_count == 1:
-            self.flight_details.update({
-                'skill': SKILLS[self.data['Skill']],
-                'aircraft_skin': self._get_skin_code('skin0'),
-                'pilot_skin': self._get_skin_code('pilot0'),
-                'markings': self.data.has_key('numberOn0') == False,
-                'point_spawn': self._get_point_spawn('spawn0'),
-            })
-        else:
-            self._flight(int(self.data['Planes']))
+
+        self._flight(aircrafts_count)
 
         return {self.output_key: self.flight_details}
 
