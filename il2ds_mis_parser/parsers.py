@@ -378,6 +378,33 @@ class MDSParser(ValuesParser):
         }
 
 
+class MDSScoutsParser(CollectingParser):
+    """
+    Parses ``MDS_Scouts`` section.
+    """
+    prefix = "MDS_Scouts_"
+
+    def check_section_name(self, section_name):
+        if not section_name.startswith(self.prefix):
+            return False
+        try:
+            self._extract_section_suffix(section_name).lower()
+        except ValueError:
+            return False
+        else:
+            return True
+
+    def init_parser(self, section_name):
+        super(MDSScoutsParser, self).init_parser(section_name)
+        self.output_key = 'scout_plane_%s' % self._extract_section_suffix(section_name).lower()
+
+    def _extract_section_suffix(self, section_name):
+        return section_name.lstrip(self.prefix)
+
+    def process_data(self):
+        return {self.output_key: self.data}
+
+
 class RespawnTimeParser(ValuesParser):
     """
     Parses ``RespawnTime`` section.
@@ -919,34 +946,7 @@ class WingParser(CollectingParser):
         return section_name == "Wing"
 
     def process_data(self):
-        return {'regiments': self.data}
-
-
-class MDSScoutsParser(CollectingParser):
-    """
-    Parses ``MDS_Scouts`` section.
-    """
-    prefix = "MDS_Scouts_"
-
-    def check_section_name(self, section_name):
-        if not section_name.startswith(self.prefix):
-            return False
-        try:
-            self._extract_section_suffix(section_name).lower()
-        except ValueError:
-            return False
-        else:
-            return True
-
-    def init_parser(self, section_name):
-        super(MDSScoutsParser, self).init_parser(section_name)
-        self.output_key = 'scout_plane_%s' % self._extract_section_suffix(section_name).lower()
-
-    def _extract_section_suffix(self, section_name):
-        return section_name.lstrip(self.prefix)
-
-    def process_data(self):
-        return {self.output_key: self.data}
+        return {'flights': self.data}
 
 
 class FlightDetailsParser(ValuesParser):
@@ -960,66 +960,70 @@ class FlightDetailsParser(ValuesParser):
     def init_parser(self, section_name):
         super(FlightDetailsParser, self).init_parser(section_name)
         self.output_key = "{0}_details".format(section_name)
-        self.regiment_details = self._decompose_section_name(section_name)
+        self.flight_details = self._decompose_section_name(section_name)
 
     def _decompose_section_name(self, section_name):
         return {
             'regiment_code': section_name[:-2],
-            'squadron': int(section_name[-2])+1,
-            'flight': int(section_name[-1])+1,
+            'squadron_number': int(section_name[-2])+1,
+            'flight_number': int(section_name[-1])+1,
         }
 
     def _get_skin_code(self, skin_key):
-                if self.data.has_key(skin_key):
-                    return self.data[skin_key]
-                else:
-                    return "default"
+        if self.data.has_key(skin_key):
+            return self.data[skin_key]
+        else:
+            return "default"
 
-    def _get_point_spawn(self, spawn_key):
-                if self.data.has_key(spawn_key):
-                    return self.data[spawn_key]
-                else:
-                    return None
+    def _get_spawn_point(self, spawn_key):
+        if self.data.has_key(spawn_key):
+            return self.data[spawn_key]
+        else:
+            return None
 
     def _get_skill_code(self, skill_key):
-                if self.data.has_key(skill_key):
-                    return SKILLS[self.data[skill_key]]
-                else:
-                    return "default"
+        if self.data.has_key(skill_key):
+            return SKILLS[self.data[skill_key]]
+        else:
+            return "default"
 
-    def _flight(self, aircrafts_quantity):
-        for number in range(0, aircrafts_quantity):
+    def _flight(self, aircrafts_count):
+        for number in range(0, aircrafts_count):
             aircraft_key = 'aircraft_%s' % (number + 1)
-            self.regiment_details.update({
+            self.flight_details.update({
                 aircraft_key: {
                     'skill': self._get_skill_code('Skill{0}'.format(number)),
                     'aircraft_skin': self._get_skin_code('skin{0}'.format(number)),
                     'pilot_skin': self._get_skin_code('pilot{0}'.format(number)),
-                    'markings': self.data.has_key('numberOn{0}'.format(number)) == False,
-                    'point_spawn': self._get_point_spawn('spawn{0}'.format(number)),
+                    'markings': not self.data.has_key('numberOn{0}'.format(number)),
+                    'spawn_point': self._get_spawn_point('spawn{0}'.format(number)),
                 }
             })
 
     def process_data(self):
-        self.regiment_details.update({
-            'aircrafts_quantity': int(self.data['Planes']),
-            'aircraft_code': self.data['Class'][self.data['Class'].index('.')+1:],
+        aircrafts_count = int(self.data['Planes'])
+        aircraft_code = self.data['Class'][self.data['Class'].index('.')+1:]
+
+        self.flight_details.update({
+            'aircrafts_count': aircrafts_count,
+            'aircraft_code': aircraft_code,
             'fuel': int(self.data['Fuel']),
-            'weapons': self.data['weapons'],
-            'parachute': self.data.has_key('Parachute') == False,
+            'loadout': self.data['weapons'],
+            'parachute_present': self.data.has_key('Parachute') == False,
             'only_ai': self.data.has_key('OnlyAI') == True,
         })
-        if int(self.data['Planes']) > 1:
-            self._flight(int(self.data['Planes']))
-        elif self.data['Planes'] == "1":
-            self.regiment_details.update({
+        if aircrafts_count == 1:
+            self.flight_details.update({
                 'skill': SKILLS[self.data['Skill']],
                 'aircraft_skin': self._get_skin_code('skin0'),
                 'pilot_skin': self._get_skin_code('pilot0'),
                 'markings': self.data.has_key('numberOn0') == False,
                 'point_spawn': self._get_point_spawn('spawn0'),
             })
-        return {self.output_key: self.regiment_details}
+        else:
+            self._flight(int(self.data['Planes']))
+
+        return {self.output_key: self.flight_details}
 
 
 class FileParser(object):

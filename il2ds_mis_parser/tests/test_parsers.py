@@ -51,7 +51,7 @@ class SectionParserTestCase(unittest.TestCase):
         self.assertRaises(RuntimeError, self.parser.stop)
 
 
-class MissionParserTestCase(unittest.TestCase):
+class ParserTestCaseMixin(object):
 
     maxDiff = 5000
 
@@ -61,6 +61,9 @@ class MissionParserTestCase(unittest.TestCase):
         for line in lines:
             parser.parse_line(line)
         self.assertEqual(expected, parser.stop())
+
+
+class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_main_parser(self):
         """
@@ -209,6 +212,23 @@ class MissionParserTestCase(unittest.TestCase):
             'no_players_count_on_home_base': False,
         }
         self._test_parser(MDSParser, 'MDS', lines, expected)
+
+    def test_mds_scouts_parser(self):
+        lines = [
+            "B-25H-1NA",
+            "B-25J-1NA",
+            "BeaufighterMk21",
+        ]
+
+        expected = {
+            'scout_plane_red': [
+                "B-25H-1NA",
+                "B-25J-1NA",
+                "BeaufighterMk21",
+            ]
+        }
+        self._test_parser(MDSScoutsParser, 'MDS_Scouts_Red', lines, expected)
+
 
     def test_stationary_parser(self):
         """
@@ -601,28 +621,15 @@ class MissionParserTestCase(unittest.TestCase):
             "1GvIAP13",
         ]
         expected = {
-            'regiments': [
+            'flights': [
                 "1GvIAP12",
                 "1GvIAP13",
             ],
         }
         self._test_parser(WingParser, 'Wing', lines, expected)
 
-    def test_mds_scouts_parser(self):
-        lines = [
-            "B-25H-1NA",
-            "B-25J-1NA",
-            "BeaufighterMk21",
-        ]
 
-        expected = {
-            'scout_plane_red': [
-                "B-25H-1NA",
-                "B-25J-1NA",
-                "BeaufighterMk21",
-            ]
-        }
-        self._test_parser(MDSScoutsParser, 'MDS_Scouts_Red', lines, expected)
+class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_flight_details_parser(self):
         lines = [
@@ -641,27 +648,27 @@ class MissionParserTestCase(unittest.TestCase):
         expected = {
             '3GvIAP00_details': {
                 'regiment_code': "3GvIAP",
-                'squadron': 1,
-                'flight': 1,
-                'aircrafts_quantity': 2,
+                'squadron_number': 1,
+                'flight_number': 1,
+                'aircrafts_count': 2,
                 'aircraft_code': "A_20C",
                 'fuel': 100,
-                'weapons': "default",
-                'parachute': True,
+                'loadout': "default",
+                'parachute_present': True,
                 'only_ai': False,
                 'aircraft_1': {
                     'skill': "rookie",
                     'aircraft_skin': "Funky.bmp",
                     'pilot_skin': "default",
                     'markings': True,
-                    'point_spawn': "0_Static",
+                    'spawn_point': "0_Static",
                 },
                 'aircraft_2': {
                     'skill': "veteran",
                     'aircraft_skin': "default",
                     'pilot_skin': "default",
                     'markings': False,
-                    'point_spawn': None,
+                    'spawn_point': None,
                 },
             }
         }
