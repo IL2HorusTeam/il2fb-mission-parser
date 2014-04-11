@@ -9,7 +9,12 @@ import math
 
 from abc import ABCMeta, abstractmethod
 
-from il2ds_mis_parser.constants import *
+from il2ds_mis_parser.constants import (SKILLS_MAP, ARMIES_MAP, GUST_TYPES_MAP,
+    TURBULENCE_TYPES_MAP, TARGET_TYPE_DESTROY_CODE,
+    TARGET_TYPE_DESTROY_BRIDGE_CODE, TARGET_TYPE_DESTROY_AREA_CODE,
+    TARGET_TYPE_RECON_CODE, TARGET_TYPE_ESCORT_CODE, TARGET_TYPE_COVER_CODE,
+    TARGET_TYPE_COVER_AREA_CODE, TARGET_TYPE_COVER_BRIDGE_CODE,
+    TARGET_TYPES_MAP, TARGET_PRIORITIES_MAP, WEATHER_TYPES_MAP, AIR_FORCES, )
 from il2ds_mis_parser.helpers import _
 
 
@@ -278,10 +283,10 @@ class MainParser(ValuesParser):
                 'is_fixed': 'TIMECONSTANT' in self.data,
             },
             'fixed_loadout': 'WEAPONSCONSTANT' in self.data,
-            'weather_type': WEATHER_TYPES[self.data['CloudType']],
+            'weather_type': WEATHER_TYPES_MAP[self.data['CloudType']],
             'clouds_height': float(self.data['CloudHeight']),
             'player': {
-                'army': ARMIES[self.data['army']],
+                'army': ARMIES_MAP[self.data['army']],
                 'regiment': self.data.get('player'),
                 'number': int(self.data['playerNum']),
             },
@@ -338,8 +343,8 @@ class WeatherParser(ValuesParser):
                     'direction': float(self.data['WindDirection']),
                     'speed': float(self.data['WindSpeed']),
                 },
-                'gust': GUST_TYPES[self.data['Gust']],
-                'turbulence': TURBULENCE_TYPES[self.data['Turbulence']],
+                'gust': GUST_TYPES_MAP[self.data['Gust']],
+                'turbulence': TURBULENCE_TYPES_MAP[self.data['Turbulence']],
             },
         }
 
@@ -455,13 +460,13 @@ class ChiefsParser(CollectingParser):
             'code': code,
             'code_name': code_name,
             'type': chief_type.lower(),
-            'army': ARMIES[army],
+            'army': ARMIES_MAP[army],
         }
         if params:
             timeout, skill, recharge_time = params
             chiefs.update({
                 'timeout': int(timeout),
-                'skill': SKILLS[skill],
+                'skill': SKILLS_MAP[skill],
                 'recharge_time': float(recharge_time),
             })
         self.data.append(chiefs)
@@ -520,9 +525,9 @@ class NStationaryParser(CollectingParser):
     def init_parser(self, section_name):
         super(NStationaryParser, self).init_parser(section_name)
         self.subparsers = {
-            STATIONARY_TYPE_ARTILLERY: self._parse_artillery,
-            STATIONARY_TYPE_PLANES: self._parse_planes,
-            STATIONARY_TYPE_SHIPS: self._parse_ships,
+            'artillery': self._parse_artillery,
+            'planes': self._parse_planes,
+            'ships': self._parse_ships,
         }
 
     def check_section_name(self, section_name):
@@ -535,11 +540,13 @@ class NStationaryParser(CollectingParser):
         static = ({
             'code': code,
             'code_name': self._get_code_name(stationary_object),
-            'army': ARMIES[army],
+            'army': ARMIES_MAP[army],
             'pos': to_pos(*pos),
             'rotation_angle': float(rotation_angle),
         })
-        subparser = self.subparsers.get(self._get_subparser_name(stationary_object))
+
+        subparser_name = self._get_subparser_name(stationary_object)
+        subparser = self.subparsers.get(subparser_name)
         if subparser:
             static.update(subparser(params))
         self.data.append(static)
@@ -548,10 +555,13 @@ class NStationaryParser(CollectingParser):
         if subparser_name.startswith('ships'):
             return "ships"
         else:
-            return subparser_name[subparser_name.index('.')+1:subparser_name.rindex('.')]
+            start = subparser_name.index('.') + 1
+            stop = subparser_name.rindex('.')
+            return subparser_name[start:stop]
 
     def _get_code_name(self, code):
-        return code[code.index('$')+1:]
+        start = code.index('$') + 1
+        return code[start:]
 
     def _parse_artillery(self, params):
         """
@@ -560,7 +570,7 @@ class NStationaryParser(CollectingParser):
         distance, skill, spotter = params
         return {
             'range': int(distance),
-            'skill': SKILLS[skill],
+            'skill': SKILLS_MAP[skill],
             'is_spotter': to_bool(spotter),
         }
 
@@ -568,7 +578,8 @@ class NStationaryParser(CollectingParser):
         """
         Parse additional options for ``planes`` category
         """
-        (air_force, allows_spawning_restorable), (skin, has_markings) = params[:2], params[3:]
+        (air_force, allows_spawning_restorable), (skin, has_markings) = \
+            params[:2], params[3:]
         return {
             'air_force': AIR_FORCES[air_force],
             'allows_spawning': to_bool(allows_spawning_restorable),
@@ -584,7 +595,7 @@ class NStationaryParser(CollectingParser):
         timeout, skill, recharge_time = params
         return {
             'timeout': int(timeout),
-            'skill': SKILLS[skill],
+            'skill': SKILLS_MAP[skill],
             'recharge_time': float(recharge_time),
         }
 
@@ -606,7 +617,7 @@ class BuildingsParser(CollectingParser):
         building_type, code_name = building_object.split('$')
         buildings.update({
             'code': code,
-            'army': ARMIES[army],
+            'army': ARMIES_MAP[army],
             'pos': to_pos(pos_x, pos_y),
             'rotation_angle': float(rotation_angle),
         })
@@ -635,22 +646,24 @@ class TargetParser(CollectingParser):
     def init_parser(self, section_name):
         super(TargetParser, self).init_parser(section_name)
         self.subparsers = {
-            TARGET_TYPE_DESTROY: self._parse_destroy_or_cover_or_escort,
-            TARGET_TYPE_DESTROY_BRIDGE: self._parse_destroy_or_cover_bridge,
-            TARGET_TYPE_DESTROY_AREA: self._parse_destroy_or_cover_area,
-            TARGET_TYPE_RECON: self._parse_recon,
-            TARGET_TYPE_ESCORT: self._parse_destroy_or_cover_or_escort,
-            TARGET_TYPE_COVER: self._parse_destroy_or_cover_or_escort,
-            TARGET_TYPE_COVER_AREA: self._parse_destroy_or_cover_area,
-            TARGET_TYPE_COVER_BRIDGE: self._parse_destroy_or_cover_bridge,
+            TARGET_TYPE_DESTROY_CODE: self._parse_destroy_or_cover_or_escort,
+            TARGET_TYPE_DESTROY_BRIDGE_CODE: self._parse_destroy_or_cover_bridge,
+            TARGET_TYPE_DESTROY_AREA_CODE: self._parse_destroy_or_cover_area,
+            TARGET_TYPE_RECON_CODE: self._parse_recon,
+            TARGET_TYPE_ESCORT_CODE: self._parse_destroy_or_cover_or_escort,
+            TARGET_TYPE_COVER_CODE: self._parse_destroy_or_cover_or_escort,
+            TARGET_TYPE_COVER_AREA_CODE: self._parse_destroy_or_cover_area,
+            TARGET_TYPE_COVER_BRIDGE_CODE: self._parse_destroy_or_cover_bridge,
         }
 
     def parse_line(self, line):
         params = line.split()
-        (type_code, priority, sleep_mode, timeout), params = params[:4], params[4:]
+        (type_code, priority, sleep_mode, timeout), params = \
+            params[:4], params[4:]
+
         target = {
-            'type': TARGET_TYPES[type_code],
-            'priority': TARGET_PRIORITIES[priority],
+            'type': TARGET_TYPES_MAP[type_code],
+            'priority': TARGET_PRIORITIES_MAP[priority],
             'sleep_mode': to_bool(sleep_mode),
             'timeout': int(timeout),
         }
@@ -736,7 +749,7 @@ class BornPlaceParser(CollectingParser):
 
         self.data.append({
             'radius': int(radius),
-            'army': ARMIES[army],
+            'army': ARMIES_MAP[army],
             'show_default_icon': to_bool(show_default_icon),
             'friction': {
                 'enabled': to_bool(friction_enabled),
@@ -864,7 +877,7 @@ class StaticCameraParser(CollectingParser):
     def parse_line(self, line):
         pos_x, pos_y, pos_z, army = line.split()
         self.data.append({
-            'army': ARMIES[army],
+            'army': ARMIES_MAP[army],
             'pos': to_pos(pos_x, pos_y, pos_z),
         })
 
@@ -914,7 +927,7 @@ class FrontMarkerParser(CollectingParser):
         code, pos_x, pos_y, army = line.split()
         self.data.append({
             'code': code,
-            'army': ARMIES[army],
+            'army': ARMIES_MAP[army],
             'pos': to_pos(pos_x, pos_y),
         })
 
@@ -937,7 +950,7 @@ class RocketParser(CollectingParser):
         self.data.append({
             'code': code,
             'code_name': code_name,
-            'army': ARMIES[army],
+            'army': ARMIES_MAP[army],
             'pos': to_pos(*pos),
             'rotation_angle': float(rotation_angle),
             'timeout': float(timeout),
@@ -989,9 +1002,9 @@ class FlightDetailsParser(ValuesParser):
 
     def _skill_code(self, number):
         if 'Skill' in self.data:
-            return SKILLS[self.data['Skill']]
+            return SKILLS_MAP[self.data['Skill']]
         else:
-            return SKILLS[self.data['Skill{0}'.format(number)]]
+            return SKILLS_MAP[self.data['Skill{0}'.format(number)]]
 
     def _has_markings(self, number):
             return 'numberOn{0}'.format(number) not in self.data

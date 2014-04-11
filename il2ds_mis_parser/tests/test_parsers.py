@@ -53,8 +53,6 @@ class SectionParserTestCase(unittest.TestCase):
 
 class ParserTestCaseMixin(object):
 
-    maxDiff = 5000
-
     def _test_parser(self, parser_class, section_name, lines, expected):
         parser = parser_class()
         self.assertTrue(parser.start(section_name))
@@ -64,6 +62,8 @@ class ParserTestCaseMixin(object):
 
 
 class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+
+    maxDiff = None
 
     def test_main_parser(self):
         """
@@ -87,7 +87,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                 'is_fixed': True,
             },
             'fixed_loadout': True,
-            'weather_type': 'clear',
+            'weather_type': 'good',
             'clouds_height': 1500,
             'player': {
                 'army': 'red',
@@ -252,7 +252,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     },
                     'rotation_angle': 600.29,
                     'range': 0,
-                    'skill': 'rookie',
+                    'skill': 'average',
                 },
                 {
                     'air_force': 'luftwaffe',
@@ -343,8 +343,8 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         expected = {
             'targets': [
                 {
-                    'type': "destroy",
-                    'priority': "main",
+                    'type': 'destroy',
+                    'priority': 'primary',
                     'sleep_mode': False,
                     'timeout': 0,
                     'destruction_level': 50,
@@ -352,11 +352,11 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                         'x': 90939,
                         'y': 91871,
                     },
-                    'object_code': "10_Chief",
+                    'object_code': '10_Chief',
                 },
                 {
-                    'type': "recon",
-                    'priority': "extra",
+                    'type': 'recon',
+                    'priority': 'secondary',
                     'sleep_mode': True,
                     'timeout': 30,
                     'requires_landing': False,
@@ -367,8 +367,8 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'radius': 500,
                 },
                 {
-                    'type': "recon",
-                    'priority': "hidden",
+                    'type': 'recon',
+                    'priority': 'hidden',
                     'sleep_mode': True,
                     'timeout': 30,
                     'requires_landing': False,
@@ -377,7 +377,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                         'y': 91687,
                     },
                     'radius': 500,
-                    'object_code': "0_Chief",
+                    'object_code': '0_Chief',
                 },
             ],
         }
@@ -534,7 +534,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'type': "ships",
                     'army': "red",
                     'timeout': 60,
-                    'skill': "rookie",
+                    'skill': "average",
                     'recharge_time': 1.0,
                 },
             ],
@@ -631,7 +631,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
 class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
-    maxDiff = 5000
+    maxDiff = None
 
     def test_flight_details_parser(self):
         lines = [
@@ -661,15 +661,15 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                 'aircrafts': [
                     {
                         'number': 0,
-                        'skill': "rookie",
+                        'skill': 'average',
                         'aircraft_skin': "Funky.bmp",
                         'pilot_skin': "default",
                         'has_markings': True,
-                        'spawn_point': "0_Static",
+                        'spawn_point': '0_Static',
                     },
                     {
                         'number': 1,
-                        'skill': "veteran",
+                        'skill': 'veteran',
                         'aircraft_skin': "default",
                         'pilot_skin': "default",
                         'has_markings': False,
@@ -706,11 +706,11 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                 'aircrafts': [
                     {
                         'number': 0,
-                        'skill': "rookie",
+                        'skill': 'average',
                         'aircraft_skin': "Funky.bmp",
                         'pilot_skin': "default",
                         'has_markings': False,
-                        'spawn_point': "0_Static",
+                        'spawn_point': '0_Static',
                     },
                 ],
             },
