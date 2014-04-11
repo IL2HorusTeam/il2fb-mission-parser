@@ -18,4 +18,5 @@ gets data from all other parsers and organizes it in special manner.
     :maxdepth: 1
 
     parsers/main_parser
+    parsers/season_parser
     parsers/file_parser

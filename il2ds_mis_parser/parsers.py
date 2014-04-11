@@ -181,9 +181,9 @@ class SectionParser(object):
 
 class ValuesParser(SectionParser):
     """
-    This is a base class for parsers which assume that a section, which is going
-    to be parsed, consists of key-value pairs with unique keys, one pair per
-    line.
+    This is a base class for parsers which assume that a section, which is
+    going to be parsed, consists of key-value pairs with unique keys, one pair
+    per line.
 
     **Section definition example**::
 
@@ -247,18 +247,26 @@ class CollectingParser(SectionParser):
 
 class MainParser(ValuesParser):
     """
-    Parses ``MAIN`` section. :ref:`More info <main-parser>`.
+    Parses ``MAIN`` section. View :ref:`detailed description <main-parser>`.
     """
 
     def check_section_name(self, section_name):
+        """
+        Implements abstract method. See
+        :meth:`SectionParser.check_section_name` for semantics.
+        """
         return section_name == "MAIN"
 
     def _to_time(self, value):
         time = float(self.data['TIME'])
         minutes, hours = math.modf(time)
-        return datetime.time(int(hours), int(minutes*60))
+        return datetime.time(int(hours), int(minutes * 60))
 
     def process_data(self):
+        """
+        Redefines base method. See :meth:`SectionParser.process_data` for
+        semantics.
+        """
         return {
             'loader': self.data['MAP'],
             'time': {
@@ -278,13 +286,23 @@ class MainParser(ValuesParser):
 
 class SeasonParser(ValuesParser):
     """
-    Parses 'SEASON' section.
+    Parses ``SEASON`` section. View :ref:`detailed description <season-parser>`.
     """
 
     def check_section_name(self, section_name):
+        """
+        Implements abstract method. See
+        :meth:`SectionParser.check_section_name` for semantics.
+        """
         return section_name == "SEASON"
 
     def process_data(self):
+        """
+        Redefines base method. See :meth:`SectionParser.process_data` for
+        semantics.
+
+        Combines day, time and year into :class:`datetime.date` object.
+        """
         date = datetime.date(int(self.data['Year']),
                              int(self.data['Month']),
                              int(self.data['Day']))

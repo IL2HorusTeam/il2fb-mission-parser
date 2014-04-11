@@ -1,4 +1,4 @@
-Main Parser
+Main parser
 ===========
 
 .. _main-parser:
