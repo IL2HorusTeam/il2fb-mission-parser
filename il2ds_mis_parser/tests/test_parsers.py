@@ -631,6 +631,8 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
 class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
+    maxDiff = 5000
+
     def test_flight_details_parser(self):
         lines = [
             "Planes 2",
@@ -656,20 +658,61 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                 'loadout': "default",
                 'parachute_present': True,
                 'only_ai': False,
-                'aircraft_1': {
-                    'skill': "rookie",
-                    'aircraft_skin': "Funky.bmp",
-                    'pilot_skin': "default",
-                    'markings': True,
-                    'spawn_point': "0_Static",
-                },
-                'aircraft_2': {
-                    'skill': "veteran",
-                    'aircraft_skin': "default",
-                    'pilot_skin': "default",
-                    'markings': False,
-                    'spawn_point': None,
-                },
-            }
+                'aircrafts': [
+                    {
+                        'number': 1,
+                        'skill': "rookie",
+                        'aircraft_skin': "Funky.bmp",
+                        'pilot_skin': "default",
+                        'has_markings': True,
+                        'spawn_point': "0_Static",
+                    },
+                    {
+                        'number': 2,
+                        'skill': "veteran",
+                        'aircraft_skin': "default",
+                        'pilot_skin': "default",
+                        'has_markings': False,
+                        'spawn_point': None,
+                    },
+                ],
+            },
         }
         self._test_parser(FlightDetailsParser, '3GvIAP00', lines, expected)
+
+    def test_flight_details_solo_parser(self):
+        lines = [
+            "Planes 1",
+            "Skill 1",
+            "Class air.A_20C",
+            "Fuel 100",
+            "weapons default",
+            "skin0 Funky.bmp",
+            "numberOn0 0",
+            "spawn0 0_Static",
+        ]
+
+        expected = {
+            '3GvIAP01_details': {
+                'regiment_code': "3GvIAP",
+                'squadron_number': 1,
+                'flight_number': 2,
+                'aircrafts_count': 1,
+                'aircraft_code': "A_20C",
+                'fuel': 100,
+                'loadout': "default",
+                'parachute_present': True,
+                'only_ai': False,
+                'aircrafts': [
+                    {
+                        'number': 1,
+                        'skill': "rookie",
+                        'aircraft_skin': "Funky.bmp",
+                        'pilot_skin': "default",
+                        'has_markings': False,
+                        'spawn_point': "0_Static",
+                    },
+                ],
+            },
+        }
+        self._test_parser(FlightDetailsParser, '3GvIAP01', lines, expected)
