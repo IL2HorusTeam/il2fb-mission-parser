@@ -511,7 +511,7 @@ class NStationaryParser(CollectingParser):
             'allows_spawning': to_bool(allows_spawning_restorable),
             'restorable': allows_spawning_restorable == '2',
             'skin': skin,
-            'has_markings': to_bool(has_markings),
+            'markings': to_bool(has_markings),
         }
 
     def _parse_ships(self, params):
@@ -936,13 +936,66 @@ class FlightDetailsParser(ValuesParser):
     def init_parser(self, section_name):
         super(FlightDetailsParser, self).init_parser(section_name)
         self.output_key = "{0}_details".format(section_name)
+        self.regiment_details = self._decompose_section_name(section_name)
+
+    def _decompose_section_name(self, section_name):
+        return {
+            'regiment_code': section_name[:-2],
+            'squadron': int(section_name[-2])+1,
+            'flight': int(section_name[-1])+1,
+        }
+
+    def _get_skin_code(self, skin_key):
+                if self.data.has_key(skin_key):
+                    return self.data[skin_key]
+                else:
+                    return "default"
+
+    def _get_point_spawn(self, spawn_key):
+                if self.data.has_key(spawn_key):
+                    return self.data[spawn_key]
+                else:
+                    return None
+
+    def _get_skill_code(self, skill_key):
+                if self.data.has_key(skill_key):
+                    return SKILLS[self.data[skill_key]]
+                else:
+                    return "default"
+
+    def _flight(self, aircrafts_quantity):
+        for number in range(0, aircrafts_quantity):
+            aircraft_key = 'aircraft_%s' % (number + 1)
+            self.regiment_details.update({
+                aircraft_key: {
+                    'skill': self._get_skill_code('Skill{0}'.format(number)),
+                    'aircraft_skin': self._get_skin_code('skin{0}'.format(number)),
+                    'pilot_skin': self._get_skin_code('pilot{0}'.format(number)),
+                    'markings': self.data.has_key('numberOn{0}'.format(number)) == False,
+                    'point_spawn': self._get_point_spawn('spawn{0}'.format(number)),
+                }
+            })
 
     def process_data(self):
-        return {
-            self.output_key: {
-                'aircrafts_quantity': int(self.data['Planes']),
-            }
-        }
+        self.regiment_details.update({
+            'aircrafts_quantity': int(self.data['Planes']),
+            'aircraft_code': self.data['Class'][self.data['Class'].index('.')+1:],
+            'fuel': int(self.data['Fuel']),
+            'weapons': self.data['weapons'],
+            'parachute': self.data.has_key('Parachute') == False,
+            'only_ai': self.data.has_key('OnlyAI') == True,
+        })
+        if int(self.data['Planes']) > 1:
+            self._flight(int(self.data['Planes']))
+        elif self.data['Planes'] == "1":
+            self.regiment_details.update({
+                'skill': SKILLS[self.data['Skill']],
+                'aircraft_skin': self._get_skin_code('skin0'),
+                'pilot_skin': self._get_skin_code('pilot0'),
+                'markings': self.data.has_key('numberOn0') == False,
+                'point_spawn': self._get_point_spawn('spawn0'),
+            })
+        return {self.output_key: self.regiment_details}
 
 
 class FileParser(object):

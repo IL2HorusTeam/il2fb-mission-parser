@@ -241,7 +241,7 @@ class MissionParserTestCase(unittest.TestCase):
                     'skin': 'I-16type24_G1_RoW3.bmp',
                     'code': '0_Static',
                     'code_name': 'I_16TYPE24',
-                    'has_markings': True,
+                    'markings': True,
                     'pos': {
                         'x': 134146.89,
                         'y': 88005.43,
@@ -626,12 +626,43 @@ class MissionParserTestCase(unittest.TestCase):
 
     def test_flight_details_parser(self):
         lines = [
-            "Planes 1",
+            "Planes 2",
+            "Skill0 1",
+            "Class air.A_20C",
+            "Fuel 100",
+            "weapons default",
+            "Skill0 1",
+            "Skill1 2",
+            "skin0 Funky.bmp",
+            "numberOn1 0",
+            "spawn0 0_Static",
         ]
 
         expected = {
-            'r0100_details': {
-                'aircrafts_quantity': 1,
+            '3GvIAP00_details': {
+                'regiment_code': "3GvIAP",
+                'squadron': 1,
+                'flight': 1,
+                'aircrafts_quantity': 2,
+                'aircraft_code': "A_20C",
+                'fuel': 100,
+                'weapons': "default",
+                'parachute': True,
+                'only_ai': False,
+                'aircraft_1': {
+                    'skill': "rookie",
+                    'aircraft_skin': "Funky.bmp",
+                    'pilot_skin': "default",
+                    'markings': True,
+                    'point_spawn': "0_Static",
+                },
+                'aircraft_2': {
+                    'skill': "veteran",
+                    'aircraft_skin': "default",
+                    'pilot_skin': "default",
+                    'markings': False,
+                    'point_spawn': None,
+                },
             }
         }
-        self._test_parser(FlightDetailsParser, 'r0100', lines, expected)
+        self._test_parser(FlightDetailsParser, '3GvIAP00', lines, expected)
