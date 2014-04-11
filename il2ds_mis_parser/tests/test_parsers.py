@@ -660,7 +660,7 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                 'only_ai': False,
                 'aircrafts': [
                     {
-                        'number': 1,
+                        'number': 0,
                         'skill': "rookie",
                         'aircraft_skin': "Funky.bmp",
                         'pilot_skin': "default",
@@ -668,7 +668,7 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                         'spawn_point': "0_Static",
                     },
                     {
-                        'number': 2,
+                        'number': 1,
                         'skill': "veteran",
                         'aircraft_skin': "default",
                         'pilot_skin': "default",
@@ -705,7 +705,7 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                 'only_ai': False,
                 'aircrafts': [
                     {
-                        'number': 1,
+                        'number': 0,
                         'skill': "rookie",
                         'aircraft_skin': "Funky.bmp",
                         'pilot_skin': "default",

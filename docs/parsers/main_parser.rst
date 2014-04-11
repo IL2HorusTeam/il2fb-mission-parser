@@ -115,7 +115,7 @@ army [1]_
   dictionary
 
 playerNum [1]_
-  Player's position in flight.
+  Player's position in flight. Always equal to ``0`` if ``player`` is not set
 
   **Output path**: ``player.number``
 

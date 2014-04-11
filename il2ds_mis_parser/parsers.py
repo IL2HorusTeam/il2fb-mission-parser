@@ -10,6 +10,7 @@ import math
 from abc import ABCMeta, abstractmethod
 
 from il2ds_mis_parser.constants import *
+from il2ds_mis_parser.helpers import _
 
 
 def to_bool(value):
@@ -274,14 +275,14 @@ class MainParser(ValuesParser):
             'loader': self.data['MAP'],
             'time': {
                 'value': self._to_time(self.data['TIME']),
-                'is_fixed': self.data.has_key('TIMECONSTANT'),
+                'is_fixed': 'TIMECONSTANT' in self.data,
             },
-            'fixed_loadout': self.data.has_key('WEAPONSCONSTANT'),
+            'fixed_loadout': 'WEAPONSCONSTANT' in self.data,
             'weather_type': WEATHER_TYPES[self.data['CloudType']],
             'clouds_height': float(self.data['CloudHeight']),
             'player': {
                 'army': ARMIES[self.data['army']],
-                'regiment': None if not self.data.has_key('player') else self.data['player'],
+                'regiment': self.data.get('player'),
                 'number': int(self.data['playerNum']),
             },
         }
@@ -980,34 +981,31 @@ class FlightDetailsParser(ValuesParser):
             'flight_number': int(section_name[-1])+1,
         }
 
-    def _get_skin_code(self, skin_key):
-        if self.data.has_key(skin_key):
-            return self.data[skin_key]
-        else:
-            return "default"
+    def _skin_code(self, prefix, number):
+        return self.data.get('{0}{1}'.format(prefix, number), _("default"))
 
-    def _get_spawn_point(self, spawn_key):
-        if self.data.has_key(spawn_key):
-            return self.data[spawn_key]
-        else:
-            return None
+    def _spawn_point(self, number):
+            return self.data.get('spawn{0}'.format(number))
 
-    def _get_skill_code(self, skill_key):
-        if self.data.has_key('Skill'):
+    def _skill_code(self, number):
+        if 'Skill' in self.data:
             return SKILLS[self.data['Skill']]
         else:
-            return SKILLS[self.data[skill_key]]
+            return SKILLS[self.data['Skill{0}'.format(number)]]
+
+    def _has_markings(self, number):
+            return 'numberOn{0}'.format(number) not in self.data
 
     def _flight(self, aircrafts_count):
         self.flight_details['aircrafts'] = []
         for number in range(0, aircrafts_count):
             self.flight_details['aircrafts'].append({
-                'number': number+1,
-                'skill': self._get_skill_code('Skill{0}'.format(number)),
-                'aircraft_skin': self._get_skin_code('skin{0}'.format(number)),
-                'pilot_skin': self._get_skin_code('pilot{0}'.format(number)),
-                'has_markings': not self.data.has_key('numberOn{0}'.format(number)),
-                'spawn_point': self._get_spawn_point('spawn{0}'.format(number)),
+                'number': number,
+                'skill': self._skill_code(number),
+                'aircraft_skin': self._skin_code('skin', number),
+                'pilot_skin': self._skin_code('pilot', number),
+                'has_markings': self._has_markings(number),
+                'spawn_point': self._spawn_point(number),
             })
 
     def process_data(self):
@@ -1019,8 +1017,8 @@ class FlightDetailsParser(ValuesParser):
             'aircraft_code': aircraft_code,
             'fuel': int(self.data['Fuel']),
             'loadout': self.data['weapons'],
-            'parachute_present': self.data.has_key('Parachute') == False,
-            'only_ai': self.data.has_key('OnlyAI') == True,
+            'parachute_present': 'Parachute' not in self.data,
+            'only_ai': 'OnlyAI' in self.data,
         })
 
         self._flight(aircrafts_count)
