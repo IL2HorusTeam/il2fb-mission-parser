@@ -192,6 +192,7 @@ class ValuesParser(SectionParser):
        key2 value2
        key3 value3
     """
+
     def init_parser(self, section_name):
         """
         Implements abstract method. See :meth:`SectionParser.init_parser` for
@@ -225,6 +226,7 @@ class CollectingParser(SectionParser):
        object2_attr1 object2_attr2 object2_attr3 object2_attr4
        object3_attr1 object3_attr2 object3_attr3 object3_attr4
     """
+
     def init_parser(self, section_name):
         """
         Implements abstract method. See :meth:`SectionParser.init_parser` for
@@ -314,20 +316,29 @@ class SeasonParser(ValuesParser):
 class WeatherParser(ValuesParser):
     """
     Parses ``WEATHER`` section.
+    View :ref:`detailed description <weather-parser>`.
     """
 
     def check_section_name(self, section_name):
+        """
+        Implements abstract method. See
+        :meth:`SectionParser.check_section_name` for semantics.
+        """
         return section_name == "WEATHER"
 
     def process_data(self):
+        """
+        Redefines base method. See :meth:`SectionParser.process_data` for
+        semantics.
+        """
         return {
             'weather': {
                 'wind': {
                     'direction': float(self.data['WindDirection']),
                     'speed': float(self.data['WindSpeed']),
                 },
-                'gust': int(self.data['Gust']),
-                'turbulence': int(self.data['Turbulence']),
+                'gust': GUST_TYPES[self.data['Gust']],
+                'turbulence': TURBULENCE_TYPES[self.data['Turbulence']],
             },
         }
 

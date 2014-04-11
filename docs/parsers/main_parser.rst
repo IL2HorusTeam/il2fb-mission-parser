@@ -4,8 +4,7 @@ Main parser
 .. _main-parser:
 
 :class:`~il2ds_mis_parser.parsers.MainParser` is responsible for parsing
-``MAIN`` section. This section contains key-value pair on each line.
-
+``MAIN`` section. This section contains one key-value pair per each line.
 Section example::
 
     [MAIN]

@@ -14,10 +14,6 @@ SKILLS = {
     '3': 'ace',
 }
 
-# -----------------------------------------------------------------------------
-# Armies code
-# -----------------------------------------------------------------------------
-
 ARMY_NONE = '0'
 ARMY_RED = '1'
 ARMY_BLUE = '2'
@@ -30,7 +26,7 @@ ARMIES = {
 }
 
 # -----------------------------------------------------------------------------
-# Target types
+# Targets
 # -----------------------------------------------------------------------------
 
 TARGET_TYPE_DESTROY = '0'
@@ -53,10 +49,6 @@ TARGET_TYPES = {
     TARGET_TYPE_COVER_BRIDGE: 'cover_bridge',
 }
 
-# -----------------------------------------------------------------------------
-# Target priorities
-# -----------------------------------------------------------------------------
-
 TARGET_PRIORITIES = {
     '0': 'main',
     '1': 'extra',
@@ -64,7 +56,7 @@ TARGET_PRIORITIES = {
 }
 
 # -----------------------------------------------------------------------------
-# Weather types
+# Weather
 # -----------------------------------------------------------------------------
 
 WEATHER_CLOUDLESS = '0'
@@ -86,6 +78,34 @@ WEATHER_TYPES = {
     WEATHER_THUNDERSTORM: 'thunderstorm',
 }
 
+GUST_NONE = '0'
+GUST_WEAK = '1'
+GUST_AVERAGE = '2'
+GUST_STRONG = '3'
+
+#: Maps string values of gust types into gust code names
+GUST_TYPES = {
+    GUST_NONE: 'none',
+    GUST_WEAK: 'weak',
+    GUST_AVERAGE: 'average',
+    GUST_STRONG: 'strong',
+}
+
+TURBULENCE_NONE = '0'
+TURBULENCE_WEAK = '1'
+TURBULENCE_AVERAGE = '2'
+TURBULENCE_STRONG = '3'
+TURBULENCE_VERY_STRONG = '4'
+
+#: Maps string values of turbulence types into turbulence code names
+TURBULENCE_TYPES = {
+    TURBULENCE_NONE: 'none',
+    TURBULENCE_WEAK: 'weak',
+    TURBULENCE_AVERAGE: 'average',
+    TURBULENCE_STRONG: 'strong',
+    TURBULENCE_VERY_STRONG: 'very_strong',
+}
+
 # -----------------------------------------------------------------------------
 # Stationary types
 # -----------------------------------------------------------------------------
@@ -97,7 +117,7 @@ STATIONARY_TYPE_RADIOS = 'radios'
 STATIONARY_TYPE_SHIPS = 'ships'
 
 # -----------------------------------------------------------------------------
-# Airforces and airforce regiment codes
+# Air forces and aviation regiment codes
 # -----------------------------------------------------------------------------
 
 AIR_FORCES = {

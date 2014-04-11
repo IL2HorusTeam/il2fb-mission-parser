@@ -127,8 +127,8 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'direction': 120.0,
                     'speed': 3.0,
                 },
-                'gust': 0,
-                'turbulence': 0,
+                'gust': 'none',
+                'turbulence': 'none',
             },
         }
         self._test_parser(WeatherParser, 'WEATHER', lines, expected)
