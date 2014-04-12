@@ -418,23 +418,6 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         }
         self._test_parser(BornPlaceParser, 'BornPlace', lines, expected)
 
-    def test_born_place_countries_parser(self):
-        """
-        Test 'BornPlaceCountriesN' section parser.
-        """
-        lines = [
-            "de",
-            "ru",
-        ]
-        expected = {
-            'homebase_countries_9999': [
-                "de",
-                "ru",
-            ],
-        }
-        self._test_parser(BornPlaceCountriesParser, 'BornPlaceCountries9999',
-                          lines, expected)
-
     def test_front_marker_parser(self):
         """
         Test 'FrontMarker' section parser.
@@ -649,6 +632,30 @@ class BornPlaceAircraftsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         parser = BornPlaceAircraftsParser()
         self.assertFalse(parser.start('foo section'))
         self.assertFalse(parser.start('BornPlaceX'))
+
+
+class BornPlaceCountriesParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+    def test_valid_data(self):
+        """
+        Test 'BornPlaceCountriesN' section parser.
+        """
+        lines = [
+            "de",
+            "ru",
+        ]
+        expected = {
+            'homebase_countries_9999': [
+                "de",
+                "ru",
+            ],
+        }
+        self._test_parser(BornPlaceCountriesParser, 'BornPlaceCountries9999',
+                          lines, expected)
+
+    def test_invalid_section_name(self):
+        parser = BornPlaceCountriesParser()
+        self.assertFalse(parser.start('foo section'))
+        self.assertFalse(parser.start('BornPlaceCountriesX'))
 
 
 class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
