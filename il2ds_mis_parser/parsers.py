@@ -404,19 +404,15 @@ class MDSScoutsParser(CollectingParser):
     def check_section_name(self, section_name):
         if not section_name.startswith(self.prefix):
             return False
-        try:
-            self._extract_section_suffix(section_name).lower()
-        except ValueError:
-            return False
-        else:
-            return True
+        suffix = self._extract_section_suffix(section_name)
+        return bool(suffix)
 
     def init_parser(self, section_name):
         super(MDSScoutsParser, self).init_parser(section_name)
-        self.output_key = 'scout_plane_%s' % self._extract_section_suffix(section_name).lower()
+        self.output_key = 'scout_planes_%s' % self._extract_section_suffix(section_name)
 
     def _extract_section_suffix(self, section_name):
-        return section_name.lstrip(self.prefix)
+        return section_name.lstrip(self.prefix).lower()
 
     def process_data(self):
         return {self.output_key: self.data}

@@ -10,7 +10,7 @@ from il2ds_mis_parser.parsers import (to_bool, to_pos, SectionParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
     BornPlaceCountriesParser, RocketParser, ChiefRoadParser, WingParser,
-    MDSScoutsParser, FlightDetailsParser,)
+    MDSScoutsParser, FlightDetailsParser, )
 
 
 class CommonsTestCase(unittest.TestCase):
@@ -212,23 +212,6 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             'no_players_count_on_home_base': False,
         }
         self._test_parser(MDSParser, 'MDS', lines, expected)
-
-    def test_mds_scouts_parser(self):
-        lines = [
-            "B-25H-1NA",
-            "B-25J-1NA",
-            "BeaufighterMk21",
-        ]
-
-        expected = {
-            'scout_plane_red': [
-                "B-25H-1NA",
-                "B-25J-1NA",
-                "BeaufighterMk21",
-            ]
-        }
-        self._test_parser(MDSScoutsParser, 'MDS_Scouts_Red', lines, expected)
-
 
     def test_stationary_parser(self):
         """
@@ -629,6 +612,29 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         self._test_parser(WingParser, 'Wing', lines, expected)
 
 
+class MDSScoutsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+
+    def test_valid_data(self):
+        lines = [
+            "B-25H-1NA",
+            "B-25J-1NA",
+            "BeaufighterMk21",
+        ]
+        expected = {
+            'scout_planes_red': [
+                "B-25H-1NA",
+                "B-25J-1NA",
+                "BeaufighterMk21",
+            ]
+        }
+        self._test_parser(MDSScoutsParser, 'MDS_Scouts_Red', lines, expected)
+
+    def test_invalid_section_name(self):
+        parser = MDSScoutsParser()
+        self.assertFalse(parser.start('foo section'))
+        self.assertFalse(parser.start('MDS_Scouts_'))
+
+
 class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     maxDiff = None
@@ -646,7 +652,6 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             "numberOn1 0",
             "spawn0 0_Static",
         ]
-
         expected = {
             '3GvIAP00_details': {
                 'regiment_code': "3GvIAP",
@@ -691,7 +696,6 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             "numberOn0 0",
             "spawn0 0_Static",
         ]
-
         expected = {
             '3GvIAP01_details': {
                 'regiment_code': "3GvIAP",
