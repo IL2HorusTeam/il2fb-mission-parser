@@ -487,13 +487,14 @@ class ChiefRoadParser(CollectingParser):
         else:
             return True
 
-    def _extract_object_code(self, section_name):
-        return int(section_name.rstrip(self.suffix))
-
     def init_parser(self, section_name):
         super(ChiefRoadParser, self).init_parser(section_name)
         object_code = self._extract_object_code(section_name)
         self.output_key = "{0}_chief_road".format(object_code)
+
+    def _extract_object_code(self, section_name):
+        stop = section_name.index('_')
+        return int(section_name[:stop])
 
     def parse_line(self, line):
         """

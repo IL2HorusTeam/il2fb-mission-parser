@@ -524,38 +524,6 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         }
         self._test_parser(ChiefsParser, 'Chiefs', lines, expected)
 
-    def test_chiefs_road_parser(self):
-        lines = [
-            "21380.02 41700.34 120.00 10 0 3.055555582046509",
-            "21500.00 41700.00 20.00",
-            "50299.58 35699.85 120.00 10 33 2.6388890743255615",
-        ]
-        expected = {
-            '0_chief_road': [
-                {
-                    'pos': {
-                    'x': 21380.02,
-                    'y': 41700.34,
-                    },
-                    'timeout': 10,
-                },
-                {
-                    'pos': {
-                    'x': 21500.00,
-                    'y': 41700.00,
-                    },
-                },
-                {
-                    'pos': {
-                    'x': 50299.58,
-                    'y': 35699.85,
-                    },
-                    'timeout': 10,
-                },
-            ]
-        }
-        self._test_parser(ChiefRoadParser, '0_Chief_Road', lines, expected)
-
     def test_rocket_parser(self):
         lines = [
             "0_Rocket Fi103_V1_ramp 2 84141.38 114216.82 360.00 60.0 10 80.0 83433.91 115445.49",
@@ -633,6 +601,46 @@ class MDSScoutsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         parser = MDSScoutsParser()
         self.assertFalse(parser.start('foo section'))
         self.assertFalse(parser.start('MDS_Scouts_'))
+
+
+class ChiefRoadParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+
+    def test_valid_data(self):
+        lines = [
+            "21380.02 41700.34 120.00 10 0 3.055555582046509",
+            "21500.00 41700.00 20.00",
+            "50299.58 35699.85 120.00 10 33 2.6388890743255615",
+        ]
+        expected = {
+            '0_chief_road': [
+                {
+                    'pos': {
+                    'x': 21380.02,
+                    'y': 41700.34,
+                    },
+                    'timeout': 10,
+                },
+                {
+                    'pos': {
+                    'x': 21500.00,
+                    'y': 41700.00,
+                    },
+                },
+                {
+                    'pos': {
+                    'x': 50299.58,
+                    'y': 35699.85,
+                    },
+                    'timeout': 10,
+                },
+            ]
+        }
+        self._test_parser(ChiefRoadParser, '0_Chief_Road', lines, expected)
+
+    def test_invalid_section_name(self):
+        parser = ChiefRoadParser()
+        self.assertFalse(parser.start('foo section'))
+        self.assertFalse(parser.start('X_Chief_Road'))
 
 
 class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
