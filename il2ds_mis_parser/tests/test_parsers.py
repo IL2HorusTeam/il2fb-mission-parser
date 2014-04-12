@@ -418,41 +418,6 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         }
         self._test_parser(BornPlaceParser, 'BornPlace', lines, expected)
 
-    def test_born_place_aircraft_parser(self):
-        """
-        Test 'BornPlaceN' section parser.
-        """
-        lines = [
-            "Bf-109F-4 -1 1sc250 4sc50",
-            "Ju-88A-4 10 28xSC50 28xSC50_2xSC250 28xSC50_4xSC250",
-            "+ 2xSC1800 2xSC2000",
-        ]
-        expected = {
-            'homebase_aircrafts_9999': [
-                {
-                    'aircraft_code': 'Bf-109F-4',
-                    'limit': None,
-                    'loadout': [
-                        '1sc250',
-                        '4sc50',
-                    ],
-                },
-                {
-                    'aircraft_code': 'Ju-88A-4',
-                    'limit': 10,
-                    'loadout': [
-                        '28xSC50',
-                        '28xSC50_2xSC250',
-                        '28xSC50_4xSC250',
-                        '2xSC1800',
-                        '2xSC2000',
-                    ],
-                },
-            ],
-        }
-        self._test_parser(BornPlaceAircraftsParser, 'BornPlace9999',
-                          lines, expected)
-
     def test_born_place_countries_parser(self):
         """
         Test 'BornPlaceCountriesN' section parser.
@@ -641,6 +606,49 @@ class ChiefRoadParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         parser = ChiefRoadParser()
         self.assertFalse(parser.start('foo section'))
         self.assertFalse(parser.start('X_Chief_Road'))
+
+
+class BornPlaceAircraftsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+
+    def test_valid_data(self):
+        """
+        Test 'BornPlaceN' section parser.
+        """
+        lines = [
+            "Bf-109F-4 -1 1sc250 4sc50",
+            "Ju-88A-4 10 28xSC50 28xSC50_2xSC250 28xSC50_4xSC250",
+            "+ 2xSC1800 2xSC2000",
+        ]
+        expected = {
+            'homebase_aircrafts_9999': [
+                {
+                    'aircraft_code': 'Bf-109F-4',
+                    'limit': None,
+                    'loadout': [
+                        '1sc250',
+                        '4sc50',
+                    ],
+                },
+                {
+                    'aircraft_code': 'Ju-88A-4',
+                    'limit': 10,
+                    'loadout': [
+                        '28xSC50',
+                        '28xSC50_2xSC250',
+                        '28xSC50_4xSC250',
+                        '2xSC1800',
+                        '2xSC2000',
+                    ],
+                },
+            ],
+        }
+        self._test_parser(BornPlaceAircraftsParser, 'BornPlace9999',
+                          lines, expected)
+
+    def test_invalid_section_name(self):
+        parser = BornPlaceAircraftsParser()
+        self.assertFalse(parser.start('foo section'))
+        self.assertFalse(parser.start('BornPlaceX'))
 
 
 class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
