@@ -4,7 +4,7 @@ setup(
     name='il2ds-mis-parser',
     version='1.0.0',
     description='Parse IL-2 DS mission file and produce detailed information about mission.',
-    license='BSD License',
+    license='GPLv2',
     url='https://github.com/IL2HorusTeam/il2ds-mis-parser',
     author='Alexander Oblovatniy, Alexander Kamyhin',
     author_email='oblovatniy@gmail.com, kamyhin@gmail.com',
@@ -13,7 +13,7 @@ setup(
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'License :: Free for non-commercial use',
         'Natural Language :: English',
         'Operating System :: OS Independent',
