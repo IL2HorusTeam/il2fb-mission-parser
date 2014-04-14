@@ -14,7 +14,8 @@ from il2ds_mis_parser.constants import (SKILLS_MAP, ARMIES_MAP, GUST_TYPES_MAP,
     TARGET_TYPE_DESTROY_BRIDGE_CODE, TARGET_TYPE_DESTROY_AREA_CODE,
     TARGET_TYPE_RECON_CODE, TARGET_TYPE_ESCORT_CODE, TARGET_TYPE_COVER_CODE,
     TARGET_TYPE_COVER_AREA_CODE, TARGET_TYPE_COVER_BRIDGE_CODE,
-    TARGET_TYPES_MAP, TARGET_PRIORITIES_MAP, WEATHER_TYPES_MAP, AIR_FORCES, )
+    TARGET_TYPES_MAP, TARGET_PRIORITIES_MAP, WEATHER_TYPES_MAP, AIR_FORCES, FLY_TYPES,
+    BUILD_TYPES, )
 from il2ds_mis_parser.helpers import _
 
 
@@ -1034,6 +1035,86 @@ class FlightDetailsParser(ValuesParser):
         self._flight(aircrafts_count)
 
         return {self.output_key: self.flight_details}
+
+
+class FlightWayParser(CollectingParser):
+    """
+    Parses route for a moving flight group.
+    """
+    suffix = "_Way"
+
+    def check_section_name(self, section_name):
+        return section_name.endswith(self.suffix)
+
+    def _extract_flight_code(self, section_name):
+        return section_name.rstrip(self.suffix)
+
+    def init_parser(self, section_name):
+        self.data = []
+        self.flight_route = {}
+        flight_code = self._extract_flight_code(section_name)
+        self.output_key = "{0}_route".format(flight_code)
+        self.subparser = {
+            'normfly': self._parse_normal,
+            'takeoff': self._parse_takeoff_or_landing,
+            'landing': self._parse_takeoff_or_landing,
+            'Gattack': self._parse_attack,
+        }
+
+    def _parse_normal(self, chunks):
+        if chunks.count() > 7:
+            pass
+
+    def _parse_trigger(self, chunks):
+        cycle, time, rotation_angle, range, height = chunks
+        self.flight_route.update({
+            'triggers': {
+                'cycle': int(cycle),
+                'time': int(time),
+                'rotation_angle': int(rotation_angle),
+                'range': int(range),
+                'height': int(height),
+            },
+        })
+
+    def _parse_takeoff_or_landing(self, chunks):
+        pass
+
+    def _parse_attack(self, chunks):
+        pass
+
+    def parse_line(self, line):
+        chunks = line.split()
+        fly_type, chunks = chunks[0], chunks[1:]
+        if "_" in fly_type:
+            stop = fly_type.index('_')
+            print fly_type[:stop].lower()
+        else:
+            print fly_type.lower()
+        if fly_type == "TRIGGERS":
+            self._parse_trigger(chunks)
+        else:
+            if self.flight_route:
+                self.data.append(self.flight_route)
+                self.flight_route = {}
+
+            pos, speed, radio_silence, build = chunks[0:3], chunks[3], chunks[4], chunks[5:]
+            if build:
+                (build, ) = build
+            else:
+                build = "default"
+            self.flight_route.update({
+                'type_fly': FLY_TYPES[fly_type],
+                'pos': to_pos(*pos),
+                'speed': float(speed),
+                'radio_silence': to_bool(radio_silence[-1]),
+                'build': BUILD_TYPES.get(build, "default"),
+            })
+
+    def process_data(self):
+        if self.flight_route:
+            self.data.append(self.flight_route)
+        return {self.output_key: self.data}
 
 
 class FileParser(object):

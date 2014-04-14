@@ -212,3 +212,28 @@ TURBULENCE_TYPES_MAP = {
     '3': TURBULENCE_STRONG,
     '4': TURBULENCE_VERY_STRONG,
 }
+
+###############################################################################
+# Flight
+###############################################################################
+
+# Flight route ----------------------------------------------------------------
+
+FLY_TYPES = {
+    'NORMFLY': 'normal',
+    'NORMFLY_401': {
+        'type': 'patrol',
+        'zone': 'treugolnik',
+    },
+    'NORMFLY_402': {
+        'type': 'patrol',
+        'zone': 'box',
+    },
+    'TRIGGERS': 'TRIGGERS',
+}
+
+BUILD_TYPES = {
+    'F1': 'right_echelon',
+    'F2': 'left_echelon',
+    'F3': 'rank',
+}

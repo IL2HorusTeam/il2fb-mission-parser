@@ -10,7 +10,7 @@ from il2ds_mis_parser.parsers import (to_bool, to_pos, SectionParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
     BornPlaceCountriesParser, RocketParser, ChiefRoadParser, WingParser,
-    MDSScoutsParser, FlightDetailsParser, )
+    MDSScoutsParser, FlightDetailsParser, FlightWayParser, )
 
 
 class CommonsTestCase(unittest.TestCase):
@@ -743,3 +743,62 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             },
         }
         self._test_parser(FlightDetailsParser, '3GvIAP01', lines, expected)
+
+    def test_flight_routes_parser(self):
+        lines = [
+            "NORMFLY 90217.11 81170.84 100.00 300.00 &1",
+            "NORMFLY_401 98616.72 78629.31 500.00 300.00 &0 F2",
+            "TRIGGERS 1 1 25 5 500",
+            "NORMFLY_402 98616.72 78629.31 500.00 300.00 &0 F1",
+        ]
+        expected = {
+            '3GvIAP01_route': [
+                {
+                    'type_fly': {
+                        'type': 'patrol',
+                        'zone': 'treugolnik',
+                    },
+                    'pos': {
+                        'x': 90217.11,
+                        'y': 81170.84,
+                        'z': 100.00,
+                    },
+                    'speed': 300.00,
+                    'radio_silence': True,
+                    'build': "default",
+                },
+                {
+                    'type_fly': 'normal',
+                    'pos': {
+                        'x': 98616.72,
+                        'y': 78629.31,
+                        'z': 500.00,
+                    },
+                    'speed': 300.00,
+                    'radio_silence': False,
+                    'build': "left_echelon",
+                    'triggers': {
+                        'cycle': 1,
+                        'time': 1,
+                        'angle': 25,
+                        'range': 5,
+                        'height': 500,
+                    },
+                },
+                {
+                    'type_fly': {
+                        'type': 'patrol',
+                        'zone': 'box',
+                    },
+                    'pos': {
+                        'x': 98616.72,
+                        'y': 78629.31,
+                        'z': 500.00,
+                    },
+                    'speed': 300.00,
+                    'radio_silence': False,
+                    'build': "right_echelon",
+                },
+            ],
+        }
+        self._test_parser(FlightWayParser, '3GvIAP01_Way', lines, expected)
