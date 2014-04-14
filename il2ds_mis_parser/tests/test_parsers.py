@@ -10,7 +10,7 @@ from il2ds_mis_parser.parsers import (to_bool, to_pos, SectionParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
     BornPlaceCountriesParser, RocketParser, ChiefRoadParser, WingParser,
-    MDSScoutsParser, FlightDetailsParser, )
+    MDSScoutsParser, FlightDetailsParser, FlightWayParser, )
 
 
 class CommonsTestCase(unittest.TestCase):
@@ -743,3 +743,13 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             },
         }
         self._test_parser(FlightDetailsParser, '3GvIAP01', lines, expected)
+
+    def test_flight_routes_parser(self):
+        lines = [
+            "NORMFLY 90217.11 81170.84 100.00 300.00 &1",
+            "NORMFLY_401 98616.72 78629.31 500.00 300.00 &0 F2",
+            "TRIGGERS 1 1 25 5 500",
+            "GATTACK 99737.30 79106.06 500.00 300.00 0_Chief 0 &0",
+        ]
+        expected = {}
+        #self._test_parser(FlightWayParser, '3GvIAP01_Way', lines, expected)

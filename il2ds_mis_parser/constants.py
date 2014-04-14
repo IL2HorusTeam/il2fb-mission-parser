@@ -212,3 +212,46 @@ TURBULENCE_TYPES_MAP = {
     '3': TURBULENCE_STRONG,
     '4': TURBULENCE_VERY_STRONG,
 }
+
+###############################################################################
+# Flight
+###############################################################################
+
+# Flight route ----------------------------------------------------------------
+
+WAY_POINT_TYPES = {
+    'NORMFLY': 'normal',
+    'NORMFLY_401': {
+        'type': 'patrol',
+        'patrol_type': 'triangle',
+    },
+    'NORMFLY_402': {
+        'type': 'patrol',
+        'patrol_type': 'square',
+    },
+    'NORMFLY_403': {
+        'type': 'patrol',
+        'patrol_type': 'pentagon',
+    },
+    'NORMFLY_404': {
+        'type': 'patrol',
+        'patrol_type': 'hexagon',
+    },
+    'NORMFLY_405': {
+        'type': 'patrol',
+        'patrol_type': 'random',
+    },
+    'GATTACK': 'attack',
+    'TRIGGERS': 'trigger',
+}
+
+WAY_POINT_FORMATIONS = {
+    'F1': 'echelon_right',
+    'F2': 'echelon_left',
+    'F3': 'rank',
+    'F4': 'line_abreast',
+    'F5': 'line_asteam',
+    'F6': 'vic',
+    'F7': 'finger_four',
+    'F8': 'diamond',
+}
