@@ -2,8 +2,6 @@
 """
 Different constants.
 """
-from candv import Constants, SimpleConstant, ValueConstant, Values
-
 from il2ds_mis_parser.helpers import _
 
 
@@ -221,83 +219,6 @@ TURBULENCE_TYPES_MAP = {
 ###############################################################################
 
 # Way points ----------------------------------------------------------------
-
-
-class WayPointTypes(Constants):
-    TAKEOFF = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('takeoff_normal'),
-    )
-    TAKEOFF_002 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('takeoff_pair'),
-    )
-    TAKEOFF_003 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('takeoff_in_line'),
-    )
-    TAKEOFF_004 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('taxiing'),
-    )
-    NORMFLY = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('normal'),
-    )
-    NORMFLY_401 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('patrol'),
-        PATROL_TYPE=ValueConstant('triangle'),
-    )
-    NORMFLY_402 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('patrol'),
-        PATROL_TYPE=ValueConstant('square'),
-    )
-    NORMFLY_403 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('patrol'),
-        PATROL_TYPE=ValueConstant('pentagon'),
-    )
-    NORMFLY_404 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('patrol'),
-        PATROL_TYPE=ValueConstant('hexagon'),
-    )
-    NORMFLY_405 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('patrol'),
-        PATROL_TYPE=ValueConstant('random'),
-    )
-    NORMFLY_407 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('artillery_spotter'),
-    )
-    GATTACK = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('attack'),
-    )
-    LANDING = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('landing_on_left'),
-    )
-    LANDING_101 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('landing_on_right'),
-    )
-    LANDING_102 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('landing_short_on_left'),
-    )
-    LANDING_103 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('landing_short_on_right'),
-    )
-    LANDING_104 = SimpleConstant().to_group(
-        Values,
-        TYPE=ValueConstant('landing_straight'),
-    )
-
 
 WAY_POINT_TYPES = {
     'TAKEOFF': {
