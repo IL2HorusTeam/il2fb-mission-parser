@@ -1039,7 +1039,7 @@ class FlightDetailsParser(ValuesParser):
 
 class FlightWayParser(CollectingParser):
     """
-    Parses route for a moving flight group.
+    Parses ``*_Way`` section.
     """
     suffix = "_Way"
 
@@ -1051,33 +1051,43 @@ class FlightWayParser(CollectingParser):
 
     def init_parser(self, section_name):
         self.data = []
-        self.flight_route = {}
+        self.way_points = {}
         flight_code = self._extract_flight_code(section_name)
-        self.output_key = "{0}_route".format(flight_code)
+        self.output_key = "{0}_way_point".format(flight_code)
 
     def _parse_trigger(self, chunks):
-        cycles, timer, angle, base_size, altitude_diff = chunks
-        self.flight_route.update({
-            'triggers': {
-                'cycles': int(cycles),
-                'timer': int(timer),
-                'angle': int(angle),
-                'base_size': int(base_size),
-                'altitude_diff': int(altitude_diff),
-            },
-        })
+        amount_params_takeoff = 4
+        if len(chunks) == amount_params_takeoff:
+            (timeout, distance, ) = chunks[1:3]
+            self.way_points.update({
+                'triggers': {
+                    'timeout': int(timeout),
+                    'distance': int(distance),
+                },
+            })
+        else:
+            cycles, timer, angle, base_size, altitude_diff = chunks
+            self.way_points.update({
+                'triggers': {
+                    'cycles': int(cycles),
+                    'timer': int(timer),
+                    'angle': int(angle),
+                    'base_size': int(base_size),
+                    'altitude_diff': int(altitude_diff),
+                },
+            })
 
     def _get_formation_code(self, chunks):
         if chunks:
-            (formation, ) = chunks
-            return WAY_POINT_FORMATIONS.get(formation)
+            (formation_code, ) = chunks
+            return WAY_POINT_FORMATIONS.get(formation_code)
         else:
             return "default"
 
     def _parse_way_point_on_target(self, chunks):
         (target_code, target_point, radio_silence), chunks = chunks[:3], chunks[3:]
         formation_code = self._get_formation_code(chunks)
-        self.flight_route.update({
+        self.way_points.update({
             'target_code': target_code,
             'target_point': int(target_point),
             'radio_silence': radio_silence == "&1",
@@ -1087,7 +1097,7 @@ class FlightWayParser(CollectingParser):
     def _parse_way_point_without_target(self, chunks):
         radio_silence, chunks = chunks[0], chunks[1:]
         formation_code = self._get_formation_code(chunks)
-        self.flight_route.update({
+        self.way_points.update({
             'radio_silence': radio_silence == "&1",
             'formation_code': formation_code,
         })
@@ -1098,25 +1108,24 @@ class FlightWayParser(CollectingParser):
         if type == "TRIGGERS":
             self._parse_trigger(chunks)
         else:
-            if self.flight_route:
-                self.data.append(self.flight_route)
-                self.flight_route = {}
-
-        pos, speed, chunks = chunks[0:3], chunks[3], chunks[4:]
-        self.flight_route.update({
-            'type': WAY_POINT_TYPES[type],
-            'pos': to_pos(*pos),
-            'speed': float(speed),
-        })
-        amount_on_target = 2
-        if len(chunks) > amount_on_target:
-            self._parse_way_point_on_target(chunks)
-        else:
-            self._parse_way_point_without_target(chunks)
+            if self.way_points:
+                self.data.append(self.way_points)
+                self.way_points = {}
+            pos, speed, chunks = chunks[0:3], chunks[3], chunks[4:]
+            self.way_points.update({
+                'way_point_type': WAY_POINT_TYPES[type],
+                'pos': to_pos(*pos),
+                'speed': float(speed),
+            })
+            amount_on_target = 2
+            if len(chunks) > amount_on_target:
+                self._parse_way_point_on_target(chunks)
+            else:
+                self._parse_way_point_without_target(chunks)
 
     def process_data(self):
-        if self.flight_route:
-            self.data.append(self.flight_route)
+        if self.way_points:
+            self.data.append(self.way_points)
         return {self.output_key: self.data}
 
 
