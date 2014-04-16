@@ -1,21 +1,21 @@
-il2ds_mis_parser package
+il2_mis_parser package
 ========================
 
 Submodules
 ----------
 
-il2ds_mis_parser.constants module
+il2_mis_parser.constants module
 ---------------------------------
 
-.. automodule:: il2ds_mis_parser.constants
+.. automodule:: il2_mis_parser.constants
     :members:
     :undoc-members:
     :show-inheritance:
 
-il2ds_mis_parser.parsers module
+il2_mis_parser.parsers module
 -------------------------------
 
-.. automodule:: il2ds_mis_parser.parsers
+.. automodule:: il2_mis_parser.parsers
     :members:
     :undoc-members:
     :show-inheritance:
@@ -24,7 +24,7 @@ il2ds_mis_parser.parsers module
 Module contents
 ---------------
 
-.. automodule:: il2ds_mis_parser
+.. automodule:: il2_mis_parser
     :members:
     :undoc-members:
     :show-inheritance:

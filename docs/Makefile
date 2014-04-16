@@ -7,7 +7,7 @@ SPHINXBUILD   = sphinx-build
 SPHINXAPIDOC   = sphinx-apidoc
 PAPER         =
 BUILDDIR      = _build
-PACKAGEDIR      = ../il2ds_mis_parser
+PACKAGEDIR      = ../il2_mis_parser
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
@@ -87,17 +87,17 @@ qthelp: apidoc
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/IL-2DSMissionsParser.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/IL-2MissionsParser.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/IL-2DSMissionsParser.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/IL-2MissionsParser.qhc"
 
 devhelp: apidoc
 	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/IL-2DSMissionsParser"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/IL-2DSMissionsParser"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/IL-2MissionsParser"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/IL-2MissionsParser"
 	@echo "# devhelp"
 
 epub: apidoc

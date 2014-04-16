@@ -3,7 +3,7 @@ Main parser
 
 .. _main-parser:
 
-:class:`~il2ds_mis_parser.parsers.MainParser` is responsible for parsing
+:class:`~il2_mis_parser.parsers.MainParser` is responsible for parsing
 ``MAIN`` section. This section contains one key-value pair per each line.
 Section example::
 
@@ -83,7 +83,7 @@ CloudType
 
   **Output type**: :class:`str`
 
-  **Output value**: a value from :data:`~il2ds_mis_parser.constants.WEATHER_TYPES`
+  **Output value**: a value from :data:`~il2_mis_parser.constants.WEATHER_TYPES`
   dictionary
 
 CloudHeight
@@ -111,7 +111,7 @@ army [1]_
 
   **Output type**: :class:`str`
 
-  **Output value**: a value from :data:`~il2ds_mis_parser.constants.ARMIES`
+  **Output value**: a value from :data:`~il2_mis_parser.constants.ARMIES`
   dictionary
 
 playerNum [1]_

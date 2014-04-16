@@ -2,7 +2,7 @@
 """
 Different constants.
 """
-from il2ds_mis_parser.helpers import _
+from il2_mis_parser.helpers import _
 
 
 ###############################################################################

@@ -4,7 +4,7 @@ Output format
 This chapter describes output formats for all parsers. Datailed description of
 input data aslo included.
 
-Note, that :class:`~il2ds_mis_parser.parsers.FileParser` is the root parser. It
+Note, that :class:`~il2_mis_parser.parsers.FileParser` is the root parser. It
 gets data from all other parsers and organizes it in special manner.
 
 .. note::

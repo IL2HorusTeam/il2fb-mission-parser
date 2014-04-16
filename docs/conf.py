@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# IL-2 DS Missions Parser documentation build configuration file, created by
+# IL-2 Missions Parser documentation build configuration file, created by
 # sphinx-quickstart on Mon Mar 31 16:07:51 2014.
 #
 # This file is execfile()d with the current directory set to its
@@ -51,7 +51,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'IL-2 DS Missions Parser'
+project = u'IL-2 Missions Parser'
 copyright = u'2014, Alexander Oblovatniy, Alexander Kamyhin'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -186,7 +186,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'IL-2DSMissionsParserdoc'
+htmlhelp_basename = 'IL-2MissionsParserdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -206,7 +206,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'IL-2DSMissionsParser.tex', u'IL-2 DS Missions Parser Documentation',
+  ('index', 'IL-2MissionsParser.tex', u'IL-2 Missions Parser Documentation',
    u'Alexander Oblovatniy, Alexander Kamyhin', 'manual'),
 ]
 
@@ -236,7 +236,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'il-2dsmissionsparser', u'IL-2 DS Missions Parser Documentation',
+    ('index', 'il-2missionsparser', u'IL-2 Missions Parser Documentation',
      [u'Alexander Oblovatniy, Alexander Kamyhin'], 1)
 ]
 
@@ -250,8 +250,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'IL-2DSMissionsParser', u'IL-2 DS Missions Parser Documentation',
-   u'Alexander Oblovatniy, Alexander Kamyhin', 'IL-2DSMissionsParser', 'One line description of project.',
+  ('index', 'IL-2MissionsParser', u'IL-2 Missions Parser Documentation',
+   u'Alexander Oblovatniy, Alexander Kamyhin', 'IL-2MissionsParser', 'One line description of project.',
    'Miscellaneous'),
 ]
 

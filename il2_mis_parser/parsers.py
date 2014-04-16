@@ -9,8 +9,8 @@ import math
 
 from abc import ABCMeta, abstractmethod
 
-from il2ds_mis_parser.helpers import _
-from il2ds_mis_parser.constants import (
+from il2_mis_parser.helpers import _
+from il2_mis_parser.constants import (
     SKILLS_MAP, ARMIES_MAP, GUST_TYPES_MAP, TURBULENCE_TYPES_MAP, TARGET_TYPE_DESTROY_CODE,
     TARGET_TYPE_DESTROY_BRIDGE_CODE, TARGET_TYPE_DESTROY_AREA_CODE, TARGET_TYPE_RECON_CODE,
     TARGET_TYPE_ESCORT_CODE, TARGET_TYPE_COVER_CODE, TARGET_TYPE_COVER_AREA_CODE,

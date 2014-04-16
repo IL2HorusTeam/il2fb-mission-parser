@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='il2ds-mis-parser',
+    name='il2-mis-parser',
     version='1.0.0',
-    description='Parse IL-2 DS mission file and produce detailed information about mission.',
+    description='Parse IL-2 mission file and produce detailed information about mission.',
     license='GPLv2',
-    url='https://github.com/IL2HorusTeam/il2ds-mis-parser',
+    url='https://github.com/IL2HorusTeam/il2-mis-parser',
     author='Alexander Oblovatniy, Alexander Kamyhin',
     author_email='oblovatniy@gmail.com, kamyhin@gmail.com',
     packages=find_packages(),

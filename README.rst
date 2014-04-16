@@ -1,21 +1,18 @@
-IL-2 DS Missions Parser
+IL-2 Missions Parser
 =======================
 
-|Build Status| |Coverage Status| |PyPi package| |Downloads|
+|Build Status| |Coverage Status| |PyPi package|
 
-Parse IL-2 DS mission file and produce detailed information about
-mission.
+Parse IL-2 mission file and produce detailed information about mission.
 
-Please, `read the docs <http://il-2-ds-missions-parser.readthedocs.org/en/latest/index.html>`_
+Please, `read the docs <http://il-2-missions-parser.readthedocs.org/en/latest/index.html>`_
 to get full information about this project.
 
-You can dig around `Wiki pages <https://github.com/IL2HorusTeam/il2ds-mis-parser/wiki>`_ also.
+You can dig around `Wiki pages <https://github.com/IL2HorusTeam/il2-mis-parser/wiki>`_ also.
 
-.. |Build Status| image:: https://travis-ci.org/IL2HorusTeam/il2ds-mis-parser.svg?branch=master
-   :target: https://travis-ci.org/IL2HorusTeam/il2ds-mis-parser
-.. |Coverage Status| image:: https://coveralls.io/repos/IL2HorusTeam/il2ds-mis-parser/badge.png?branch=master
-   :target: https://coveralls.io/r/IL2HorusTeam/il2ds-mis-parser?branch=master
-.. |PyPi package| image:: https://badge.fury.io/py/il2ds-mis-parser.png
-   :target: http://badge.fury.io/py/il2ds-mis-parser/
-.. |Downloads| image:: https://pypip.in/d/il2ds-mis-parser/badge.png
-   :target: https://crate.io/packages/il2ds-mis-parser/
+.. |Build Status| image:: https://travis-ci.org/IL2HorusTeam/il2-mis-parser.svg?branch=master
+   :target: https://travis-ci.org/IL2HorusTeam/il2-mis-parser
+.. |Coverage Status| image:: https://coveralls.io/repos/IL2HorusTeam/il2-mis-parser/badge.png?branch=master
+   :target: https://coveralls.io/r/IL2HorusTeam/il2-mis-parser?branch=master
+.. |PyPi package| image:: https://badge.fury.io/py/il2-mis-parser.png
+   :target: http://badge.fury.io/py/il2-mis-parser/

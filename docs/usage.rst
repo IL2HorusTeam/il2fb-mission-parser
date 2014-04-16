@@ -7,8 +7,8 @@ The most common usage
 The main purpose of this library is to parse the whole mission file. So, let's
 start::
 
-    >>> import il2ds_mis_parser
-    >>> mission = il2ds_mis_parser.parse('path/to/your/mission.mis')
+    >>> import il2_mis_parser
+    >>> mission = il2_mis_parser.parse('path/to/your/mission.mis')
 
 This will put a big dictionary into a ``mission`` variable. That's it. You do
 not need to do something else. Go formard to
@@ -19,12 +19,12 @@ Where it comes from
 ^^^^^^^^^^^^^^^^^^^
 
 Let's talk about what's going on above. This library provides a Python module
-called :mod:`il2ds_mis_parser.parsers` which has a lot of parsers for each kind
+called :mod:`il2_mis_parser.parsers` which has a lot of parsers for each kind
 of section in mission files (see :doc:`all of them <output_format>`).
 
-The function :func:`~il2ds_mis_parser.parse`, which was used above, is a
-reference to :meth:`~il2ds_mis_parser.parsers.FileParser.parse` method which
-belongs to :class:`~il2ds_mis_parser.parsers.FileParser`. This parser as a
+The function :func:`~il2_mis_parser.parse`, which was used above, is a
+reference to :meth:`~il2_mis_parser.parsers.FileParser.parse` method which
+belongs to :class:`~il2_mis_parser.parsers.FileParser`. This parser as a
 swiss-knife combines all of the other parsers in itself, processes the whole
 mission file and gives all you need in one time. Nevertheless you can use any
 other parser for your needs.
@@ -33,7 +33,7 @@ Manual parsing
 ^^^^^^^^^^^^^^
 
 Each parser listed above (except ``FileParser``) extends an abstract class
-:class:`~il2ds_mis_parser.parsers.SectionParser`, so they share a common
+:class:`~il2_mis_parser.parsers.SectionParser`, so they share a common
 approach of section processing.
 
 .. note::
@@ -56,7 +56,7 @@ and tell parser the name of section. E.g.::
     ...     "army 1",
     ...     "playerNum 0",
     ... ]
-    >>> from il2ds_mis_parser.parsers import MainParser
+    >>> from il2_mis_parser.parsers import MainParser
     >>> p = MainParser()
     >>> p.start('MAIN')
     True
@@ -78,7 +78,7 @@ and tell parser the name of section. E.g.::
 
 As you can see, you need to import a desired parser and create it's instance.
 
-Then you need to :meth:`~il2ds_mis_parser.parsers.SectionParser.start` parser
+Then you need to :meth:`~il2_mis_parser.parsers.SectionParser.start` parser
 and provide a name of section you are going to parse. Method will return
 ``True`` if parser can handle sections with the given name or ``False``
 otherwise.
@@ -93,9 +93,9 @@ otherwise.
 
 Now it's a time to feed the parser with some data. As it was mentioned above,
 you can pass only one line at a time to
-:meth:`~il2ds_mis_parser.parsers.SectionParser.parse_line` method. you can do
+:meth:`~il2_mis_parser.parsers.SectionParser.parse_line` method. you can do
 it in any suitable manner.
 
 When you have passed all the data, call
-:meth:`~il2ds_mis_parser.parsers.SectionParser.stop` method to stop parsing.
+:meth:`~il2_mis_parser.parsers.SectionParser.stop` method to stop parsing.
 This method will return fully-parsed data which is a dictionary in general.
