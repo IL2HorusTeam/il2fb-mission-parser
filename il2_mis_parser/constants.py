@@ -37,17 +37,59 @@ SKILLS_MAP = {
 ARMY_NONE = 'none'
 ARMY_RED = 'red'
 ARMY_BLUE = 'blue'
+ARMY_GREEN = 'green'
+ARMY_GOLD = 'gold'
+ARMY_PURPLE = 'purple'
+ARMY_AQUA = 'aqua'
+ARMY_MAROON = 'maroon'
+ARMY_NAVY = 'navy'
+ARMY_EMERALD = 'emerald'
+ARMY_OLIVE = 'olive'
+ARMY_MAGENTA = 'magenta'
+ARMY_TEAL = 'teal'
+ARMY_ORANGE = 'orange'
+ARMY_TURQUOISE = 'turquoise'
+ARMY_BROWN = 'brown'
+ARMY_SALAD = 'salad'
 
 ARMIES_NAMES = {
     ARMY_NONE: _("none"),
     ARMY_RED: _("red"),
     ARMY_BLUE: _("blue"),
+    ARMY_GREEN: _("green"),
+    ARMY_GOLD: _("gold"),
+    ARMY_PURPLE: _("purple"),
+    ARMY_AQUA: _("aqua"),
+    ARMY_MAROON: _("maroon"),
+    ARMY_NAVY: _("navy"),
+    ARMY_EMERALD: _("emerald"),
+    ARMY_OLIVE: _("olive"),
+    ARMY_MAGENTA: _("magenta"),
+    ARMY_TEAL: _("teal"),
+    ARMY_ORANGE: _("orange"),
+    ARMY_TURQUOISE: _("turquoise"),
+    ARMY_BROWN: _("brown"),
+    ARMY_SALAD: _("salad"),
 }
 
 ARMIES_MAP = {
     '0': ARMY_NONE,
     '1': ARMY_RED,
     '2': ARMY_BLUE,
+    '3': ARMY_GREEN,
+    '4': ARMY_GOLD,
+    '5': ARMY_PURPLE,
+    '6': ARMY_AQUA,
+    '7': ARMY_MAROON,
+    '8': ARMY_NAVY,
+    '9': ARMY_EMERALD,
+    '10': ARMY_OLIVE,
+    '11': ARMY_MAGENTA,
+    '12': ARMY_TEAL,
+    '13': ARMY_ORANGE,
+    '14': ARMY_TURQUOISE,
+    '15': ARMY_BROWN,
+    '16': ARMY_SALAD,
 }
 
 # Air forces ------------------------------------------------------------------
