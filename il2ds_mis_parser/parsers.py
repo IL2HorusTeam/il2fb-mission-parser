@@ -9,14 +9,13 @@ import math
 
 from abc import ABCMeta, abstractmethod
 
-from il2ds_mis_parser.constants import (SKILLS_MAP, ARMIES_MAP, GUST_TYPES_MAP,
-    TURBULENCE_TYPES_MAP, TARGET_TYPE_DESTROY_CODE,
-    TARGET_TYPE_DESTROY_BRIDGE_CODE, TARGET_TYPE_DESTROY_AREA_CODE,
-    TARGET_TYPE_RECON_CODE, TARGET_TYPE_ESCORT_CODE, TARGET_TYPE_COVER_CODE,
-    TARGET_TYPE_COVER_AREA_CODE, TARGET_TYPE_COVER_BRIDGE_CODE,
-    TARGET_TYPES_MAP, TARGET_PRIORITIES_MAP, WEATHER_TYPES_MAP, AIR_FORCES, WAY_POINT_TYPES,
-    WAY_POINT_FORMATIONS, )
 from il2ds_mis_parser.helpers import _
+from il2ds_mis_parser.constants import (
+    SKILLS_MAP, ARMIES_MAP, GUST_TYPES_MAP, TURBULENCE_TYPES_MAP, TARGET_TYPE_DESTROY_CODE,
+    TARGET_TYPE_DESTROY_BRIDGE_CODE, TARGET_TYPE_DESTROY_AREA_CODE, TARGET_TYPE_RECON_CODE,
+    TARGET_TYPE_ESCORT_CODE, TARGET_TYPE_COVER_CODE, TARGET_TYPE_COVER_AREA_CODE,
+    TARGET_TYPE_COVER_BRIDGE_CODE, TARGET_TYPES_MAP, TARGET_PRIORITIES_MAP, WEATHER_TYPES_MAP,
+    AIR_FORCES, WAY_POINT_TYPES, WAY_POINT_FORMATIONS, )
 
 
 def to_bool(value):
@@ -854,7 +853,7 @@ class BornPlaceCountriesParser(CollectingParser):
     def init_parser(self, section_name):
         super(BornPlaceCountriesParser, self).init_parser(section_name)
         self.output_key = 'homebase_countries_{0}'.format(
-                           self._extract_section_number(section_name))
+            self._extract_section_number(section_name))
         self.countries = {}
 
     def _extract_section_number(self, section_name):
