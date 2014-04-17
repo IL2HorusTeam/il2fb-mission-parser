@@ -1103,8 +1103,8 @@ class FlightWayParser(CollectingParser):
 
     def parse_line(self, line):
         chunks = line.split()
-        type, chunks = chunks[0], chunks[1:]
-        if type == "TRIGGERS":
+        way_point_type, chunks = chunks[0], chunks[1:]
+        if way_point_type == "TRIGGERS":
             self._parse_trigger(chunks)
         else:
             if self.way_points:
@@ -1112,7 +1112,7 @@ class FlightWayParser(CollectingParser):
                 self.way_points = {}
             pos, speed, chunks = chunks[0:3], chunks[3], chunks[4:]
             self.way_points.update({
-                'way_point_type': WAY_POINT_TYPES[type],
+                'way_point_type': WAY_POINT_TYPES[way_point_type],
                 'pos': to_pos(*pos),
                 'speed': float(speed),
             })
