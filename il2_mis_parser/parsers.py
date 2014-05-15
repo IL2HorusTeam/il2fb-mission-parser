@@ -676,11 +676,16 @@ class TargetParser(CollectingParser):
         Parse extra parameters for targets with type 'destroy' or 'cover' or
         'escort'.
         """
-        (destruction_level, pos_x, pos_y), object_code = params[:3], params[5]
+        (destruction_level, pos_x, pos_y), object_point, object_code, object_pos = \
+            params[:3], params[4], params[5], params[6:8]
         return {
-            'object_code': object_code,
             'destruction_level': self._to_destruction_level(destruction_level),
             'pos': to_pos(pos_x, pos_y),
+            'object': {
+                'point': int(object_point),
+                'code': object_code,
+                'pos': to_pos(*object_pos),
+            },
         }
 
     def _parse_destroy_or_cover_bridge(self, params):
@@ -688,10 +693,13 @@ class TargetParser(CollectingParser):
         Parse extra parameters for targets with type 'destroy bridge' or
         'cover bridge'.
         """
-        (pos_x, pos_y), object_code = params[1:3], params[5]
+        (pos_x, pos_y), object_code, object_pos = params[1:3], params[5], params[6:8]
         return {
-            'object_code': object_code,
             'pos': to_pos(pos_x, pos_y),
+            'object': {
+                'code': object_code,
+                'pos': to_pos(*object_pos),
+            },
         }
 
     def _parse_destroy_or_cover_area(self, params):
@@ -699,17 +707,18 @@ class TargetParser(CollectingParser):
         Parse extra parameters for targets with type 'destroy area' or
         'cover area'.
         """
-        destruction_level, pos_x, pos_y = params[:3]
+        destruction_level, pos_x, pos_y, radius = params
         return {
             'destruction_level': self._to_destruction_level(destruction_level),
             'pos': to_pos(pos_x, pos_y),
+            'radius': int(radius),
         }
 
     def _parse_recon(self, params):
         """
         Parse extra parameters for targets with 'recon' type.
         """
-        (requires_landing, pos_x, pos_y, radius) = params[:4]
+        (requires_landing, pos_x, pos_y, radius), params = params[:4], params[4:]
 
         data = {
             'radius': int(radius),
@@ -717,9 +726,13 @@ class TargetParser(CollectingParser):
             'pos': to_pos(pos_x, pos_y),
         }
 
-        object_code = params[5:6]
-        if object_code:
-            (data['object_code'], ) = object_code
+        if params:
+            object_point, object_code, object_pos_x, object_pos_y = params
+            (data['object'], ) = {
+                'point': int(object_point),
+                'code': object_code,
+                'pos': to_pos(object_pos_x, object_pos_y),
+            },
 
         return data
 
