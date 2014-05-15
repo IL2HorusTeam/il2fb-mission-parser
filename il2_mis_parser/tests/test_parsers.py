@@ -314,58 +314,6 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         }
         self._test_parser(StaticCameraParser, 'StaticCamera', lines, expected)
 
-    def test_target_parser(self):
-        """
-        Test 'Target' section parser.
-        """
-        lines = [
-            "0 0 0 0 500 90939 91871 0 0 10_Chief 91100 91500",
-            "3 1 1 30 500 90681 91687 500",
-            "3 2 1 30 500 90681 91687 500 0 0_Chief 91100 91500",
-        ]
-        expected = {
-            'targets': [
-                {
-                    'type': 'destroy',
-                    'priority': 'primary',
-                    'sleep_mode': False,
-                    'timeout': 0,
-                    'destruction_level': 50,
-                    'pos': {
-                        'x': 90939,
-                        'y': 91871,
-                    },
-                    'object_code': '10_Chief',
-                },
-                {
-                    'type': 'recon',
-                    'priority': 'secondary',
-                    'sleep_mode': True,
-                    'timeout': 30,
-                    'requires_landing': False,
-                    'pos': {
-                        'x': 90681,
-                        'y': 91687,
-                    },
-                    'radius': 500,
-                },
-                {
-                    'type': 'recon',
-                    'priority': 'hidden',
-                    'sleep_mode': True,
-                    'timeout': 30,
-                    'requires_landing': False,
-                    'pos': {
-                        'x': 90681,
-                        'y': 91687,
-                    },
-                    'radius': 500,
-                    'object_code': '0_Chief',
-                },
-            ],
-        }
-        self._test_parser(TargetParser, 'Target', lines, expected)
-
     def test_born_place_parser(self):
         """
         Test 'BornPlace' section parser.
@@ -526,6 +474,273 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             ],
         }
         self._test_parser(WingParser, 'Wing', lines, expected)
+
+
+class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+    """
+    Test 'Target' section parser.
+    """
+    maxDiff = None
+
+    def test_target_destroy(self):
+        """
+        Test 'destroy' target type parser.
+        """
+        lines = [
+            "0 0 0 0 500 90939 91871 0 1 10_Chief 91100 91500",
+        ]
+
+        expected = {
+            'targets': [
+                {
+                    'type': 'destroy',
+                    'priority': 'primary',
+                    'sleep_mode': False,
+                    'timeout': 0,
+                    'destruction_level': 50,
+                    'pos': {
+                        'x': 90939,
+                        'y': 91871,
+                    },
+                    'object': {
+                        'point': 1,
+                        'code': '10_Chief',
+                        'pos': {
+                            'x': 91100,
+                            'y': 91500,
+                        },
+                    },
+                },
+            ],
+        }
+        self._test_parser(TargetParser, 'Target', lines, expected)
+
+    def test_target_destroy_area(self):
+        """
+        Test 'destroy area' target type parser.
+        """
+        lines = [
+            "1 1 1 60 750 133960 87552 1350",
+        ]
+
+        expected = {
+            'targets': [
+                {
+                    'type': 'destroy_area',
+                    'priority': 'secondary',
+                    'sleep_mode': True,
+                    'timeout': 60,
+                    'destruction_level': 75,
+                    'pos': {
+                        'x': 133960,
+                        'y': 87552,
+                    },
+                    'radius': 1350,
+                },
+            ],
+        }
+        self._test_parser(TargetParser, 'Target', lines, expected)
+
+    def test_target_destroy_bridge(self):
+        """
+        Test 'destroy bridge' target type parser.
+        """
+        lines = [
+            "2 2 1 30 500 135786 84596 0 0  Bridge84 135764 84636",
+        ]
+
+        expected = {
+            'targets': [
+                {
+                    'type': 'destroy_bridge',
+                    'priority': 'hidden',
+                    'sleep_mode': True,
+                    'timeout': 30,
+                    'pos': {
+                        'x': 135786,
+                        'y': 84596,
+                    },
+                    'object': {
+                        'code': 'Bridge84',
+                        'pos': {
+                            'x': 135764,
+                            'y': 84636,
+                        },
+                    },
+                },
+            ],
+        }
+        self._test_parser(TargetParser, 'Target', lines, expected)
+
+    def test_target_destroy_recon(self):
+        """
+        Test 'recon' target type parser.
+        """
+        lines = [
+            "3 1 1 50 500 133978 87574 1150",
+            "3 0 1 40 501 134459 85239 300 0 1_Chief 134360 85346",
+        ]
+
+        expected = {
+            'targets': [
+                {
+                    'type': 'recon',
+                    'priority': 'secondary',
+                    'sleep_mode': True,
+                    'timeout': 50,
+                    'requires_landing': False,
+                    'pos': {
+                        'x': 133978,
+                        'y': 87574,
+                    },
+                    'radius': 1150,
+                },
+                {
+                    'type': 'recon',
+                    'priority': 'primary',
+                    'sleep_mode': True,
+                    'timeout': 40,
+                    'requires_landing': True,
+                    'pos': {
+                        'x': 134459,
+                        'y': 85239,
+                    },
+                    'radius': 300,
+                    'object': {
+                        'point': 0,
+                        'code': '1_Chief',
+                        'pos': {
+                            'x': 134360,
+                            'y': 85346,
+                        },
+                    },
+                },
+            ],
+        }
+        self._test_parser(TargetParser, 'Target', lines, expected)
+
+    def test_target_escort(self):
+        """
+        Test 'escort' target type parser.
+        """
+        lines = [
+            "4 0 1 10 750 134183 85468 0 1 r0100 133993 85287",
+        ]
+
+        expected = {
+            'targets': [
+                {
+                    'type': 'escort',
+                    'priority': 'primary',
+                    'sleep_mode': True,
+                    'timeout': 10,
+                    'destruction_level': 75,
+                    'pos': {
+                        'x': 134183,
+                        'y': 85468,
+                    },
+                    'object': {
+                        'point': 1,
+                        'code': 'r0100',
+                        'pos': {
+                            'x': 133993,
+                            'y': 85287,
+                        },
+                    },
+                },
+            ],
+        }
+        self._test_parser(TargetParser, 'Target', lines, expected)
+
+    def test_target_cover(self):
+        """
+        Test 'cover' target type parser.
+        """
+        lines = [
+            "5 1 1 20 250 132865 87291 0 1 1_Chief 132866 86905",
+        ]
+
+        expected = {
+            'targets': [
+                {
+                    'type': 'cover',
+                    'priority': 'secondary',
+                    'sleep_mode': True,
+                    'timeout': 20,
+                    'destruction_level': 25,
+                    'pos': {
+                        'x': 132865,
+                        'y': 87291,
+                    },
+                    'object': {
+                        'point': 1,
+                        'code': '1_Chief',
+                        'pos': {
+                            'x': 132866,
+                            'y': 86905,
+                        },
+                    },
+                },
+            ],
+        }
+        self._test_parser(TargetParser, 'Target', lines, expected)
+
+    def test_target_cover_area(self):
+        """
+        Test 'cover area' target type parser.
+        """
+        lines = [
+            "6 1 1 30 500 134064 88188 1350",
+        ]
+
+        expected = {
+            'targets': [
+                {
+                    'type': 'cover_area',
+                    'priority': 'secondary',
+                    'sleep_mode': True,
+                    'timeout': 30,
+                    'destruction_level': 50,
+                    'pos': {
+                        'x': 134064,
+                        'y': 88188,
+                    },
+                    'radius': 1350,
+                },
+            ],
+        }
+        self._test_parser(TargetParser, 'Target', lines, expected)
+
+    def test_target_cover_bridge(self):
+        """
+        Test 'cover bridge' target type parser.
+        """
+        lines = [
+            "7 2 1 30 500 135896 84536 0 0  Bridge84 135764 84636",
+        ]
+
+        expected = {
+            'targets': [
+                {
+                    'type': 'cover_bridge',
+                    'priority': 'hidden',
+                    'sleep_mode': True,
+                    'timeout': 30,
+                    'pos': {
+                        'x': 135896,
+                        'y': 84536,
+                    },
+                    'object': {
+                        'code': 'Bridge84',
+                        'pos': {
+                            'x': 135764,
+                            'y': 84636,
+                        },
+                    },
+                },
+            ],
+        }
+        self._test_parser(TargetParser, 'Target', lines, expected)
 
 
 class MDSScoutsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
