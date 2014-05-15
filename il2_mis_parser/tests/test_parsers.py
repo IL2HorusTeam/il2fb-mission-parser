@@ -572,7 +572,7 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         }
         self._test_parser(TargetParser, 'Target', lines, expected)
 
-    def test_target_destroy_recon(self):
+    def test_target_recon(self):
         """
         Test 'recon' target type parser.
         """
