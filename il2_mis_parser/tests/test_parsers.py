@@ -818,7 +818,7 @@ class BornPlaceAircraftsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             "+ 2xSC1800 2xSC2000",
         ]
         expected = {
-            'homebase_aircrafts_9999': [
+            'homebase_aircrafts_1': [
                 {
                     'aircraft_code': 'Bf-109F-4',
                     'limit': None,
@@ -840,7 +840,7 @@ class BornPlaceAircraftsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                 },
             ],
         }
-        self._test_parser(BornPlaceAircraftsParser, 'BornPlace9999',
+        self._test_parser(BornPlaceAircraftsParser, 'BornPlace1',
                           lines, expected)
 
     def test_invalid_section_name(self):
@@ -859,12 +859,12 @@ class BornPlaceCountriesParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             "ru",
         ]
         expected = {
-            'homebase_countries_9999': [
+            'homebase_countries_1': [
                 "de",
                 "ru",
             ],
         }
-        self._test_parser(BornPlaceCountriesParser, 'BornPlaceCountries9999',
+        self._test_parser(BornPlaceCountriesParser, 'BornPlaceCountries1',
                           lines, expected)
 
     def test_invalid_section_name(self):
