@@ -5,12 +5,14 @@ Mission parser tests.
 import datetime
 import unittest
 
-from il2_mis_parser.parsers import (to_bool, to_pos, SectionParser,
-    MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
-    NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
-    FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
-    BornPlaceCountriesParser, RocketParser, ChiefRoadParser, WingParser,
-    MDSScoutsParser, FlightDetailsParser, FlightWayParser, )
+from il2fb.parsers.mission.parsers import (
+    to_bool, to_pos, SectionParser, MainParser, SeasonParser, RespawnTimeParser,
+    WeatherParser, MDSParser, NStationaryParser, BuildingsParser,
+    StaticCameraParser, TargetParser, FrontMarkerParser, BornPlaceParser,
+    ChiefsParser, BornPlaceAircraftsParser, BornPlaceCountriesParser,
+    RocketParser, ChiefRoadParser, WingParser, MDSScoutsParser,
+    FlightDetailsParser, FlightWayParser,
+)
 
 
 class CommonsTestCase(unittest.TestCase):

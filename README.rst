@@ -1,18 +1,23 @@
-IL-2 Missions Parser
+IL-2 FB Missions Parser
 =======================
 
-|Build Status| |Coverage Status| |PyPi package|
+|Build Status| |Coverage Status| |PyPi package| |PyPi downloads|
 
-Parse IL-2 mission file and produce detailed information about mission.
+This is a library for parsing mission file of ``IL-2 Forgotten Battles``. It
+produces detailed information about mission.
 
-Please, `read the docs <http://il-2-missions-parser.readthedocs.org/en/latest/index.html>`_
-to get full information about this project.
+Please, `read the docs`_ to get full information about this project.
 
-You can dig around `Wiki pages <https://github.com/IL2HorusTeam/il2-mis-parser/wiki>`_ also.
+You can dig around `Wiki pages`_ also.
 
-.. |Build Status| image:: https://travis-ci.org/IL2HorusTeam/il2-mis-parser.svg?branch=master
-   :target: https://travis-ci.org/IL2HorusTeam/il2-mis-parser
-.. |Coverage Status| image:: https://coveralls.io/repos/IL2HorusTeam/il2-mis-parser/badge.png?branch=master
-   :target: https://coveralls.io/r/IL2HorusTeam/il2-mis-parser?branch=master
-.. |PyPi package| image:: https://badge.fury.io/py/il2-mis-parser.png
-   :target: http://badge.fury.io/py/il2-mis-parser/
+.. |Build Status| image:: http://img.shields.io/travis/IL2HorusTeam/il2fb-mission-parser.svg?style=flat&branch=master
+   :target: https://travis-ci.org/IL2HorusTeam/il2fb-mission-parser
+.. |Coverage Status| image:: http://img.shields.io/coveralls/IL2HorusTeam/il2fb-mission-parser.svg?style=flat&branch=master
+   :target: https://coveralls.io/r/IL2HorusTeam/il2fb-mission-parser?branch=master
+.. |PyPi package| image:: http://img.shields.io/pypi/v/il2fb-mission-parser.svg?style=flat
+   :target: http://badge.fury.io/py/il2fb-mission-parser/
+.. |PyPi downloads| image::  http://img.shields.io/pypi/dm/il2fb-mission-parser.svg?style=flat
+   :target: https://crate.io/packages/il2fb-mission-parser/
+
+.. _read the docs: http://il-2-missions-parser.readthedocs.org/en/latest/
+.. _Wiki pages: https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki

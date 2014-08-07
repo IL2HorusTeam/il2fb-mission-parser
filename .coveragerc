@@ -1,5 +1,5 @@
 [run]
-source = il2_mis_parser
+source = il2fb.parsers.mission
 omit = */tests/*
 
 [report]
