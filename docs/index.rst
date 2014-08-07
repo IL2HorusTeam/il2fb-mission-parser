@@ -1,10 +1,5 @@
-.. IL-2 Missions Parser documentation master file, created by
-   sphinx-quickstart on Mon Mar 31 16:07:51 2014.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-IL-2 Missions Parser's documentation
-=======================================
+Welcome to IL-2 FB Mission Parser's documentation!
+==================================================
 
 Contents:
 
@@ -27,7 +22,8 @@ Modules:
 
 Project's repository:
 
-    https://github.com/IL2HorusTeam/il2-mis-parser
+    https://github.com/IL2HorusTeam/il2fb-mission-parser
+
 
 Indices and tables
 ==================

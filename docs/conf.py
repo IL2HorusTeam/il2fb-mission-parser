@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# IL-2 Missions Parser documentation build configuration file, created by
-# sphinx-quickstart on Mon Mar 31 16:07:51 2014.
+# IL-2 FB Mission Parser documentation build configuration file, created by
+# sphinx-quickstart on Thu Aug  7 08:41:20 2014.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -51,7 +51,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'IL-2 Missions Parser'
+project = u'IL-2 FB Mission Parser'
 copyright = u'2014, Alexander Oblovatniy, Alexander Kamyhin'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -112,7 +112,7 @@ html_theme = 'default'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    'sidebarwidth': 250,
+    'sidebarwidth': 280,
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -186,7 +186,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'IL-2MissionsParserdoc'
+htmlhelp_basename = 'IL-2FBMissionParserdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -206,7 +206,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'IL-2MissionsParser.tex', u'IL-2 Missions Parser Documentation',
+  ('index', 'IL-2FBMissionParser.tex', u'IL-2 FB Mission Parser Documentation',
    u'Alexander Oblovatniy, Alexander Kamyhin', 'manual'),
 ]
 
@@ -236,7 +236,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'il-2missionsparser', u'IL-2 Missions Parser Documentation',
+    ('index', 'il-2fbmissionparser', u'IL-2 FB Mission Parser Documentation',
      [u'Alexander Oblovatniy, Alexander Kamyhin'], 1)
 ]
 
@@ -250,8 +250,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'IL-2MissionsParser', u'IL-2 Missions Parser Documentation',
-   u'Alexander Oblovatniy, Alexander Kamyhin', 'IL-2MissionsParser', 'One line description of project.',
+  ('index', 'IL-2FBMissionParser', u'IL-2 FB Mission Parser Documentation',
+   u'Alexander Oblovatniy, Alexander Kamyhin', 'IL-2FBMissionParser', 'One line description of project.',
    'Miscellaneous'),
 ]
 

@@ -3,7 +3,7 @@ Season parser
 
 .. _season-parser:
 
-:class:`~il2_mis_parser.parsers.SeasonParser` is responsible for parsing
+:class:`~il2fb.parsers.mission.parsers.SeasonParser` is responsible for parsing
 ``SEASON`` section. This section describes mission's date and contains 3 lines
 with key-value pairs. Each line contains year, month and date respectively.
 

@@ -1,5 +1,5 @@
-IL-2 FB Missions Parser
-=======================
+IL-2 FB Mission Parser
+======================
 
 |Build Status| |Coverage Status| |PyPi package| |PyPi downloads|
 

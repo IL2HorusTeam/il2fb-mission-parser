@@ -3,7 +3,7 @@ Weather Parser
 
 .. _weather-parser:
 
-:class:`~il2_mis_parser.parsers.WeatherParser` is responsible for parsing
+:class:`~il2fb.parsers.mission.parsers.WeatherParser` is responsible for parsing
 ``WEATHER`` section. This section contains one key-value pair per each line.
 
 Section example::
@@ -54,7 +54,7 @@ Gust
 
   **Output type**: :class:`str`
 
-  **Output value**: a value from :data:`~il2_mis_parser.constants.GUST_TYPES`
+  **Output value**: a value from :data:`~il2fb.parsers.mission.constants.GUST_TYPES`
   dictionary
 
 Turbulence
@@ -64,5 +64,5 @@ Turbulence
 
   **Output type**: :class:`str`
 
-  **Output value**: a value from :data:`~il2_mis_parser.constants.TURBULENCE_TYPES`
+  **Output value**: a value from :data:`~il2fb.parsers.mission.constants.TURBULENCE_TYPES`
   dictionary
