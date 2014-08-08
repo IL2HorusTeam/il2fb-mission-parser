@@ -184,35 +184,6 @@ TARGET_PRIORITIES_MAP = {
 # Weather
 ###############################################################################
 
-# Weather types ---------------------------------------------------------------
-WEATHER_CLEAR = 'clear'
-WEATHER_GOOD = 'good'
-WEATHER_HAZY = 'hazy'
-WEATHER_POOR = 'poor'
-WEATHER_BLIND = 'blind'
-WEATHER_RAIN_OR_SNOW = 'rain_or_snow'
-WEATHER_THUNDERSTORM = 'thunderstorm'
-
-WEATHER_TYPES_NAMES = {
-    WEATHER_CLEAR: _("clear"),
-    WEATHER_GOOD: _("good"),
-    WEATHER_HAZY: _("hazy"),
-    WEATHER_POOR: _("poor"),
-    WEATHER_BLIND: _("blind"),
-    WEATHER_RAIN_OR_SNOW: _("rain or snow"),
-    WEATHER_THUNDERSTORM: _("thunderstorm"),
-}
-
-WEATHER_TYPES_MAP = {
-    '0': WEATHER_CLEAR,
-    '1': WEATHER_GOOD,
-    '2': WEATHER_HAZY,
-    '3': WEATHER_POOR,
-    '4': WEATHER_BLIND,
-    '5': WEATHER_RAIN_OR_SNOW,
-    '6': WEATHER_THUNDERSTORM,
-}
-
 # Gust ------------------------------------------------------------------------
 GUST_NONE = 'none'
 GUST_LOW = 'low'

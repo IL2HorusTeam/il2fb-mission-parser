@@ -9,13 +9,19 @@ import math
 
 from abc import ABCMeta, abstractmethod
 
+from il2fb.commons.organization import Belligerents
+from il2fb.commons.weather import Conditions
+
 from il2fb.parsers.mission.helpers import _
 from il2fb.parsers.mission.constants import (
-    SKILLS_MAP, ARMIES_MAP, GUST_TYPES_MAP, TURBULENCE_TYPES_MAP, TARGET_TYPE_DESTROY_CODE,
-    TARGET_TYPE_DESTROY_BRIDGE_CODE, TARGET_TYPE_DESTROY_AREA_CODE, TARGET_TYPE_RECON_CODE,
-    TARGET_TYPE_ESCORT_CODE, TARGET_TYPE_COVER_CODE, TARGET_TYPE_COVER_AREA_CODE,
-    TARGET_TYPE_COVER_BRIDGE_CODE, TARGET_TYPES_MAP, TARGET_PRIORITIES_MAP, WEATHER_TYPES_MAP,
-    AIR_FORCES, WAY_POINT_TYPES, WAY_POINT_FORMATIONS, )
+    SKILLS_MAP, ARMIES_MAP, GUST_TYPES_MAP, TURBULENCE_TYPES_MAP,
+    TARGET_TYPE_DESTROY_CODE, TARGET_TYPE_DESTROY_BRIDGE_CODE,
+    TARGET_TYPE_DESTROY_AREA_CODE, TARGET_TYPE_RECON_CODE,
+    TARGET_TYPE_ESCORT_CODE, TARGET_TYPE_COVER_CODE,
+    TARGET_TYPE_COVER_AREA_CODE, TARGET_TYPE_COVER_BRIDGE_CODE,
+    TARGET_TYPES_MAP, TARGET_PRIORITIES_MAP, AIR_FORCES,
+    WAY_POINT_TYPES, WAY_POINT_FORMATIONS,
+)
 
 
 def to_bool(value):
@@ -276,6 +282,8 @@ class MainParser(ValuesParser):
         Redefines base method. See :meth:`SectionParser.process_data` for
         semantics.
         """
+        belligerent = int(self.data['army'])
+        weather_conditions = int(self.data['CloudType'])
         return {
             'loader': self.data['MAP'],
             'time': {
@@ -283,10 +291,10 @@ class MainParser(ValuesParser):
                 'is_fixed': 'TIMECONSTANT' in self.data,
             },
             'fixed_loadout': 'WEAPONSCONSTANT' in self.data,
-            'weather_type': WEATHER_TYPES_MAP[self.data['CloudType']],
-            'clouds_height': float(self.data['CloudHeight']),
+            'weather_conditions': Conditions.get_by_value(weather_conditions),
+            'clouds_height': int(float(self.data['CloudHeight'])),
             'player': {
-                'army': ARMIES_MAP[self.data['army']],
+                'belligerent': Belligerents.get_by_value(belligerent),
                 'regiment': self.data.get('player'),
                 'number': int(self.data['playerNum']),
             },

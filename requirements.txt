@@ -3,3 +3,5 @@
 # using pip. Example::
 #
 #     pip install -r requirements.pip
+
+il2fb-commons >= 0.9.0

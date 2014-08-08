@@ -5,6 +5,9 @@ Mission parser tests.
 import datetime
 import unittest
 
+from il2fb.commons.organization import Belligerents
+from il2fb.commons.weather import Conditions
+
 from il2fb.parsers.mission.parsers import (
     to_bool, to_pos, SectionParser, MainParser, SeasonParser, RespawnTimeParser,
     WeatherParser, MDSParser, NStationaryParser, BuildingsParser,
@@ -89,10 +92,10 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                 'is_fixed': True,
             },
             'fixed_loadout': True,
-            'weather_type': 'good',
+            'weather_conditions': Conditions.good,
             'clouds_height': 1500,
             'player': {
-                'army': 'red',
+                'belligerent': Belligerents.red,
                 'regiment': "fiLLv24fi00",
                 'number': 0,
             },
