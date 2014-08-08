@@ -292,7 +292,7 @@ class MainParser(ValuesParser):
             },
             'fixed_loadout': 'WEAPONSCONSTANT' in self.data,
             'weather_conditions': Conditions.get_by_value(weather_conditions),
-            'clouds_height': int(float(self.data['CloudHeight'])),
+            'cloud_base': int(float(self.data['CloudHeight'])),
             'player': {
                 'belligerent': Belligerents.get_by_value(belligerent),
                 'regiment': self.data.get('player'),

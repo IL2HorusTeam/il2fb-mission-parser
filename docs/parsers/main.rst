@@ -28,7 +28,7 @@ Output example::
       },
       'fixed_loadout': True,
       'weather_conditions': <constant 'Conditions.good'>,
-      'clouds_height': 1500,
+      'cloud_base': 1500,
       'player': {
           'belligerent': <constant 'Belligerents.red'>,
           'regiment': "fiLLv24fi00",
@@ -76,9 +76,9 @@ CloudType
   :Output type: complex `weather conditions`_ constant
 
 CloudHeight
-  A real number which defines height of clouds.
+  A real number which defines cloud base.
 
-  :Output path: ``clouds_height``
+  :Output path: `cloud_base``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 

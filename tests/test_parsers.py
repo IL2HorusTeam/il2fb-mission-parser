@@ -93,7 +93,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             },
             'fixed_loadout': True,
             'weather_conditions': Conditions.good,
-            'clouds_height': 1500,
+            'cloud_base': 1500,
             'player': {
                 'belligerent': Belligerents.red,
                 'regiment': "fiLLv24fi00",
