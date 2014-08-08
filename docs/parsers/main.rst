@@ -78,7 +78,7 @@ CloudType
 CloudHeight
   A real number which defines cloud base.
 
-  :Output path: `cloud_base``
+  :Output path: ``cloud_base``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
