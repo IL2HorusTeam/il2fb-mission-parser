@@ -10,14 +10,13 @@ import math
 from abc import ABCMeta, abstractmethod
 
 from il2fb.commons.organization import Belligerents
-from il2fb.commons.weather import Conditions
+from il2fb.commons.weather import Conditions, Gust, Turbulence
 
 from il2fb.parsers.mission.helpers import _
 from il2fb.parsers.mission.constants import (
-    SKILLS_MAP, ARMIES_MAP, GUST_TYPES_MAP, TURBULENCE_TYPES_MAP,
-    TARGET_TYPE_DESTROY_CODE, TARGET_TYPE_DESTROY_BRIDGE_CODE,
-    TARGET_TYPE_DESTROY_AREA_CODE, TARGET_TYPE_RECON_CODE,
-    TARGET_TYPE_ESCORT_CODE, TARGET_TYPE_COVER_CODE,
+    SKILLS_MAP, ARMIES_MAP, TARGET_TYPE_DESTROY_CODE,
+    TARGET_TYPE_DESTROY_BRIDGE_CODE, TARGET_TYPE_DESTROY_AREA_CODE,
+    TARGET_TYPE_RECON_CODE, TARGET_TYPE_ESCORT_CODE, TARGET_TYPE_COVER_CODE,
     TARGET_TYPE_COVER_AREA_CODE, TARGET_TYPE_COVER_BRIDGE_CODE,
     TARGET_TYPES_MAP, TARGET_PRIORITIES_MAP, AIR_FORCES,
     WAY_POINT_TYPES, WAY_POINT_FORMATIONS,
@@ -345,14 +344,16 @@ class WeatherParser(ValuesParser):
         Redefines base method. See :meth:`SectionParser.process_data` for
         semantics.
         """
+        gust = int(self.data['Gust'])
+        turbulence = int(self.data['Turbulence'])
         return {
             'weather': {
                 'wind': {
                     'direction': float(self.data['WindDirection']),
                     'speed': float(self.data['WindSpeed']),
                 },
-                'gust': GUST_TYPES_MAP[self.data['Gust']],
-                'turbulence': TURBULENCE_TYPES_MAP[self.data['Turbulence']],
+                'gust': Gust.get_by_value(gust),
+                'turbulence': Turbulence.get_by_value(turbulence),
             },
         }
 

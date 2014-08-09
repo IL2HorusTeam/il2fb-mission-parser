@@ -6,7 +6,7 @@ import datetime
 import unittest
 
 from il2fb.commons.organization import Belligerents
-from il2fb.commons.weather import Conditions
+from il2fb.commons.weather import Conditions, Gust, Turbulence
 
 from il2fb.parsers.mission.parsers import (
     to_bool, to_pos, SectionParser, MainParser, SeasonParser, RespawnTimeParser,
@@ -124,7 +124,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             "WindDirection 120.0",
             "WindSpeed 3.0",
             "Gust 0",
-            "Turbulence 0",
+            "Turbulence 4",
         ]
         expected = {
             'weather': {
@@ -132,8 +132,8 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'direction': 120.0,
                     'speed': 3.0,
                 },
-                'gust': 'none',
-                'turbulence': 'none',
+                'gust': Gust.none,
+                'turbulence': Turbulence.very_strong,
             },
         }
         self._test_parser(WeatherParser, 'WEATHER', lines, expected)

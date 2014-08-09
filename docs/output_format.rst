@@ -20,4 +20,4 @@ gets data from all other parsers and organizes it in special manner.
     parsers/main
     parsers/season
     parsers/weather
-    parsers/whole_file
+    parsers/file_parser

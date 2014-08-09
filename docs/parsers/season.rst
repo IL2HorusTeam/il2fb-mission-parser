@@ -7,7 +7,8 @@ Season parser
 ``SEASON`` section. This section describes mission's date and contains 3 lines
 with key-value pairs. Each line contains year, month and date respectively.
 
-Parser returns a dictionary with :class:`datetime.date` object which is accessible by ``date`` key.
+Parser returns a dictionary with :class:`datetime.date` object which is
+accessible by ``date`` key.
 
 Section example::
 
@@ -16,7 +17,9 @@ Section example::
       Month 8
       Day 25
 
-Output example::
+Output example:
+
+.. code-block:: python
 
     {
         'date': datetime.date(1942, 8, 25),

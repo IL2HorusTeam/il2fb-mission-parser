@@ -181,53 +181,6 @@ TARGET_PRIORITIES_MAP = {
 }
 
 ###############################################################################
-# Weather
-###############################################################################
-
-# Gust ------------------------------------------------------------------------
-GUST_NONE = 'none'
-GUST_LOW = 'low'
-GUST_MODERATE = 'moderate'
-GUST_STRONG = 'strong'
-
-GUST_TYPES_NAMES = {
-    GUST_NONE: _("none"),
-    GUST_LOW: _("low"),
-    GUST_MODERATE: _("moderate"),
-    GUST_STRONG: _("strong"),
-}
-
-GUST_TYPES_MAP = {
-    '0': GUST_NONE,
-    '1': GUST_LOW,
-    '2': GUST_MODERATE,
-    '3': GUST_STRONG,
-}
-
-# Turbulence ------------------------------------------------------------------
-TURBULENCE_NONE = 'none'
-TURBULENCE_LOW = 'low'
-TURBULENCE_MODERATE = 'moderate'
-TURBULENCE_STRONG = 'strong'
-TURBULENCE_VERY_STRONG = 'very_strong'
-
-TURBULENCE_TYPES_NAMES = {
-    TURBULENCE_NONE: _("none"),
-    TURBULENCE_LOW: _("low"),
-    TURBULENCE_MODERATE: _("moderate"),
-    TURBULENCE_STRONG: _("strong"),
-    TURBULENCE_VERY_STRONG: _("very strong"),
-}
-
-TURBULENCE_TYPES_MAP = {
-    '0': TURBULENCE_NONE,
-    '1': TURBULENCE_LOW,
-    '2': TURBULENCE_MODERATE,
-    '3': TURBULENCE_STRONG,
-    '4': TURBULENCE_VERY_STRONG,
-}
-
-###############################################################################
 # Flight_Way
 ###############################################################################
 

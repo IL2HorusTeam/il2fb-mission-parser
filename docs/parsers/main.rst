@@ -22,7 +22,9 @@ Section example::
       army 1
       playerNum 0
 
-Output example::
+Output example:
+
+.. code-block:: python
 
     {
       'loader': 'Moscow/sload.ini',
