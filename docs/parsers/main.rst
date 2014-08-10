@@ -1,7 +1,7 @@
-.. _main-parser:
+.. _main-section:
 
-Main parser
-===========
+MAIN section
+============
 
 .. note::
 
@@ -115,5 +115,5 @@ Footnotes:
 .. [#] For single player mode only.
 
 
-.. _weather conditions: https://github.com/IL2HorusTeam/il2fb-commons/blob/4a3cb79301c792c685d472a17926d978cd703f14/il2fb/commons/weather.py#L10
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/4a3cb79301c792c685d472a17926d978cd703f14/il2fb/commons/organization.py#L17
+.. _weather conditions: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/weather.py#L10
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L17

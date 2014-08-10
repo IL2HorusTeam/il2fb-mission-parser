@@ -72,7 +72,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_main_parser(self):
         """
-        Test 'MAIN' section parser.
+        Test ``MAIN`` section parser.
         """
         lines = [
             "MAP Moscow/sload.ini",
@@ -104,7 +104,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_season_parser(self):
         """
-        Test 'SEASON' section parser.
+        Test ``SEASON`` section parser.
         """
         lines = [
             "Year 1942",
@@ -118,7 +118,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_weather_parser(self):
         """
-        Test 'WEATHER' section parser.
+        Test ``WEATHER`` section parser.
         """
         lines = [
             "WindDirection 120.0",
@@ -138,9 +138,81 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         }
         self._test_parser(WeatherParser, 'WEATHER', lines, expected)
 
+    def test_mds_parser(self):
+        """
+        Test ``MDS`` section parser.
+        """
+        lines = [
+            "MDS_Radar_SetRadarToAdvanceMode 1",
+            "MDS_Radar_RefreshInterval 0",
+            "MDS_Radar_DisableVectoring 0",
+            "MDS_Radar_EnableTowerCommunications 1",
+            "MDS_Radar_ShipsAsRadar 0",
+            "MDS_Radar_ShipRadar_MaxRange 100",
+            "MDS_Radar_ShipRadar_MinHeight 100",
+            "MDS_Radar_ShipRadar_MaxHeight 5000",
+            "MDS_Radar_ShipSmallRadar_MaxRange 25",
+            "MDS_Radar_ShipSmallRadar_MinHeight 0",
+            "MDS_Radar_ShipSmallRadar_MaxHeight 2000",
+            "MDS_Radar_ScoutsAsRadar 0",
+            "MDS_Radar_ScoutRadar_MaxRange 2",
+            "MDS_Radar_ScoutRadar_DeltaHeight 1500",
+            "MDS_Radar_ScoutGroundObjects_Alpha 5",
+            "MDS_Radar_ScoutCompleteRecon 0",
+            "MDS_Misc_DisableAIRadioChatter 0",
+            "MDS_Misc_DespawnAIPlanesAfterLanding 1",
+            "MDS_Radar_HideUnpopulatedAirstripsFromMinimap 0",
+            "MDS_Misc_HidePlayersCountOnHomeBase 0",
+            "MDS_Misc_BombsCat1_CratersVisibilityMultiplier 1.0",
+            "MDS_Misc_BombsCat2_CratersVisibilityMultiplier 1.0",
+            "MDS_Misc_BombsCat3_CratersVisibilityMultiplier 1.0",
+        ]
+        expected = {
+            'radar': {
+                'advanced_mode': True,
+                'refresh_interval': 0,
+                'ships': {
+                    'treat_as_radar': False,
+                    'big': {
+                        'max_range': 100,
+                        'min_height': 100,
+                        'max_height': 5000,
+                    },
+                    'small': {
+                        'max_range': 25,
+                        'min_height': 0,
+                        'max_height': 2000,
+                    },
+                },
+                'scouts': {
+                    'treat_as_radar': False,
+                    'max_range': 2,
+                    'max_height': 1500,
+                    'alpha': 5,
+                },
+            },
+            'ai': {
+                'no_radio_chatter': False,
+                'hide_aircrafts_after_landing': True,
+            },
+            'homebase': {
+                'tower_communications': True,
+                'hide_unpopulated': False,
+                'hide_players_count': False,
+            },
+            'crater_visibility_muptipliers': {
+                'le_100kg': 1.0,
+                'le_1000kg': 1.0,
+                'gt_1000kg': 1.0,
+            },
+            'vectoring': True,
+            'only_scounts_complete_recon_targets': False,
+        }
+        self._test_parser(MDSParser, 'MDS', lines, expected)
+
     def test_respawn_time_parser(self):
         """
-        Test 'RespawnTime' section parser.
+        Test ``RespawnTime`` section parser.
         """
         lines = [
             "Bigship 1000000",
@@ -162,65 +234,9 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         }
         self._test_parser(RespawnTimeParser, 'RespawnTime', lines, expected)
 
-    def test_mds_parser(self):
-        """
-        Test 'MDS' section parser.
-        """
-        lines = [
-            "MDS_Radar_SetRadarToAdvanceMode 0",
-            "MDS_Radar_DisableVectoring 1",
-            "MDS_Radar_ShipRadar_MaxRange 100",
-            "MDS_Radar_ShipRadar_MinHeight 100",
-            "MDS_Radar_ShipRadar_MaxHeight 5000",
-            "MDS_Radar_ShipSmallRadar_MaxRange 25",
-            "MDS_Radar_ShipSmallRadar_MinHeight 0",
-            "MDS_Radar_ShipSmallRadar_MaxHeight 2000",
-            "MDS_Radar_ScoutsAsRadar 0",
-            "MDS_Radar_ScoutRadar_MaxRange 2",
-            "MDS_Misc_DisableAIRadioChatter 1",
-            "MDS_Misc_DespawnAIPlanesAfterLanding 1",
-            "MDS_Misc_HidePlayersCountOnHomeBase 0",
-            "MDS_Misc_BombsCat1_CratersVisibilityMultiplier 1.0",
-            "MDS_Misc_BombsCat2_CratersVisibilityMultiplier 1.0",
-            "MDS_Misc_BombsCat3_CratersVisibilityMultiplier 1.0",
-        ]
-        expected = {
-            'radar': {
-                'advance_mode': False,
-                'vectoring': False,
-                'ships': {
-                    'big': {
-                        'max_range': 100,
-                        'min_height': 100,
-                        'max_height': 5000,
-                    },
-                    'small': {
-                        'max_range': 25,
-                        'min_height': 0,
-                        'max_height': 2000,
-                    },
-                },
-                'scouts': {
-                    'treat_as_radar': False,
-                    'max_range': 2,
-                },
-            },
-            'ai': {
-                'no_radio_chatter': True,
-                'hide_planes_after_landing': True,
-            },
-            'bomb_crater_visibility_muptipliers': {
-                'le_100kg': 1.0,
-                'le_1000kg': 1.0,
-                'gt_1000kg': 1.0,
-            },
-            'no_players_count_on_home_base': False,
-        }
-        self._test_parser(MDSParser, 'MDS', lines, expected)
-
     def test_stationary_parser(self):
         """
-        Test 'NStationary' section parser.
+        Test ``NStationary`` section parser.
         """
         lines = [
             "959_Static vehicles.artillery.Artillery$SdKfz251 2 31333.62 90757.91 600.29 0.0 0 1 1",
@@ -276,7 +292,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_buildings_parser(self):
         """
-        Test 'Buildings' section parser.
+        Test ``Buildings`` section parser.
         """
         lines = [
             "0_bld House$Tent_Pyramid_US 1 43471.34 57962.08 630.00",
@@ -300,7 +316,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_static_camera_parser(self):
         """
-        Test 'StaticCamera' section parser.
+        Test ``StaticCamera`` section parser.
         """
         lines = [
             "38426 65212 35 2",
@@ -321,7 +337,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_born_place_parser(self):
         """
-        Test 'BornPlace' section parser.
+        Test ``BornPlace`` section parser.
         """
         lines = [
             "1 3000 121601 74883 1 1000 200 0 0 0 5000 50 0 1 1 0 0 3.8 1 0 0 0 0",
@@ -373,7 +389,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_front_marker_parser(self):
         """
-        Test 'FrontMarker' section parser.
+        Test ``FrontMarker`` section parser.
         """
         lines = [
             "FrontMarker0 7636.65 94683.02 1",
@@ -483,13 +499,13 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
 class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
     """
-    Test 'Target' section parser.
+    Test ``Target`` section parser.
     """
     maxDiff = None
 
     def test_target_destroy(self):
         """
-        Test 'destroy' target type parser.
+        Test ``destroy`` target type parser.
         """
         lines = [
             "0 0 0 0 500 90939 91871 0 1 10_Chief 91100 91500",
@@ -579,7 +595,7 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_target_recon(self):
         """
-        Test 'recon' target type parser.
+        Test ``recon`` target type parser.
         """
         lines = [
             "3 1 1 50 500 133978 87574 1150",
@@ -626,7 +642,7 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_target_escort(self):
         """
-        Test 'escort' target type parser.
+        Test ``escort`` target type parser.
         """
         lines = [
             "4 0 1 10 750 134183 85468 0 1 r0100 133993 85287",
@@ -659,7 +675,7 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_target_cover(self):
         """
-        Test 'cover' target type parser.
+        Test ``cover`` target type parser.
         """
         lines = [
             "5 1 1 20 250 132865 87291 0 1 1_Chief 132866 86905",
@@ -815,7 +831,7 @@ class BornPlaceAircraftsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 
     def test_valid_data(self):
         """
-        Test 'BornPlaceN' section parser.
+        Test ``BornPlaceN`` section parser.
         """
         lines = [
             "Bf-109F-4 -1 1sc250 4sc50",
@@ -857,7 +873,7 @@ class BornPlaceAircraftsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
 class BornPlaceCountriesParserTestCase(unittest.TestCase, ParserTestCaseMixin):
     def test_valid_data(self):
         """
-        Test 'BornPlaceCountriesN' section parser.
+        Test ``BornPlaceCountriesN`` section parser.
         """
         lines = [
             "de",

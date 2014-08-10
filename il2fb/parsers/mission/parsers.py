@@ -261,7 +261,7 @@ class CollectingParser(SectionParser):
 class MainParser(ValuesParser):
     """
     Parses ``MAIN`` section.
-    View :ref:`detailed description <main-parser>`.
+    View :ref:`detailed description <main-section>`.
     """
 
     def check_section_name(self, section_name):
@@ -303,7 +303,7 @@ class MainParser(ValuesParser):
 class SeasonParser(ValuesParser):
     """
     Parses ``SEASON`` section.
-    View :ref:`detailed description <season-parser>`.
+    View :ref:`detailed description <season-section>`.
     """
 
     def check_section_name(self, section_name):
@@ -329,7 +329,7 @@ class SeasonParser(ValuesParser):
 class WeatherParser(ValuesParser):
     """
     Parses ``WEATHER`` section.
-    View :ref:`detailed description <weather-parser>`.
+    View :ref:`detailed description <weather-section>`.
     """
 
     def check_section_name(self, section_name):
@@ -361,6 +361,7 @@ class WeatherParser(ValuesParser):
 class MDSParser(ValuesParser):
     """
     Parses ``MDS`` section.
+    View :ref:`detailed description <mds-section>`.
     """
 
     def check_section_name(self, section_name):
@@ -372,9 +373,10 @@ class MDSParser(ValuesParser):
     def process_data(self):
         return {
             'radar': {
-                'advance_mode': to_bool(self.data['Radar_SetRadarToAdvanceMode']),
-                'vectoring': not to_bool(self.data['Radar_DisableVectoring']),
+                'advanced_mode': to_bool(self.data['Radar_SetRadarToAdvanceMode']),
+                'refresh_interval': int(self.data['Radar_RefreshInterval']),
                 'ships': {
+                    'treat_as_radar': to_bool(self.data['Radar_ShipsAsRadar']),
                     'big': {
                         'max_range': int(self.data['Radar_ShipRadar_MaxRange']),
                         'min_height': int(self.data['Radar_ShipRadar_MinHeight']),
@@ -389,18 +391,26 @@ class MDSParser(ValuesParser):
                 'scouts': {
                     'treat_as_radar': to_bool(self.data['Radar_ScoutsAsRadar']),
                     'max_range': int(self.data['Radar_ScoutRadar_MaxRange']),
+                    'max_height': int(self.data['Radar_ScoutRadar_DeltaHeight']),
+                    'alpha': int(self.data['Radar_ScoutGroundObjects_Alpha']),
                 },
             },
             'ai': {
                 'no_radio_chatter': to_bool(self.data['Misc_DisableAIRadioChatter']),
-                'hide_planes_after_landing': to_bool(self.data['Misc_DespawnAIPlanesAfterLanding']),
+                'hide_aircrafts_after_landing': to_bool(self.data['Misc_DespawnAIPlanesAfterLanding']),
             },
-            'bomb_crater_visibility_muptipliers': {
+            'homebase': {
+                'tower_communications': to_bool(self.data['Radar_EnableTowerCommunications']),
+                'hide_unpopulated': to_bool(self.data['Radar_HideUnpopulatedAirstripsFromMinimap']),
+                'hide_players_count': to_bool(self.data['Misc_HidePlayersCountOnHomeBase']),
+            },
+            'crater_visibility_muptipliers': {
                 'le_100kg': float(self.data['Misc_BombsCat1_CratersVisibilityMultiplier']),
                 'le_1000kg': float(self.data['Misc_BombsCat2_CratersVisibilityMultiplier']),
                 'gt_1000kg': float(self.data['Misc_BombsCat3_CratersVisibilityMultiplier']),
             },
-            'no_players_count_on_home_base': to_bool(self.data['Misc_HidePlayersCountOnHomeBase']),
+            'vectoring': not to_bool(self.data['Radar_DisableVectoring']),
+            'only_scounts_complete_recon_targets': to_bool(self.data['Radar_ScoutCompleteRecon']),
         }
 
 

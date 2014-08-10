@@ -20,4 +20,5 @@ gets data from all other parsers and organizes it in special manner.
     parsers/main
     parsers/season
     parsers/weather
+    parsers/mds
     parsers/file_parser
