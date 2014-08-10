@@ -9,7 +9,7 @@ MDS section
 
 :class:`~il2fb.parsers.mission.parsers.MDSParser` is responsible for parsing
 ``MDS`` section. It contains one key-value pair per each line. Section describes
-Fog of War (FoW) and AI settings for multiplayer game in dogfight mode.
+Fog of War (FoW), AI and some other settings.
 
 .. note::
 
@@ -141,42 +141,42 @@ MDS_Radar_ShipsAsRadar
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 MDS_Radar_ShipRadar_MaxRange
-  Maximum range of detection of air targets by big ships.
+  Maximum range (in km) of detection of air targets by big ships.
 
   :Output path: ``radar.ships.big.max_range``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
 MDS_Radar_ShipRadar_MinHeight
-  Minimum height of detection of air targets by big ships.
+  Minimum height (in meters) of detection of air targets by big ships.
 
   :Output path: ``radar.ships.big.min_height``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
 MDS_Radar_ShipRadar_MaxHeight
-  Maximum height of detection of air targets by big ships.
+  Maximum height (in meters) of detection of air targets by big ships.
 
   :Output path: ``radar.ships.big.max_height``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
 MDS_Radar_ShipSmallRadar_MaxRange
-  Maximum range of detection of air targets by small ships.
+  Maximum range (in km) of detection of air targets by small ships.
 
   :Output path: ``radar.ships.small.max_range``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
 MDS_Radar_ShipSmallRadar_MinHeight
-  Minimum height of detection of air targets by small ships.
+  Minimum height (in meters) of detection of air targets by small ships.
 
   :Output path: ``radar.ships.small.min_height``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
 MDS_Radar_ShipSmallRadar_MaxHeight
-  Maximum height of detection of air targets by small ships.
+  Maximum height (in meters) of detection of air targets by small ships.
 
   :Output path: ``radar.ships.small.max_height``
   :Output type: :class:`int`
@@ -191,7 +191,7 @@ MDS_Radar_ScoutsAsRadar
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 MDS_Radar_ScoutRadar_MaxRange
-  Maximum scan range: determines the range (in kilometers) in which scouts can
+  Maximum scan range: determines the range (in km) in which scouts can
   identify other aircrafts.
 
   :Output path: ``radar.scouts.max_range``
@@ -199,8 +199,8 @@ MDS_Radar_ScoutRadar_MaxRange
   :Output value: original value converted to integer number
 
 MDS_Radar_ScoutRadar_DeltaHeight
-  Height limit of detection zone in meters: defines the maximum altitude at
-  which the reconnaissance aircraft can detect enemy ground targets;
+  Height limit of detection zone (in meters): defines the maximum altitude at
+  which the reconnaissance aircraft can detect enemy ground targets.
 
   :Output path: ``radar.scouts.max_height``
   :Output type: :class:`int`
@@ -208,7 +208,7 @@ MDS_Radar_ScoutRadar_DeltaHeight
 
 MDS_Radar_ScoutGroundObjects_Alpha
   Angle (in degrees) of earth scanning: determines the angle at which
-  reconnaissance aircraft can detect enemy ground targets;
+  reconnaissance aircraft can detect enemy ground targets.
 
   :Output path: ``radar.scouts.alpha``
   :Output type: :class:`int`
