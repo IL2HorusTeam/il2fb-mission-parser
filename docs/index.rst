@@ -4,7 +4,7 @@ Welcome to IL-2 FB Mission Parser's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :numbered:
 
    introduction

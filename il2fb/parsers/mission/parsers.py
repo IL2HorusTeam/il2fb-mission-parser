@@ -417,6 +417,7 @@ class MDSParser(ValuesParser):
 class MDSScoutsParser(CollectingParser):
     """
     Parses ``MDS_Scouts`` section.
+    View :ref:`detailed description <mds-scouts-section>`.
     """
     prefix = "MDS_Scouts_"
 
@@ -428,7 +429,8 @@ class MDSScoutsParser(CollectingParser):
 
     def init_parser(self, section_name):
         super(MDSScoutsParser, self).init_parser(section_name)
-        self.output_key = 'scout_planes_%s' % self._extract_section_suffix(section_name)
+        suffix = self._extract_section_suffix(section_name)
+        self.output_key = "scout_planes_{:}".format(suffix)
 
     def _extract_section_suffix(self, section_name):
         return section_name.lstrip(self.prefix).lower()

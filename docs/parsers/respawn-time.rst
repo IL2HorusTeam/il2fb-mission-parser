@@ -1,3 +1,5 @@
+.. _respawn-time-section:
+
 RespawnTime section
 ===================
 

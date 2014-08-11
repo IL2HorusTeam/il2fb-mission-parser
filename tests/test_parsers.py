@@ -497,6 +497,31 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         self._test_parser(WingParser, 'Wing', lines, expected)
 
 
+class MDSScoutsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+    """
+    Test ``MDS_Scouts`` section parser.
+    """
+    def test_valid_data(self):
+        lines = [
+            "B-25H-1NA",
+            "B-25J-1NA",
+            "BeaufighterMk21",
+        ]
+        expected = {
+            'scout_planes_red': [
+                "B-25H-1NA",
+                "B-25J-1NA",
+                "BeaufighterMk21",
+            ],
+        }
+        self._test_parser(MDSScoutsParser, 'MDS_Scouts_Red', lines, expected)
+
+    def test_invalid_section_name(self):
+        parser = MDSScoutsParser()
+        self.assertFalse(parser.start('foo section'))
+        self.assertFalse(parser.start('MDS_Scouts_'))
+
+
 class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
     """
     Test ``Target`` section parser.
@@ -762,29 +787,6 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             ],
         }
         self._test_parser(TargetParser, 'Target', lines, expected)
-
-
-class MDSScoutsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
-
-    def test_valid_data(self):
-        lines = [
-            "B-25H-1NA",
-            "B-25J-1NA",
-            "BeaufighterMk21",
-        ]
-        expected = {
-            'scout_planes_red': [
-                "B-25H-1NA",
-                "B-25J-1NA",
-                "BeaufighterMk21",
-            ]
-        }
-        self._test_parser(MDSScoutsParser, 'MDS_Scouts_Red', lines, expected)
-
-    def test_invalid_section_name(self):
-        parser = MDSScoutsParser()
-        self.assertFalse(parser.start('foo section'))
-        self.assertFalse(parser.start('MDS_Scouts_'))
 
 
 class ChiefRoadParserTestCase(unittest.TestCase, ParserTestCaseMixin):
