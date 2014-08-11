@@ -9,6 +9,7 @@ MAIN section
 
 :class:`~il2fb.parsers.mission.parsers.MainParser` is responsible for parsing
 ``MAIN`` section. This section contains one key-value pair per each line.
+
 Section example::
 
     [MAIN]
@@ -108,7 +109,7 @@ playerNum [1]_
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
----------
+----------
 
 Footnotes:
 

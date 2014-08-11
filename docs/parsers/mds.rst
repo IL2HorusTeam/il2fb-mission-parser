@@ -126,6 +126,8 @@ MDS_Radar_ShipsAsRadar
   want only big ships to act as FoW spotters, set ALL small ship settings to 0
   and vice versa.
 
+.. _ships-categories:
+
 .. note::
 
     "Big Ships" with powerful, long range radar
@@ -286,7 +288,6 @@ you can make craters visible for longer time. However this only works in single
 player mission and coop missions. Setting long crater durations in dogfight
 missions would cause inconsistency between players, since dogfight mode allows
 joining anytime.
-
 
 MDS_Misc_BombsCat1_CratersVisibilityMultiplier
   Multiplier for visibility time for craters caused by guns and rockets and

@@ -15,10 +15,11 @@ gets data from all other parsers and organizes it in special manner.
     Get ready!
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     parsers/main
     parsers/season
     parsers/weather
     parsers/mds
+    parsers/respawn-time
     parsers/file_parser

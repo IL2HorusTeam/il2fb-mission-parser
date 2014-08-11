@@ -440,6 +440,7 @@ class MDSScoutsParser(CollectingParser):
 class RespawnTimeParser(ValuesParser):
     """
     Parses ``RespawnTime`` section.
+    View :ref:`detailed description <respawn-time-section>`.
     """
 
     def check_section_name(self, section_name):
@@ -448,13 +449,13 @@ class RespawnTimeParser(ValuesParser):
     def process_data(self):
         return {
             'respawn_time': {
-                'ship': {
+                'ships': {
                     'big': int(self.data['Bigship']),
                     'small': int(self.data['Ship']),
                 },
-                'balloon': int(self.data['Aeroanchored']),
+                'balloons': int(self.data['Aeroanchored']),
                 'artillery': int(self.data['Artillery']),
-                'searchlight': int(self.data['Searchlight']),
+                'searchlights': int(self.data['Searchlight']),
             },
         }
 

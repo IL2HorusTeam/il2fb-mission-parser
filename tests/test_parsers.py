@@ -223,13 +223,13 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         ]
         expected = {
             'respawn_time': {
-                'ship': {
+                'ships': {
                     'big': 1000000,
                     'small': 1000000,
                 },
-                'balloon': 1000000,
+                'balloons': 1000000,
                 'artillery': 1000000,
-                'searchlight': 1000000,
+                'searchlights': 1000000,
             },
         }
         self._test_parser(RespawnTimeParser, 'RespawnTime', lines, expected)
