@@ -9,6 +9,7 @@ import math
 
 from abc import ABCMeta, abstractmethod
 
+from il2fb.commons import SKILLS
 from il2fb.commons.organization import Belligerents
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
@@ -478,13 +479,13 @@ class ChiefsParser(CollectingParser):
             'code': code,
             'code_name': code_name,
             'type': chief_type.lower(),
-            'army': ARMIES_MAP[army],
+            'belligerent': Belligerents.get_by_value(int(army)),
         }
         if params:
             timeout, skill, recharge_time = params
             chiefs.update({
                 'timeout': int(timeout),
-                'skill': SKILLS_MAP[skill],
+                'skill': SKILLS.get_by_value(int(skill)),
                 'recharge_time': float(recharge_time),
             })
         self.data.append(chiefs)

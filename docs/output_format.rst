@@ -23,4 +23,5 @@ gets data from all other parsers and organizes it in special manner.
     parsers/respawn-time
     parsers/mds
     parsers/mds_scouts
+    parsers/chiefs
     parsers/file_parser

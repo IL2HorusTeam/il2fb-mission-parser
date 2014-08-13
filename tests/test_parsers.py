@@ -5,6 +5,7 @@ Mission parser tests.
 import datetime
 import unittest
 
+from il2fb.commons import SKILLS
 from il2fb.commons.organization import Belligerents
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
@@ -234,6 +235,46 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         }
         self._test_parser(RespawnTimeParser, 'RespawnTime', lines, expected)
 
+    def test_chiefs_parser(self):
+        lines = [
+            "0_Chief Armor.1-BT7 2",
+            "1_Chief Vehicles.GAZ67 1",
+            "2_Chief Trains.USSR_FuelTrain/AA 1",
+            "3_Chief Ships.G5 1 60 3 2.0",
+        ]
+        expected = {
+            'chiefs': [
+                {
+                    'code': "0_Chief",
+                    'code_name': "1-BT7",
+                    'type': "armor",
+                    'belligerent': Belligerents.blue,
+                },
+                {
+                    'code': "1_Chief",
+                    'code_name': "GAZ67",
+                    'type': "vehicles",
+                    'belligerent': Belligerents.red,
+                },
+                {
+                    'code': "2_Chief",
+                    'code_name': "USSR_FuelTrain/AA",
+                    'type': "trains",
+                    'belligerent': Belligerents.red,
+                },
+                {
+                    'code': "3_Chief",
+                    'code_name': "G5",
+                    'type': "ships",
+                    'belligerent': Belligerents.red,
+                    'timeout': 60,
+                    'skill': SKILLS.ace,
+                    'recharge_time': 2.0,
+                },
+            ],
+        }
+        self._test_parser(ChiefsParser, 'Chiefs', lines, expected)
+
     def test_stationary_parser(self):
         """
         Test ``NStationary`` section parser.
@@ -407,39 +448,6 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             ],
         }
         self._test_parser(FrontMarkerParser, 'FrontMarker', lines, expected)
-
-    def test_chiefs_parser(self):
-        lines = [
-            "0_Chief Vehicles.US_Supply_Cpy 1",
-            "1_Chief Trains.Germany_CargoTrain/AA 2",
-            "2_Chief Ships.G5 1 60 1 1.0",
-        ]
-        expected = {
-            'chiefs': [
-                {
-                    'code': "0_Chief",
-                    'code_name': "US_Supply_Cpy",
-                    'type': "vehicles",
-                    'army': "red",
-                },
-                {
-                    'code': "1_Chief",
-                    'code_name': "Germany_CargoTrain/AA",
-                    'type': "trains",
-                    'army': "blue",
-                },
-                {
-                    'code': "2_Chief",
-                    'code_name': "G5",
-                    'type': "ships",
-                    'army': "red",
-                    'timeout': 60,
-                    'skill': "average",
-                    'recharge_time': 1.0,
-                },
-            ],
-        }
-        self._test_parser(ChiefsParser, 'Chiefs', lines, expected)
 
     def test_rocket_parser(self):
         lines = [
