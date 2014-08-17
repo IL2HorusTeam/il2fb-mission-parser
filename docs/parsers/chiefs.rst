@@ -102,6 +102,7 @@ examine common parameters using first object as example::
   :Output path: ``player.belligerent``
   :Output type: complex `belligerents`_ constant
 
+-----
 
 Ships have 3 extra parameters. Let's see an example::
 

@@ -10,12 +10,12 @@ from il2fb.commons.organization import AirForces, Belligerents
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
 from il2fb.parsers.mission.parsers import (
-    to_bool, to_pos, SectionParser, MainParser, SeasonParser, RespawnTimeParser,
-    WeatherParser, MDSParser, NStationaryParser, BuildingsParser,
-    StaticCameraParser, TargetParser, FrontMarkerParser, BornPlaceParser,
-    ChiefsParser, BornPlaceAircraftsParser, BornPlaceCountriesParser,
-    RocketParser, ChiefRoadParser, WingParser, MDSScoutsParser,
-    FlightDetailsParser, FlightWayParser,
+    to_bool, to_pos, to_belligerent, to_skill, to_unit_type, SectionParser,
+    MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
+    NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
+    FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
+    BornPlaceCountriesParser, RocketParser, ChiefRoadParser, WingParser,
+    MDSScoutsParser, FlightDetailsParser, FlightWayParser,
 )
 
 
@@ -27,9 +27,23 @@ class CommonsTestCase(unittest.TestCase):
         self.assertTrue(to_bool('-1'))
 
     def test_to_pos(self):
-        self.assertEqual(to_pos('100', '200'), {'x': 100, 'y': 200, })
         self.assertEqual(
-            to_pos('100', '200', '300'), {'x': 100, 'y': 200, 'z': 300, })
+            to_pos('100', '200'), {'x': 100, 'y': 200, }
+        )
+        self.assertEqual(
+            to_pos('100', '200', '300'), {'x': 100, 'y': 200, 'z': 300, }
+        )
+
+    def test_to_belligerent(self):
+        self.assertEqual(to_belligerent('0'), Belligerents.none)
+        self.assertEqual(to_belligerent('1'), Belligerents.red)
+        self.assertEqual(to_belligerent('2'), Belligerents.blue)
+
+    def test_to_skill(self):
+        self.assertEqual(to_skill('3'), Skills.ace)
+
+    def test_to_unit_type(self):
+        self.assertEqual(to_unit_type('planes'), UnitTypes.airplane)
 
 
 class SectionParserTestCase(unittest.TestCase):
@@ -292,7 +306,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             "9_Static ships.Ship$G5 1 83759.05 115021.15 360.00 0.0 60 3 1.4",
         ]
         expected = {
-            'statics': [
+            'stationary': [
                 {
                     'belligerent': Belligerents.red,
                     'code': '0_Static',
@@ -428,10 +442,10 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         expected = {
             'buildings': [
                 {
+                    'belligerent': Belligerents.red,
                     'code': '0_bld',
                     'type': 'House',
                     'code_name': 'Tent_Pyramid_US',
-                    'army': 'red',
                     'pos': {
                         'y': 57962.08,
                         'x': 43471.34,
@@ -452,11 +466,11 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         expected = {
             'cameras': [
                 {
-                    'army': "blue",
+                    'belligerent': Belligerents.blue,
                     'pos': {
-                        'x': 38426,
-                        'y': 65212,
-                        'z': 35,
+                        'x': 38426.0,
+                        'y': 65212.0,
+                        'z': 35.0,
                     },
                 },
             ],
@@ -474,7 +488,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             'homebases': [
                 {
                     'radius': 3000,
-                    'army': "red",
+                    'belligerent': Belligerents.red,
                     'show_default_icon': False,
                     'friction': {
                         'enabled': False,
@@ -507,8 +521,8 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                         'max_height': 5000,
                     },
                     'pos': {
-                        'x': 121601,
-                        'y': 74883,
+                        'x': 121601.0,
+                        'y': 74883.0,
                     },
                 },
             ]
@@ -525,12 +539,12 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         expected = {
             'markers': [
                 {
+                    'belligerent': Belligerents.red,
                     'code': "FrontMarker0",
                     'pos': {
                         'x': 7636.65,
                         'y': 94683.02,
                     },
-                    'army': "red",
                 },
             ],
         }
@@ -544,9 +558,9 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         expected = {
             'rockets': [
                 {
+                    'belligerent': Belligerents.blue,
                     'code': "0_Rocket",
                     'code_name': "Fi103_V1_ramp",
-                    'army': "blue",
                     'pos': {
                         'x': 84141.38,
                         'y': 114216.82,
@@ -561,9 +575,9 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     },
                 },
                 {
+                    'belligerent': Belligerents.blue,
                     'code': "1_Rocket",
                     'code_name': "Fi103_V1_ramp",
-                    'army': "blue",
                     'pos': {
                         'x': 84141.38,
                         'y': 114216.82,
@@ -615,6 +629,46 @@ class MDSScoutsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         parser = MDSScoutsParser()
         self.assertFalse(parser.start('foo section'))
         self.assertFalse(parser.start('MDS_Scouts_'))
+
+
+class ChiefRoadParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+
+    def test_valid_data(self):
+        lines = [
+            "21380.02 41700.34 120.00 10 0 3.055555582046509",
+            "21500.00 41700.00 20.00",
+            "50299.58 35699.85 120.00 10 33 2.6388890743255615",
+        ]
+        expected = {
+            '0_chief_road': [
+                {
+                    'pos': {
+                        'x': 21380.02,
+                        'y': 41700.34,
+                    },
+                    'timeout': 10,
+                },
+                {
+                    'pos': {
+                        'x': 21500.00,
+                        'y': 41700.00,
+                    },
+                },
+                {
+                    'pos': {
+                        'x': 50299.58,
+                        'y': 35699.85,
+                    },
+                    'timeout': 10,
+                },
+            ]
+        }
+        self._test_parser(ChiefRoadParser, '0_Chief_Road', lines, expected)
+
+    def test_invalid_section_name(self):
+        parser = ChiefRoadParser()
+        self.assertFalse(parser.start('foo section'))
+        self.assertFalse(parser.start('X_Chief_Road'))
 
 
 class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
@@ -673,8 +727,8 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'timeout': 60,
                     'destruction_level': 75,
                     'pos': {
-                        'x': 133960,
-                        'y': 87552,
+                        'x': 133960.0,
+                        'y': 87552.0,
                     },
                     'radius': 1350,
                 },
@@ -698,14 +752,14 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'sleep_mode': True,
                     'timeout': 30,
                     'pos': {
-                        'x': 135786,
-                        'y': 84596,
+                        'x': 135786.0,
+                        'y': 84596.0,
                     },
                     'object': {
                         'code': 'Bridge84',
                         'pos': {
-                            'x': 135764,
-                            'y': 84636,
+                            'x': 135764.0,
+                            'y': 84636.0,
                         },
                     },
                 },
@@ -731,8 +785,8 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'timeout': 50,
                     'requires_landing': False,
                     'pos': {
-                        'x': 133978,
-                        'y': 87574,
+                        'x': 133978.0,
+                        'y': 87574.0,
                     },
                     'radius': 1150,
                 },
@@ -743,16 +797,16 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'timeout': 40,
                     'requires_landing': True,
                     'pos': {
-                        'x': 134459,
-                        'y': 85239,
+                        'x': 134459.0,
+                        'y': 85239.0,
                     },
                     'radius': 300,
                     'object': {
                         'point': 0,
                         'code': '1_Chief',
                         'pos': {
-                            'x': 134360,
-                            'y': 85346,
+                            'x': 134360.0,
+                            'y': 85346.0,
                         },
                     },
                 },
@@ -777,15 +831,15 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'timeout': 10,
                     'destruction_level': 75,
                     'pos': {
-                        'x': 134183,
-                        'y': 85468,
+                        'x': 134183.0,
+                        'y': 85468.0,
                     },
                     'object': {
                         'point': 1,
                         'code': 'r0100',
                         'pos': {
-                            'x': 133993,
-                            'y': 85287,
+                            'x': 133993.0,
+                            'y': 85287.0,
                         },
                     },
                 },
@@ -810,15 +864,15 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'timeout': 20,
                     'destruction_level': 25,
                     'pos': {
-                        'x': 132865,
-                        'y': 87291,
+                        'x': 132865.0,
+                        'y': 87291.0,
                     },
                     'object': {
                         'point': 1,
                         'code': '1_Chief',
                         'pos': {
-                            'x': 132866,
-                            'y': 86905,
+                            'x': 132866.0,
+                            'y': 86905.0,
                         },
                     },
                 },
@@ -843,8 +897,8 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'timeout': 30,
                     'destruction_level': 50,
                     'pos': {
-                        'x': 134064,
-                        'y': 88188,
+                        'x': 134064.0,
+                        'y': 88188.0,
                     },
                     'radius': 1350,
                 },
@@ -868,60 +922,20 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'sleep_mode': True,
                     'timeout': 30,
                     'pos': {
-                        'x': 135896,
-                        'y': 84536,
+                        'x': 135896.0,
+                        'y': 84536.0,
                     },
                     'object': {
                         'code': 'Bridge84',
                         'pos': {
-                            'x': 135764,
-                            'y': 84636,
+                            'x': 135764.0,
+                            'y': 84636.0,
                         },
                     },
                 },
             ],
         }
         self._test_parser(TargetParser, 'Target', lines, expected)
-
-
-class ChiefRoadParserTestCase(unittest.TestCase, ParserTestCaseMixin):
-
-    def test_valid_data(self):
-        lines = [
-            "21380.02 41700.34 120.00 10 0 3.055555582046509",
-            "21500.00 41700.00 20.00",
-            "50299.58 35699.85 120.00 10 33 2.6388890743255615",
-        ]
-        expected = {
-            '0_chief_road': [
-                {
-                    'pos': {
-                        'x': 21380.02,
-                        'y': 41700.34,
-                    },
-                    'timeout': 10,
-                },
-                {
-                    'pos': {
-                        'x': 21500.00,
-                        'y': 41700.00,
-                    },
-                },
-                {
-                    'pos': {
-                        'x': 50299.58,
-                        'y': 35699.85,
-                    },
-                    'timeout': 10,
-                },
-            ]
-        }
-        self._test_parser(ChiefRoadParser, '0_Chief_Road', lines, expected)
-
-    def test_invalid_section_name(self):
-        parser = ChiefRoadParser()
-        self.assertFalse(parser.start('foo section'))
-        self.assertFalse(parser.start('X_Chief_Road'))
 
 
 class BornPlaceAircraftsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
@@ -1022,7 +1036,7 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                 'aircrafts': [
                     {
                         'number': 0,
-                        'skill': 'average',
+                        'skill': Skills.average,
                         'aircraft_skin': "Funky.bmp",
                         'pilot_skin': "default",
                         'has_markings': True,
@@ -1030,7 +1044,7 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     },
                     {
                         'number': 1,
-                        'skill': 'veteran',
+                        'skill': Skills.veteran,
                         'aircraft_skin': "default",
                         'pilot_skin': "default",
                         'has_markings': False,
@@ -1066,7 +1080,7 @@ class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                 'aircrafts': [
                     {
                         'number': 0,
-                        'skill': 'average',
+                        'skill': Skills.average,
                         'aircraft_skin': "Funky.bmp",
                         'pilot_skin': "default",
                         'has_markings': False,

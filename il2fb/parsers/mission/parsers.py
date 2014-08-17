@@ -15,11 +15,11 @@ from il2fb.commons.weather import Conditions, Gust, Turbulence
 
 from il2fb.parsers.mission.helpers import _
 from il2fb.parsers.mission.constants import (
-    SKILLS_MAP, ARMIES_MAP, TARGET_TYPE_DESTROY_CODE,
-    TARGET_TYPE_DESTROY_BRIDGE_CODE, TARGET_TYPE_DESTROY_AREA_CODE,
-    TARGET_TYPE_RECON_CODE, TARGET_TYPE_ESCORT_CODE, TARGET_TYPE_COVER_CODE,
+    TARGET_TYPE_DESTROY_CODE, TARGET_TYPE_DESTROY_BRIDGE_CODE,
+    TARGET_TYPE_DESTROY_AREA_CODE, TARGET_TYPE_RECON_CODE,
+    TARGET_TYPE_ESCORT_CODE, TARGET_TYPE_COVER_CODE,
     TARGET_TYPE_COVER_AREA_CODE, TARGET_TYPE_COVER_BRIDGE_CODE,
-    TARGET_TYPES_MAP, TARGET_PRIORITIES_MAP, AIR_FORCES,
+    TARGET_TYPES_MAP, TARGET_PRIORITIES_MAP,
     WAY_POINT_TYPES, WAY_POINT_FORMATIONS,
 )
 
@@ -76,6 +76,11 @@ def to_pos(x, y, z=None):
     if z is not None:
         pos['z'] = float(z)
     return pos
+
+
+to_belligerent = lambda value: Belligerents.get_by_value(int(value))
+to_skill = lambda value: Skills.get_by_value(int(value))
+to_unit_type = lambda value: UnitTypes.get_by_value(value.lower())
 
 
 class SectionParser(object):
@@ -272,17 +277,11 @@ class MainParser(ValuesParser):
         """
         return section_name == "MAIN"
 
-    def _to_time(self, value):
-        time = float(self.data['TIME'])
-        minutes, hours = math.modf(time)
-        return datetime.time(int(hours), int(minutes * 60))
-
     def process_data(self):
         """
         Redefines base method. See :meth:`SectionParser.process_data` for
         semantics.
         """
-        belligerent = int(self.data['army'])
         weather_conditions = int(self.data['CloudType'])
         return {
             'loader': self.data['MAP'],
@@ -294,11 +293,16 @@ class MainParser(ValuesParser):
             'weather_conditions': Conditions.get_by_value(weather_conditions),
             'cloud_base': int(float(self.data['CloudHeight'])),
             'player': {
-                'belligerent': Belligerents.get_by_value(belligerent),
+                'belligerent': to_belligerent(self.data['army']),
                 'regiment': self.data.get('player'),
                 'number': int(self.data['playerNum']),
             },
         }
+
+    def _to_time(self, value):
+        time = float(self.data['TIME'])
+        minutes, hours = math.modf(time)
+        return datetime.time(int(hours), int(minutes * 60))
 
 
 class SeasonParser(ValuesParser):
@@ -466,6 +470,7 @@ class RespawnTimeParser(ValuesParser):
 class ChiefsParser(CollectingParser):
     """
     Parses ``Chiefs`` section.
+    View :ref:`detailed description <chiefs-section>`.
     """
 
     def check_section_name(self, section_name):
@@ -473,11 +478,11 @@ class ChiefsParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        (code, type_code, army), params = params[0:3], params[3:]
+        (code, type_code, belligerent), params = params[0:3], params[3:]
 
         chief_type, code_name = type_code.split('.')
         try:
-            chief_type = UnitTypes.get_by_value(chief_type.lower())
+            chief_type = to_unit_type(chief_type)
         except:
             chief_type = None
 
@@ -485,13 +490,13 @@ class ChiefsParser(CollectingParser):
             'code': code,
             'code_name': code_name,
             'type': chief_type,
-            'belligerent': Belligerents.get_by_value(int(army)),
+            'belligerent': to_belligerent(belligerent),
         }
         if params:
             waiting_time, skill, recharge_time = params
             chief.update({
                 'waiting_time': int(waiting_time),
-                'skill': Skills.get_by_value(int(skill)),
+                'skill': to_skill(skill),
                 'recharge_time': float(recharge_time),
             })
         self.data.append(chief)
@@ -562,19 +567,19 @@ class NStationaryParser(CollectingParser):
     def parse_line(self, line):
         params = line.split()
 
-        code, object_name, army = params[0], params[1], params[2]
+        code, object_name, belligerent = params[0], params[1], params[2]
         pos = params[3:5]
         rotation_angle = params[5]
         params = params[7:]
 
         type_name = self._get_type_name(object_name)
         try:
-            object_type = UnitTypes.get_by_value(type_name.lower())
+            object_type = to_unit_type(type_name)
         except:
             object_type = None
 
         static = ({
-            'belligerent': Belligerents.get_by_value(int(army)),
+            'belligerent': to_belligerent(belligerent),
             'code': code,
             'code_name': self._get_code_name(object_name),
             'pos': to_pos(*pos),
@@ -603,11 +608,11 @@ class NStationaryParser(CollectingParser):
         """
         Parse additional options for ``artillery`` type
         """
-        distance, skill, spotter = params
+        range_, skill, is_spotter = params
         return {
-            'range': int(distance),
-            'skill': Skills.get_by_value(int(skill)),
-            'is_spotter': to_bool(spotter),
+            'range': int(range_),
+            'skill': to_skill(skill),
+            'is_spotter': to_bool(is_spotter),
         }
 
     def _parse_planes(self, params):
@@ -631,12 +636,12 @@ class NStationaryParser(CollectingParser):
         timeout, skill, recharge_time = params
         return {
             'timeout': int(timeout),
-            'skill': Skills.get_by_value(int(skill)),
+            'skill': to_skill(skill),
             'recharge_time': float(recharge_time),
         }
 
     def process_data(self):
-        return {'statics': self.data, }
+        return {'stationary': self.data, }
 
 
 class BuildingsParser(CollectingParser):
@@ -649,11 +654,11 @@ class BuildingsParser(CollectingParser):
 
     def parse_line(self, line):
         buildings = {}
-        code, building_object, army, pos_x, pos_y, rotation_angle = line.split()
+        code, building_object, belligerent, pos_x, pos_y, rotation_angle = line.split()
         building_type, code_name = building_object.split('$')
         buildings.update({
             'code': code,
-            'army': ARMIES_MAP[army],
+            'belligerent': to_belligerent(belligerent),
             'pos': to_pos(pos_x, pos_y),
             'rotation_angle': float(rotation_angle),
         })
@@ -715,11 +720,12 @@ class TargetParser(CollectingParser):
         Parse extra parameters for targets with type 'destroy' or 'cover' or
         'escort'.
         """
-        (destruction_level, pos_x, pos_y), object_point, object_code, object_pos = \
-            params[:3], params[4], params[5], params[6:8]
+        destruction_level = self._to_destruction_level(params[0])
+        pos, object_point, object_code = params[1:3], params[4], params[5]
+        object_pos = params[6:8]
         return {
-            'destruction_level': self._to_destruction_level(destruction_level),
-            'pos': to_pos(pos_x, pos_y),
+            'destruction_level': destruction_level,
+            'pos': to_pos(*pos),
             'object': {
                 'point': int(object_point),
                 'code': object_code,
@@ -732,9 +738,9 @@ class TargetParser(CollectingParser):
         Parse extra parameters for targets with type 'destroy bridge' or
         'cover bridge'.
         """
-        (pos_x, pos_y), object_code, object_pos = params[1:3], params[5], params[6:8]
+        pos, object_code, object_pos = params[1:3], params[5], params[6:8]
         return {
-            'pos': to_pos(pos_x, pos_y),
+            'pos': to_pos(*pos),
             'object': {
                 'code': object_code,
                 'pos': to_pos(*object_pos),
@@ -757,22 +763,21 @@ class TargetParser(CollectingParser):
         """
         Parse extra parameters for targets with 'recon' type.
         """
-        (requires_landing, pos_x, pos_y, radius), params = params[:4], params[4:]
-
+        requires_landing = params[0] != '500'
+        pos, radius, params = params[1:3], params[3], params[4:]
         data = {
             'radius': int(radius),
-            'requires_landing': requires_landing != '500',
-            'pos': to_pos(pos_x, pos_y),
+            'requires_landing': requires_landing,
+            'pos': to_pos(*pos),
         }
-
         if params:
-            object_point, object_code, object_pos_x, object_pos_y = params
-            (data['object'], ) = {
+            object_point, object_code = params[:2]
+            object_pos = params[2:]
+            data['object'] = {
                 'point': int(object_point),
                 'code': object_code,
-                'pos': to_pos(object_pos_x, object_pos_y),
-            },
-
+                'pos': to_pos(*object_pos),
+            }
         return data
 
     def process_data(self):
@@ -787,7 +792,7 @@ class BornPlaceParser(CollectingParser):
         return section_name == "BornPlace"
 
     def parse_line(self, line):
-        (army, radius, pos_x, pos_y, parachute, air_spawn_height,
+        (belligerent, radius, pos_x, pos_y, parachute, air_spawn_height,
          air_spawn_speed, air_spawn_heading, max_allowed_pilots,
          recon_min_height, recon_max_height, recon_range, air_spawn_always,
          enable_aircraft_limits, aircraft_limits_consider_lost,
@@ -798,7 +803,7 @@ class BornPlaceParser(CollectingParser):
 
         self.data.append({
             'radius': int(radius),
-            'army': ARMIES_MAP[army],
+            'belligerent': to_belligerent(belligerent),
             'show_default_icon': to_bool(show_default_icon),
             'friction': {
                 'enabled': to_bool(friction_enabled),
@@ -855,8 +860,10 @@ class BornPlaceAircraftsParser(CollectingParser):
 
     def init_parser(self, section_name):
         super(BornPlaceAircraftsParser, self).init_parser(section_name)
-        self.output_key = 'homebase_aircrafts_{0}'.format(
-                           self._extract_section_number(section_name))
+        self.output_key = (
+            'homebase_aircrafts_{0}'
+            .format(self._extract_section_number(section_name))
+        )
         self.aircraft = {}
 
     def _extract_section_number(self, section_name):
@@ -924,9 +931,9 @@ class StaticCameraParser(CollectingParser):
         return section_name == "StaticCamera"
 
     def parse_line(self, line):
-        pos_x, pos_y, pos_z, army = line.split()
+        pos_x, pos_y, pos_z, belligerent = line.split()
         self.data.append({
-            'army': ARMIES_MAP[army],
+            'belligerent': to_belligerent(belligerent),
             'pos': to_pos(pos_x, pos_y, pos_z),
         })
 
@@ -973,10 +980,10 @@ class FrontMarkerParser(CollectingParser):
         return section_name == "FrontMarker"
 
     def parse_line(self, line):
-        code, pos_x, pos_y, army = line.split()
+        code, pos_x, pos_y, belligerent = line.split()
         self.data.append({
             'code': code,
-            'army': ARMIES_MAP[army],
+            'belligerent': to_belligerent(belligerent),
             'pos': to_pos(pos_x, pos_y),
         })
 
@@ -994,12 +1001,14 @@ class RocketParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        (code, code_name, army), pos, \
-        (rotation_angle, timeout, amount, period), target_pos = params[0:3], params[3:5], params[5:9], params[9:]
+        code, code_name, belligerent = params[0:3]
+        pos = params[3:5]
+        rotation_angle, timeout, amount, period = params[5:9]
+        target_pos = params[9:]
         self.data.append({
             'code': code,
             'code_name': code_name,
-            'army': ARMIES_MAP[army],
+            'belligerent': to_belligerent(belligerent),
             'pos': to_pos(*pos),
             'rotation_angle': float(rotation_angle),
             'timeout': float(timeout),
@@ -1051,9 +1060,9 @@ class FlightDetailsParser(ValuesParser):
 
     def _skill_code(self, number):
         if 'Skill' in self.data:
-            return SKILLS_MAP[self.data['Skill']]
+            return to_skill(self.data['Skill'])
         else:
-            return SKILLS_MAP[self.data['Skill{0}'.format(number)]]
+            return to_skill(self.data['Skill{0}'.format(number)])
 
     def _has_markings(self, number):
             return 'numberOn{0}'.format(number) not in self.data
@@ -1136,7 +1145,8 @@ class FlightWayParser(CollectingParser):
             return "default"
 
     def _parse_way_point_on_target(self, chunks):
-        (target_code, target_point, radio_silence), chunks = chunks[:3], chunks[3:]
+        target_code, target_point, radio_silence = chunks[:3]
+        chunks = chunks[3:]
         formation_code = self._get_formation_code(chunks)
         self.way_points.update({
             'target_code': target_code,
