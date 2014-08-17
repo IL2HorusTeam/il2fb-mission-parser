@@ -45,7 +45,7 @@ Output example:
 
 **Description**:
 
-MAP
+``MAP``
   Name of location loader. Location loaders contain information about locations
   (textures, air pressure, air temperature, list of map labels, etc) and can be
   found inside ``fb_maps*.SFS`` archives.
@@ -54,7 +54,7 @@ MAP
   :Output type: :class:`str`
   :Output value: original string value
 
-TIME
+``TIME``
   Initial time in mission. Defined as a real number. Integer part defines
   hour. Fractional part defines minutes as a fraction of 60 minutes, so
   ``0.75`` is ``60 * 0.75 = 45`` indeed.
@@ -62,47 +62,47 @@ TIME
   :Output path: ``time.value``
   :Output type: :class:`datetime.time`
 
-TIMECONSTANT
+``TIMECONSTANT``
   Whether time specified by ``TIME`` must be fixed during all mission long.
 
   :Output path: ``time.is_fixed``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
-WEAPONSCONSTANT
+``WEAPONSCONSTANT``
   Whether player's loadout is fixed.
 
   :Output path: ``fixed_loadout``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
-CloudType
+``CloudType``
   Describes type of weather by code in range ``[0-6]``.
 
   :Output path: ``weather_conditions``
   :Output type: complex `weather conditions`_ constant
 
-CloudHeight
+``CloudHeight``
   A real number which defines cloud base.
 
   :Output path: ``cloud_base``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-player [1]_
+``player`` [1]_
   Code name of player's regiment.
 
   :Output path: ``player.regiment``
   :Output type: :class:`str`
   :Output value: original string value or ``None`` if not present
 
-army [1]_
+``army`` [1]_
   Code number of player's army.
 
   :Output path: ``player.belligerent``
   :Output type: complex `belligerents`_ constant
 
-playerNum [1]_
+``playerNum`` [1]_
   Player's position in flight. Always equal to ``0`` if ``player`` is not set
 
   :Output path: ``player.number``

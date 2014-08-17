@@ -35,27 +35,27 @@ Output example:
 
 **Description**:
 
-WindDirection
+``WindDirection``
   Wind direction in degrees.
 
   :Output path: ``weather.wind.direction``
   :Output type: :class:`float`
   :Output value: original value converted to float number
 
-WindSpeed
+``WindSpeed``
   Wind speed in meters per second.
 
   :Output path: ``weather.wind.speed``
   :Output type: :class:`float`
   :Output value: original value converted to float number
 
-Gust
+``Gust``
   Number in range ``[0-3]`` which defines strength of wind gusts.
 
   :Output path: ``weather.gust``
   :Output type: complex `gust`_ constant
 
-Turbulence
+``Turbulence``
   Number in range ``[0-4]`` which defines strength of wind turbulence.
 
   :Output path: ``weather.turbulence``

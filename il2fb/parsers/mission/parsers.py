@@ -488,9 +488,9 @@ class ChiefsParser(CollectingParser):
             'belligerent': Belligerents.get_by_value(int(army)),
         }
         if params:
-            timeout, skill, recharge_time = params
+            waiting_time, skill, recharge_time = params
             chief.update({
-                'timeout': int(timeout),
+                'waiting_time': int(waiting_time),
                 'skill': Skills.get_by_value(int(skill)),
                 'recharge_time': float(recharge_time),
             })

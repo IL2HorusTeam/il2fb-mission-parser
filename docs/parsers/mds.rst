@@ -100,7 +100,7 @@ Output example:
 Radar
 ^^^^^
 
-MDS_Radar_SetRadarToAdvanceMode
+``MDS_Radar_SetRadarToAdvanceMode``
   Sets FoW to advanced mode: if this option is enabled, ALL FoW spotters on the
   map will show only those planes that are located inside assigned range &
   height limits. Range parameters are set for each home base object individually
@@ -111,7 +111,7 @@ MDS_Radar_SetRadarToAdvanceMode
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
-MDS_Radar_RefreshInterval
+``MDS_Radar_RefreshInterval``
   Radar refresh period (in seconds): tells the game how fast positions of
   detected objects are refreshed. Works with or without advanced radar mode.
 
@@ -119,16 +119,16 @@ MDS_Radar_RefreshInterval
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-MDS_Radar_ShipsAsRadar
+``MDS_Radar_ShipsAsRadar``
   Treat ships as FoW spotters: makes ships spot enemy planes with their radars.
   Ships are divided into two groups. "Big Ships" that have powerful, long range
   radars and "Small Ships" that have less powerful, short range radars. If you
   want only big ships to act as FoW spotters, set ALL small ship settings to 0
   and vice versa.
 
-.. _ships-categories:
+  .. _ships-categories:
 
-.. note::
+  .. note::
 
     "Big Ships" with powerful, long range radar
       All CVs (aircraft carriers), all battleships and all cruisers.
@@ -136,55 +136,55 @@ MDS_Radar_ShipsAsRadar
     "Small Ships" with less powerful, short range radar
       All destroyers.
 
-..
+  ..
 
   :Output path: ``radar.ships.treat_as_radar``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
-MDS_Radar_ShipRadar_MaxRange
+``MDS_Radar_ShipRadar_MaxRange``
   Maximum range (in km) of detection of air targets by big ships.
 
   :Output path: ``radar.ships.big.max_range``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-MDS_Radar_ShipRadar_MinHeight
+``MDS_Radar_ShipRadar_MinHeight``
   Minimum height (in meters) of detection of air targets by big ships.
 
   :Output path: ``radar.ships.big.min_height``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-MDS_Radar_ShipRadar_MaxHeight
+``MDS_Radar_ShipRadar_MaxHeight``
   Maximum height (in meters) of detection of air targets by big ships.
 
   :Output path: ``radar.ships.big.max_height``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-MDS_Radar_ShipSmallRadar_MaxRange
+``MDS_Radar_ShipSmallRadar_MaxRange``
   Maximum range (in km) of detection of air targets by small ships.
 
   :Output path: ``radar.ships.small.max_range``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-MDS_Radar_ShipSmallRadar_MinHeight
+``MDS_Radar_ShipSmallRadar_MinHeight``
   Minimum height (in meters) of detection of air targets by small ships.
 
   :Output path: ``radar.ships.small.min_height``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-MDS_Radar_ShipSmallRadar_MaxHeight
+``MDS_Radar_ShipSmallRadar_MaxHeight``
   Maximum height (in meters) of detection of air targets by small ships.
 
   :Output path: ``radar.ships.small.max_height``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-MDS_Radar_ScoutsAsRadar
+``MDS_Radar_ScoutsAsRadar``
   Recon planes are FoW spotters: this will enable selected recon planes to spot
   ground units. Only selected recon planes are able to identify ground units.
 
@@ -192,7 +192,7 @@ MDS_Radar_ScoutsAsRadar
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
-MDS_Radar_ScoutRadar_MaxRange
+``MDS_Radar_ScoutRadar_MaxRange``
   Maximum scan range: determines the range (in km) in which scouts can
   identify other aircrafts.
 
@@ -200,7 +200,7 @@ MDS_Radar_ScoutRadar_MaxRange
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-MDS_Radar_ScoutRadar_DeltaHeight
+``MDS_Radar_ScoutRadar_DeltaHeight``
   Height limit of detection zone (in meters): defines the maximum altitude at
   which the reconnaissance aircraft can detect enemy ground targets.
 
@@ -208,7 +208,7 @@ MDS_Radar_ScoutRadar_DeltaHeight
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-MDS_Radar_ScoutGroundObjects_Alpha
+``MDS_Radar_ScoutGroundObjects_Alpha``
   Angle (in degrees) of earth scanning: determines the angle at which
   reconnaissance aircraft can detect enemy ground targets.
 
@@ -216,7 +216,7 @@ MDS_Radar_ScoutGroundObjects_Alpha
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-.. note::
+  .. note::
 
     Scan delta height & scan alpha determine the range for which scouts can
     identify ground objects. The formula behind this is:
@@ -235,14 +235,14 @@ MDS_Radar_ScoutGroundObjects_Alpha
 AI
 ^^
 
-MDS_Misc_DisableAIRadioChatter
+``MDS_Misc_DisableAIRadioChatter``
   Disable radio messages sent by AI planes in dogfight.
 
   :Output path: ``ai.no_radio_chatter``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
-MDS_Misc_DespawnAIPlanesAfterLanding
+``MDS_Misc_DespawnAIPlanesAfterLanding``
   Despawn AI aircrafts after they land and park: in dog fight mode when AI
   aircraft land and park, they will vanish from the map and release game
   resources. They will also not interfere with live players.
@@ -255,7 +255,7 @@ MDS_Misc_DespawnAIPlanesAfterLanding
 Homebase
 ^^^^^^^^
 
-MDS_Radar_EnableTowerCommunications
+``MDS_Radar_EnableTowerCommunications``
   Enables communications menu (tab key by default) for human players in
   dogfight.
 
@@ -263,14 +263,14 @@ MDS_Radar_EnableTowerCommunications
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
-MDS_Radar_HideUnpopulatedAirstripsFromMinimap
+``MDS_Radar_HideUnpopulatedAirstripsFromMinimap``
   Hide enemy and unused airfields from minimap.
 
   :Output path: ``homebase.hide_unpopulated``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
-MDS_Misc_HidePlayersCountOnHomeBase
+``MDS_Misc_HidePlayersCountOnHomeBase``
   This option, if enabled, will hide number of players that is displayed beside
   each home base object on your map on briefing screen.
 
@@ -289,7 +289,7 @@ player mission and coop missions. Setting long crater durations in dogfight
 missions would cause inconsistency between players, since dogfight mode allows
 joining anytime.
 
-MDS_Misc_BombsCat1_CratersVisibilityMultiplier
+``MDS_Misc_BombsCat1_CratersVisibilityMultiplier``
   Multiplier for visibility time for craters caused by guns and rockets and
   bombs which weight is less then or equal 100 kg.
 
@@ -297,7 +297,7 @@ MDS_Misc_BombsCat1_CratersVisibilityMultiplier
   :Output type: :class:`float`
   :Output value: original value converted to float number
 
-MDS_Misc_BombsCat2_CratersVisibilityMultiplier
+``MDS_Misc_BombsCat2_CratersVisibilityMultiplier``
   Multiplier for visibility time for craters caused by torpedoes, TinyTim and
   bombs which weight is less then or equal 1000 kg.
 
@@ -305,7 +305,7 @@ MDS_Misc_BombsCat2_CratersVisibilityMultiplier
   :Output type: :class:`float`
   :Output value: original value converted to float number
 
-MDS_Misc_BombsCat3_CratersVisibilityMultiplier
+``MDS_Misc_BombsCat3_CratersVisibilityMultiplier``
   Multiplier for visibility time for craters caused by bombs which weight
   greater then 1000 kg.
 
@@ -317,7 +317,7 @@ MDS_Misc_BombsCat3_CratersVisibilityMultiplier
 Other
 ^^^^^
 
-MDS_Radar_DisableVectoring
+``MDS_Radar_DisableVectoring``
   Disables two vectoring commands from ground control orders menu:
   ``Vector to target`` and ``Vector to home``. This can simulate early war
   scenarios where own planes couldn't be tracked by means of radar, Y-Verfahren,
@@ -329,7 +329,7 @@ MDS_Radar_DisableVectoring
     inverted original value converted to integer number: ``True`` if ``0``,
     ``False`` otherwise
 
-MDS_Radar_ScoutCompleteRecon
+``MDS_Radar_ScoutCompleteRecon``
   Determines whether reconnaissance aircrafts are the only aircrafts allowed
   to complete recon targets.
 

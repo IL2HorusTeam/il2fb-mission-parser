@@ -40,35 +40,35 @@ Output example:
 
 Respawn time is measured by seconds.
 
-Bigship
+``Bigship``
   Respawn time for big ships [1]_.
 
   :Output path: ``respawn_time.ships.big``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-Ship
+``Ship``
   Respawn time for small ships [1]_.
 
   :Output path: ``respawn_time.ships.small``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-Aeroanchored
+``Aeroanchored``
   Respawn time for balloons.
 
   :Output path: ``respawn_time.balloons``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-Artillery
+``Artillery``
   Respawn time for artillery.
 
   :Output path: ``respawn_time.artillery``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
-Searchlight
+``Searchlight``
   Respawn time for searchlights.
 
   :Output path: ``respawn_time.searchlights``

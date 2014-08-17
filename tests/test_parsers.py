@@ -267,7 +267,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     'code_name': "G5",
                     'type': UnitTypes.ship,
                     'belligerent': Belligerents.red,
-                    'timeout': 60,
+                    'waiting_time': 60,
                     'skill': Skills.ace,
                     'recharge_time': 2.0,
                 },

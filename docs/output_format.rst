@@ -22,6 +22,6 @@ gets data from all other parsers and organizes it in special manner.
     parsers/weather
     parsers/respawn-time
     parsers/mds
-    parsers/mds_scouts
+    parsers/mds-scouts
     parsers/chiefs
-    parsers/file_parser
+    parsers/file-parser
