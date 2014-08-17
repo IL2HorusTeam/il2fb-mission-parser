@@ -5,8 +5,8 @@ Mission parser tests.
 import datetime
 import unittest
 
-from il2fb.commons import SKILLS
-from il2fb.commons.organization import Belligerents
+from il2fb.commons import Skills, UnitTypes
+from il2fb.commons.organization import AirForces, Belligerents
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
 from il2fb.parsers.mission.parsers import (
@@ -247,28 +247,28 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                 {
                     'code': "0_Chief",
                     'code_name': "1-BT7",
-                    'type': "armor",
+                    'type': UnitTypes.armor,
                     'belligerent': Belligerents.blue,
                 },
                 {
                     'code': "1_Chief",
                     'code_name': "GAZ67",
-                    'type': "vehicles",
+                    'type': UnitTypes.vehicle,
                     'belligerent': Belligerents.red,
                 },
                 {
                     'code': "2_Chief",
                     'code_name': "USSR_FuelTrain/AA",
-                    'type': "trains",
+                    'type': UnitTypes.train,
                     'belligerent': Belligerents.red,
                 },
                 {
                     'code': "3_Chief",
                     'code_name': "G5",
-                    'type': "ships",
+                    'type': UnitTypes.ship,
                     'belligerent': Belligerents.red,
                     'timeout': 60,
-                    'skill': SKILLS.ace,
+                    'skill': Skills.ace,
                     'recharge_time': 2.0,
                 },
             ],
@@ -280,15 +280,33 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         Test ``NStationary`` section parser.
         """
         lines = [
-            "959_Static vehicles.artillery.Artillery$SdKfz251 2 31333.62 90757.91 600.29 0.0 0 1 1",
-            "0_Static vehicles.planes.Plane$I_16TYPE24 2 134146.89 88005.43 336.92 0.0 de 2 1.0 I-16type24_G1_RoW3.bmp 1",
-            "1_Static ships.Ship$G5 1 83759.05 115021.15 360.00 0.0 60 3 1.4",
+            "0_Static vehicles.aeronautics.Aeronautics$BarrageBalloon_2400m 1 151781.85 89055.58 360.00 0.0",
+            "1_Static vehicles.artillery.Artillery$SdKfz251 2 31333.62 90757.91 600.29 0.0 0 1 1",
+            "2_Static vehicles.lights.Searchlight$SL_ManualBlue 1 151740.45 88673.74 360.00 0.0",
+            "3_Static vehicles.planes.Plane$I_16TYPE24 2 134146.89 88005.43 336.92 0.0 de 2 1.0 I-16type24_G1_RoW3.bmp 1",
+            "4_Static vehicles.radios.Beacon$RadioBeacon 2 151679.84 88805.39 360.00 0.0",
+            "5_Static vehicles.stationary.Campfire$CampfireAirfield 0 151428.38 88817.52 360.00 0.0",
+            "6_Static vehicles.stationary.Smoke$Smoke20 0 151404.61 89009.57 360.00 0.00",
+            "7_Static vehicles.stationary.Siren$SirenCity 1 151984.28 88577.12 360.00 0.0",
+            "8_Static vehicles.stationary.Stationary$Wagon1 1 152292.72 89662.80 360.00 0.0",
+            "9_Static ships.Ship$G5 1 83759.05 115021.15 360.00 0.0 60 3 1.4",
         ]
         expected = {
             'statics': [
                 {
-                    'army': 'blue',
-                    'code': '959_Static',
+                    'belligerent': Belligerents.red,
+                    'code': '0_Static',
+                    'code_name': 'BarrageBalloon_2400m',
+                    'pos': {
+                        'x': 151781.85,
+                        'y': 89055.58,
+                    },
+                    'rotation_angle': 360.00,
+                    'type': UnitTypes.balloon,
+                },
+                {
+                    'belligerent': Belligerents.blue,
+                    'code': '1_Static',
                     'code_name': 'SdKfz251',
                     'is_spotter': True,
                     'pos': {
@@ -297,14 +315,25 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     },
                     'rotation_angle': 600.29,
                     'range': 0,
-                    'skill': 'average',
+                    'skill': Skills.average,
+                    'type': UnitTypes.artillery,
                 },
                 {
-                    'air_force': 'luftwaffe',
+                    'belligerent': Belligerents.red,
+                    'code': '2_Static',
+                    'code_name': 'SL_ManualBlue',
+                    'pos': {
+                        'x': 151740.45,
+                        'y': 88673.74,
+                    },
+                    'rotation_angle': 360.00,
+                    'type': UnitTypes.light,
+                },
+                {
+                    'air_force': AirForces.luftwaffe,
                     'allows_spawning': True,
-                    'army': 'blue',
-                    'skin': 'I-16type24_G1_RoW3.bmp',
-                    'code': '0_Static',
+                    'belligerent': Belligerents.blue,
+                    'code': '3_Static',
                     'code_name': 'I_16TYPE24',
                     'markings': True,
                     'pos': {
@@ -313,10 +342,67 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                     },
                     'rotation_angle': 336.92,
                     'restorable': True,
+                    'skin': 'I-16type24_G1_RoW3.bmp',
+                    'type': UnitTypes.airplane,
                 },
                 {
-                    'army': 'red',
-                    'code': '1_Static',
+                    'belligerent': Belligerents.blue,
+                    'code': '4_Static',
+                    'code_name': 'RadioBeacon',
+                    'pos': {
+                        'x': 151679.84,
+                        'y': 88805.39,
+                    },
+                    'rotation_angle': 360.00,
+                    'type': UnitTypes.radio,
+                },
+                {
+                    'belligerent': Belligerents.none,
+                    'code': '5_Static',
+                    'code_name': 'CampfireAirfield',
+                    'pos': {
+                        'x': 151428.38,
+                        'y': 88817.52,
+                    },
+                    'rotation_angle': 360.00,
+                    'type': UnitTypes.stationary,
+                },
+                {
+                    'belligerent': Belligerents.none,
+                    'code': '6_Static',
+                    'code_name': 'Smoke20',
+                    'pos': {
+                        'x': 151404.61,
+                        'y': 89009.57,
+                    },
+                    'rotation_angle': 360.00,
+                    'type': UnitTypes.stationary,
+                },
+                {
+                    'belligerent': Belligerents.red,
+                    'code': '7_Static',
+                    'code_name': 'SirenCity',
+                    'pos': {
+                        'x': 151984.28,
+                        'y': 88577.12,
+                    },
+                    'rotation_angle': 360.00,
+                    'type': UnitTypes.stationary,
+                },
+                {
+                    'belligerent': Belligerents.red,
+                    'code': '8_Static',
+                    'code_name': 'Wagon1',
+                    'pos': {
+                        'x': 152292.72,
+                        'y': 89662.80,
+                    },
+                    'rotation_angle': 360.00,
+                    'type': UnitTypes.stationary,
+                },
+                {
+                    'belligerent': Belligerents.red,
+                    'code': '9_Static',
                     'code_name': 'G5',
                     'recharge_time': 1.4,
                     'pos': {
@@ -324,8 +410,9 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
                         'y': 115021.15,
                     },
                     'rotation_angle': 360.00,
-                    'skill': 'ace',
-                    'timeout': 60
+                    'skill': Skills.ace,
+                    'timeout': 60,
+                    'type': UnitTypes.ship,
                 },
             ],
         }
@@ -809,21 +896,21 @@ class ChiefRoadParserTestCase(unittest.TestCase, ParserTestCaseMixin):
             '0_chief_road': [
                 {
                     'pos': {
-                    'x': 21380.02,
-                    'y': 41700.34,
+                        'x': 21380.02,
+                        'y': 41700.34,
                     },
                     'timeout': 10,
                 },
                 {
                     'pos': {
-                    'x': 21500.00,
-                    'y': 41700.00,
+                        'x': 21500.00,
+                        'y': 41700.00,
                     },
                 },
                 {
                     'pos': {
-                    'x': 50299.58,
-                    'y': 35699.85,
+                        'x': 50299.58,
+                        'y': 35699.85,
                     },
                     'timeout': 10,
                 },

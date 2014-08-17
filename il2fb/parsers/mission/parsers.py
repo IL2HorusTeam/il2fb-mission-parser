@@ -9,8 +9,8 @@ import math
 
 from abc import ABCMeta, abstractmethod
 
-from il2fb.commons import SKILLS
-from il2fb.commons.organization import Belligerents
+from il2fb.commons import Skills, UnitTypes
+from il2fb.commons.organization import AirForces, Belligerents
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
 from il2fb.parsers.mission.helpers import _
@@ -474,21 +474,27 @@ class ChiefsParser(CollectingParser):
     def parse_line(self, line):
         params = line.split()
         (code, type_code, army), params = params[0:3], params[3:]
+
         chief_type, code_name = type_code.split('.')
-        chiefs = {
+        try:
+            chief_type = UnitTypes.get_by_value(chief_type.lower())
+        except:
+            chief_type = None
+
+        chief = {
             'code': code,
             'code_name': code_name,
-            'type': chief_type.lower(),
+            'type': chief_type,
             'belligerent': Belligerents.get_by_value(int(army)),
         }
         if params:
             timeout, skill, recharge_time = params
-            chiefs.update({
+            chief.update({
                 'timeout': int(timeout),
-                'skill': SKILLS.get_by_value(int(skill)),
+                'skill': Skills.get_by_value(int(skill)),
                 'recharge_time': float(recharge_time),
             })
-        self.data.append(chiefs)
+        self.data.append(chief)
 
     def process_data(self):
         return {'chiefs': self.data, }
@@ -555,29 +561,39 @@ class NStationaryParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        code, stationary_object, army, pos, rotation_angle, params = \
-            params[0], params[1], params[2], params[3:5], params[5], params[7:]
+
+        code, object_name, army = params[0], params[1], params[2]
+        pos = params[3:5]
+        rotation_angle = params[5]
+        params = params[7:]
+
+        type_name = self._get_type_name(object_name)
+        try:
+            object_type = UnitTypes.get_by_value(type_name.lower())
+        except:
+            object_type = None
+
         static = ({
+            'belligerent': Belligerents.get_by_value(int(army)),
             'code': code,
-            'code_name': self._get_code_name(stationary_object),
-            'army': ARMIES_MAP[army],
+            'code_name': self._get_code_name(object_name),
             'pos': to_pos(*pos),
             'rotation_angle': float(rotation_angle),
+            'type': object_type,
         })
 
-        subparser_name = self._get_subparser_name(stationary_object)
-        subparser = self.subparsers.get(subparser_name)
+        subparser = self.subparsers.get(type_name)
         if subparser:
             static.update(subparser(params))
         self.data.append(static)
 
-    def _get_subparser_name(self, subparser_name):
-        if subparser_name.startswith('ships'):
+    def _get_type_name(self, object_name):
+        if object_name.startswith('ships'):
             return "ships"
         else:
-            start = subparser_name.index('.') + 1
-            stop = subparser_name.rindex('.')
-            return subparser_name[start:stop]
+            start = object_name.index('.') + 1
+            stop = object_name.rindex('.')
+            return object_name[start:stop]
 
     def _get_code_name(self, code):
         start = code.index('$') + 1
@@ -585,23 +601,23 @@ class NStationaryParser(CollectingParser):
 
     def _parse_artillery(self, params):
         """
-        Parse additional options for ``artillery`` category
+        Parse additional options for ``artillery`` type
         """
         distance, skill, spotter = params
         return {
             'range': int(distance),
-            'skill': SKILLS_MAP[skill],
+            'skill': Skills.get_by_value(int(skill)),
             'is_spotter': to_bool(spotter),
         }
 
     def _parse_planes(self, params):
         """
-        Parse additional options for ``planes`` category
+        Parse additional options for ``planes`` type
         """
-        (air_force, allows_spawning_restorable), (skin, has_markings) = \
-            params[:2], params[3:]
+        air_force, allows_spawning_restorable = params[:2]
+        skin, has_markings = params[3:]
         return {
-            'air_force': AIR_FORCES[air_force],
+            'air_force': AirForces.get_by_value(air_force),
             'allows_spawning': to_bool(allows_spawning_restorable),
             'restorable': allows_spawning_restorable == '2',
             'skin': skin,
@@ -610,12 +626,12 @@ class NStationaryParser(CollectingParser):
 
     def _parse_ships(self, params):
         """
-        Parse additional options for ``ships`` category
+        Parse additional options for ``ships`` type
         """
         timeout, skill, recharge_time = params
         return {
             'timeout': int(timeout),
-            'skill': SKILLS_MAP[skill],
+            'skill': Skills.get_by_value(int(skill)),
             'recharge_time': float(recharge_time),
         }
 

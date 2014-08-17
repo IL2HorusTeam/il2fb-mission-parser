@@ -57,7 +57,7 @@ Output example:
                 'type': "ships",
                 'belligerent': <constant 'Belligerents.red'>,
                 'timeout': 60,
-                'skill': <constant 'SKILLS.ace'>,
+                'skill': <constant 'Skills.ace'>,
                 'recharge_time': 2.0,
             },
         ],
