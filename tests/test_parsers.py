@@ -73,6 +73,8 @@ class SectionParserTestCase(unittest.TestCase):
 
 class ParserTestCaseMixin(object):
 
+    maxDiff = None
+
     def _test_parser(self, parser_class, section_name, lines, expected):
         parser = parser_class()
         self.assertTrue(parser.start(section_name))
@@ -81,9 +83,7 @@ class ParserTestCaseMixin(object):
         self.assertEqual(expected, parser.stop())
 
 
-class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
-
-    maxDiff = None
+class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
 
     def test_main_parser(self):
         """
@@ -606,7 +606,7 @@ class MissionParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         self._test_parser(WingParser, 'Wing', lines, expected)
 
 
-class MDSScoutsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+class MDSScoutsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
     """
     Test ``MDS_Scouts`` section parser.
     """
@@ -631,35 +631,58 @@ class MDSScoutsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         self.assertFalse(parser.start('MDS_Scouts_'))
 
 
-class ChiefRoadParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
         lines = [
-            "21380.02 41700.34 120.00 10 0 3.055555582046509",
-            "21500.00 41700.00 20.00",
-            "50299.58 35699.85 120.00 10 33 2.6388890743255615",
+            "21380.02 41700.34 120.00 10 2 3.055555582046509",
+            "21500.00 41700.00 120.00",
+            "50299.58 35699.85 120.00 10 3 2.6388890743255615",
+            "60284.10 59142.93 120.00",
+            "84682.13 98423.69 120.00",
         ]
         expected = {
-            '0_chief_road': [
+            '0_chief_route': [
                 {
+                    'is_check_point': True,
                     'pos': {
                         'x': 21380.02,
                         'y': 41700.34,
                     },
+                    'section_length': 2,
+                    'speed': 3.055555582046509,
                     'timeout': 10,
                 },
                 {
+                    'is_check_point': False,
                     'pos': {
                         'x': 21500.00,
                         'y': 41700.00,
                     },
                 },
                 {
+                    'is_check_point': True,
                     'pos': {
                         'x': 50299.58,
                         'y': 35699.85,
                     },
+                    'section_length': 3,
+                    'speed': 2.6388890743255615,
                     'timeout': 10,
+                },
+                {
+                    'is_check_point': False,
+                    'pos': {
+                        'x': 60284.10,
+                        'y': 59142.93,
+                    },
+                },
+                {
+                    'is_check_point': False,
+                    'pos': {
+                        'x': 84682.13,
+                        'y': 98423.69,
+                    },
                 },
             ]
         }
@@ -671,11 +694,10 @@ class ChiefRoadParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         self.assertFalse(parser.start('X_Chief_Road'))
 
 
-class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
     """
     Test ``Target`` section parser.
     """
-    maxDiff = None
 
     def test_target_destroy(self):
         """
@@ -938,7 +960,7 @@ class TargetsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         self._test_parser(TargetParser, 'Target', lines, expected)
 
 
-class BornPlaceAircraftsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+class BornPlaceAircraftsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
         """
@@ -981,7 +1003,8 @@ class BornPlaceAircraftsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         self.assertFalse(parser.start('BornPlaceX'))
 
 
-class BornPlaceCountriesParserTestCase(unittest.TestCase, ParserTestCaseMixin):
+class BornPlaceCountriesParserTestCase(ParserTestCaseMixin, unittest.TestCase):
+
     def test_valid_data(self):
         """
         Test ``BornPlaceCountriesN`` section parser.
@@ -1005,9 +1028,7 @@ class BornPlaceCountriesParserTestCase(unittest.TestCase, ParserTestCaseMixin):
         self.assertFalse(parser.start('BornPlaceCountriesX'))
 
 
-class FlightDetailsParserTestCase(unittest.TestCase, ParserTestCaseMixin):
-
-    maxDiff = None
+class FlightDetailsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
 
     def test_flight_details_parser(self):
         lines = [

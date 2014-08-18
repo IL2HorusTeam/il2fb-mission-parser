@@ -4,8 +4,8 @@ Output format
 This chapter describes output formats for all parsers. Datailed description of
 input data aslo included.
 
-Note, that :class:`~il2fb.parsers.mission.parsers.FileParser` is the root parser. It
-gets data from all other parsers and organizes it in special manner.
+Note, that :class:`~il2fb.parsers.mission.parsers.FileParser` is the root
+parser. It gets data from all other parsers and organizes it in special manner.
 
 .. note::
 
@@ -24,4 +24,5 @@ gets data from all other parsers and organizes it in special manner.
     parsers/mds
     parsers/mds-scouts
     parsers/chiefs
+    parsers/chief-road
     parsers/file-parser

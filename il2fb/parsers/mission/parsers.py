@@ -508,6 +508,7 @@ class ChiefsParser(CollectingParser):
 class ChiefRoadParser(CollectingParser):
     """
     Parses ``N_Chief_Road`` section.
+    View :ref:`detailed description <chief-road-section>`.
     """
     suffix = "_Chief_Road"
 
@@ -524,26 +525,26 @@ class ChiefRoadParser(CollectingParser):
     def init_parser(self, section_name):
         super(ChiefRoadParser, self).init_parser(section_name)
         object_code = self._extract_object_code(section_name)
-        self.output_key = "{0}_chief_road".format(object_code)
+        self.output_key = "{0}_chief_route".format(object_code)
 
     def _extract_object_code(self, section_name):
         stop = section_name.index('_')
         return int(section_name[:stop])
 
     def parse_line(self, line):
-        """
-        .. todo:: mark user-defined points
-        """
         params = line.split()
-        pos, params = params[0:2], params[3:4]
-        chief_road = {
+        pos, params = params[0:2], params[3:]
+        way_point = {
             'pos': to_pos(*pos),
         }
-        if params:
-            (timeout, ) = params
-            chief_road['timeout'] = int(timeout)
+        is_check_point = bool(params)
+        way_point['is_check_point'] = is_check_point
+        if is_check_point:
+            way_point['timeout'] = int(params[0])
+            way_point['section_length'] = int(params[1])
+            way_point['speed'] = float(params[2])
 
-        self.data.append(chief_road)
+        self.data.append(way_point)
 
     def process_data(self):
         return {self.output_key: self.data}

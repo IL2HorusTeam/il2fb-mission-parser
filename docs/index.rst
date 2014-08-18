@@ -10,7 +10,7 @@ Contents:
    introduction
    installation
    usage
-   output_format
+   output-format
 
 
 Modules:
