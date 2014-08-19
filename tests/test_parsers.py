@@ -637,7 +637,7 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         lines = [
             "21380.02 41700.34 120.00 10 2 3.055555582046509",
             "21500.00 41700.00 120.00",
-            "50299.58 35699.85 120.00 10 3 2.6388890743255615",
+            "50299.58 35699.85 120.00 0 3 2.6388890743255615",
             "60284.10 59142.93 120.00",
             "84682.13 98423.69 120.00",
         ]
@@ -651,7 +651,7 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'section_length': 2,
                     'speed': 3.055555582046509,
-                    'timeout': 10,
+                    'waiting_time': 10,
                 },
                 {
                     'is_check_point': False,
@@ -668,7 +668,7 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'section_length': 3,
                     'speed': 2.6388890743255615,
-                    'timeout': 10,
+                    'waiting_time': 0,
                 },
                 {
                     'is_check_point': False,
@@ -684,7 +684,7 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'y': 98423.69,
                     },
                 },
-            ]
+            ],
         }
         self._test_parser(ChiefRoadParser, '0_Chief_Road', lines, expected)
 
