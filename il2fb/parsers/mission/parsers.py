@@ -226,8 +226,8 @@ class ValuesParser(SectionParser):
 
         Splits line into key-value pair and puts it into internal dictionary.
         """
-        code, value = line.split()
-        self.data.update({code: value})
+        key, value = line.split()
+        self.data.update({key: value})
 
 
 class CollectingParser(SectionParser):
@@ -478,17 +478,17 @@ class ChiefsParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        (code, type_code, belligerent), params = params[0:3], params[3:]
+        (oid, type_code, belligerent), params = params[0:3], params[3:]
 
-        chief_type, code_name = type_code.split('.')
+        chief_type, code = type_code.split('.')
         try:
             chief_type = to_unit_type(chief_type)
         except:
             chief_type = None
 
         chief = {
+            'id': oid,
             'code': code,
-            'code_name': code_name,
             'type': chief_type,
             'belligerent': to_belligerent(belligerent),
         }
@@ -553,7 +553,9 @@ class ChiefRoadParser(CollectingParser):
 class NStationaryParser(CollectingParser):
     """
     Parses ``NStationary`` section.
+    View :ref:`detailed description <nstationary-section>`.
     """
+
     def init_parser(self, section_name):
         super(NStationaryParser, self).init_parser(section_name)
         self.subparsers = {
@@ -568,10 +570,10 @@ class NStationaryParser(CollectingParser):
     def parse_line(self, line):
         params = line.split()
 
-        code, object_name, belligerent = params[0], params[1], params[2]
+        oid, object_name, belligerent = params[0], params[1], params[2]
         pos = params[3:5]
         rotation_angle = params[5]
-        params = params[7:]
+        params = params[6:]
 
         type_name = self._get_type_name(object_name)
         try:
@@ -581,8 +583,8 @@ class NStationaryParser(CollectingParser):
 
         static = ({
             'belligerent': to_belligerent(belligerent),
-            'code': code,
-            'code_name': self._get_code_name(object_name),
+            'id': oid,
+            'code': self._get_code(object_name),
             'pos': to_pos(*pos),
             'rotation_angle': float(rotation_angle),
             'type': object_type,
@@ -601,7 +603,7 @@ class NStationaryParser(CollectingParser):
             stop = object_name.rindex('.')
             return object_name[start:stop]
 
-    def _get_code_name(self, code):
+    def _get_code(self, code):
         start = code.index('$') + 1
         return code[start:]
 
@@ -609,36 +611,37 @@ class NStationaryParser(CollectingParser):
         """
         Parse additional options for ``artillery`` type
         """
-        range_, skill, is_spotter = params
+        awakening_time, range_, skill, is_spotter = params
         return {
+            'awakening_time': float(awakening_time),
             'range': int(range_),
             'skill': to_skill(skill),
-            'is_spotter': to_bool(is_spotter),
+            'use_spotter': to_bool(is_spotter),
         }
 
     def _parse_planes(self, params):
         """
         Parse additional options for ``planes`` type
         """
-        air_force, allows_spawning_restorable = params[:2]
-        skin, has_markings = params[3:]
+        air_force, allows_spawning_restorable = params[1:3]
+        skin, has_markings = params[4:]
         return {
             'air_force': AirForces.get_by_value(air_force),
             'allows_spawning': to_bool(allows_spawning_restorable),
             'restorable': allows_spawning_restorable == '2',
             'skin': skin,
-            'markings': to_bool(has_markings),
+            'show_markings': to_bool(has_markings),
         }
 
     def _parse_ships(self, params):
         """
         Parse additional options for ``ships`` type
         """
-        timeout, skill, recharge_time = params
+        awakening_time, skill, recharge_time = params[1:]
         return {
-            'timeout': int(timeout),
-            'skill': to_skill(skill),
+            'awakening_time': float(awakening_time),
             'recharge_time': float(recharge_time),
+            'skill': to_skill(skill),
         }
 
     def process_data(self):
@@ -655,10 +658,10 @@ class BuildingsParser(CollectingParser):
 
     def parse_line(self, line):
         buildings = {}
-        code, building_object, belligerent, pos_x, pos_y, rotation_angle = line.split()
-        building_type, code_name = building_object.split('$')
+        oid, building_object, belligerent, pos_x, pos_y, rotation_angle = line.split()
+        building_type, code = building_object.split('$')
         buildings.update({
-            'code': code,
+            'id': oid,
             'belligerent': to_belligerent(belligerent),
             'pos': to_pos(pos_x, pos_y),
             'rotation_angle': float(rotation_angle),
@@ -667,10 +670,10 @@ class BuildingsParser(CollectingParser):
         self.data.append(buildings)
 
     def _decompose_building_object(self, building_object):
-        building_type, code_name = building_object.split('$')
+        building_type, code = building_object.split('$')
         return {
             'type': building_type,
-            'code_name': code_name,
+            'code': code,
         }
 
     def process_data(self):
@@ -729,7 +732,7 @@ class TargetParser(CollectingParser):
             'pos': to_pos(*pos),
             'object': {
                 'point': int(object_point),
-                'code': object_code,
+                'id': object_code,
                 'pos': to_pos(*object_pos),
             },
         }
@@ -743,7 +746,7 @@ class TargetParser(CollectingParser):
         return {
             'pos': to_pos(*pos),
             'object': {
-                'code': object_code,
+                'id': object_code,
                 'pos': to_pos(*object_pos),
             },
         }
@@ -776,7 +779,7 @@ class TargetParser(CollectingParser):
             object_pos = params[2:]
             data['object'] = {
                 'point': int(object_point),
-                'code': object_code,
+                'id': object_code,
                 'pos': to_pos(*object_pos),
             }
         return data
@@ -789,6 +792,7 @@ class BornPlaceParser(CollectingParser):
     """
     Parses ``BornPlace`` section.
     """
+
     def check_section_name(self, section_name):
         return section_name == "BornPlace"
 
@@ -981,9 +985,9 @@ class FrontMarkerParser(CollectingParser):
         return section_name == "FrontMarker"
 
     def parse_line(self, line):
-        code, pos_x, pos_y, belligerent = line.split()
+        oid, pos_x, pos_y, belligerent = line.split()
         self.data.append({
-            'code': code,
+            'id': oid,
             'belligerent': to_belligerent(belligerent),
             'pos': to_pos(pos_x, pos_y),
         })
@@ -1002,13 +1006,13 @@ class RocketParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        code, code_name, belligerent = params[0:3]
+        oid, code, belligerent = params[0:3]
         pos = params[3:5]
         rotation_angle, timeout, amount, period = params[5:9]
         target_pos = params[9:]
         self.data.append({
+            'id': oid,
             'code': code,
-            'code_name': code_name,
             'belligerent': to_belligerent(belligerent),
             'pos': to_pos(*pos),
             'rotation_angle': float(rotation_angle),
@@ -1026,6 +1030,7 @@ class WingParser(CollectingParser):
     """
     Parses ``Wing`` section.
     """
+
     def check_section_name(self, section_name):
         return section_name == "Wing"
 
@@ -1195,6 +1200,7 @@ class FileParser(object):
     """
     Parses a whole mission file.
     """
+
     def __init__(self):
         self.data = {}
         self.flight_parser = FlightDetailsParser()

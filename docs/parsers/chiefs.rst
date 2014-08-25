@@ -35,26 +35,26 @@ Output example:
         'chiefs': [
             {
                 'belligerent': <constant 'Belligerents.blue'>,
-                'code': "0_Chief",
-                'code_name': "1-BT7",
+                'id': "0_Chief",
+                'code': "1-BT7",
                 'type': <constant 'UnitTypes.armor'>,
             },
             {
                 'belligerent': <constant 'Belligerents.red'>,
-                'code': "1_Chief",
-                'code_name': "GAZ67",
+                'id': "1_Chief",
+                'code': "GAZ67",
                 'type': <constant 'UnitTypes.vehicle'>,
             },
             {
                 'belligerent': <constant 'Belligerents.red'>,
-                'code': "2_Chief",
-                'code_name': "USSR_FuelTrain/AA",
+                'id': "2_Chief",
+                'code': "USSR_FuelTrain/AA",
                 'type': <constant 'UnitTypes.train'>,
             },
             {
                 'belligerent': <constant 'Belligerents.red'>,
-                'code': "3_Chief",
-                'code_name': "G5",
+                'id': "3_Chief",
+                'code': "G5",
                 'recharge_time': 2.0,
                 'skill': <constant 'Skills.ace'>,
                 'waiting_time': 60,
@@ -65,14 +65,18 @@ Output example:
 
 **Description**:
 
-Output is a list of dictionaries containing information about each object. Let's
-examine common parameters using first object as example::
+Output is a list of dictionaries containing information about each object.
+
+Common parameters
+~~~~~~~~~~~~~~~~~
+
+Let's examine common parameters using first object as example::
 
     0_Chief Armor.1-BT7 2
 
 ``0_Chief``
-  Object's code. Contains ``Chief`` word prefixed by a sequence number. This
-  code identifies a moving object or a group of them. In latter case, events log
+  Object's ID. Contains ``Chief`` word prefixed by a sequence number. This
+  ID identifies a moving object or a group of them. In latter case, events log
   will contain this code followed by an in-group number of an object, e.g.::
 
       [5:25:14 PM] 0_Chief9 destroyed by 1_Chief2 at 11149.903 43949.902
@@ -80,29 +84,30 @@ examine common parameters using first object as example::
   Here we can see that 9th object from group ``0_Chief`` was destroyed by 2nd
   object from group ``1_Chief``.
 
-  :Output path: ``code``
+  :Output path: ``id``
   :Output type: :class:`str`
   :Output value: original string value
 
 ``Armor.1-BT7``
-  Defines `unit type`_ and object's code name.
+  Defines `unit type`_ and object's code.
 
   :Output path: ``type``
   :Output type: complex `unit type`_ constant
 
   ..
 
-  :Output path: ``code_name``
+  :Output path: ``code``
   :Output type: :class:`str`
   :Output value: original string value
 
 ``2``
   Code number of army the object belongs to.
 
-  :Output path: ``player.belligerent``
+  :Output path: ``belligerent``
   :Output type: complex `belligerents`_ constant
 
------
+Ships extra parameters
+~~~~~~~~~~~~~~~~~~~~~~
 
 Ships have 3 extra parameters. Let's see an example::
 

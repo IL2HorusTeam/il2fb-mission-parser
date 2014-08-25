@@ -25,4 +25,5 @@ parser. It gets data from all other parsers and organizes it in special manner.
     parsers/mds-scouts
     parsers/chiefs
     parsers/chief-road
+    parsers/nstationary
     parsers/file-parser

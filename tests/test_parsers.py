@@ -259,26 +259,26 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             'chiefs': [
                 {
-                    'code': "0_Chief",
-                    'code_name': "1-BT7",
+                    'id': "0_Chief",
+                    'code': "1-BT7",
                     'type': UnitTypes.armor,
                     'belligerent': Belligerents.blue,
                 },
                 {
-                    'code': "1_Chief",
-                    'code_name': "GAZ67",
+                    'id': "1_Chief",
+                    'code': "GAZ67",
                     'type': UnitTypes.vehicle,
                     'belligerent': Belligerents.red,
                 },
                 {
-                    'code': "2_Chief",
-                    'code_name': "USSR_FuelTrain/AA",
+                    'id': "2_Chief",
+                    'code': "USSR_FuelTrain/AA",
                     'type': UnitTypes.train,
                     'belligerent': Belligerents.red,
                 },
                 {
-                    'code': "3_Chief",
-                    'code_name': "G5",
+                    'id': "3_Chief",
+                    'code': "G5",
                     'type': UnitTypes.ship,
                     'belligerent': Belligerents.red,
                     'waiting_time': 60,
@@ -309,8 +309,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             'stationary': [
                 {
                     'belligerent': Belligerents.red,
-                    'code': '0_Static',
-                    'code_name': 'BarrageBalloon_2400m',
+                    'id': '0_Static',
+                    'code': 'BarrageBalloon_2400m',
                     'pos': {
                         'x': 151781.85,
                         'y': 89055.58,
@@ -320,9 +320,9 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'belligerent': Belligerents.blue,
-                    'code': '1_Static',
-                    'code_name': 'SdKfz251',
-                    'is_spotter': True,
+                    'id': '1_Static',
+                    'code': 'SdKfz251',
+                    'use_spotter': True,
                     'pos': {
                         'x': 31333.62,
                         'y': 90757.91,
@@ -331,11 +331,12 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'range': 0,
                     'skill': Skills.average,
                     'type': UnitTypes.artillery,
+                    'awakening_time': 0.0,
                 },
                 {
                     'belligerent': Belligerents.red,
-                    'code': '2_Static',
-                    'code_name': 'SL_ManualBlue',
+                    'id': '2_Static',
+                    'code': 'SL_ManualBlue',
                     'pos': {
                         'x': 151740.45,
                         'y': 88673.74,
@@ -347,9 +348,9 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'air_force': AirForces.luftwaffe,
                     'allows_spawning': True,
                     'belligerent': Belligerents.blue,
-                    'code': '3_Static',
-                    'code_name': 'I_16TYPE24',
-                    'markings': True,
+                    'id': '3_Static',
+                    'code': 'I_16TYPE24',
+                    'show_markings': True,
                     'pos': {
                         'x': 134146.89,
                         'y': 88005.43,
@@ -361,8 +362,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'belligerent': Belligerents.blue,
-                    'code': '4_Static',
-                    'code_name': 'RadioBeacon',
+                    'id': '4_Static',
+                    'code': 'RadioBeacon',
                     'pos': {
                         'x': 151679.84,
                         'y': 88805.39,
@@ -372,8 +373,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'belligerent': Belligerents.none,
-                    'code': '5_Static',
-                    'code_name': 'CampfireAirfield',
+                    'id': '5_Static',
+                    'code': 'CampfireAirfield',
                     'pos': {
                         'x': 151428.38,
                         'y': 88817.52,
@@ -383,8 +384,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'belligerent': Belligerents.none,
-                    'code': '6_Static',
-                    'code_name': 'Smoke20',
+                    'id': '6_Static',
+                    'code': 'Smoke20',
                     'pos': {
                         'x': 151404.61,
                         'y': 89009.57,
@@ -394,8 +395,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'belligerent': Belligerents.red,
-                    'code': '7_Static',
-                    'code_name': 'SirenCity',
+                    'id': '7_Static',
+                    'code': 'SirenCity',
                     'pos': {
                         'x': 151984.28,
                         'y': 88577.12,
@@ -405,8 +406,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'belligerent': Belligerents.red,
-                    'code': '8_Static',
-                    'code_name': 'Wagon1',
+                    'id': '8_Static',
+                    'code': 'Wagon1',
                     'pos': {
                         'x': 152292.72,
                         'y': 89662.80,
@@ -416,8 +417,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'belligerent': Belligerents.red,
-                    'code': '9_Static',
-                    'code_name': 'G5',
+                    'id': '9_Static',
+                    'code': 'G5',
                     'recharge_time': 1.4,
                     'pos': {
                         'x': 83759.05,
@@ -425,8 +426,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'rotation_angle': 360.00,
                     'skill': Skills.ace,
-                    'timeout': 60,
                     'type': UnitTypes.ship,
+                    'awakening_time': 60.0,
                 },
             ],
         }
@@ -443,9 +444,9 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             'buildings': [
                 {
                     'belligerent': Belligerents.red,
-                    'code': '0_bld',
+                    'id': '0_bld',
                     'type': 'House',
-                    'code_name': 'Tent_Pyramid_US',
+                    'code': 'Tent_Pyramid_US',
                     'pos': {
                         'y': 57962.08,
                         'x': 43471.34,
@@ -540,7 +541,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             'markers': [
                 {
                     'belligerent': Belligerents.red,
-                    'code': "FrontMarker0",
+                    'id': "FrontMarker0",
                     'pos': {
                         'x': 7636.65,
                         'y': 94683.02,
@@ -559,8 +560,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             'rockets': [
                 {
                     'belligerent': Belligerents.blue,
-                    'code': "0_Rocket",
-                    'code_name': "Fi103_V1_ramp",
+                    'id': "0_Rocket",
+                    'code': "Fi103_V1_ramp",
                     'pos': {
                         'x': 84141.38,
                         'y': 114216.82,
@@ -576,8 +577,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'belligerent': Belligerents.blue,
-                    'code': "1_Rocket",
-                    'code_name': "Fi103_V1_ramp",
+                    'id': "1_Rocket",
+                    'code': "Fi103_V1_ramp",
                     'pos': {
                         'x': 84141.38,
                         'y': 114216.82,
@@ -721,7 +722,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'object': {
                         'point': 1,
-                        'code': '10_Chief',
+                        'id': '10_Chief',
                         'pos': {
                             'x': 91100,
                             'y': 91500,
@@ -778,7 +779,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'y': 84596.0,
                     },
                     'object': {
-                        'code': 'Bridge84',
+                        'id': 'Bridge84',
                         'pos': {
                             'x': 135764.0,
                             'y': 84636.0,
@@ -825,7 +826,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'radius': 300,
                     'object': {
                         'point': 0,
-                        'code': '1_Chief',
+                        'id': '1_Chief',
                         'pos': {
                             'x': 134360.0,
                             'y': 85346.0,
@@ -858,7 +859,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'object': {
                         'point': 1,
-                        'code': 'r0100',
+                        'id': 'r0100',
                         'pos': {
                             'x': 133993.0,
                             'y': 85287.0,
@@ -891,7 +892,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'object': {
                         'point': 1,
-                        'code': '1_Chief',
+                        'id': '1_Chief',
                         'pos': {
                             'x': 132866.0,
                             'y': 86905.0,
@@ -948,7 +949,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'y': 84536.0,
                     },
                     'object': {
-                        'code': 'Bridge84',
+                        'id': 'Bridge84',
                         'pos': {
                             'x': 135764.0,
                             'y': 84636.0,
