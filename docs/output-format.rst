@@ -26,4 +26,5 @@ parser. It gets data from all other parsers and organizes it in special manner.
     parsers/chiefs
     parsers/chief-road
     parsers/nstationary
+    parsers/buildings
     parsers/file-parser

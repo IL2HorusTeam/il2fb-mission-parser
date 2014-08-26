@@ -95,7 +95,7 @@ Set of parameters may differ for different unit types:
 #. all objects have at least 7 parameters;
 #. artillery has 3 own extra parameters;
 #. airplanes have 5 own extra parameters;
-#. ships have 3 own extra parameters;
+#. ships have 3 own extra parameters.
 
 Let's examine all of them.
 
@@ -200,7 +200,7 @@ Definition example::
   2_Static vehicles.planes.Plane$I_16TYPE24 2 134146.89 88005.43 336.92 0.0 de 2 1.0 I-16type24_G1_RoW3.bmp 1
 
 ``de``
-  Airforce code name.
+  Air force code name.
 
   :Output path: ``air_force``
   :Output type: complex `air forces`_ constant

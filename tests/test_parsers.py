@@ -445,14 +445,13 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 {
                     'belligerent': Belligerents.red,
                     'id': '0_bld',
-                    'type': 'House',
                     'code': 'Tent_Pyramid_US',
                     'pos': {
                         'y': 57962.08,
                         'x': 43471.34,
                     },
-                    'rotation_angle': 630.00
-                }
+                    'rotation_angle': 630.00,
+                },
             ],
         }
         self._test_parser(BuildingsParser, 'Buildings', lines, expected)

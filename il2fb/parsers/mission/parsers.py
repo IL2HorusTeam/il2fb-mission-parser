@@ -651,30 +651,25 @@ class NStationaryParser(CollectingParser):
 class BuildingsParser(CollectingParser):
     """
     Parses ``Buildings`` section.
+    View :ref:`detailed description <buildings-section>`.
     """
 
     def check_section_name(self, section_name):
         return section_name == "Buildings"
 
     def parse_line(self, line):
-        buildings = {}
-        oid, building_object, belligerent, pos_x, pos_y, rotation_angle = line.split()
+        params = line.split()
+        oid, building_object, belligerent = params[:3]
+        pos_x, pos_y, rotation_angle = params[3:]
         building_type, code = building_object.split('$')
-        buildings.update({
+        buildings = {
             'id': oid,
             'belligerent': to_belligerent(belligerent),
+            'code': code,
             'pos': to_pos(pos_x, pos_y),
             'rotation_angle': float(rotation_angle),
-        })
-        buildings.update(self._decompose_building_object(building_object))
-        self.data.append(buildings)
-
-    def _decompose_building_object(self, building_object):
-        building_type, code = building_object.split('$')
-        return {
-            'type': building_type,
-            'code': code,
         }
+        self.data.append(buildings)
 
     def process_data(self):
         return {'buildings': self.data, }
