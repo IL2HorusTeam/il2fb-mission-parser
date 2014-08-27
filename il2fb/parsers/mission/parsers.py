@@ -11,15 +11,11 @@ from abc import ABCMeta, abstractmethod
 
 from il2fb.commons import Skills, UnitTypes
 from il2fb.commons.organization import AirForces, Belligerents
+from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
 from il2fb.parsers.mission.helpers import _
 from il2fb.parsers.mission.constants import (
-    TARGET_TYPE_DESTROY_CODE, TARGET_TYPE_DESTROY_BRIDGE_CODE,
-    TARGET_TYPE_DESTROY_AREA_CODE, TARGET_TYPE_RECON_CODE,
-    TARGET_TYPE_ESCORT_CODE, TARGET_TYPE_COVER_CODE,
-    TARGET_TYPE_COVER_AREA_CODE, TARGET_TYPE_COVER_BRIDGE_CODE,
-    TARGET_TYPES_MAP, TARGET_PRIORITIES_MAP,
     WAY_POINT_TYPES, WAY_POINT_FORMATIONS,
 )
 
@@ -683,56 +679,49 @@ class TargetParser(CollectingParser):
     def check_section_name(self, section_name):
         return section_name == "Target"
 
-    def init_parser(self, section_name):
-        super(TargetParser, self).init_parser(section_name)
-        self.subparsers = {
-            TARGET_TYPE_DESTROY_CODE: self._parse_destroy_or_cover_or_escort,
-            TARGET_TYPE_DESTROY_BRIDGE_CODE: self._parse_destroy_or_cover_bridge,
-            TARGET_TYPE_DESTROY_AREA_CODE: self._parse_destroy_or_cover_area,
-            TARGET_TYPE_RECON_CODE: self._parse_recon,
-            TARGET_TYPE_ESCORT_CODE: self._parse_destroy_or_cover_or_escort,
-            TARGET_TYPE_COVER_CODE: self._parse_destroy_or_cover_or_escort,
-            TARGET_TYPE_COVER_AREA_CODE: self._parse_destroy_or_cover_area,
-            TARGET_TYPE_COVER_BRIDGE_CODE: self._parse_destroy_or_cover_bridge,
-        }
-
     def parse_line(self, line):
         params = line.split()
-        (type_code, priority, sleep_mode, timeout), params = \
-            params[:4], params[4:]
 
+        type_code, priority, sleep_mode, timeout = params[:4]
+        params = params[4:]
+
+        target_type = TargetTypes.get_by_value(int(type_code))
         target = {
-            'type': TARGET_TYPES_MAP[type_code],
-            'priority': TARGET_PRIORITIES_MAP[priority],
-            'sleep_mode': to_bool(sleep_mode),
+            'type': target_type,
+            'priority': TargetPriorities.get_by_value(int(priority)),
+            'in_sleep_mode': to_bool(sleep_mode),
             'timeout': int(timeout),
         }
-        subparser = self.subparsers.get(type_code)
-        target.update(subparser(params))
+
+        subparser = TargetParser.subparsers.get(target_type)
+        if subparser is not None:
+            target.update(subparser(params))
+
         self.data.append(target)
 
-    def _to_destruction_level(self, value):
+    @staticmethod
+    def to_destruction_level(value):
         return int(value) / 10
 
-    def _parse_destroy_or_cover_or_escort(self, params):
+    def parse_destroy_or_cover_or_escort(params):
         """
         Parse extra parameters for targets with type 'destroy' or 'cover' or
         'escort'.
         """
-        destruction_level = self._to_destruction_level(params[0])
-        pos, object_point, object_code = params[1:3], params[4], params[5]
+        destruction_level = TargetParser.to_destruction_level(params[0])
+        pos, waypoint, object_code = params[1:3], params[4], params[5]
         object_pos = params[6:8]
         return {
             'destruction_level': destruction_level,
             'pos': to_pos(*pos),
             'object': {
-                'point': int(object_point),
+                'waypoint': int(waypoint),
                 'id': object_code,
                 'pos': to_pos(*object_pos),
             },
         }
 
-    def _parse_destroy_or_cover_bridge(self, params):
+    def parse_destroy_or_cover_bridge(params):
         """
         Parse extra parameters for targets with type 'destroy bridge' or
         'cover bridge'.
@@ -746,19 +735,20 @@ class TargetParser(CollectingParser):
             },
         }
 
-    def _parse_destroy_or_cover_area(self, params):
+    def parse_destroy_or_cover_area(params):
         """
         Parse extra parameters for targets with type 'destroy area' or
         'cover area'.
         """
-        destruction_level, pos_x, pos_y, radius = params
+        destruction_level = TargetParser.to_destruction_level(params[0])
+        pos_x, pos_y, radius = params[1:]
         return {
-            'destruction_level': self._to_destruction_level(destruction_level),
+            'destruction_level': destruction_level,
             'pos': to_pos(pos_x, pos_y),
             'radius': int(radius),
         }
 
-    def _parse_recon(self, params):
+    def parse_recon(params):
         """
         Parse extra parameters for targets with 'recon' type.
         """
@@ -770,14 +760,25 @@ class TargetParser(CollectingParser):
             'pos': to_pos(*pos),
         }
         if params:
-            object_point, object_code = params[:2]
+            waypoint, object_code = params[:2]
             object_pos = params[2:]
             data['object'] = {
-                'point': int(object_point),
+                'waypoint': int(waypoint),
                 'id': object_code,
                 'pos': to_pos(*object_pos),
             }
         return data
+
+    subparsers = {
+        TargetTypes.destroy: parse_destroy_or_cover_or_escort,
+        TargetTypes.destroy_bridge: parse_destroy_or_cover_bridge,
+        TargetTypes.destroy_area: parse_destroy_or_cover_area,
+        TargetTypes.recon: parse_recon,
+        TargetTypes.escort: parse_destroy_or_cover_or_escort,
+        TargetTypes.cover: parse_destroy_or_cover_or_escort,
+        TargetTypes.cover_area: parse_destroy_or_cover_area,
+        TargetTypes.cover_bridge: parse_destroy_or_cover_bridge,
+    }
 
     def process_data(self):
         return {'targets': self.data, }

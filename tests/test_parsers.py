@@ -7,6 +7,7 @@ import unittest
 
 from il2fb.commons import Skills, UnitTypes
 from il2fb.commons.organization import AirForces, Belligerents
+from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
 from il2fb.parsers.mission.parsers import (
@@ -710,9 +711,9 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             'targets': [
                 {
-                    'type': 'destroy',
-                    'priority': 'primary',
-                    'sleep_mode': False,
+                    'type': TargetTypes.destroy,
+                    'priority': TargetPriorities.primary,
+                    'in_sleep_mode': False,
                     'timeout': 0,
                     'destruction_level': 50,
                     'pos': {
@@ -720,7 +721,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'y': 91871,
                     },
                     'object': {
-                        'point': 1,
+                        'waypoint': 1,
                         'id': '10_Chief',
                         'pos': {
                             'x': 91100,
@@ -743,9 +744,9 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             'targets': [
                 {
-                    'type': 'destroy_area',
-                    'priority': 'secondary',
-                    'sleep_mode': True,
+                    'type': TargetTypes.destroy_area,
+                    'priority': TargetPriorities.secondary,
+                    'in_sleep_mode': True,
                     'timeout': 60,
                     'destruction_level': 75,
                     'pos': {
@@ -769,9 +770,9 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             'targets': [
                 {
-                    'type': 'destroy_bridge',
-                    'priority': 'hidden',
-                    'sleep_mode': True,
+                    'type': TargetTypes.destroy_bridge,
+                    'priority': TargetPriorities.hidden,
+                    'in_sleep_mode': True,
                     'timeout': 30,
                     'pos': {
                         'x': 135786.0,
@@ -801,9 +802,9 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             'targets': [
                 {
-                    'type': 'recon',
-                    'priority': 'secondary',
-                    'sleep_mode': True,
+                    'type': TargetTypes.recon,
+                    'priority': TargetPriorities.secondary,
+                    'in_sleep_mode': True,
                     'timeout': 50,
                     'requires_landing': False,
                     'pos': {
@@ -813,9 +814,9 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'radius': 1150,
                 },
                 {
-                    'type': 'recon',
-                    'priority': 'primary',
-                    'sleep_mode': True,
+                    'type': TargetTypes.recon,
+                    'priority': TargetPriorities.primary,
+                    'in_sleep_mode': True,
                     'timeout': 40,
                     'requires_landing': True,
                     'pos': {
@@ -824,7 +825,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'radius': 300,
                     'object': {
-                        'point': 0,
+                        'waypoint': 0,
                         'id': '1_Chief',
                         'pos': {
                             'x': 134360.0,
@@ -847,9 +848,9 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             'targets': [
                 {
-                    'type': 'escort',
-                    'priority': 'primary',
-                    'sleep_mode': True,
+                    'type': TargetTypes.escort,
+                    'priority': TargetPriorities.primary,
+                    'in_sleep_mode': True,
                     'timeout': 10,
                     'destruction_level': 75,
                     'pos': {
@@ -857,7 +858,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'y': 85468.0,
                     },
                     'object': {
-                        'point': 1,
+                        'waypoint': 1,
                         'id': 'r0100',
                         'pos': {
                             'x': 133993.0,
@@ -880,9 +881,9 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             'targets': [
                 {
-                    'type': 'cover',
-                    'priority': 'secondary',
-                    'sleep_mode': True,
+                    'type': TargetTypes.cover,
+                    'priority': TargetPriorities.secondary,
+                    'in_sleep_mode': True,
                     'timeout': 20,
                     'destruction_level': 25,
                     'pos': {
@@ -890,7 +891,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'y': 87291.0,
                     },
                     'object': {
-                        'point': 1,
+                        'waypoint': 1,
                         'id': '1_Chief',
                         'pos': {
                             'x': 132866.0,
@@ -913,9 +914,9 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             'targets': [
                 {
-                    'type': 'cover_area',
-                    'priority': 'secondary',
-                    'sleep_mode': True,
+                    'type': TargetTypes.cover_area,
+                    'priority': TargetPriorities.secondary,
+                    'in_sleep_mode': True,
                     'timeout': 30,
                     'destruction_level': 50,
                     'pos': {
@@ -939,9 +940,9 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             'targets': [
                 {
-                    'type': 'cover_bridge',
-                    'priority': 'hidden',
-                    'sleep_mode': True,
+                    'type': TargetTypes.cover_bridge,
+                    'priority': TargetPriorities.hidden,
+                    'in_sleep_mode': True,
                     'timeout': 30,
                     'pos': {
                         'x': 135896.0,
