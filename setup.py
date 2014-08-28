@@ -11,7 +11,7 @@ REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(
     name='il2fb-mission-parser',
-    version='1.0.0',
+    version='0.9.0',
     description="Parse IL-2 FB mission file and produce detailed information "
                 "about mission",
     long_description=README,
@@ -32,7 +32,7 @@ setup(
     include_package_data=True,
     install_requires=REQUIREMENTS,
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
         'License :: Free for non-commercial use',
