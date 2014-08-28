@@ -100,7 +100,7 @@ Set of parameters may differ for different unit types:
 Let's examine all of them.
 
 Common parameters
-~~~~~~~~~~~~~~~~~
+-----------------
 
 Definition example::
 
@@ -158,7 +158,7 @@ Definition example::
   objects (see below).
 
 Artillery-specific parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------
 
 Definition example::
 
@@ -193,7 +193,7 @@ Definition example::
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 Airplanes-specific parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------
 
 Definition example::
 
@@ -255,7 +255,7 @@ Definition example::
 
 
 Ships-specific parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
 Definition example::
 

@@ -68,7 +68,7 @@ Output example:
 Output is a list of dictionaries containing information about each object.
 
 Common parameters
-~~~~~~~~~~~~~~~~~
+-----------------
 
 Let's examine common parameters using first object as example::
 
@@ -107,7 +107,7 @@ Let's examine common parameters using first object as example::
   :Output type: complex `belligerents`_ constant
 
 Ships extra parameters
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 Ships have 3 extra parameters. Let's see an example::
 

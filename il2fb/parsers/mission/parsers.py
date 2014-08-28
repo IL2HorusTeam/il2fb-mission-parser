@@ -674,6 +674,7 @@ class BuildingsParser(CollectingParser):
 class TargetParser(CollectingParser):
     """
     Parses ``Target`` section.
+    View :ref:`detailed description <target-section>`.
     """
 
     def check_section_name(self, section_name):
@@ -682,7 +683,7 @@ class TargetParser(CollectingParser):
     def parse_line(self, line):
         params = line.split()
 
-        type_code, priority, sleep_mode, timeout = params[:4]
+        type_code, priority, sleep_mode, waiting_time = params[:4]
         params = params[4:]
 
         target_type = TargetTypes.get_by_value(int(type_code))
@@ -690,7 +691,7 @@ class TargetParser(CollectingParser):
             'type': target_type,
             'priority': TargetPriorities.get_by_value(int(priority)),
             'in_sleep_mode': to_bool(sleep_mode),
-            'timeout': int(timeout),
+            'waiting_time': int(waiting_time),
         }
 
         subparser = TargetParser.subparsers.get(target_type)
