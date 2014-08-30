@@ -62,7 +62,7 @@ Output example:
 Let's examine first line.
 
 ``Bf-109F-4``
-  aircraft code name.
+  Aircraft code name.
 
   :Output path: ``code``
   :Output type: :class:`str`
@@ -80,7 +80,7 @@ Let's examine first line.
   :Output path: ``limit``
   :Output type: :class:`int`
   :Output value:
-    original value converted to integer number or ``None`` for ``-1``
+    ``None`` if ``-1``, original value converted to integer number otherwise
 
 ``1sc250 4sc50``
   List of code names of allowed weapons for this aircraft. This part is
