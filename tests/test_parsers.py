@@ -971,23 +971,29 @@ class BornPlaceAircraftsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         """
         lines = [
             "Bf-109F-4 -1 1sc250 4sc50",
+            "Bf-109G-6_Late 0",
             "Ju-88A-4 10 28xSC50 28xSC50_2xSC250 28xSC50_4xSC250",
             "+ 2xSC1800 2xSC2000",
         ]
         expected = {
             'homebase_aircrafts_1': [
                 {
-                    'aircraft_code': 'Bf-109F-4',
+                    'code': 'Bf-109F-4',
                     'limit': None,
-                    'loadout': [
+                    'weapon_limits': [
                         '1sc250',
                         '4sc50',
                     ],
                 },
                 {
-                    'aircraft_code': 'Ju-88A-4',
+                    'code': 'Bf-109G-6_Late',
+                    'limit': 0,
+                    'weapon_limits': [],
+                },
+                {
+                    'code': 'Ju-88A-4',
                     'limit': 10,
-                    'loadout': [
+                    'weapon_limits': [
                         '28xSC50',
                         '28xSC50_2xSC250',
                         '28xSC50_4xSC250',

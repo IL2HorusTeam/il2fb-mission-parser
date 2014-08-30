@@ -29,4 +29,5 @@ parser. It gets data from all other parsers and organizes it in special manner.
     parsers/buildings
     parsers/target
     parsers/bornplace
+    parsers/bornplace-aircrafts
     parsers/file-parser

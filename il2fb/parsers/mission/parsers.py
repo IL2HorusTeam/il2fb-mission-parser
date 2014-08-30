@@ -880,24 +880,26 @@ class BornPlaceAircraftsParser(CollectingParser):
         chunks = line.split()
 
         if chunks[0] == '+':
-            self.aircraft['loadout'].extend(chunks[1:])
+            self.aircraft['weapon_limits'].extend(chunks[1:])
         else:
             if self.aircraft:
                 self.data.append(self.aircraft)
-            (aircraft_code, limit), loadout = chunks[:2], chunks[2:]
+            (code, limit), weapon_limits = chunks[:2], chunks[2:]
             self.aircraft = {
-                'aircraft_code': aircraft_code,
+                'code': code,
                 'limit': self._to_limit(limit),
-                'loadout': loadout,
+                'weapon_limits': weapon_limits,
             }
-
-    def process_data(self):
-        if self.aircraft:
-            self.data.append(self.aircraft)
-        return {self.output_key: self.data, }
 
     def _to_limit(self, value):
         return int(value) if int(value) >= 0 else None
+
+    def process_data(self):
+        if self.aircraft:
+            aircraft, self.aircraft = self.aircraft, None
+            self.data.append(aircraft)
+
+        return {self.output_key: self.data, }
 
 
 class BornPlaceCountriesParser(CollectingParser):
