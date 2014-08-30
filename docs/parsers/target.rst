@@ -62,7 +62,7 @@ The output of the parser is a dictionary with a single item. It it accessible by
 ``targets`` key. The value is a list of dictionaries. Each dictionary represents
 a single target.
 
-There are 8 different types of targets and 3 types of targer priorities. Some
+There are 8 different types of targets and 3 types of target priorities. Some
 different types of targets have identical sets of parameters.
 
 .. contents::
@@ -735,7 +735,6 @@ Output example:
   :Output value: original value converted to float number
 
 
-
 Cover area
 ----------
 
@@ -819,7 +818,6 @@ Output example:
   :Output value: original value converted to integer number
 
 
-
 Cover bridge
 ------------
 
@@ -854,7 +852,7 @@ Output example:
   }
 
 ``7``
-  Target type (destroy bridge).
+  Target type (cover bridge).
 
   :Output path: ``type``
   :Output type: complex `target type`_ constant
