@@ -948,36 +948,6 @@ class StaticCameraParser(CollectingParser):
         return {'cameras': self.data, }
 
 
-class BridgeParser(CollectingParser):
-    """
-    Parses ``Bridge`` section.
-    """
-
-    def check_section_name(self, section_name):
-        return section_name == "Bridge"
-
-    def parse_line(self, line):
-        pass
-
-    def process_data(self):
-        return {'bridges': self.data, }
-
-
-class HouseParser(CollectingParser):
-    """
-    Parses ``House`` section.
-    """
-
-    def check_section_name(self, section_name):
-        return section_name == "House"
-
-    def parse_line(self, line):
-        pass
-
-    def process_data(self):
-        return {'houses': self.data, }
-
-
 class FrontMarkerParser(CollectingParser):
     """
     Parses ``FrontMarker`` section.
@@ -1218,8 +1188,6 @@ class FileParser(object):
             TargetParser(),
             BornPlaceParser(),
             StaticCameraParser(),
-            BridgeParser(),
-            HouseParser(),
             FrontMarkerParser(),
             RocketParser(),
             WingParser(),
