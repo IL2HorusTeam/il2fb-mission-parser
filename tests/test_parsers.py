@@ -488,7 +488,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             'homebases': [
                 {
-                    'radius': 3000,
+                    'range': 3000,
                     'belligerent': Belligerents.red,
                     'show_default_icon': False,
                     'friction': {
@@ -497,15 +497,17 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'spawning': {
                         'enabled': True,
-                        'return_to_start_position': False,
-                        'parachute': True,
-                        'max_allowed_pilots': 0,
+                        'has_parachutes': True,
+                        'max_pilots': 0,
                         'aircraft_limits': {
                             'enabled': True,
                             'consider_lost': True,
-                            'consider_destroyed_stationary': True,
+                            'consider_stationary': True,
                         },
-                        'in_stationary': False,
+                        'in_stationary': {
+                            'enabled': False,
+                            'return_to_start_position': False,
+                        },
                         'in_air': {
                             'height': 1000,
                             'speed': 200,
@@ -516,7 +518,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                             },
                         },
                     },
-                    'recon': {
+                    'radar': {
                         'range': 50,
                         'min_height': 0,
                         'max_height': 5000,

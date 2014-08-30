@@ -28,4 +28,5 @@ parser. It gets data from all other parsers and organizes it in special manner.
     parsers/nstationary
     parsers/buildings
     parsers/target
+    parsers/bornplace
     parsers/file-parser

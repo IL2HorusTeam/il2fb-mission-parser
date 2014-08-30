@@ -65,7 +65,10 @@ Output example:
 
 **Description**:
 
-Output is a list of dictionaries containing information about each object.
+The output of the parser is a dictionary with a single item. It is accessible by
+``chiefs`` key. The value is a list of of dictionaries containing information
+about each object.
+
 
 Common parameters
 -----------------

@@ -788,23 +788,26 @@ class TargetParser(CollectingParser):
 class BornPlaceParser(CollectingParser):
     """
     Parses ``BornPlace`` section.
+    View :ref:`detailed description <bornplace-section>`.
     """
 
     def check_section_name(self, section_name):
         return section_name == "BornPlace"
 
     def parse_line(self, line):
-        (belligerent, radius, pos_x, pos_y, parachute, air_spawn_height,
-         air_spawn_speed, air_spawn_heading, max_allowed_pilots,
-         recon_min_height, recon_max_height, recon_range, air_spawn_always,
-         enable_aircraft_limits, aircraft_limits_consider_lost,
-         disable_spawning, friction_enabled, friction_value,
-         aircraft_limits_consider_destroyed_stationary, show_default_icon,
-         air_spawn_if_deck_is_full, spawn_in_stationary,
-         return_to_start_position) = line.split()
+        (
+            belligerent, range_, pos_x, pos_y, has_parachutes, air_spawn_height,
+            air_spawn_speed, air_spawn_heading, max_pilots, radar_min_height,
+            radar_max_height, radar_range, air_spawn_always,
+            enable_aircraft_limits, aircraft_limits_consider_lost,
+            disable_spawning, friction_enabled, friction_value,
+            aircraft_limits_consider_stationary, show_default_icon,
+            air_spawn_if_deck_is_full, spawn_in_stationary,
+            return_to_start_position
+        ) = line.split()
 
         self.data.append({
-            'radius': int(radius),
+            'range': int(range_),
             'belligerent': to_belligerent(belligerent),
             'show_default_icon': to_bool(show_default_icon),
             'friction': {
@@ -813,15 +816,17 @@ class BornPlaceParser(CollectingParser):
             },
             'spawning': {
                 'enabled': not to_bool(disable_spawning),
-                'return_to_start_position': to_bool(return_to_start_position),
-                'parachute': to_bool(parachute),
-                'max_allowed_pilots': int(max_allowed_pilots),
+                'has_parachutes': to_bool(has_parachutes),
+                'max_pilots': int(max_pilots),
                 'aircraft_limits': {
                     'enabled': to_bool(enable_aircraft_limits),
                     'consider_lost': to_bool(aircraft_limits_consider_lost),
-                    'consider_destroyed_stationary': to_bool(aircraft_limits_consider_destroyed_stationary),
+                    'consider_stationary': to_bool(aircraft_limits_consider_stationary),
                 },
-                'in_stationary': to_bool(spawn_in_stationary),
+                'in_stationary': {
+                    'enabled': to_bool(spawn_in_stationary),
+                    'return_to_start_position': to_bool(return_to_start_position),
+                },
                 'in_air': {
                     'height': int(air_spawn_height),
                     'speed': int(air_spawn_speed),
@@ -832,10 +837,10 @@ class BornPlaceParser(CollectingParser):
                     },
                 },
             },
-            'recon': {
-                'range': int(recon_range),
-                'min_height': int(recon_min_height),
-                'max_height': int(recon_max_height),
+            'radar': {
+                'range': int(radar_range),
+                'min_height': int(radar_min_height),
+                'max_height': int(radar_max_height),
             },
             'pos': to_pos(pos_x, pos_y),
         })
