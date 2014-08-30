@@ -852,6 +852,7 @@ class BornPlaceParser(CollectingParser):
 class BornPlaceAircraftsParser(CollectingParser):
     """
     Parses ``BornPlaceN`` section.
+    View :ref:`detailed description <bornplace-aircrafts-section>`.
     """
     prefix = "BornPlace"
 
