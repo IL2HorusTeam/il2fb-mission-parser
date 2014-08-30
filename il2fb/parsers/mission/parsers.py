@@ -434,7 +434,7 @@ class MDSScoutsParser(CollectingParser):
         self.output_key = "scout_planes_{:}".format(suffix)
 
     def _extract_section_suffix(self, section_name):
-        return section_name.lstrip(self.prefix).lower()
+        return section_name[len(self.prefix):].lower()
 
     def process_data(self):
         return {self.output_key: self.data}
@@ -875,7 +875,7 @@ class BornPlaceAircraftsParser(CollectingParser):
         self.aircraft = {}
 
     def _extract_section_number(self, section_name):
-        return int(section_name.lstrip(self.prefix))
+        return int(section_name[len(self.prefix):])
 
     def parse_line(self, line):
         chunks = line.split()
@@ -926,7 +926,7 @@ class BornPlaceCountriesParser(CollectingParser):
         self.countries = {}
 
     def _extract_section_number(self, section_name):
-        return int(section_name.lstrip(self.prefix))
+        return int(section_name[len(self.prefix):])
 
     def process_data(self):
         return {self.output_key: self.data, }
@@ -1088,7 +1088,7 @@ class FlightWayParser(CollectingParser):
         return section_name.endswith(self.suffix)
 
     def _extract_flight_code(self, section_name):
-        return section_name.rstrip(self.suffix)
+        return section_name[:-len(self.suffix)]
 
     def init_parser(self, section_name):
         self.data = []
