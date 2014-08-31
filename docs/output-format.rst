@@ -33,4 +33,5 @@ parser. It gets data from all other parsers and organizes it in special manner.
     parsers/bornplace-airforces
     parsers/static-camera
     parsers/front-marker
+    parsers/rocket
     parsers/file-parser

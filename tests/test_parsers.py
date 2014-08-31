@@ -569,10 +569,10 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'y': 114216.82,
                     },
                     'rotation_angle': 360.00,
-                    'timeout': 60.0,
-                    'amount': 10,
+                    'waiting_time': 60.0,
+                    'count': 10,
                     'period': 80.0,
-                    'target_pos': {
+                    'destination': {
                         'x': 83433.91,
                         'y': 115445.49,
                     },
@@ -586,10 +586,10 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'y': 114216.82,
                     },
                     'rotation_angle': 360.00,
-                    'timeout': 60.0,
-                    'amount': 10,
+                    'waiting_time': 60.0,
+                    'count': 10,
                     'period': 80.0,
-                    'target_pos': None,
+                    'destination': None,
                 },
             ],
         }

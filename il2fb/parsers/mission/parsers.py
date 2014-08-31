@@ -981,6 +981,7 @@ class FrontMarkerParser(CollectingParser):
 class RocketParser(CollectingParser):
     """
     Parses ``Rocket`` section.
+    View :ref:`detailed description <rocket-section>`.
     """
 
     def check_section_name(self, section_name):
@@ -988,20 +989,22 @@ class RocketParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
+
         oid, code, belligerent = params[0:3]
         pos = params[3:5]
-        rotation_angle, timeout, amount, period = params[5:9]
-        target_pos = params[9:]
+        rotation_angle, waiting_time, count, period = params[5:9]
+        destination = params[9:]
+
         self.data.append({
             'id': oid,
             'code': code,
             'belligerent': to_belligerent(belligerent),
             'pos': to_pos(*pos),
             'rotation_angle': float(rotation_angle),
-            'timeout': float(timeout),
-            'amount': int(amount),
+            'waiting_time': float(waiting_time),
+            'count': int(count),
             'period': float(period),
-            'target_pos': to_pos(*target_pos) if target_pos else None
+            'destination': to_pos(*destination) if destination else None
         })
 
     def process_data(self):
