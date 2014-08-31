@@ -940,6 +940,7 @@ class BornPlaceAirforcesParser(CollectingParser):
 class StaticCameraParser(CollectingParser):
     """
     Parses ``StaticCamera`` section.
+    View :ref:`detailed description <static-camera-section>`.
     """
 
     def check_section_name(self, section_name):

@@ -457,27 +457,6 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         }
         self._test_parser(BuildingsParser, 'Buildings', lines, expected)
 
-    def test_static_camera_parser(self):
-        """
-        Test ``StaticCamera`` section parser.
-        """
-        lines = [
-            "38426 65212 35 2",
-        ]
-        expected = {
-            'cameras': [
-                {
-                    'belligerent': Belligerents.blue,
-                    'pos': {
-                        'x': 38426.0,
-                        'y': 65212.0,
-                        'z': 35.0,
-                    },
-                },
-            ],
-        }
-        self._test_parser(StaticCameraParser, 'StaticCamera', lines, expected)
-
     def test_born_place_parser(self):
         """
         Test ``BornPlace`` section parser.
@@ -531,6 +510,27 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             ]
         }
         self._test_parser(BornPlaceParser, 'BornPlace', lines, expected)
+
+    def test_static_camera_parser(self):
+        """
+        Test ``StaticCamera`` section parser.
+        """
+        lines = [
+            "38426 65212 35 2",
+        ]
+        expected = {
+            'cameras': [
+                {
+                    'belligerent': Belligerents.blue,
+                    'pos': {
+                        'x': 38426.0,
+                        'y': 65212.0,
+                        'z': 35.0,
+                    },
+                },
+            ],
+        }
+        self._test_parser(StaticCameraParser, 'StaticCamera', lines, expected)
 
     def test_front_marker_parser(self):
         """
