@@ -10,7 +10,7 @@ import math
 from abc import ABCMeta, abstractmethod
 
 from il2fb.commons import Skills, UnitTypes
-from il2fb.commons.organization import AirForces, Belligerents
+from il2fb.commons.organization import AirForces, Belligerents, Regiments
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 

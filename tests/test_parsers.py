@@ -608,6 +608,88 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         }
         self._test_parser(WingParser, 'Wing', lines, expected)
 
+    def test_flight_route_parser(self):
+        lines = [
+            "TAKEOFF 193373.53 99288.17 0 0 &0",
+            "TRIGGERS 0 10 20 0",
+            "NORMFLY_401 98616.72 78629.31 500.00 300.00 &0 F2",
+            "TRIGGERS 1 1 25 5 500",
+            "GATTACK 99737.30 79106.06 500.00 300.00 0_Chief 0 &0",
+            "LANDING_104 185304.27 54570.12 0 0 &1",
+        ]
+        expected = {
+            '3GvIAP01_way_point': [
+                {
+                    'way_point_type': {
+                        'type': "takeoff_normal",
+                    },
+                    'pos': {
+                        'x': 193373.53,
+                        'y': 99288.17,
+                        'z': 0.0,
+                    },
+                    'speed': 0.0,
+                    'radio_silence': False,
+                    'formation_code': "default",
+                    'triggers': {
+                        'timeout': 10,
+                        'distance': 20,
+                    }
+                },
+                {
+                    'way_point_type': {
+                        'type': 'patrol',
+                        'patrol_type': 'triangle',
+                    },
+                    'pos': {
+                        'x': 98616.72,
+                        'y': 78629.31,
+                        'z': 500.00,
+                    },
+                    'speed': 300.00,
+                    'radio_silence': False,
+                    'formation_code': "echelon_left",
+                    'triggers': {
+                        'cycles': 1,
+                        'timer': 1,
+                        'angle': 25,
+                        'base_size': 5,
+                        'altitude_diff': 500,
+                    },
+                },
+                {
+                    'way_point_type': {
+                        'type': "attack",
+                    },
+                    'pos': {
+                        'x': 99737.30,
+                        'y': 79106.06,
+                        'z': 500.00,
+                    },
+                    'speed': 300.00,
+                    'target_code': "0_Chief",
+                    'target_point': 0,
+                    'radio_silence': False,
+                    'formation_code': "default",
+                },
+                {
+                    'way_point_type': {
+                        'type': "landing_straight",
+                    },
+                    'pos': {
+                        'x': 185304.27,
+                        'y': 54570.12,
+                        'z': 0.00,
+                    },
+                    'speed': 0.00,
+                    'radio_silence': True,
+                    'formation_code': "default",
+                },
+            ]
+        }
+        self._test_parser(FlightWayParser, '3GvIAP01_Way', lines, expected)
+
+
 
 class MDSScoutsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
     """
@@ -1120,84 +1202,3 @@ class FlightDetailsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             },
         }
         self._test_parser(FlightDetailsParser, '3GvIAP01', lines, expected)
-
-    def test_flight_routes_parser(self):
-        lines = [
-            "TAKEOFF 193373.53 99288.17 0 0 &0",
-            "TRIGGERS 0 10 20 0",
-            "NORMFLY_401 98616.72 78629.31 500.00 300.00 &0 F2",
-            "TRIGGERS 1 1 25 5 500",
-            "GATTACK 99737.30 79106.06 500.00 300.00 0_Chief 0 &0",
-            "LANDING_104 185304.27 54570.12 0 0 &1",
-        ]
-        expected = {
-            '3GvIAP01_way_point': [
-                {
-                    'way_point_type': {
-                        'type': "takeoff_normal",
-                    },
-                    'pos': {
-                        'x': 193373.53,
-                        'y': 99288.17,
-                        'z': 0.0,
-                    },
-                    'speed': 0.0,
-                    'radio_silence': False,
-                    'formation_code': "default",
-                    'triggers': {
-                        'timeout': 10,
-                        'distance': 20,
-                    }
-                },
-                {
-                    'way_point_type': {
-                        'type': 'patrol',
-                        'patrol_type': 'triangle',
-                    },
-                    'pos': {
-                        'x': 98616.72,
-                        'y': 78629.31,
-                        'z': 500.00,
-                    },
-                    'speed': 300.00,
-                    'radio_silence': False,
-                    'formation_code': "echelon_left",
-                    'triggers': {
-                        'cycles': 1,
-                        'timer': 1,
-                        'angle': 25,
-                        'base_size': 5,
-                        'altitude_diff': 500,
-                    },
-                },
-                {
-                    'way_point_type': {
-                        'type': "attack",
-                    },
-                    'pos': {
-                        'x': 99737.30,
-                        'y': 79106.06,
-                        'z': 500.00,
-                    },
-                    'speed': 300.00,
-                    'target_code': "0_Chief",
-                    'target_point': 0,
-                    'radio_silence': False,
-                    'formation_code': "default",
-                },
-                {
-                    'way_point_type': {
-                        'type': "landing_straight",
-                    },
-                    'pos': {
-                        'x': 185304.27,
-                        'y': 54570.12,
-                        'z': 0.00,
-                    },
-                    'speed': 0.00,
-                    'radio_silence': True,
-                    'formation_code': "default",
-                },
-            ]
-        }
-        self._test_parser(FlightWayParser, '3GvIAP01_Way', lines, expected)

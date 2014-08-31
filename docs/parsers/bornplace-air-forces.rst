@@ -1,7 +1,7 @@
 .. _bornplace-air-forces-section:
 
 BornPlace air forces section
-===========================
+============================
 
 .. note::
 
