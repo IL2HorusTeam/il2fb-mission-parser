@@ -59,6 +59,10 @@ Output example:
 
 **Description**:
 
+The output of the parser is a dictionary with a single item. It is accessible by
+``homebase_aircrafts_N`` key, where ``N`` is original homebase number. The value
+is a list of dictionaries. Each dictionary represents a single aircraft.
+
 Let's examine first line.
 
 ``Bf-109F-4``
