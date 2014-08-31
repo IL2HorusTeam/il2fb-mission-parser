@@ -30,7 +30,7 @@ parser. It gets data from all other parsers and organizes it in special manner.
     parsers/target
     parsers/bornplace
     parsers/bornplace-aircrafts
-    parsers/bornplace-airforces
+    parsers/bornplace-air-forces
     parsers/static-camera
     parsers/front-marker
     parsers/rocket

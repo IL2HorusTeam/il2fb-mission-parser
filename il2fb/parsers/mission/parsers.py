@@ -903,10 +903,10 @@ class BornPlaceAircraftsParser(CollectingParser):
         return {self.output_key: self.data, }
 
 
-class BornPlaceAirforcesParser(CollectingParser):
+class BornPlaceAirForcesParser(CollectingParser):
     """
     Parses ``BornPlaceCountriesN`` section.
-    View :ref:`detailed description <bornplace-airforces-section>`.
+    View :ref:`detailed description <bornplace-air-forces-section>`.
     """
     prefix = "BornPlaceCountries"
 
@@ -921,8 +921,8 @@ class BornPlaceAirforcesParser(CollectingParser):
             return True
 
     def init_parser(self, section_name):
-        super(BornPlaceAirforcesParser, self).init_parser(section_name)
-        self.output_key = 'homebase_airforces_{0}'.format(
+        super(BornPlaceAirForcesParser, self).init_parser(section_name)
+        self.output_key = 'homebase_air_forces_{0}'.format(
             self._extract_section_number(section_name))
         self.countries = {}
 
@@ -1193,18 +1193,23 @@ class FileParser(object):
             MainParser(),
             SeasonParser(),
             WeatherParser(),
-            MDSParser(),
             RespawnTimeParser(),
+            MDSParser(),
+            MDSScoutsParser(),
             ChiefsParser(),
+            ChiefRoadParser(),
             NStationaryParser(),
             BuildingsParser(),
             TargetParser(),
             BornPlaceParser(),
+            BornPlaceAircraftsParser(),
+            BornPlaceAirForcesParser(),
             StaticCameraParser(),
             FrontMarkerParser(),
             RocketParser(),
             WingParser(),
-            MDSScoutsParser(),
+            FlightDetailsParser(),
+            FlightWayParser(),
         ]
 
     def parse(self, file_path):

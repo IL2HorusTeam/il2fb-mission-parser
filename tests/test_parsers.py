@@ -15,7 +15,7 @@ from il2fb.parsers.mission.parsers import (
     MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
-    BornPlaceAirforcesParser, RocketParser, ChiefRoadParser, WingParser,
+    BornPlaceAirForcesParser, RocketParser, ChiefRoadParser, WingParser,
     MDSScoutsParser, FlightDetailsParser, FlightWayParser,
 )
 
@@ -1012,7 +1012,7 @@ class BornPlaceAircraftsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self.assertFalse(parser.start('BornPlaceX'))
 
 
-class BornPlaceAirforcesParserTestCase(ParserTestCaseMixin, unittest.TestCase):
+class BornPlaceAirForcesParserTestCase(ParserTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
         """
@@ -1023,16 +1023,16 @@ class BornPlaceAirforcesParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "ru",
         ]
         expected = {
-            'homebase_airforces_1': [
+            'homebase_air_forces_1': [
                 AirForces.luftwaffe,
                 AirForces.vvs_rkka,
             ],
         }
-        self._test_parser(BornPlaceAirforcesParser, 'BornPlaceCountries1',
+        self._test_parser(BornPlaceAirForcesParser, 'BornPlaceCountries1',
                           lines, expected)
 
     def test_invalid_section_name(self):
-        parser = BornPlaceAirforcesParser()
+        parser = BornPlaceAirForcesParser()
         self.assertFalse(parser.start('foo section'))
         self.assertFalse(parser.start('BornPlaceCountriesX'))
 
