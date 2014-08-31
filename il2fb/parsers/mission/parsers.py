@@ -222,7 +222,7 @@ class ValuesParser(SectionParser):
 
         Splits line into key-value pair and puts it into internal dictionary.
         """
-        key, value = line.split()
+        key, value = line.strip().split()
         self.data.update({key: value})
 
 
@@ -257,7 +257,7 @@ class CollectingParser(SectionParser):
         Just puts entire line to internal buffer. You probably will want to
         redefine this method to do some extra job on each line.
         """
-        self.data.append(line)
+        self.data.append(line.strip())
 
 
 class MainParser(ValuesParser):
@@ -903,9 +903,10 @@ class BornPlaceAircraftsParser(CollectingParser):
         return {self.output_key: self.data, }
 
 
-class BornPlaceCountriesParser(CollectingParser):
+class BornPlaceAirforcesParser(CollectingParser):
     """
     Parses ``BornPlaceCountriesN`` section.
+    View :ref:`detailed description <bornplace-airforces-section>`.
     """
     prefix = "BornPlaceCountries"
 
@@ -920,13 +921,17 @@ class BornPlaceCountriesParser(CollectingParser):
             return True
 
     def init_parser(self, section_name):
-        super(BornPlaceCountriesParser, self).init_parser(section_name)
-        self.output_key = 'homebase_countries_{0}'.format(
+        super(BornPlaceAirforcesParser, self).init_parser(section_name)
+        self.output_key = 'homebase_airforces_{0}'.format(
             self._extract_section_number(section_name))
         self.countries = {}
 
     def _extract_section_number(self, section_name):
         return int(section_name[len(self.prefix):])
+
+    def parse_line(self, line):
+        country = AirForces.get_by_value(line.strip())
+        self.data.append(country)
 
     def process_data(self):
         return {self.output_key: self.data, }

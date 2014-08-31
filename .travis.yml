@@ -3,9 +3,10 @@ python:
     - "2.7"
     - "3.2"
     - "3.3"
+    - "3.4"
 install:
-    - pip install -e . --use-mirrors
-    - pip install coverage coveralls --use-mirrors
+    - pip install -e .
+    - pip install coverage coveralls
 script:
     - coverage run `which nosetests` --nocapture
     - coverage report -m

@@ -9,7 +9,7 @@ BornPlace aircrafts section
 
 :class:`~il2fb.parsers.mission.parsers.BornPlaceAircraftsParser` is responsible
 for parsing ``BornPlaceN`` section, where ``N`` is sequence number of the
-homebase. This section describes of aircrafts which are available on the
+homebase. This section describes aircrafts which are available on the
 homebase #N.
 
 Each line describes attributes of a single aircraft. Lines which start with

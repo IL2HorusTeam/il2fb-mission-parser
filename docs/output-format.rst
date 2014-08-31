@@ -30,4 +30,5 @@ parser. It gets data from all other parsers and organizes it in special manner.
     parsers/target
     parsers/bornplace
     parsers/bornplace-aircrafts
+    parsers/bornplace-airforces
     parsers/file-parser
