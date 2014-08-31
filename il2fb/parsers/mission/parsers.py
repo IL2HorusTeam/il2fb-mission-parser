@@ -1023,69 +1023,81 @@ class WingParser(CollectingParser):
         return {'flights': self.data}
 
 
-class FlightDetailsParser(ValuesParser):
+class FlightInfoParser(ValuesParser):
     """
     Parses settings for a moving flight group.
     """
 
     def check_section_name(self, section_name):
-        return True
+        try:
+            self._decompose_section_name(section_name)
+        except:
+            return False
+        else:
+            return True
 
     def init_parser(self, section_name):
-        super(FlightDetailsParser, self).init_parser(section_name)
-        self.output_key = "{0}_details".format(section_name)
-        self.flight_details = self._decompose_section_name(section_name)
+        super(FlightInfoParser, self).init_parser(section_name)
+        self.output_key = "{0}_info".format(section_name)
+        self.flight_info = self._decompose_section_name(section_name)
 
     def _decompose_section_name(self, section_name):
-        return {
-            'regiment_code': section_name[:-2],
-            'squadron_number': int(section_name[-2])+1,
-            'flight_number': int(section_name[-1])+1,
+        prefix = section_name[:-2]
+        squadron, flight = section_name[-2], section_name[-1]
+
+        info = {
+            'squadron': int(squadron) + 1,
+            'flight': int(flight) + 1,
         }
 
-    def _skin_code(self, prefix, number):
-        return self.data.get('{0}{1}'.format(prefix, number), _("default"))
+        try:
+            info['air_force'] = AirForces.get_by_squadron_prefix(prefix)
+        except ValueError:
+            info['regiment'] = Regiments.get_by_code_name(prefix)
 
-    def _spawn_point(self, number):
-            return self.data.get('spawn{0}'.format(number))
+        return info
 
-    def _skill_code(self, number):
+    def process_data(self):
+        size = int(self.data['Planes'])
+        code = self.data['Class'].split('.', 1)[1]
+
+        aircrafts = [
+            {
+                'aircraft_skin': self._get_skin('skin', i),
+                'has_markings': self._has_markings(i),
+                'number': i,
+                'pilot_skin': self._get_skin('pilot', i),
+                'skill': self._get_skill(i),
+                'stationary_id': self._get_stationary_id(i),
+            } for i in range(size)
+        ]
+
+        self.flight_info.update({
+            'ai_only': 'OnlyAI' in self.data,
+            'aircrafts': aircrafts,
+            'code': code,
+            'fuel': int(self.data['Fuel']),
+            'is_parachute_available': 'Parachute' not in self.data,
+            'size': size,
+            'weapons': self.data['weapons'],
+        })
+
+        return {self.output_key: self.flight_info}
+
+    def _get_skin(self, prefix, aircraft_number):
+        return self.data.get('{:}{:}'.format(prefix, aircraft_number))
+
+    def _get_stationary_id(self, aircraft_number):
+            return self.data.get('spawn{:}'.format(aircraft_number))
+
+    def _get_skill(self, aircraft_number):
         if 'Skill' in self.data:
             return to_skill(self.data['Skill'])
         else:
-            return to_skill(self.data['Skill{0}'.format(number)])
+            return to_skill(self.data['Skill{:}'.format(aircraft_number)])
 
-    def _has_markings(self, number):
-            return 'numberOn{0}'.format(number) not in self.data
-
-    def _flight(self, aircrafts_count):
-        self.flight_details['aircrafts'] = []
-        for number in range(0, aircrafts_count):
-            self.flight_details['aircrafts'].append({
-                'number': number,
-                'skill': self._skill_code(number),
-                'aircraft_skin': self._skin_code('skin', number),
-                'pilot_skin': self._skin_code('pilot', number),
-                'has_markings': self._has_markings(number),
-                'spawn_point': self._spawn_point(number),
-            })
-
-    def process_data(self):
-        aircrafts_count = int(self.data['Planes'])
-        aircraft_code = self.data['Class'][self.data['Class'].index('.')+1:]
-
-        self.flight_details.update({
-            'aircrafts_count': aircrafts_count,
-            'aircraft_code': aircraft_code,
-            'fuel': int(self.data['Fuel']),
-            'loadout': self.data['weapons'],
-            'parachute_present': 'Parachute' not in self.data,
-            'only_ai': 'OnlyAI' in self.data,
-        })
-
-        self._flight(aircrafts_count)
-
-        return {self.output_key: self.flight_details}
+    def _has_markings(self, aircraft_number):
+            return 'numberOn{:}'.format(aircraft_number) not in self.data
 
 
 class FlightWayParser(CollectingParser):
@@ -1188,7 +1200,7 @@ class FileParser(object):
 
     def __init__(self):
         self.data = {}
-        self.flight_parser = FlightDetailsParser()
+        self.flight_parser = FlightInfoParser()
         self.parsers = [
             MainParser(),
             SeasonParser(),
@@ -1208,7 +1220,6 @@ class FileParser(object):
             FrontMarkerParser(),
             RocketParser(),
             WingParser(),
-            FlightDetailsParser(),
             FlightWayParser(),
         ]
 

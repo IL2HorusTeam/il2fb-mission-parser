@@ -6,7 +6,7 @@ import datetime
 import unittest
 
 from il2fb.commons import Skills, UnitTypes
-from il2fb.commons.organization import AirForces, Belligerents
+from il2fb.commons.organization import AirForces, Belligerents, Regiments
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
@@ -16,7 +16,7 @@ from il2fb.parsers.mission.parsers import (
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
     BornPlaceAirForcesParser, RocketParser, ChiefRoadParser, WingParser,
-    MDSScoutsParser, FlightDetailsParser, FlightWayParser,
+    MDSScoutsParser, FlightInfoParser, FlightWayParser,
 )
 
 
@@ -690,7 +690,6 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self._test_parser(FlightWayParser, '3GvIAP01_Way', lines, expected)
 
 
-
 class MDSScoutsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
     """
     Test ``MDS_Scouts`` section parser.
@@ -1119,9 +1118,14 @@ class BornPlaceAirForcesParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self.assertFalse(parser.start('BornPlaceCountriesX'))
 
 
-class FlightDetailsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
+class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
 
-    def test_flight_details_parser(self):
+    def test_check_section_name(self):
+        parser = FlightInfoParser()
+        self.assertTrue(parser.check_section_name('r0100'))
+        self.assertTrue(parser.check_section_name('3GvIAP00'))
+
+    def test_multiple_aircrafts(self):
         lines = [
             "Planes 2",
             "Skill0 1",
@@ -1135,39 +1139,39 @@ class FlightDetailsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "spawn0 0_Static",
         ]
         expected = {
-            '3GvIAP00_details': {
-                'regiment_code': "3GvIAP",
-                'squadron_number': 1,
-                'flight_number': 1,
-                'aircrafts_count': 2,
-                'aircraft_code': "A_20C",
+            '3GvIAP00_info': {
+                'ai_only': False,
+                'code': "A_20C",
+                'flight': 1,
                 'fuel': 100,
-                'loadout': "default",
-                'parachute_present': True,
-                'only_ai': False,
+                'is_parachute_available': True,
+                'regiment': Regiments.get_by_code_name('3GvIAP'),
+                'size': 2,
+                'squadron': 1,
+                'weapons': "default",
                 'aircrafts': [
                     {
                         'number': 0,
                         'skill': Skills.average,
                         'aircraft_skin': "Funky.bmp",
-                        'pilot_skin': "default",
+                        'pilot_skin': None,
                         'has_markings': True,
-                        'spawn_point': '0_Static',
+                        'stationary_id': '0_Static',
                     },
                     {
                         'number': 1,
                         'skill': Skills.veteran,
-                        'aircraft_skin': "default",
-                        'pilot_skin': "default",
+                        'aircraft_skin': None,
+                        'pilot_skin': None,
                         'has_markings': False,
-                        'spawn_point': None,
+                        'stationary_id': None,
                     },
                 ],
             },
         }
-        self._test_parser(FlightDetailsParser, '3GvIAP00', lines, expected)
+        self._test_parser(FlightInfoParser, '3GvIAP00', lines, expected)
 
-    def test_flight_details_solo_parser(self):
+    def test_single_aircraft(self):
         lines = [
             "Planes 1",
             "Skill 1",
@@ -1179,26 +1183,26 @@ class FlightDetailsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "spawn0 0_Static",
         ]
         expected = {
-            '3GvIAP01_details': {
-                'regiment_code': "3GvIAP",
-                'squadron_number': 1,
-                'flight_number': 2,
-                'aircrafts_count': 1,
-                'aircraft_code': "A_20C",
+            '3GvIAP01_info': {
+                'ai_only': False,
+                'code': "A_20C",
+                'flight': 2,
                 'fuel': 100,
-                'loadout': "default",
-                'parachute_present': True,
-                'only_ai': False,
+                'is_parachute_available': True,
+                'regiment': Regiments.get_by_code_name('3GvIAP'),
+                'size': 1,
+                'squadron': 1,
+                'weapons': "default",
                 'aircrafts': [
                     {
                         'number': 0,
                         'skill': Skills.average,
                         'aircraft_skin': "Funky.bmp",
-                        'pilot_skin': "default",
+                        'pilot_skin': None,
                         'has_markings': False,
-                        'spawn_point': '0_Static',
+                        'stationary_id': '0_Static',
                     },
                 ],
             },
         }
-        self._test_parser(FlightDetailsParser, '3GvIAP01', lines, expected)
+        self._test_parser(FlightInfoParser, '3GvIAP01', lines, expected)
