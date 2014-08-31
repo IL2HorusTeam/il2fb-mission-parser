@@ -10,12 +10,13 @@ Wing section
 :class:`~il2fb.parsers.mission.parsers.WingParser` is responsible for parsing
 ``Wing`` section. This section contains a list of defined air flights.
 
-Each line contains an ID of a single air flight. ID consists of regiment code,
-squadron number and flight number.
+Each line contains an ID of a single air flight. ID consists of regiment code
+or default squadron prefix, squadron number and flight number.
 
 Section example::
 
   [Wing]
+    r0100
     1GvIAP12
     1GvIAP13
 
@@ -25,6 +26,7 @@ Output example:
 
   {
       'flights': [
+          "r0100",
           "1GvIAP12",
           "1GvIAP13",
       ],
