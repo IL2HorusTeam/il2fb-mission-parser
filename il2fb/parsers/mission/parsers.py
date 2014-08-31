@@ -960,6 +960,7 @@ class StaticCameraParser(CollectingParser):
 class FrontMarkerParser(CollectingParser):
     """
     Parses ``FrontMarker`` section.
+    View :ref:`detailed description <front-marker-section>`.
     """
 
     def check_section_name(self, section_name):
