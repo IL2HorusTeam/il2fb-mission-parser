@@ -23,7 +23,7 @@ Output example:
   {
       'markers': [
           {
-              'belligerent': Belligerents.red,
+              'belligerent': <constant 'Belligerents.red'>,
               'id': "FrontMarker0",
               'pos': {
                   'x': 7636.65,

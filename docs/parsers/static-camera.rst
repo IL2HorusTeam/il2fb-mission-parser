@@ -23,7 +23,7 @@ Output example:
   {
       'cameras': [
           {
-              'belligerent': Belligerents.blue,
+              'belligerent': <constant 'Belligerents.blue'>,
               'pos': {
                   'x': 38426.0,
                   'y': 65212.0,
