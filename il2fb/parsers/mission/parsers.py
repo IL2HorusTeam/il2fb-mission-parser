@@ -14,7 +14,6 @@ from il2fb.commons.organization import AirForces, Belligerents, Regiments
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
-from il2fb.parsers.mission.helpers import _
 from il2fb.parsers.mission.constants import (
     WAY_POINT_TYPES, WAY_POINT_FORMATIONS,
 )
