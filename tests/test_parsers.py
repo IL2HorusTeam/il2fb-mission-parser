@@ -1141,12 +1141,13 @@ class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             '3GvIAP00_info': {
                 'ai_only': False,
+                'air_force': AirForces.vvs_rkka,
                 'code': "A_20C",
+                'count': 2,
                 'flight': 1,
                 'fuel': 100,
-                'is_parachute_available': True,
+                'with_parachutes': True,
                 'regiment': Regiments.get_by_code_name('3GvIAP'),
-                'size': 2,
                 'squadron': 1,
                 'weapons': "default",
                 'aircrafts': [
@@ -1154,6 +1155,7 @@ class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'number': 0,
                         'skill': Skills.average,
                         'aircraft_skin': "Funky.bmp",
+                        'nose_art': None,
                         'pilot_skin': None,
                         'has_markings': True,
                         'stationary_id': '0_Static',
@@ -1162,6 +1164,7 @@ class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'number': 1,
                         'skill': Skills.veteran,
                         'aircraft_skin': None,
+                        'nose_art': None,
                         'pilot_skin': None,
                         'has_markings': False,
                         'stationary_id': None,
@@ -1185,12 +1188,13 @@ class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             '3GvIAP01_info': {
                 'ai_only': False,
+                'air_force': AirForces.vvs_rkka,
                 'code': "A_20C",
+                'count': 1,
                 'flight': 2,
                 'fuel': 100,
-                'is_parachute_available': True,
+                'with_parachutes': True,
                 'regiment': Regiments.get_by_code_name('3GvIAP'),
-                'size': 1,
                 'squadron': 1,
                 'weapons': "default",
                 'aircrafts': [
@@ -1198,6 +1202,7 @@ class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'number': 0,
                         'skill': Skills.average,
                         'aircraft_skin': "Funky.bmp",
+                        'nose_art': None,
                         'pilot_skin': None,
                         'has_markings': False,
                         'stationary_id': '0_Static',

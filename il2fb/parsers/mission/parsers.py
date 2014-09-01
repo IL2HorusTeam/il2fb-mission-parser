@@ -1045,31 +1045,34 @@ class FlightInfoParser(ValuesParser):
         prefix = section_name[:-2]
         squadron, flight = section_name[-2], section_name[-1]
 
-        info = {
+        try:
+            regiment = None
+            air_force = AirForces.get_by_squadron_prefix(prefix)
+        except ValueError:
+            regiment = Regiments.get_by_code_name(prefix)
+            air_force = regiment.air_force
+
+        return {
+            'air_force': air_force,
+            'regiment': regiment,
             'squadron': int(squadron) + 1,
             'flight': int(flight) + 1,
         }
 
-        try:
-            info['air_force'] = AirForces.get_by_squadron_prefix(prefix)
-        except ValueError:
-            info['regiment'] = Regiments.get_by_code_name(prefix)
-
-        return info
-
     def process_data(self):
-        size = int(self.data['Planes'])
+        count = int(self.data['Planes'])
         code = self.data['Class'].split('.', 1)[1]
 
         aircrafts = [
             {
-                'aircraft_skin': self._get_skin('skin', i),
                 'has_markings': self._has_markings(i),
                 'number': i,
+                'aircraft_skin': self._get_skin('skin', i),
+                'nose_art': self._get_skin('noseart', i),
                 'pilot_skin': self._get_skin('pilot', i),
                 'skill': self._get_skill(i),
                 'stationary_id': self._get_stationary_id(i),
-            } for i in range(size)
+            } for i in range(count)
         ]
 
         self.flight_info.update({
@@ -1077,8 +1080,8 @@ class FlightInfoParser(ValuesParser):
             'aircrafts': aircrafts,
             'code': code,
             'fuel': int(self.data['Fuel']),
-            'is_parachute_available': 'Parachute' not in self.data,
-            'size': size,
+            'with_parachutes': 'Parachute' not in self.data,
+            'count': count,
             'weapons': self.data['weapons'],
         })
 
@@ -1200,7 +1203,6 @@ class FileParser(object):
 
     def __init__(self):
         self.data = {}
-        self.flight_parser = FlightInfoParser()
         self.parsers = [
             MainParser(),
             SeasonParser(),
@@ -1220,6 +1222,7 @@ class FileParser(object):
             FrontMarkerParser(),
             RocketParser(),
             WingParser(),
+            FlightInfoParser(),
             FlightWayParser(),
         ]
 
@@ -1250,10 +1253,6 @@ class FileParser(object):
         return line.strip('[]')
 
     def get_parser(self, section_name):
-        flight_codes = self.data.get('flights')
-        if flight_codes is not None and section_name in flight_codes:
-            self.flight_parser.start(section_name)
-            return self.flight_parser
         for parser in self.parsers:
             if parser.start(section_name):
                 return parser
