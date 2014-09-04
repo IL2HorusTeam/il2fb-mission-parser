@@ -35,4 +35,5 @@ parser. It gets data from all other parsers and organizes it in special manner.
     parsers/front-marker
     parsers/rocket
     parsers/wing
+    parsers/flight-info
     parsers/file-parser

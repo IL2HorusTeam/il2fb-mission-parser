@@ -1070,7 +1070,7 @@ class FlightInfoParser(ValuesParser):
                 'nose_art': self._get_skin('noseart', i),
                 'pilot_skin': self._get_skin('pilot', i),
                 'skill': self._get_skill(i),
-                'stationary_id': self._get_stationary_id(i),
+                'spawn_object': self._get_spawn_object_id(i),
             } for i in range(count)
         ]
 
@@ -1089,7 +1089,7 @@ class FlightInfoParser(ValuesParser):
     def _get_skin(self, prefix, aircraft_number):
         return self.data.get('{:}{:}'.format(prefix, aircraft_number))
 
-    def _get_stationary_id(self, aircraft_number):
+    def _get_spawn_object_id(self, aircraft_number):
             return self.data.get('spawn{:}'.format(aircraft_number))
 
     def _get_skill(self, aircraft_number):
