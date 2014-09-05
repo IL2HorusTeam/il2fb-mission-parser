@@ -5,7 +5,7 @@ Flight info section
 
 .. note::
 
-    `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Flight info>`_
+    `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Flight-info>`_
 
 :class:`~il2fb.parsers.mission.parsers.FlightInfoParser` is responsible for
 parsing ``FlightInfoParser`` section. This section provides information about
@@ -13,8 +13,9 @@ aircrafts in a single flight. That information includes general data about
 all aircrafts and it can include data about individual aircrafts.
 
 The output of the parser is a dictionary with a single item. It is accessible by
-``FLIGHT_ID`` key, where ``FLIGHT_ID`` is an ID of the flight which is listed
-in :ref:`wing-section`. The value is a dictionary with information about flight.
+``FLIGHT_ID_info`` key, where ``FLIGHT_ID`` is an ID of the flight which is
+listed in :ref:`wing-section`. The value is a dictionary with information about
+flight.
 
 .. contents::
     :local:
@@ -22,17 +23,23 @@ in :ref:`wing-section`. The value is a dictionary with information about flight.
     :backlinks: none
 
 
+Section names
+-------------
+
+.. todo::
+
+
 General information
 -------------------
 
 Section example::
 
-  [UN_NN10]
+  [3GvIAP10]
     Planes 3
     OnlyAI 1
     Parachute 0
     Skill 1
-    Class air.B_17G
+    Class air.A_20C
     Fuel 100
     weapons default
 
@@ -41,13 +48,13 @@ Output example:
   .. code-block:: python
 
     {
-        'UN_NN10_info': {
-            'air_force': <constant 'AirForces.usn'>,
-            'regiment': None,
+        '3GvIAP10_info': {
+            'air_force': <constant 'AirForces.vvs_rkka'>,
+            'regiment': <Regiment '3GvIAP'>,
             'squadron': 2,
             'flight': 1,
             'count': 3,
-            'code': 'B_17G',
+            'code': 'A_20C',
             'weapons': 'default',
             'fuel': 100,
             'ai_only': True,
@@ -86,8 +93,64 @@ Output example:
 
 Description:
 
-.. todo::
+``Planes``
+  Number of planes in flight.
 
+  :Presence: always present
+  :Output path: ``count``
+  :Output type: :class:`int`
+  :Output value: original value converted to integer number
+
+``OnlyAI``
+  Tells whether users cannot join flight.
+
+  :Presence: present only if turned off
+  :Output path: ``ai_only``
+  :Output type: :class:`bool`
+  :Output value: ``True`` if ``1``, ``False`` otherwise
+  :Default: ``False``
+
+``Parachute``
+  Tells whether crew members of all planes in flight have parachutes.
+
+  :Presence: present only if turned off
+  :Output path: ``with_parachutes``
+  :Output type: :class:`bool`
+  :Output value: ``True`` if ``1``, ``False`` otherwise
+  :Default: ``True``
+
+``Skill``
+  Skill level for all planes in flight.
+
+  :Presence: present only if all aircrafts in flight have same level of skills
+  :Output path:
+    ``aircrafts[i].skill``, where ``i`` is aircraft index - skills are applied
+    to every aircraft individually (see section below)
+  :Output type: complex `skills`_ constant
+
+``Class``
+  Aircraft code name with ``air.`` prefix.
+
+  :Presence: always present
+  :Output path: ``code``
+  :Output type: :class:`str`
+  :Output value: original string value
+
+``Fuel``
+  Fullness of fuel (in percents).
+
+  :Presence: always present
+  :Output path: ``fuel``
+  :Output type: :class:`int`
+  :Output value: original value converted to integer number
+
+``weapons``
+  Weapons code name.
+
+  :Presence: always present
+  :Output path: ``code``
+  :Output type: :class:`str`
+  :Output value: original string value
 
 Individual skills
 -----------------
@@ -201,3 +264,5 @@ Description:
 
 .. todo::
 
+
+.. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L27
