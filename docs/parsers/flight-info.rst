@@ -41,26 +41,26 @@ Code of the 4th flight in the 4th squadron will be ``33``.
 
 Parser's output contains air force, regiment, squadron and flight number:
 
-  :Output path: ``air_force``
-  :Output type: `air force`_ constant
+:Output path: ``air_force``
+:Output type: `air force`_ constant
 
 ..
 
-  :Output path: ``regiment``
-  :Output type: `Regiment`_ class
-  :Output value: ``Regiment`` object or ``None``
+:Output path: ``regiment``
+:Output type: `Regiment`_ class
+:Output value: ``Regiment`` object or ``None``
 
 ..
 
-  :Output path: ``squadron``
-  :Output type: :class:`int`
-  :Output value: original value converted to integer number and increased by 1
+:Output path: ``squadron``
+:Output type: :class:`int`
+:Output value: original value converted to integer number and increased by 1
 
 ..
 
-  :Output path: ``flight``
-  :Output type: :class:`int`
-  :Output value: original value converted to integer number and increased by 1
+:Output path: ``flight``
+:Output type: :class:`int`
+:Output value: original value converted to integer number and increased by 1
 
 
 General information
