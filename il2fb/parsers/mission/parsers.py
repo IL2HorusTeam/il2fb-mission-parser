@@ -1061,18 +1061,27 @@ class FlightInfoParser(ValuesParser):
     def process_data(self):
         count = int(self.data['Planes'])
         code = self.data['Class'].split('.', 1)[1]
+        aircrafts = []
 
-        aircrafts = [
-            {
+        def _add_if_present(target, key, value):
+            if value:
+                target[key] = value
+
+        for i in range(count):
+            aircraft = {
+                'id': i,
                 'has_markings': self._has_markings(i),
-                'number': i,
-                'aircraft_skin': self._get_skin('skin', i),
-                'nose_art': self._get_skin('noseart', i),
-                'pilot_skin': self._get_skin('pilot', i),
                 'skill': self._get_skill(i),
-                'spawn_object': self._get_spawn_object_id(i),
-            } for i in range(count)
-        ]
+            }
+            _add_if_present(
+                aircraft, 'aircraft_skin', self._get_skin('skin', i))
+            _add_if_present(
+                aircraft, 'noseart', self._get_skin('nose_art', i))
+            _add_if_present(
+                aircraft, 'pilot_skin', self._get_skin('pilot', i))
+            _add_if_present(
+                aircraft, 'spawn_object', self._get_spawn_object_id(i))
+            aircrafts.append(aircraft)
 
         self.flight_info.update({
             'ai_only': 'OnlyAI' in self.data,
@@ -1086,20 +1095,20 @@ class FlightInfoParser(ValuesParser):
 
         return {self.output_key: self.flight_info}
 
-    def _get_skin(self, prefix, aircraft_number):
-        return self.data.get('{:}{:}'.format(prefix, aircraft_number))
-
-    def _get_spawn_object_id(self, aircraft_number):
-            return self.data.get('spawn{:}'.format(aircraft_number))
-
-    def _get_skill(self, aircraft_number):
+    def _get_skill(self, aircraft_id):
         if 'Skill' in self.data:
             return to_skill(self.data['Skill'])
         else:
-            return to_skill(self.data['Skill{:}'.format(aircraft_number)])
+            return to_skill(self.data['Skill{:}'.format(aircraft_id)])
 
-    def _has_markings(self, aircraft_number):
-            return 'numberOn{:}'.format(aircraft_number) not in self.data
+    def _has_markings(self, aircraft_id):
+            return 'numberOn{:}'.format(aircraft_id) not in self.data
+
+    def _get_skin(self, prefix, aircraft_id):
+        return self.data.get('{:}{:}'.format(prefix, aircraft_id))
+
+    def _get_spawn_object_id(self, aircraft_id):
+            return self.data.get('spawn{:}'.format(aircraft_id))
 
 
 class FlightWayParser(CollectingParser):

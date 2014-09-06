@@ -95,31 +95,19 @@ Output example:
             'with_parachutes': False,
             'aircrafts': [
                 {
-                    'nose_art': None,
-                    'number': 0,
-                    'spawn_object': None,
+                    'id': 0,
                     'has_markings': True,
                     'skill': <constant 'Skills.average'>,
-                    'aircraft_skin': None,
-                    'pilot_skin': None,
                 },
                 {
-                    'nose_art': None,
-                    'number': 1,
-                    'spawn_object': None,
+                    'id': 1,
                     'has_markings': True,
                     'skill': <constant 'Skills.average'>,
-                    'aircraft_skin': None,
-                    'pilot_skin': None,
                 },
                 {
-                    'nose_art': None,
-                    'number': 2,
-                    'spawn_object': None,
+                    'id': 2,
                     'has_markings': True,
                     'skill': <constant 'Skills.average'>,
-                    'aircraft_skin': None,
-                    'pilot_skin': None,
                 },
             ],
         },
@@ -130,7 +118,7 @@ Description:
 ``Planes``
   Number of planes in flight. Maximal value is 4.
 
-  :Presence: always present
+  :Input presence: always present
   :Output path: ``count``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
@@ -138,25 +126,25 @@ Description:
 ``OnlyAI``
   Tells whether users cannot join flight.
 
-  :Presence: present only if turned off
+  :Input presence: present only if turned off
   :Output path: ``ai_only``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
-  :Default: ``False``
+  :Output default: ``False``
 
 ``Parachute``
   Tells whether crew members of all planes in flight have parachutes.
 
-  :Presence: present only if turned off
+  :Input presence: present only if turned off
   :Output path: ``with_parachutes``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
-  :Default: ``True``
+  :Output default: ``True``
 
 ``Skill``
   Skill level for all planes in flight.
 
-  :Presence: present only if all aircrafts in flight have same level of skills
+  :Input presence: present only if all aircrafts in flight have same level of skills
   :Output path:
     ``aircrafts[i].skill``, where ``i`` is aircraft index - skills are applied
     to every aircraft individually (see section below)
@@ -165,7 +153,7 @@ Description:
 ``Class``
   Aircraft code name with ``air.`` prefix.
 
-  :Presence: always present
+  :Input presence: always present
   :Output path: ``code``
   :Output type: :class:`str`
   :Output value: original string value
@@ -173,7 +161,7 @@ Description:
 ``Fuel``
   Fullness of fuel (in percents).
 
-  :Presence: always present
+  :Input presence: always present
   :Output path: ``fuel``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
@@ -181,7 +169,7 @@ Description:
 ``weapons``
   Weapons code name.
 
-  :Presence: always present
+  :Input presence: always present
   :Output path: ``code``
   :Output type: :class:`str`
   :Output value: original string value
@@ -219,22 +207,14 @@ Output example:
               'with_parachutes': True,
               'aircrafts': [
                   {
-                      'nose_art': None,
-                      'number': 0,
-                      'spawn_object': None,
+                      'id': 0,
                       'has_markings': True,
                       'skill': <constant 'Skills.veteran'>,
-                      'aircraft_skin': None,
-                      'pilot_skin': None,
                   },
                   {
-                      'nose_art': None,
-                      'number': 1,
-                      'spawn_object': None,
+                      'id': 1,
                       'has_markings': True,
                       'skill': <constant 'Skills.ace'>,
-                      'aircraft_skin': None,
-                      'pilot_skin': None,
                   },
               ],
           },
@@ -286,22 +266,70 @@ Output example:
               'with_parachutes': True,
               'aircrafts': [
                   {
-                      'number': 0,
-                      'spawn_object': '0_Static',
+                      'id': 0,
                       'has_markings': False,
                       'skill': <constant 'Skills.average'>,
                       'aircraft_skin': 'RRG_N7-B_Damaged.bmp',
                       'pilot_skin': 'fi_18.bmp',
                       'nose_art': 'Angry_Ox.bmp',
+                      'spawn_object': '0_Static',
                   },
               ],
           },
       }
 
+As you can see from the previous examples, parsed individual aircraft parameters
+are stored in ``aircrafts`` list. Each element of this list is a dictionary with
+information about a single aircraft.
 
-Description:
+Aircraft ID is accessed by ``id`` key. ID is a number in range 0-3.
 
-.. todo::
+We have discussed individual skills already: skill level is accessed by
+``skill`` key.
+
+Flight information section may contain some extra individual parameters which
+are suffixed by aircraft ID they are related to:
+
+``skinX``
+  Name of custom skin for aircraft with ID ``X``.
+
+  :Input presence: present only if non-default skin was selected
+  :Output path: ``aircraft_skin``
+  :Output type: :class:`str`
+  :Output value: original string value
+
+``noseartX``
+  Name of used nose art for aircraft with ID ``X``.
+
+  :Input presence: present only if nose art was selected
+  :Output path: ``nose_art``
+  :Output type: :class:`str`
+  :Output value: original string value
+
+``pilotX``
+  Name of custom skin for crew members of aircraft with ID ``X``.
+
+  :Input presence: present only if non-default skin was selected
+  :Output path: ``pilot_skin``
+  :Output type: :class:`str`
+  :Output value: original string value
+
+``numberOnX``
+  Tells whether markings are present for aircraft with ID ``X``.
+
+  :Input presence: present only if turned off
+  :Output path: ``has_markings``
+  :Output type: :class:`bool`
+  :Output value: ``True`` if ``1``, ``False`` otherwise
+  :Output default: ``True``
+
+``spawnX``
+  ID of static object which is used for spawning aircraft with ID ``X``.
+
+  :Input presence: present only if spawn object was set
+  :Output path: ``spawn_object``
+  :Output type: :class:`str`
+  :Output value: original string value
 
 
 .. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L27

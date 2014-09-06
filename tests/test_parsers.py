@@ -1154,22 +1154,16 @@ class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 'weapons': "default",
                 'aircrafts': [
                     {
-                        'number': 0,
+                        'id': 0,
                         'skill': Skills.veteran,
                         'aircraft_skin': "Funky.bmp",
-                        'nose_art': None,
-                        'pilot_skin': None,
                         'has_markings': True,
                         'spawn_object': '0_Static',
                     },
                     {
-                        'number': 1,
+                        'id': 1,
                         'skill': Skills.ace,
-                        'aircraft_skin': None,
-                        'nose_art': None,
-                        'pilot_skin': None,
                         'has_markings': False,
-                        'spawn_object': None,
                     },
                 ],
             },
@@ -1201,11 +1195,9 @@ class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 'weapons': "default",
                 'aircrafts': [
                     {
-                        'number': 0,
+                        'id': 0,
                         'skill': Skills.average,
                         'aircraft_skin': "Funky.bmp",
-                        'nose_art': None,
-                        'pilot_skin': None,
                         'has_markings': False,
                         'spawn_object': '0_Static',
                     },
