@@ -8,9 +8,9 @@ Flight info section
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Flight-info>`_
 
 :class:`~il2fb.parsers.mission.parsers.FlightInfoParser` is responsible for
-parsing section which provide information about aircrafts in a single flight.
-That information includes general data about all aircrafts and it can include
-data about individual aircrafts.
+parsing ``FlightInfoParser`` section. This section provides information about
+aircrafts in a single flight. That information includes general data about
+all aircrafts and it can include data about individual aircrafts.
 
 The output of the parser is a dictionary with a single item. It is accessible by
 ``FLIGHT_ID_info`` key, where ``FLIGHT_ID`` is an ID of the flight which is
