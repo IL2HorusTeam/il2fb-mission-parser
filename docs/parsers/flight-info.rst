@@ -79,39 +79,39 @@ Section example::
 
 Output example:
 
-  .. code-block:: python
+.. code-block:: python
 
-    {
-        '3GvIAP10_info': {
-            'air_force': <constant 'AirForces.vvs_rkka'>,
-            'regiment': <Regiment '3GvIAP'>,
-            'squadron': 2,
-            'flight': 1,
-            'count': 3,
-            'code': 'A_20C',
-            'weapons': 'default',
-            'fuel': 100,
-            'ai_only': True,
-            'with_parachutes': False,
-            'aircrafts': [
-                {
-                    'id': 0,
-                    'has_markings': True,
-                    'skill': <constant 'Skills.average'>,
-                },
-                {
-                    'id': 1,
-                    'has_markings': True,
-                    'skill': <constant 'Skills.average'>,
-                },
-                {
-                    'id': 2,
-                    'has_markings': True,
-                    'skill': <constant 'Skills.average'>,
-                },
-            ],
-        },
-    }
+  {
+      '3GvIAP10_info': {
+          'air_force': <constant 'AirForces.vvs_rkka'>,
+          'regiment': <Regiment '3GvIAP'>,
+          'squadron': 2,
+          'flight': 1,
+          'count': 3,
+          'code': 'A_20C',
+          'weapons': 'default',
+          'fuel': 100,
+          'ai_only': True,
+          'with_parachutes': False,
+          'aircrafts': [
+              {
+                  'id': 0,
+                  'has_markings': True,
+                  'skill': <constant 'Skills.average'>,
+              },
+              {
+                  'id': 1,
+                  'has_markings': True,
+                  'skill': <constant 'Skills.average'>,
+              },
+              {
+                  'id': 2,
+                  'has_markings': True,
+                  'skill': <constant 'Skills.average'>,
+              },
+          ],
+      },
+  }
 
 Description:
 
@@ -144,7 +144,8 @@ Description:
 ``Skill``
   Skill level for all planes in flight.
 
-  :Input presence: present only if all aircrafts in flight have same level of skills
+  :Input presence:
+    present only if all aircrafts in flight have same level of skills
   :Output path:
     ``aircrafts[i].skill``, where ``i`` is aircraft index - skills are applied
     to every aircraft individually (see section below)
@@ -191,34 +192,34 @@ Section example::
 
 Output example:
 
-  .. code-block:: python
+.. code-block:: python
 
-      {
-          'UN_NN03_info': {
-              'air_force': <constant 'AirForces.usn'>,
-              'regiment': None,
-              'squadron': 1,
-              'flight': 4,
-              'count': 2,
-              'code': 'B_17G',
-              'weapons': 'default',
-              'fuel': 100,
-              'ai_only': False,
-              'with_parachutes': True,
-              'aircrafts': [
-                  {
-                      'id': 0,
-                      'has_markings': True,
-                      'skill': <constant 'Skills.veteran'>,
-                  },
-                  {
-                      'id': 1,
-                      'has_markings': True,
-                      'skill': <constant 'Skills.ace'>,
-                  },
-              ],
-          },
-      }
+    {
+        'UN_NN03_info': {
+            'air_force': <constant 'AirForces.usn'>,
+            'regiment': None,
+            'squadron': 1,
+            'flight': 4,
+            'count': 2,
+            'code': 'B_17G',
+            'weapons': 'default',
+            'fuel': 100,
+            'ai_only': False,
+            'with_parachutes': True,
+            'aircrafts': [
+                {
+                    'id': 0,
+                    'has_markings': True,
+                    'skill': <constant 'Skills.veteran'>,
+                },
+                {
+                    'id': 1,
+                    'has_markings': True,
+                    'skill': <constant 'Skills.ace'>,
+                },
+            ],
+        },
+    }
 
 As you can see in the previous section, flight info can contain ``Skill``
 parameter. It defines skill level for all aircrafts in the flight. However,
@@ -250,33 +251,33 @@ Section example::
 
 Output example:
 
-  .. code-block:: python
+.. code-block:: python
 
-      {
-          'UN_NN02_info': {
-              'air_force': <constant 'AirForces.usn'>,
-              'regiment': None,
-              'squadron': 1,
-              'flight': 3,
-              'count': 1,
-              'code': 'B_17G',
-              'weapons': 'default',
-              'fuel': 100,
-              'ai_only': False,
-              'with_parachutes': True,
-              'aircrafts': [
-                  {
-                      'id': 0,
-                      'has_markings': False,
-                      'skill': <constant 'Skills.average'>,
-                      'aircraft_skin': 'RRG_N7-B_Damaged.bmp',
-                      'pilot_skin': 'fi_18.bmp',
-                      'nose_art': 'Angry_Ox.bmp',
-                      'spawn_object': '0_Static',
-                  },
-              ],
-          },
-      }
+    {
+        'UN_NN02_info': {
+            'air_force': <constant 'AirForces.usn'>,
+            'regiment': None,
+            'squadron': 1,
+            'flight': 3,
+            'count': 1,
+            'code': 'B_17G',
+            'weapons': 'default',
+            'fuel': 100,
+            'ai_only': False,
+            'with_parachutes': True,
+            'aircrafts': [
+                {
+                    'id': 0,
+                    'has_markings': False,
+                    'skill': <constant 'Skills.average'>,
+                    'aircraft_skin': 'RRG_N7-B_Damaged.bmp',
+                    'pilot_skin': 'fi_18.bmp',
+                    'nose_art': 'Angry_Ox.bmp',
+                    'spawn_object': '0_Static',
+                },
+            ],
+        },
+    }
 
 As you can see from the previous examples, parsed individual aircraft parameters
 are stored in ``aircrafts`` list. Each element of this list is a dictionary with
