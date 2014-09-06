@@ -26,7 +26,41 @@ flight.
 Section names
 -------------
 
-.. todo::
+Sections which describe flights use flight IDs as own names. Flight ID consists
+of code name and two digits at the right side, e.g. ``3GvIAP10``.
+
+Code name is a code name of a regiment or a default code of a particular air
+force. For example, ``3GvIAP`` is a name of regiment of VVS RKKA and ``r01``
+is default prefix for that air force (see the
+`list of air forces <http://bit.ly/1lGPDPE>`_).
+
+Two digits in the flight ID mean squadron and flight number respectively. Both
+of them use zero-based numbering, so ``00`` means 1st squadron, 1st flight.
+There can be up to 4 squadrons in a regiment with up to 4 flights in a squadron.
+Code of the 4th flight in the 4th squadron will be ``33``.
+
+Parser's output contains air force, regiment, squadron and flight number:
+
+  :Output path: ``air_force``
+  :Output type: `air force`_ constant
+
+..
+
+  :Output path: ``regiment``
+  :Output type: `Regiment`_ class
+  :Output value: ``Regiment`` object or ``None``
+
+..
+
+  :Output path: ``squadron``
+  :Output type: :class:`int`
+  :Output value: original value converted to integer number and increased by 1
+
+..
+
+  :Output path: ``flight``
+  :Output type: :class:`int`
+  :Output value: original value converted to integer number and increased by 1
 
 
 General information
@@ -94,7 +128,7 @@ Output example:
 Description:
 
 ``Planes``
-  Number of planes in flight.
+  Number of planes in flight. Maximal value is 4.
 
   :Presence: always present
   :Output path: ``count``
@@ -266,3 +300,5 @@ Description:
 
 
 .. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L27
+.. _air force: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L89
+.. _Regiment: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L236
