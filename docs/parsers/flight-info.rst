@@ -240,10 +240,15 @@ Output example:
           },
       }
 
-
-Description:
-
-.. todo::
+As you can see in the previous section, flight info can contain ``Skill``
+parameter. It defines skill level for all aircrafts in the flight. However,
+if you need to override skill level even for a single aircraft, ``Skill``
+paramenter will be decomposed into 4 (even if you have less than 4 aircraft in
+the flight): ``Skill0``, ``Skill1``, ``Skill2`` and ``Skill3``. In our example
+we have 2 aircrafts in a flight with veteran (``Skill0 2``) and ace
+(``Skill1 3``) skill levels respectively. Other skill entries (``Skill2 1`` and
+``Skill3 1``) have really no meaning. Their values are equal to default skill
+level for this flight which was set before overriding.
 
 
 Other individual parameters
