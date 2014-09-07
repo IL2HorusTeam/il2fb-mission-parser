@@ -6,6 +6,7 @@ import datetime
 import unittest
 
 from il2fb.commons import Skills, UnitTypes
+from il2fb.commons.flight import Formations, RoutePointTypes
 from il2fb.commons.organization import AirForces, Belligerents, Regiments
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
@@ -16,7 +17,7 @@ from il2fb.parsers.mission.parsers import (
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
     BornPlaceAirForcesParser, RocketParser, ChiefRoadParser, WingParser,
-    MDSScoutsParser, FlightInfoParser, FlightWayParser,
+    MDSScoutsParser, FlightInfoParser, FlightRouteParser,
 )
 
 
@@ -618,11 +619,9 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "LANDING_104 185304.27 54570.12 0 0 &1",
         ]
         expected = {
-            '3GvIAP01_way_point': [
+            '3GvIAP01_route': [
                 {
-                    'way_point_type': {
-                        'type': "takeoff_normal",
-                    },
+                    'type': RoutePointTypes.takeoff_normal,
                     'pos': {
                         'x': 193373.53,
                         'y': 99288.17,
@@ -630,17 +629,14 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'speed': 0.0,
                     'radio_silence': False,
-                    'formation_code': "default",
-                    'triggers': {
-                        'timeout': 10,
-                        'distance': 20,
+                    'formation': None,
+                    'options': {
+                        'delay': 10,
+                        'spacing': 20,
                     }
                 },
                 {
-                    'way_point_type': {
-                        'type': 'patrol',
-                        'patrol_type': 'triangle',
-                    },
+                    'type': RoutePointTypes.patrol_triangle,
                     'pos': {
                         'x': 98616.72,
                         'y': 78629.31,
@@ -648,34 +644,34 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'speed': 300.00,
                     'radio_silence': False,
-                    'formation_code': "echelon_left",
-                    'triggers': {
+                    'formation': Formations.echelon_right,
+                    'options': {
                         'cycles': 1,
-                        'timer': 1,
-                        'angle': 25,
-                        'base_size': 5,
-                        'altitude_diff': 500,
+                        'timeout': 1,
+                    },
+                    'pattern': {
+                        'heading': 25,
+                        'size': 5,
+                        'altitude_difference': 500,
                     },
                 },
                 {
-                    'way_point_type': {
-                        'type': "attack",
-                    },
+                    'type': RoutePointTypes.attack,
                     'pos': {
                         'x': 99737.30,
                         'y': 79106.06,
                         'z': 500.00,
                     },
                     'speed': 300.00,
-                    'target_code': "0_Chief",
-                    'target_point': 0,
+                    'target': {
+                        'id': "0_Chief",
+                        'route_point': 0,
+                    },
                     'radio_silence': False,
-                    'formation_code': "default",
+                    'formation': None,
                 },
                 {
-                    'way_point_type': {
-                        'type': "landing_straight",
-                    },
+                    'type': RoutePointTypes.landing_straight,
                     'pos': {
                         'x': 185304.27,
                         'y': 54570.12,
@@ -683,11 +679,11 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'speed': 0.00,
                     'radio_silence': True,
-                    'formation_code': "default",
+                    'formation': None,
                 },
             ]
         }
-        self._test_parser(FlightWayParser, '3GvIAP01_Way', lines, expected)
+        self._test_parser(FlightRouteParser, '3GvIAP01_Way', lines, expected)
 
 
 class MDSScoutsParserTestCase(ParserTestCaseMixin, unittest.TestCase):

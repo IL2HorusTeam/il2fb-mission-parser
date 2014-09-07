@@ -10,13 +10,10 @@ import math
 from abc import ABCMeta, abstractmethod
 
 from il2fb.commons import Skills, UnitTypes
+from il2fb.commons.flight import Formations, RoutePointTypes
 from il2fb.commons.organization import AirForces, Belligerents, Regiments
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
-
-from il2fb.parsers.mission.constants import (
-    WAY_POINT_TYPES, WAY_POINT_FORMATIONS,
-)
 
 
 def to_bool(value):
@@ -1013,6 +1010,7 @@ class RocketParser(CollectingParser):
 class WingParser(CollectingParser):
     """
     Parses ``Wing`` section.
+    View :ref:`detailed description <wing-section>`.
     """
 
     def check_section_name(self, section_name):
@@ -1025,6 +1023,7 @@ class WingParser(CollectingParser):
 class FlightInfoParser(ValuesParser):
     """
     Parses settings for a moving flight group.
+    View :ref:`detailed description <flight-info-section>`.
     """
 
     def check_section_name(self, section_name):
@@ -1046,7 +1045,7 @@ class FlightInfoParser(ValuesParser):
 
         try:
             regiment = None
-            air_force = AirForces.get_by_squadron_prefix(prefix)
+            air_force = AirForces.get_by_flight_prefix(prefix)
         except ValueError:
             regiment = Regiments.get_by_code_name(prefix)
             air_force = regiment.air_force
@@ -1111,9 +1110,10 @@ class FlightInfoParser(ValuesParser):
             return self.data.get('spawn{:}'.format(aircraft_id))
 
 
-class FlightWayParser(CollectingParser):
+class FlightRouteParser(CollectingParser):
     """
     Parses ``*_Way`` section.
+    View :ref:`detailed description <flight-route-section>`.
     """
     suffix = "_Way"
 
@@ -1124,84 +1124,76 @@ class FlightWayParser(CollectingParser):
         return section_name[:-len(self.suffix)]
 
     def init_parser(self, section_name):
-        self.data = []
-        self.way_points = {}
+        super(FlightRouteParser, self).init_parser(section_name)
         flight_code = self._extract_flight_code(section_name)
-        self.output_key = "{0}_way_point".format(flight_code)
-
-    def _parse_trigger(self, chunks):
-        amount_params_takeoff = 4
-        if len(chunks) == amount_params_takeoff:
-            (timeout, distance, ) = chunks[1:3]
-            self.way_points.update({
-                'triggers': {
-                    'timeout': int(timeout),
-                    'distance': int(distance),
-                },
-            })
-        else:
-            cycles, timer, angle, base_size, altitude_diff = chunks
-            self.way_points.update({
-                'triggers': {
-                    'cycles': int(cycles),
-                    'timer': int(timer),
-                    'angle': int(angle),
-                    'base_size': int(base_size),
-                    'altitude_diff': int(altitude_diff),
-                },
-            })
-
-    def _get_formation_code(self, chunks):
-        if chunks:
-            (formation_code, ) = chunks
-            return WAY_POINT_FORMATIONS.get(formation_code)
-        else:
-            return "default"
-
-    def _parse_way_point_on_target(self, chunks):
-        target_code, target_point, radio_silence = chunks[:3]
-        chunks = chunks[3:]
-        formation_code = self._get_formation_code(chunks)
-        self.way_points.update({
-            'target_code': target_code,
-            'target_point': int(target_point),
-            'radio_silence': radio_silence == "&1",
-            'formation_code': formation_code,
-        })
-
-    def _parse_way_point_without_target(self, chunks):
-        radio_silence, chunks = chunks[0], chunks[1:]
-        formation_code = self._get_formation_code(chunks)
-        self.way_points.update({
-            'radio_silence': radio_silence == "&1",
-            'formation_code': formation_code,
-        })
+        self.output_key = "{0}_route".format(flight_code)
+        self.route_point = None
 
     def parse_line(self, line):
-        chunks = line.split()
-        way_point_type, chunks = chunks[0], chunks[1:]
-        if way_point_type == "TRIGGERS":
-            self._parse_trigger(chunks)
+        params = line.split()
+        type_code, params = params[0], params[1:]
+        if type_code == "TRIGGERS":
+            self._parse_options(params)
         else:
-            if self.way_points:
-                self.data.append(self.way_points)
-                self.way_points = {}
-            pos, speed, chunks = chunks[0:3], chunks[3], chunks[4:]
-            self.way_points.update({
-                'way_point_type': WAY_POINT_TYPES[way_point_type],
+            self._finalize_current_point()
+            pos, speed, params = params[0:3], params[3], params[4:]
+            self.route_point = {
+                'type': RoutePointTypes.get_by_value(type_code),
                 'pos': to_pos(*pos),
                 'speed': float(speed),
+            }
+            self._parse_extra(params)
+
+    def _parse_options(self, params):
+        try:
+            cycles, timeout, heading, size, altitude_difference = params
+            self.route_point.update({
+                'options': {
+                    'cycles': int(cycles),
+                    'timeout': int(timeout),
+                },
+                'pattern': {
+                    'heading': int(heading),
+                    'size': int(size),
+                    'altitude_difference': int(altitude_difference),
+                },
             })
-            amount_on_target = 2
-            if len(chunks) > amount_on_target:
-                self._parse_way_point_on_target(chunks)
-            else:
-                self._parse_way_point_without_target(chunks)
+        except ValueError:
+            delay, spacing = params[1:3]
+            self.route_point.update({
+                'options': {
+                    'delay': int(delay),
+                    'spacing': int(spacing),
+                },
+            })
+
+    def _parse_extra(self, params):
+        try:
+            target_id, target_route_point, radio_silence = params[:3]
+            params = params[3:]
+            self.route_point.update({
+                'target': {
+                    'id': target_id,
+                    'route_point': int(target_route_point),
+                },
+            })
+        except ValueError:
+            radio_silence = params[0]
+            params = params[1:]
+        finally:
+            formation = Formations.get_by_value(params[0]) if params else None
+            self.route_point.update({
+                'radio_silence': radio_silence == "&1",
+                'formation': formation,
+            })
 
     def process_data(self):
-        if self.way_points:
-            self.data.append(self.way_points)
+        self._finalize_current_point()
         return {self.output_key: self.data}
+
+    def _finalize_current_point(self):
+        if self.route_point:
+            self.data.append(self.route_point)
 
 
 class FileParser(object):
@@ -1230,7 +1222,7 @@ class FileParser(object):
             FrontMarkerParser(),
             RocketParser(),
             WingParser(),
-            FlightWayParser(),
+            FlightRouteParser(),
         ]
         self.flight_info_parser = FlightInfoParser()
 
