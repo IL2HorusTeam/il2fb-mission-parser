@@ -615,7 +615,10 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "TRIGGERS 0 10 20 0",
             "NORMFLY_401 98616.72 78629.31 500.00 300.00 &0 F2",
             "TRIGGERS 1 1 25 5 500",
+            "NORMFLY 63028.34 42772.13 500.00 300.00 r0100 1 &0",
             "GATTACK 99737.30 79106.06 500.00 300.00 0_Chief 0 &0",
+            "GATTACK 74338.61 29746.57 500.00 300.00 4_Static 0 &0",
+            "GATTACK 82387.92 51163.75 500.00 300.00 0_Rocket 0 &0",
             "LANDING_104 185304.27 54570.12 0 0 &1",
         ]
         expected = {
@@ -628,8 +631,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'z': 0.0,
                     },
                     'speed': 0.0,
-                    'radio_silence': False,
                     'formation': None,
+                    'radio_silence': False,
                     'options': {
                         'delay': 10,
                         'spacing': 20,
@@ -643,8 +646,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'z': 500.00,
                     },
                     'speed': 300.00,
-                    'radio_silence': False,
                     'formation': Formations.echelon_right,
+                    'radio_silence': False,
                     'options': {
                         'cycles': 1,
                         'timeout': 1,
@@ -656,7 +659,22 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                 },
                 {
-                    'type': RoutePointTypes.attack,
+                    'type': RoutePointTypes.air_attack,
+                    'pos': {
+                        'x': 63028.34,
+                        'y': 42772.13,
+                        'z': 500.00,
+                    },
+                    'speed': 300.00,
+                    'formation': None,
+                    'target': {
+                        'id': "r0100",
+                        'route_point': 1,
+                    },
+                    'radio_silence': False,
+                },
+                {
+                    'type': RoutePointTypes.ground_attack,
                     'pos': {
                         'x': 99737.30,
                         'y': 79106.06,
@@ -667,8 +685,38 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'id': "0_Chief",
                         'route_point': 0,
                     },
-                    'radio_silence': False,
                     'formation': None,
+                    'radio_silence': False,
+                },
+                {
+                    'type': RoutePointTypes.ground_attack,
+                    'pos': {
+                        'x': 74338.61,
+                        'y': 29746.57,
+                        'z': 500.00,
+                    },
+                    'speed': 300.00,
+                    'target': {
+                        'id': "4_Static",
+                        'route_point': 0,
+                    },
+                    'formation': None,
+                    'radio_silence': False,
+                },
+                {
+                    'type': RoutePointTypes.ground_attack,
+                    'pos': {
+                        'x': 82387.92,
+                        'y': 51163.75,
+                        'z': 500.00,
+                    },
+                    'speed': 300.00,
+                    'target': {
+                        'id': "0_Rocket",
+                        'route_point': 0,
+                    },
+                    'formation': None,
+                    'radio_silence': False,
                 },
                 {
                     'type': RoutePointTypes.landing_straight,
@@ -678,8 +726,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'z': 0.00,
                     },
                     'speed': 0.00,
-                    'radio_silence': True,
                     'formation': None,
+                    'radio_silence': True,
                 },
             ]
         }

@@ -1177,6 +1177,8 @@ class FlightRouteParser(CollectingParser):
                     'route_point': int(target_route_point),
                 },
             })
+            if self.route_point['type'] is RoutePointTypes.normal:
+                self.route_point['type'] = RoutePointTypes.air_attack
         except ValueError:
             radio_silence = params[0]
             params = params[1:]
