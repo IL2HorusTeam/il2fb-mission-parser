@@ -8,7 +8,7 @@ Flight route section
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Flight-route>`_
 
 :class:`~il2fb.parsers.mission.parsers.FlightRouteParser` is responsible for
-parsing section which provide information about route of a single flight.
+parsing sections which provide information about route of a single flight.
 
 Route consists of separate points. Each point is defined on a single line. Lines
 starting with ``TRIGGERS`` keyword indicate options for a point define in the
