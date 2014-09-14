@@ -205,7 +205,7 @@ Output example:
       },
   }
 
-Let's examine defined lined:
+Let's examine defined lines:
 
 ``TAKEOFF_003``
   Type of route point (take-off in line).
@@ -330,7 +330,6 @@ Output example:
 
 Let's examine defined lines:
 
-
 ``NORMFLY_401``
   Type of route point (patrolling using triangle pattern).
 
@@ -420,10 +419,124 @@ Let's examine defined lines:
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
+
 Attack
 ------
 
-.. todo::
+There are 2 kinds of way points which tell AI to attack other units: attack
+ground units and attack air units. Both of them have same parameters, but
+different types. Former one is defined as ``GATTACK`` and the latter as
+``NORMFLY``.
+
+.. note::
+
+  Yes, waypoints which tell AI to attack air units has type ``NORMFLY``, just
+  if it is a normal flight point. This is misleading, so `route point types`_
+  define this type as ``X_AIR_ATTACK``, where ``X`` tells that this is a fake
+  type.
+
+A target is any destroyable object: aircraft, moving vehicle, artillery,
+rocket, static object, etc.
+
+Definition example::
+
+  NORMFLY 63028.34 42772.13 500.00 300.00 r0100 1 &0
+  GATTACK 99737.30 79106.06 500.00 300.00 0_Chief 0 &0
+
+Output example:
+
+.. code-block:: python
+
+  [
+      {
+          'type': <constant 'RoutePointTypes.air_attack'>,
+          'pos': {
+              'x': 63028.34,
+              'y': 42772.13,
+              'z': 500.00,
+          },
+          'speed': 300.00,
+          'formation': None,
+          'target': {
+              'id': "r0100",
+              'route_point': 1,
+          },
+          'radio_silence': False,
+      },
+      {
+          'type': <constant 'RoutePointTypes.ground_attack'>,
+          'pos': {
+              'x': 99737.30,
+              'y': 79106.06,
+              'z': 500.00,
+          },
+          'speed': 300.00,
+          'target': {
+              'id': "0_Chief",
+              'route_point': 0,
+          },
+          'formation': None,
+          'radio_silence': False,
+      },
+  ]
+
+Let's examine second line:
+
+``GATTACK``
+  Type of route point (attack ground unit).
+
+  :Output path: ``type``
+  :Output type: complex constant `route point types`_
+
+``99737.30``
+  X coordinate.
+
+  :Output path: ``pos.x``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``79106.06``
+  Y coordinate.
+
+  :Output path: ``pos.y``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``500.00``
+  Z coordinate.
+
+  :Output path: ``pos.z``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``300.00``
+  Speed.
+
+  :Output path: ``speed``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``0_Chief``
+  ID of the unit to attack.
+
+  :Output path: ``target.id``
+  :Output type: :class:`str`
+  :Output value: original string value
+
+``0``
+  Waypoint number of the unit to attack (not relevant for static objects).
+
+  :Output path: ``target.route_point``
+  :Output type: :class:`int`
+  :Output value: original value converted to integer number
+
+``&0``
+  Tells whether radio silence is enabled for this route point.
+
+  :Output path: ``radio_silence``
+  :Output type: :class:`bool`
+  :Output value: ``True`` if ``&1``, ``False`` otherwise
+
 
 
 Landing
