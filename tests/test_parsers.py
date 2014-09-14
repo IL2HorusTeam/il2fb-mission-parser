@@ -653,8 +653,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'timeout': 1,
                     },
                     'pattern': {
-                        'heading': 25,
-                        'size': 5,
+                        'angle': 25,
+                        'side_size': 5,
                         'altitude_difference': 500,
                     },
                 },

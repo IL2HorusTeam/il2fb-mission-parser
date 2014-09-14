@@ -1,7 +1,8 @@
 IL-2 FB Mission Parser
 ======================
 
-|Build Status| |Coverage Status| |PyPi package| |PyPi downloads|
+|Build Status| |Coverage Status|
+|PyPi package| |PyPi downloads| |Docs| |License|
 
 This is a library for parsing mission file of ``IL-2 Forgotten Battles``. It
 produces detailed information about mission.
@@ -16,8 +17,12 @@ You can dig around `Wiki pages`_ also.
    :target: https://coveralls.io/r/IL2HorusTeam/il2fb-mission-parser?branch=master
 .. |PyPi package| image:: http://img.shields.io/pypi/v/il2fb-mission-parser.svg?style=flat
    :target: http://badge.fury.io/py/il2fb-mission-parser/
-.. |PyPi downloads| image::  http://img.shields.io/pypi/dm/il2fb-mission-parser.svg?style=flat
+.. |PyPi downloads| image:: http://img.shields.io/pypi/dm/il2fb-mission-parser.svg?style=flat
    :target: https://crate.io/packages/il2fb-mission-parser/
+.. |Docs| image:: https://readthedocs.org/projects/il-2-missions-parser/badge/?version=latest&style=flat
+   :target: `read the docs`_
+.. |License| image:: https://img.shields.io/badge/license-LGPLv3-brightgreen.svg?style=flat
+   :target: http://badge.fury.io/py/il2fb-mission-parser/
 
 .. _read the docs: http://il-2-missions-parser.readthedocs.org/en/latest/
 .. _Wiki pages: https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki

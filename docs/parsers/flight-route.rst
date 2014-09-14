@@ -1,7 +1,7 @@
 .. _flight-route-section:
 
 Flight route section
-===================
+====================
 
 .. note::
 
@@ -68,8 +68,8 @@ Output example:
                   'timeout': 1,
               },
               'pattern': {
-                  'heading': 25,
-                  'size': 5,
+                  'angle': 25,
+                  'side_size': 5,
                   'altitude_difference': 500,
               },
           },
@@ -147,6 +147,12 @@ Output example:
       ]
   }
 
+There are 4 different types of route points. Each of them has several subtypes.
+All of them are described as `route point types`_.
+
+Each point has type, X, Y, and Z coordinates, speed, tells about radio silence
+and can have information about air formation.
+
 .. contents::
     :local:
     :depth: 1
@@ -156,14 +162,263 @@ Output example:
 Take-off
 --------
 
-.. todo::
+Take-off includes taxiing and instant takee-off which can have normal, pair and
+line plane aligment. The latter two work off as runway take-off; i.e. planes
+take-off in the direction of the next waypoint.
+
+.. image:: images/take-off_direction.png
+    :alt: Take-off direction
+    :align: center
+
+You can also set the distance between planes on the ground. You can also delay
+the take-off.
+
+If you set normal takeoff, plane position will be snapped to runway as usual if
+the waypoint is less than 1250 m away from the runway. However, flight will
+respect any delay that was set.
+
+You can also specify all of those parameters for carrier take-off, but all
+except the time delay will be ignored.
+
+Definition example::
+
+  TAKEOFF_003 80156.47 47263.58 0 0 &0
+  TRIGGERS 0 2 20 0
+
+Output example:
+
+.. code-block:: python
+
+  {
+      'type': <constant 'RoutePointTypes.takeoff_in_line'>,
+      'speed': 0.0,
+      'pos': {
+          'x': 80156.47,
+          'y': 47263.58,
+          'z': 0.0,
+      },
+      'formation': None,
+      'radio_silence': False,
+      'options': {
+          'delay': 2,
+          'spacing': 20,
+      },
+  }
+
+Let's examine defined lined:
+
+``TAKEOFF_003``
+  Type of route point (take-off in line).
+
+  :Output path: ``type``
+  :Output type: complex constant `route point types`_
+
+``80156.47``
+  X coordinate.
+
+  :Output path: ``pos.x``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``47263.58``
+  Y coordinate.
+
+  :Output path: ``pos.y``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``0``
+  Z coordinate.
+
+  :Output path: ``pos.z``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``0``
+  Speed.
+
+  :Output path: ``speed``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``&0``
+  Tells whether radio silence is enabled for this route point.
+
+  :Output path: ``radio_silence``
+  :Output type: :class:`bool`
+  :Output value: ``True`` if ``&1``, ``False`` otherwise
+
+.. note::
+
+  ``TRIGGERS`` line is not present for normal take-off
+
+``TRIGGERS``
+  Tells that this line contains additional options for previous one.
+
+``0``
+  Is not used for take-off.
+
+``2``
+  Time delay (in minutes)
+
+  :Output path: ``options.delay``
+  :Output type: :class:`int`
+  :Output value: original value converted to integer number
+
+``20``
+  Distance between aircrafts (in meters).
+
+  :Output path: ``options.spacing``
+  :Output type: :class:`int`
+  :Output value: original value converted to integer number
+
+``0``
+  Is not used for take-off.
 
 
 Normal
 ------
 
-.. todo::
+Normal flight mode includes cruising, patrolling, and artillery spotter.
 
+Patrolling will establish circling movement in a particular pattern (triangle,
+square, etc.). You can adjust orientation of the pattern (direction of first
+waypoint in the pattern), side size (in km) and altitude difference from
+waypoint to waypoint (climbing or descending pattern).
+
+.. image:: images/flight-pattern.png
+    :alt: Flight pattern
+    :align: center
+
+If number of cycles or timer are set, they will tell AI when to exit the pattern
+and continue with subsequent waypoints. They work as OR logic, so whichever
+comes first will make the AI exit the cycle. Zero value for either of the two
+parameters means that this trigger is ignored.
+
+Waypoints with type ``artillery spotter`` have such parameters as number of
+cycles, timer, direction and side size. However, they do not have any effect.
+
+Definition example::
+
+  NORMFLY_401 98616.72 78629.31 500.00 300.00 &0 F2
+  TRIGGERS 1 1 25 5 500
+
+Output example:
+
+.. code-block:: python
+
+  {
+      'type': <constant 'RoutePointTypes.patrol_triangle'>,
+      'pos': {
+          'x': 98616.72,
+          'y': 98616.72,
+          'z': 500.00,
+      },
+      'speed': 300.00,
+      'formation': <constant 'Formations.echelon_right'>,
+      'radio_silence': False,
+      'options': {
+          'cycles': 1,
+          'timeout': 1,
+      },
+      'pattern': {
+          'angle': 25,
+          'side_size': 5,
+          'altitude_difference': 500,
+      },
+  }
+
+Let's examine defined lines:
+
+
+``NORMFLY_401``
+  Type of route point (patrolling using triangle pattern).
+
+  :Output path: ``type``
+  :Output type: complex constant `route point types`_
+
+``98616.72``
+  X coordinate.
+
+  :Output path: ``pos.x``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``98616.72``
+  Y coordinate.
+
+  :Output path: ``pos.y``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``500.00``
+  Z coordinate.
+
+  :Output path: ``pos.z``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``300.00``
+  Speed.
+
+  :Output path: ``speed``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``&0``
+  Tells whether radio silence is enabled for this route point.
+
+  :Output path: ``radio_silence``
+  :Output type: :class:`bool`
+  :Output value: ``True`` if ``&1``, ``False`` otherwise
+
+``F2``
+  Type of air formation (echelon right).
+
+  :Output path: ``formation``
+  :Output type: complex constant `air formations`_ or ``None``
+
+.. note::
+
+  ``TRIGGERS`` line is not present for normal flight
+
+``TRIGGERS``
+  Tells that this line contains additional options for previous one.
+
+``1``
+  Number of cycles to repeat.
+
+  :Output path: ``options.cycles``
+  :Output type: :class:`int`
+  :Output value: original value converted to integer number
+
+``2``
+  Timeout (in minutes).
+
+  :Output path: ``options.timeout``
+  :Output type: :class:`int`
+  :Output value: original value converted to integer number
+
+``25``
+  Angle of pattern (in degrees).
+
+  :Output path: ``pattern.angle``
+  :Output type: :class:`int`
+  :Output value: original value converted to integer number
+
+``5``
+  Size of pattern's side (in km).
+
+  :Output path: ``pattern.side_size``
+  :Output type: :class:`int`
+  :Output value: original value converted to integer number
+
+``500``
+  Altitude difference (in meters).
+
+  :Output path: ``pattern.altitude_difference``
+  :Output type: :class:`int`
+  :Output value: original value converted to integer number
 
 Attack
 ------
@@ -175,3 +430,7 @@ Landing
 -------
 
 .. todo::
+
+
+.. _route point types: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/flight.py#L20
+.. _air formations: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/flight.py#L10

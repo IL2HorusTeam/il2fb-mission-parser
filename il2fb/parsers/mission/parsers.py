@@ -1146,15 +1146,15 @@ class FlightRouteParser(CollectingParser):
 
     def _parse_options(self, params):
         try:
-            cycles, timeout, heading, size, altitude_difference = params
+            cycles, timeout, angle, side_size, altitude_difference = params
             self.route_point.update({
                 'options': {
                     'cycles': int(cycles),
                     'timeout': int(timeout),
                 },
                 'pattern': {
-                    'heading': int(heading),
-                    'size': int(size),
+                    'angle': int(angle),
+                    'side_size': int(side_size),
                     'altitude_difference': int(altitude_difference),
                 },
             })
