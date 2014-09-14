@@ -542,8 +542,83 @@ Let's examine second line:
 Landing
 -------
 
-.. todo::
+For landing you can choose one of the 5 landing patterns:
 
+* right;
+* left;
+* short right;
+* short left;
+* straight in.
+
+``Left`` pattern is the default pattern used in versions of the game before
+4.12. The ``straight in`` landing is rather tricky to get correct and can cause
+planes to crash into each other. You can set several flights with different
+pattern to land on the same airfield. AI seems to handle this fairly well, but
+there are no guarantees that they will not collide. All settings are ignored if
+the flight is landing on a carrier (i.e. they use default ``left`` pattern).
+
+Definition example::
+
+  LANDING_104 185304.27 54570.12 0 0 &1
+
+Output example:
+
+.. code-block:: python
+
+  {
+      'type': <constant 'RoutePointTypes.landing_straight'>,
+      'pos': {
+          'x': 185304.27,
+          'y': 54570.12,
+          'z': 0.00,
+      },
+      'speed': 0.00,
+      'formation': None,
+      'radio_silence': True,
+  }
+
+Description:
+
+``LANDING_104``
+  Type of route point (landing using ``straight`` pattern).
+
+  :Output path: ``type``
+  :Output type: complex constant `route point types`_
+
+``185304.27``
+  X coordinate.
+
+  :Output path: ``pos.x``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``54570.12``
+  Y coordinate.
+
+  :Output path: ``pos.y``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``0``
+  Z coordinate.
+
+  :Output path: ``pos.z``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``0``
+  Speed.
+
+  :Output path: ``speed``
+  :Output type: :class:`float`
+  :Output value: original value converted to float number
+
+``&1``
+  Tells whether radio silence is enabled for this route point.
+
+  :Output path: ``radio_silence``
+  :Output type: :class:`bool`
+  :Output value: ``True`` if ``&1``, ``False`` otherwise
 
 .. _route point types: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/flight.py#L20
 .. _air formations: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/flight.py#L10
