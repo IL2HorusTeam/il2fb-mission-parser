@@ -538,7 +538,6 @@ Let's examine second line:
   :Output value: ``True`` if ``&1``, ``False`` otherwise
 
 
-
 Landing
 -------
 
@@ -619,6 +618,7 @@ Description:
   :Output path: ``radio_silence``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``&1``, ``False`` otherwise
+
 
 .. _route point types: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/flight.py#L20
 .. _air formations: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/flight.py#L10
