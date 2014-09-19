@@ -570,7 +570,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'y': 114216.82,
                     },
                     'rotation_angle': 360.00,
-                    'waiting_time': 60.0,
+                    'delay': 60.0,
                     'count': 10,
                     'period': 80.0,
                     'destination': {
@@ -587,7 +587,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'y': 114216.82,
                     },
                     'rotation_angle': 360.00,
-                    'waiting_time': 60.0,
+                    'delay': 60.0,
                     'count': 10,
                     'period': 80.0,
                     'destination': None,
@@ -841,7 +841,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'type': TargetTypes.destroy,
                     'priority': TargetPriorities.primary,
                     'in_sleep_mode': False,
-                    'waiting_time': 0,
+                    'delay': 0,
                     'destruction_level': 50,
                     'pos': {
                         'x': 90939.0,
@@ -874,7 +874,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'type': TargetTypes.destroy_area,
                     'priority': TargetPriorities.secondary,
                     'in_sleep_mode': True,
-                    'waiting_time': 60,
+                    'delay': 60,
                     'destruction_level': 75,
                     'pos': {
                         'x': 133960.0,
@@ -900,7 +900,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'type': TargetTypes.destroy_bridge,
                     'priority': TargetPriorities.hidden,
                     'in_sleep_mode': True,
-                    'waiting_time': 30,
+                    'delay': 30,
                     'pos': {
                         'x': 135786.0,
                         'y': 84596.0,
@@ -932,7 +932,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'type': TargetTypes.recon,
                     'priority': TargetPriorities.secondary,
                     'in_sleep_mode': True,
-                    'waiting_time': 50,
+                    'delay': 50,
                     'requires_landing': False,
                     'pos': {
                         'x': 133978.0,
@@ -944,7 +944,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'type': TargetTypes.recon,
                     'priority': TargetPriorities.primary,
                     'in_sleep_mode': True,
-                    'waiting_time': 40,
+                    'delay': 40,
                     'requires_landing': True,
                     'pos': {
                         'x': 134459.0,
@@ -978,7 +978,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'type': TargetTypes.escort,
                     'priority': TargetPriorities.primary,
                     'in_sleep_mode': True,
-                    'waiting_time': 10,
+                    'delay': 10,
                     'destruction_level': 75,
                     'pos': {
                         'x': 134183.0,
@@ -1011,7 +1011,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'type': TargetTypes.cover,
                     'priority': TargetPriorities.secondary,
                     'in_sleep_mode': True,
-                    'waiting_time': 20,
+                    'delay': 20,
                     'destruction_level': 25,
                     'pos': {
                         'x': 132865.0,
@@ -1044,7 +1044,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'type': TargetTypes.cover_area,
                     'priority': TargetPriorities.secondary,
                     'in_sleep_mode': True,
-                    'waiting_time': 30,
+                    'delay': 30,
                     'destruction_level': 50,
                     'pos': {
                         'x': 134064.0,
@@ -1070,7 +1070,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'type': TargetTypes.cover_bridge,
                     'priority': TargetPriorities.hidden,
                     'in_sleep_mode': True,
-                    'waiting_time': 30,
+                    'delay': 30,
                     'pos': {
                         'x': 135896.0,
                         'y': 84536.0,

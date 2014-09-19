@@ -679,15 +679,15 @@ class TargetParser(CollectingParser):
     def parse_line(self, line):
         params = line.split()
 
-        type_code, priority, sleep_mode, waiting_time = params[:4]
+        type_code, priority, in_sleep_mode, delay = params[:4]
         params = params[4:]
 
         target_type = TargetTypes.get_by_value(int(type_code))
         target = {
             'type': target_type,
             'priority': TargetPriorities.get_by_value(int(priority)),
-            'in_sleep_mode': to_bool(sleep_mode),
-            'waiting_time': int(waiting_time),
+            'in_sleep_mode': to_bool(in_sleep_mode),
+            'delay': int(delay),
         }
 
         subparser = TargetParser.subparsers.get(target_type)
@@ -988,7 +988,7 @@ class RocketParser(CollectingParser):
 
         oid, code, belligerent = params[0:3]
         pos = params[3:5]
-        rotation_angle, waiting_time, count, period = params[5:9]
+        rotation_angle, delay, count, period = params[5:9]
         destination = params[9:]
 
         self.data.append({
@@ -997,7 +997,7 @@ class RocketParser(CollectingParser):
             'belligerent': to_belligerent(belligerent),
             'pos': to_pos(*pos),
             'rotation_angle': float(rotation_angle),
-            'waiting_time': float(waiting_time),
+            'delay': float(delay),
             'count': int(count),
             'period': float(period),
             'destination': to_pos(*destination) if destination else None

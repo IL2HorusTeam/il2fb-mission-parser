@@ -27,7 +27,7 @@ Output example:
               'type': <constant 'TargetTypes.recon'>,
               'priority': <constant 'TargetPriorities.secondary'>,
               'in_sleep_mode': True,
-              'waiting_time': 50,
+              'delay': 50,
               'requires_landing': False,
               'pos': {
                   'x': 133978.0,
@@ -39,7 +39,7 @@ Output example:
               'type': <constant 'TargetTypes.recon'>,
               'priority': <constant 'TargetPriorities.primary'>,
               'in_sleep_mode': True,
-              'waiting_time': 40,
+              'delay': 40,
               'requires_landing': True,
               'pos': {
                   'x': 134459.0,
@@ -88,7 +88,7 @@ Output example:
               'type': <constant 'TargetTypes.destroy'>,
               'priority': <constant 'TargetPriorities.primary'>,
               'in_sleep_mode': False,
-              'waiting_time': 0,
+              'delay': 0,
               'destruction_level': 50,
               'pos': {
                   'x': 90939.0,
@@ -126,9 +126,9 @@ Output example:
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 ``0``
-  Waiting time (in minutes).
+  Delay (in minutes).
 
-  :Output path: ``waiting_time``
+  :Output path: ``delay``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
@@ -202,7 +202,7 @@ Output example:
               'type': <constant 'TargetTypes.destroy_area'>,
               'priority': <constant 'TargetPriorities.secondary'>,
               'in_sleep_mode': True,
-              'waiting_time': 60,
+              'delay': 60,
               'destruction_level': 75,
               'pos': {
                   'x': 133960.0,
@@ -233,9 +233,9 @@ Output example:
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 ``60``
-  Waiting time (in minutes).
+  Delay (in minutes).
 
-  :Output path: ``waiting_time``
+  :Output path: ``delay``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
@@ -285,7 +285,7 @@ Output example:
               'type': <constant 'TargetTypes.destroy_bridge'>,
               'priority': <constant 'TargetPriorities.hidden'>,
               'in_sleep_mode': True,
-              'waiting_time': 30,
+              'delay': 30,
               'pos': {
                   'x': 135786.0,
                   'y': 84596.0,
@@ -321,9 +321,9 @@ Output example:
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 ``30``
-  Waiting time (in minutes).
+  Delay (in minutes).
 
-  :Output path: ``waiting_time``
+  :Output path: ``delay``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
@@ -390,7 +390,7 @@ Output example:
               'type': <constant 'TargetTypes.recon'>,
               'priority': <constant 'TargetPriorities.secondary'>,
               'in_sleep_mode': True,
-              'waiting_time': 50,
+              'delay': 50,
               'requires_landing': False,
               'pos': {
                   'x': 133978.0,
@@ -402,7 +402,7 @@ Output example:
               'type': <constant 'TargetTypes.recon'>,
               'priority': <constant 'TargetPriorities.primary'>,
               'in_sleep_mode': True,
-              'waiting_time': 40,
+              'delay': 40,
               'requires_landing': True,
               'pos': {
                   'x': 134459.0,
@@ -443,9 +443,9 @@ Let's examine second definition:
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 ``40``
-  Waiting time (in minutes).
+  Delay (in minutes).
 
-  :Output path: ``waiting_time``
+  :Output path: ``delay``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
@@ -523,7 +523,7 @@ Output example:
             'type': <constant 'TargetTypes.escort'>,
             'priority': <constant 'TargetPriorities.primary'>,
             'in_sleep_mode': True,
-            'waiting_time': 10,
+            'delay': 10,
             'destruction_level': 75,
             'pos': {
                 'x': 134183.0,
@@ -561,9 +561,9 @@ Output example:
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 ``10``
-  Waiting time (in minutes).
+  Delay (in minutes).
 
-  :Output path: ``waiting_time``
+  :Output path: ``delay``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
@@ -637,7 +637,7 @@ Output example:
               'type': <constant 'TargetTypes.cover'>,
               'priority': <constant 'TargetPriorities.secondary'>,
               'in_sleep_mode': True,
-              'waiting_time': 20,
+              'delay': 20,
               'destruction_level': 25,
               'pos': {
                   'x': 132865.0,
@@ -676,9 +676,9 @@ Output example:
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 ``20``
-  Waiting time (in minutes).
+  Delay (in minutes).
 
-  :Output path: ``waiting_time``
+  :Output path: ``delay``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
@@ -752,7 +752,7 @@ Output example:
               'type': <constant 'TargetTypes.cover_area'>,
               'priority': <constant 'TargetPriorities.secondary'>,
               'in_sleep_mode': True,
-              'waiting_time': 30,
+              'delay': 30,
               'destruction_level': 50,
               'pos': {
                   'x': 134064.0,
@@ -783,9 +783,9 @@ Output example:
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 ``30``
-  Waiting time (in minutes).
+  Delay (in minutes).
 
-  :Output path: ``waiting_time``
+  :Output path: ``delay``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
@@ -835,7 +835,7 @@ Output example:
               'type': <constant 'TargetTypes.cover_bridge'>,
               'priority': <constant 'TargetPriorities.hidden'>,
               'in_sleep_mode': True,
-              'waiting_time': 30,
+              'delay': 30,
               'pos': {
                   'x': 135896.0,
                   'y': 84536.0,
@@ -871,9 +871,9 @@ Output example:
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 ``30``
-  Waiting time (in minutes).
+  Delay (in minutes).
 
-  :Output path: ``waiting_time``
+  :Output path: ``delay``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 

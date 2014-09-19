@@ -32,7 +32,7 @@ Output example:
                   'y': 114216.82,
               },
               'rotation_angle': 360.00,
-              'waiting_time': 60.0,
+              'delay': 60.0,
               'count': 10,
               'period': 80.0,
               'destination': {
@@ -49,7 +49,7 @@ Output example:
                   'y': 114216.82,
               },
               'rotation_angle': 360.00,
-              'waiting_time': 60.0,
+              'delay': 60.0,
               'count': 10,
               'period': 80.0,
               'destination': None,
@@ -109,10 +109,10 @@ Let's examine first line.
   :Output value: original value converted to float number
 
 ``60.0``
-  Waiting time (in minutes): this parameter tells how much a rocket have to wait
-  until it will be launched.
+  Delay (in minutes): this parameter tells how much a rocket have to wait until
+  it will be launched.
 
-  :Output path: ``waiting_time``
+  :Output path: ``delay``
   :Output type: :class:`float`
   :Output value: original value converted to float number
 
