@@ -532,7 +532,7 @@ class ChiefRoadParser(CollectingParser):
         is_check_point = bool(params)
         way_point['is_check_point'] = is_check_point
         if is_check_point:
-            way_point['waiting_time'] = int(params[0])
+            way_point['delay'] = int(params[0])
             way_point['section_length'] = int(params[1])
             way_point['speed'] = float(params[2])
 

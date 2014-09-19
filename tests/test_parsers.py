@@ -779,7 +779,7 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'section_length': 2,
                     'speed': 3.055555582046509,
-                    'waiting_time': 10,
+                    'delay': 10,
                 },
                 {
                     'is_check_point': False,
@@ -796,7 +796,7 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'section_length': 3,
                     'speed': 2.6388890743255615,
-                    'waiting_time': 0,
+                    'delay': 0,
                 },
                 {
                     'is_check_point': False,

@@ -36,7 +36,7 @@ Output example:
                 },
                 'section_length': 2,
                 'speed': 3.055555582046509,
-                'waiting_time': 10,
+                'delay': 10,
             },
             {
                 'is_check_point': False,
@@ -53,7 +53,7 @@ Output example:
                 },
                 'section_length': 3,
                 'speed': 2.6388890743255615,
-                'waiting_time': 0,
+                'delay': 0,
             },
             {
                 'is_check_point': False,
@@ -133,10 +133,10 @@ included::
   :Output path: this value is not present in the output.
 
 ``10``
-  Waiting time (in minutes): this parameter tells how much a unit have to wait
-  until it starts movement to the next user-defined point.
+  Delay (in minutes): this parameter tells how much a unit have to wait until
+  it starts movement to the next user-defined point.
 
-  :Output path: ``waiting_time``
+  :Output path: ``delay``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
