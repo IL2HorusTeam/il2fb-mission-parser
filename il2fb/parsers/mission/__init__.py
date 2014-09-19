@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from il2fb.parsers.mission.parsers import FileParser
+from .parsers import FileParser
 
 
 parse = FileParser().parse
