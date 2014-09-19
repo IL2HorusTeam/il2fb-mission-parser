@@ -24,10 +24,10 @@ kind of section in mission files (see :doc:`all of them <output_format>`).
 
 The function :func:`~il2fb.parsers.mission.parse`, which was used above, is a
 reference to :meth:`~il2fb.parsers.mission.parsers.FileParser.parse` method
-which belongs to :class:`~il2fb.parsers.mission.parsers.FileParser`. This parser
-as a swiss-knife combines all of the other parsers in itself, processes the
-whole mission file and gives all you need in one time. Nevertheless you can use
-any other parser for your needs.
+which belongs to :class:`~il2fb.parsers.mission.parsers.FileParser`. This
+parser as a swiss-knife combines all of the other parsers in itself, processes
+the whole mission file and gives all you need in one time. Nevertheless you can
+use any other parser for your needs.
 
 Manual parsing
 ^^^^^^^^^^^^^^

@@ -35,9 +35,9 @@ Output example:
 
 **Description**:
 
-The output of the parser is a dictionary with a single item. It is accessible by
-``cameras`` key. The value is a list of dictionaries. Each dictionary represents
-a single camera.
+The output of the parser is a dictionary with a single item. It is accessible
+by ``cameras`` key. The value is a list of dictionaries. Each dictionary
+represents a single camera.
 
 ``38426``
   X coordinate.

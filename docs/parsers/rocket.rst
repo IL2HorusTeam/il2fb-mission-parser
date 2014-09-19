@@ -58,9 +58,9 @@ Output example:
   }
 
 
-The output of the parser is a dictionary with a single item. It is accessible by
-``rockets`` key. The value is a list of dictionaries. Each dictionary represents
-a single rocket.
+The output of the parser is a dictionary with a single item. It is accessible
+by ``rockets`` key. The value is a list of dictionaries. Each dictionary
+represents a single rocket.
 
 A line can have 2 optional parameters: X and Y destination coordinates.
 

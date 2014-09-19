@@ -8,8 +8,8 @@ Chiefs section
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Chiefs>`_
 
 :class:`~il2fb.parsers.mission.parsers.ChiefsParser` is responsible for parsing
-``Chiefs`` section. It describes moving objects or their groups. Each of them is
-defined on a separate line. There are 4 types of moving objects:
+``Chiefs`` section. It describes moving objects or their groups. Each of them
+is defined on a separate line. There are 4 types of moving objects:
 
 #. usual vehicles;
 #. armored vehicles;
@@ -65,9 +65,9 @@ Output example:
 
 **Description**:
 
-The output of the parser is a dictionary with a single item. It is accessible by
-``chiefs`` key. The value is a list of of dictionaries containing information
-about each object.
+The output of the parser is a dictionary with a single item. It is accessible
+by ``chiefs`` key. The value is a list of of dictionaries containing
+information about each object.
 
 
 Common parameters
@@ -116,8 +116,8 @@ Ships have 3 extra parameters. Let's see an example::
 
     3_Chief Ships.G5 1 60 3 2.0
 
-First 3 parameters are similar to the ones described above. The other parameters
-are:
+First 3 parameters are similar to the ones described above. The other
+parameters are:
 
 ``60``
   Hibernation time (in minutes): during this time a ship will be inactive.

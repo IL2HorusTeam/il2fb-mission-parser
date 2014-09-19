@@ -31,8 +31,8 @@ Output example:
       ],
   }
 
-The output of the parser is a dictionary with a single item. It is accessible by
-``homebase_air_forces_N`` key, where ``N`` is original homebase number. The value
-is a list of `air forces`_.
+The output of the parser is a dictionary with a single item. It is accessible
+by ``homebase_air_forces_N`` key, where ``N`` is original homebase number. The
+value is a list of `air forces`_.
 
 .. _air forces: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L89

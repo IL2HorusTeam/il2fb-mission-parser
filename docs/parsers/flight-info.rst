@@ -12,8 +12,8 @@ parsing sections which provide information about aircrafts in a single flight.
 That information includes general data about all aircrafts and it can include
 data about individual aircrafts.
 
-The output of the parser is a dictionary with a single item. It is accessible by
-``FLIGHT_ID_info`` key, where ``FLIGHT_ID`` is an ID of the flight which is
+The output of the parser is a dictionary with a single item. It is accessible
+by ``FLIGHT_ID_info`` key, where ``FLIGHT_ID`` is an ID of the flight which is
 listed in :ref:`wing-section`. The value is a dictionary with information about
 flight.
 
@@ -36,8 +36,8 @@ is default prefix for that air force (see the
 
 Two digits in the flight ID mean squadron and flight number respectively. Both
 of them use zero-based numbering, so ``00`` means 1st squadron, 1st flight.
-There can be up to 4 squadrons in a regiment with up to 4 flights in a squadron.
-Code of the 4th flight in the 4th squadron will be ``33``.
+There can be up to 4 squadrons in a regiment with up to 4 flights in a
+squadron. Code of the 4th flight in the 4th squadron will be ``33``.
 
 Parser's output contains air force, regiment, squadron and flight number:
 
@@ -279,9 +279,9 @@ Output example:
         },
     }
 
-As you can see from the previous examples, parsed individual aircraft parameters
-are stored in ``aircrafts`` list. Each element of this list is a dictionary with
-information about a single aircraft.
+As you can see from the previous examples, parsed individual aircraft
+parameters are stored in ``aircrafts`` list. Each element of this list is a
+dictionary with information about a single aircraft.
 
 Aircraft ID is accessed by ``id`` key. ID is a number in range 0-3.
 

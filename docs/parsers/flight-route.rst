@@ -10,12 +10,12 @@ Flight route section
 :class:`~il2fb.parsers.mission.parsers.FlightRouteParser` is responsible for
 parsing sections which provide information about route of a single flight.
 
-Route consists of separate points. Each point is defined on a single line. Lines
-starting with ``TRIGGERS`` keyword indicate options for a point define in the
-previous line.
+Route consists of separate points. Each point is defined on a single line.
+Lines starting with ``TRIGGERS`` keyword indicate options for a point define in
+the previous line.
 
-The output of the parser is a dictionary with a single item. It is accessible by
-``FLIGHT_ID_route`` key, where ``FLIGHT_ID`` is an ID of the flight which is
+The output of the parser is a dictionary with a single item. It is accessible
+by ``FLIGHT_ID_route`` key, where ``FLIGHT_ID`` is an ID of the flight which is
 listed in :ref:`wing-section`. The value is a list of dictionaries, where each
 dictionary represents a single point of route.
 
@@ -290,10 +290,10 @@ waypoint to waypoint (climbing or descending pattern).
     :alt: Flight pattern
     :align: center
 
-If number of cycles or timer are set, they will tell AI when to exit the pattern
-and continue with subsequent waypoints. They work as OR logic, so whichever
-comes first will make the AI exit the cycle. Zero value for either of the two
-parameters means that this trigger is ignored.
+If number of cycles or timer are set, they will tell AI when to exit the
+pattern and continue with subsequent waypoints. They work as OR logic, so
+whichever comes first will make the AI exit the cycle. Zero value for either of
+the two parameters means that this trigger is ignored.
 
 Waypoints with type ``artillery spotter`` have such parameters as number of
 cycles, timer, direction and side size. However, they do not have any effect.

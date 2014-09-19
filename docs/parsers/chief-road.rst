@@ -74,12 +74,12 @@ Output example:
 
 **Description**:
 
-Each line in ``N_Chief_Road`` section describes a single waypoint. There are two
-types of waypoints: created by user and created automatically by full mission
-editor.
+Each line in ``N_Chief_Road`` section describes a single waypoint. There are
+two types of waypoints: created by user and created automatically by full
+mission editor.
 
-The output of the parser is a dictionary with a single item. The key is the name
-of the section and the value is a list of dictionaries. Each dictionary
+The output of the parser is a dictionary with a single item. The key is the
+name of the section and the value is a list of dictionaries. Each dictionary
 represents a single waypoint.
 
 Manually created waipoints have 6 parameters, while auto-created ones have only
@@ -122,8 +122,8 @@ included::
   #. vehicles: the value for all manual waypoints is set to ``120.0``.
      the value for auto-created waypoint can be set to ``20.0`` or ``120.0``.
      The former value tells that the point belongs to a road. The latter one
-     tells that the point is located in the off-road. Negative values tell about
-     start or end of a bridge. Usually, negative values come in pairs.
+     tells that the point is located in the off-road. Negative values tell
+     about start or end of a bridge. Usually, negative values come in pairs.
   #. trains: all waypoints have the value of ``20.0``. This means that trains
      can move only by railways. Negative values tell about start or end of a
      bridge. Usually, negative values come in pairs.
@@ -149,8 +149,8 @@ included::
   :Output value: original value converted to integer number
 
 ``3.055555582046509``
-  The speed of the unit at the current point of the route. This parameter is set
-  automatically by full missions editor depending on the unit type.
+  The speed of the unit at the current point of the route. This parameter is
+  set automatically by full missions editor depending on the unit type.
 
   :Output path: ``speed``
   :Output type: :class:`float`

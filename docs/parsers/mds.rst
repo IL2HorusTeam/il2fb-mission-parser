@@ -8,8 +8,8 @@ MDS section
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-MDS>`_
 
 :class:`~il2fb.parsers.mission.parsers.MDSParser` is responsible for parsing
-``MDS`` section. It contains one key-value pair per each line. Section describes
-Fog of War (FoW), AI and some other settings.
+``MDS`` section. It contains one key-value pair per each line. Section
+describes Fog of War (FoW), AI and some other settings.
 
 .. note::
 
@@ -103,9 +103,9 @@ Radar
 ``MDS_Radar_SetRadarToAdvanceMode``
   Sets FoW to advanced mode: if this option is enabled, ALL FoW spotters on the
   map will show only those planes that are located inside assigned range &
-  height limits. Range parameters are set for each home base object individually
-  under home base ``Base FoW`` tab. If option is not set, player's side will see
-  units' icons as long as it has at least one live radar.
+  height limits. Range parameters are set for each home base object
+  individually under home base ``Base FoW`` tab. If option is not set, player's
+  side will see units' icons as long as it has at least one live radar.
 
   :Output path: ``radar.advance_mode``
   :Output type: :class:`bool`
@@ -320,8 +320,8 @@ Other
 ``MDS_Radar_DisableVectoring``
   Disables two vectoring commands from ground control orders menu:
   ``Vector to target`` and ``Vector to home``. This can simulate early war
-  scenarios where own planes couldn't be tracked by means of radar, Y-Verfahren,
-  etc. Works also in single player & coop missions.
+  scenarios where own planes couldn't be tracked by means of radar,
+  Y-Verfahren, etc. Works also in single player & coop missions.
 
   :Output path: ``vectoring``
   :Output type: :class:`bool`

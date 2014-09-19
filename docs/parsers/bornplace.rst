@@ -69,9 +69,9 @@ Output example:
 
 **Description**:
 
-The output of the parser is a dictionary with a single item. It is accessible by
-``homebases`` key. The value is a list of of dictionaries containing information
-about each homebase.
+The output of the parser is a dictionary with a single item. It is accessible
+by ``homebases`` key. The value is a list of of dictionaries containing
+information about each homebase.
 
 ``1``
   Code number of army the object belongs to.

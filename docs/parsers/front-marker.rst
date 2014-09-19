@@ -35,13 +35,13 @@ Output example:
 
 **Description**:
 
-The output of the parser is a dictionary with a single item. It is accessible by
-``markers`` key. The value is a list of dictionaries. Each dictionary represents
-a single front marker.
+The output of the parser is a dictionary with a single item. It is accessible
+by ``markers`` key. The value is a list of dictionaries. Each dictionary
+represents a single front marker.
 
 ``FrontMarker0``
-  Marker ID which is given by full mission editor. Contains ``FrontMarker`` word
-  suffixed by a sequence number.
+  Marker ID which is given by full mission editor. Contains ``FrontMarker``
+  word suffixed by a sequence number.
 
   :Output path: ``id``
   :Output type: :class:`str`

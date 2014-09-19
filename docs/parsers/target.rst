@@ -58,9 +58,9 @@ Output example:
       ],
   }
 
-The output of the parser is a dictionary with a single item. It is accessible by
-``targets`` key. The value is a list of dictionaries. Each dictionary represents
-a single target.
+The output of the parser is a dictionary with a single item. It is accessible
+by ``targets`` key. The value is a list of dictionaries. Each dictionary
+represents a single target.
 
 There are 8 different types of targets and 3 types of target priorities. Some
 different types of targets have identical sets of parameters.

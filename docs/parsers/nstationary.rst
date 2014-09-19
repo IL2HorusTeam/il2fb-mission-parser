@@ -86,8 +86,8 @@ Output example:
   }
 
 
-The output of the parser is a dictionary with a single item. It is accessible by
-``stationary`` key. The value is a list of dictionaries. Each dictionary
+The output of the parser is a dictionary with a single item. It is accessible
+by ``stationary`` key. The value is a list of dictionaries. Each dictionary
 represents a single object.
 
 Set of parameters may differ for different unit types:
@@ -154,8 +154,8 @@ Definition example::
   :Output value: original value converted to float number
 
 ``0.0``
-  This parameter is not used in common case. It has a meaning only for artillery
-  objects (see below).
+  This parameter is not used in common case. It has a meaning only for
+  artillery objects (see below).
 
 Artillery-specific parameters
 -----------------------------

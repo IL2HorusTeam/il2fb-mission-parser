@@ -37,8 +37,8 @@ Output example:
 
 **Description**:
 
-The output of the parser is a dictionary with a single item. It is accessible by
-``buildings`` key. The value is a list of dictionaries. Each dictionary
+The output of the parser is a dictionary with a single item. It is accessible
+by ``buildings`` key. The value is a list of dictionaries. Each dictionary
 represents a single house.
 
 ``0_bld``

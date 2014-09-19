@@ -32,6 +32,6 @@ Output example:
       ],
   }
 
-The output of the parser is a dictionary with a single item. It is accessible by
-``flights`` key. The value is a list of strings, where a each line represents
-a single flight ID.
+The output of the parser is a dictionary with a single item. It is accessible
+by ``flights`` key. The value is a list of strings, where a each line
+represents a single flight ID.
