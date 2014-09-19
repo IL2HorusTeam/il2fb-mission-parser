@@ -485,9 +485,9 @@ class ChiefsParser(CollectingParser):
             'belligerent': to_belligerent(belligerent),
         }
         if params:
-            waiting_time, skill, recharge_time = params
+            hibernation, skill, recharge_time = params
             chief.update({
-                'waiting_time': int(waiting_time),
+                'hibernation': int(hibernation),
                 'skill': to_skill(skill),
                 'recharge_time': float(recharge_time),
             })

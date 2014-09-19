@@ -57,7 +57,7 @@ Output example:
                 'code': "G5",
                 'recharge_time': 2.0,
                 'skill': <constant 'Skills.ace'>,
-                'waiting_time': 60,
+                'hibernation': 60,
                 'type': <constant 'UnitTypes.ship'>,
             },
         ],
@@ -120,10 +120,10 @@ First 3 parameters are similar to the ones described above. The other parameters
 are:
 
 ``60``
-  Waiting time (in minutes): during this time a ship will be inactive. After
-  that it will start following own route.
+  Hibernation time (in minutes): during this time a ship will be inactive.
+  After that it will start following own route.
 
-  :Output path: ``waiting_time``
+  :Output path: ``hibernation``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
