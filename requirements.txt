@@ -4,4 +4,5 @@
 #
 #     pip install -r requirements.pip
 
-il2fb-commons >= 0.9.5
+il2fb-commons>=0.9.5
+six>=1.8.0

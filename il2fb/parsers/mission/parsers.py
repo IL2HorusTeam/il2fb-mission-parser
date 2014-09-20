@@ -6,6 +6,8 @@ parse a whole mission file or to parse a single given section as well.
 """
 import datetime
 import math
+import six
+import sys
 
 from abc import ABCMeta, abstractmethod
 
@@ -14,6 +16,8 @@ from il2fb.commons.flight import Formations, RoutePointTypes
 from il2fb.commons.organization import AirForces, Belligerents, Regiments
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
+
+from .exceptions import MissionParsingError
 
 
 def to_bool(value):
@@ -1231,7 +1235,7 @@ class FileParser(object):
     def parse(self, file_path):
         parser = None
 
-        def safely_stop_parser():
+        def _finalize_parser():
             if parser:
                 self.data.update(parser.stop())
 
@@ -1239,12 +1243,22 @@ class FileParser(object):
             for line in f:
                 line = line.strip()
                 if self.has_section_name(line):
-                    safely_stop_parser()
+                    _finalize_parser()
                     section_name = self.get_section_name(line)
                     parser = self.get_parser(section_name)
                 elif parser:
-                    parser.parse_line(line)
-            safely_stop_parser()
+                    try:
+                        parser.parse_line(line)
+                    except Exception:
+                        error_type, original_msg, traceback = sys.exc_info()
+                        msg = (
+                            "{} (in line \"{}\")"
+                        ).format(
+                            original_msg, line
+                        )
+                        error = MissionParsingError(msg)
+                        six.reraise(MissionParsingError, error, traceback)
+            _finalize_parser()
 
         return self.process_data()
 
