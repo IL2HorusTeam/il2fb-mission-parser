@@ -626,7 +626,14 @@ class NStationaryParser(CollectingParser):
         air_force, allows_spawning__restorable = params[1:3]
         skin, has_markings = params[4:]
 
-        air_force = None if air_force == NULL else AirForces.get_by_value(air_force)
+        if air_force == NULL:
+            air_force = AirForces.vvs_rkka
+        else:
+            try:
+                air_force = AirForces.get_by_value(air_force)
+            except ValueError:
+                air_force = None
+
         is_restorable = allows_spawning__restorable == IS_STATIONARY_AIRCRAFT_RESTORABLE
         skin = None if skin == NULL else skin
 
@@ -1215,6 +1222,7 @@ class FlightRouteParser(CollectingParser):
 class FileParser(object):
     """
     Parses a whole mission file.
+    View :ref:`detailed description <file-parser>`.
     """
 
     def __init__(self):

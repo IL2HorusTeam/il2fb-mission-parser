@@ -203,8 +203,8 @@ Definition example::
   Air force code name.
 
   :Output path: ``air_force``
-  :Output type: complex `air forces`_ constant  or ``None`` if ``null``
-  :Default: ``null``
+  :Output type: complex `air forces`_ constant  or ``None`` if ``nn``
+  :Default: ``null`` (VVS RKKA)
 
 ``2``
   Polysemantic parameter which can have next values:

@@ -1471,7 +1471,7 @@
   825_Static vehicles.stationary.Stationary$ZIS6_fuel 1 32652.09 24548.59 550.42 0.0
   826_Static vehicles.stationary.Stationary$WillisMB 1 32621.53 24516.54 715.42 0.0
   827_Static vehicles.planes.Plane$PE_2SERIES110 1 32577.63 24497.39 406.25 0.0 null 1 1.0 null 0
-  828_Static vehicles.planes.Plane$PE_2SERIES110 1 32604.84 24514.72 435.04 0.0 null1 2 1.0 null 0
+  828_Static vehicles.planes.Plane$PE_2SERIES110 1 32604.84 24514.72 435.04 0.0 null 2 1.0 null 0
   829_Static vehicles.stationary.Stationary$GAZ_AA 1 32556.99 24481.20 500.42 0.0
   832_Static vehicles.planes.Plane$IL_4_IL4 1 32229.39 24252.42 455.11 0.0 null 1 1.0 null 0
   834_Static vehicles.stationary.Stationary$WillisMBt 1 32484.18 23981.79 670.42 0.0
