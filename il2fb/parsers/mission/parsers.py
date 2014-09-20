@@ -621,11 +621,15 @@ class NStationaryParser(CollectingParser):
         """
         air_force, allows_spawning_restorable = params[1:3]
         skin, has_markings = params[4:]
+        try:
+            air_force = AirForces.get_by_value(air_force)
+        except ValueError:
+            air_force = None
         return {
-            'air_force': AirForces.get_by_value(air_force),
+            'air_force': air_force,
             'allows_spawning': to_bool(allows_spawning_restorable),
             'restorable': allows_spawning_restorable == '2',
-            'skin': skin,
+            'skin': None if skin == 'null' else skin,
             'show_markings': to_bool(has_markings),
         }
 
