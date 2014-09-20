@@ -284,18 +284,18 @@ class MainParser(ValuesParser):
         """
         weather_conditions = int(self.data['CloudType'])
         return {
-            'loader': self.data['MAP'],
+            'location_loader': self.data['MAP'],
             'time': {
                 'value': self._to_time(self.data['TIME']),
                 'is_fixed': 'TIMECONSTANT' in self.data,
             },
-            'fixed_loadout': 'WEAPONSCONSTANT' in self.data,
             'weather_conditions': Conditions.get_by_value(weather_conditions),
             'cloud_base': int(float(self.data['CloudHeight'])),
             'player': {
                 'belligerent': to_belligerent(self.data['army']),
-                'regiment': self.data.get('player'),
-                'number': int(self.data['playerNum']),
+                'flight_id': self.data.get('player'),
+                'aircraft_number': int(self.data['playerNum']),
+                'fixed_weapons': 'WEAPONSCONSTANT' in self.data,
             },
         }
 
@@ -381,7 +381,6 @@ class MDSParser(ValuesParser):
                 'advanced_mode': to_bool(self.data['Radar_SetRadarToAdvanceMode']),
                 'refresh_interval': int(self.data['Radar_RefreshInterval']),
                 'ships': {
-                    'treat_as_radar': to_bool(self.data['Radar_ShipsAsRadar']),
                     'big': {
                         'max_range': int(self.data['Radar_ShipRadar_MaxRange']),
                         'min_height': int(self.data['Radar_ShipRadar_MinHeight']),
@@ -394,18 +393,23 @@ class MDSParser(ValuesParser):
                     },
                 },
                 'scouts': {
-                    'treat_as_radar': to_bool(self.data['Radar_ScoutsAsRadar']),
                     'max_range': int(self.data['Radar_ScoutRadar_MaxRange']),
                     'max_height': int(self.data['Radar_ScoutRadar_DeltaHeight']),
                     'alpha': int(self.data['Radar_ScoutGroundObjects_Alpha']),
                 },
             },
-            'ai': {
-                'no_radio_chatter': to_bool(self.data['Misc_DisableAIRadioChatter']),
-                'hide_aircrafts_after_landing': to_bool(self.data['Misc_DespawnAIPlanesAfterLanding']),
+            'scouting': {
+                'ships_affect_radar': to_bool(self.data['Radar_ShipsAsRadar']),
+                'scouts_affect_radar': to_bool(self.data['Radar_ScoutsAsRadar']),
+                'only_scouts_complete_targets': to_bool(self.data['Radar_ScoutCompleteRecon']),
+            },
+            'communication': {
+                'tower_communication': to_bool(self.data['Radar_EnableTowerCommunications']),
+                'vectoring': not to_bool(self.data['Radar_DisableVectoring']),
+                'ai_radio_silence': to_bool(self.data['Misc_DisableAIRadioChatter']),
             },
             'homebase': {
-                'tower_communications': to_bool(self.data['Radar_EnableTowerCommunications']),
+                'hide_ai_aircrafts_after_landing': to_bool(self.data['Misc_DespawnAIPlanesAfterLanding']),
                 'hide_unpopulated': to_bool(self.data['Radar_HideUnpopulatedAirstripsFromMinimap']),
                 'hide_players_count': to_bool(self.data['Misc_HidePlayersCountOnHomeBase']),
             },
@@ -414,8 +418,6 @@ class MDSParser(ValuesParser):
                 'le_1000kg': float(self.data['Misc_BombsCat2_CratersVisibilityMultiplier']),
                 'gt_1000kg': float(self.data['Misc_BombsCat3_CratersVisibilityMultiplier']),
             },
-            'vectoring': not to_bool(self.data['Radar_DisableVectoring']),
-            'only_scounts_complete_recon_targets': to_bool(self.data['Radar_ScoutCompleteRecon']),
         }
 
 
@@ -424,24 +426,31 @@ class MDSScoutsParser(CollectingParser):
     Parses ``MDS_Scouts`` section.
     View :ref:`detailed description <mds-scouts-section>`.
     """
-    prefix = "MDS_Scouts_"
+    input_prefix = "MDS_Scouts_"
+    output_prefix = "scouts_"
 
     def check_section_name(self, section_name):
-        if not section_name.startswith(self.prefix):
+        if not section_name.startswith(self.input_prefix):
             return False
-        suffix = self._extract_section_suffix(section_name)
-        return bool(suffix)
+        belligerent_name = self._get_belligerent_name(section_name)
+        return bool(belligerent_name)
 
     def init_parser(self, section_name):
         super(MDSScoutsParser, self).init_parser(section_name)
-        suffix = self._extract_section_suffix(section_name)
-        self.output_key = "scout_planes_{:}".format(suffix)
+        belligerent_name = self._get_belligerent_name(section_name)
+        self.belligerent = Belligerents.get_by_name(belligerent_name)
+        self.output_key = "{}{}".format(self.output_prefix, belligerent_name)
 
-    def _extract_section_suffix(self, section_name):
-        return section_name[len(self.prefix):].lower()
+    def _get_belligerent_name(self, section_name):
+        return section_name[len(self.input_prefix):].lower()
 
     def process_data(self):
-        return {self.output_key: self.data}
+        return {
+            self.output_key: {
+                'belligerent': self.belligerent,
+                'aircrafts': self.data,
+            },
+        }
 
 
 class RespawnTimeParser(ValuesParser):
@@ -478,7 +487,7 @@ class ChiefsParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        (oid, type_code, belligerent), params = params[0:3], params[3:]
+        (uid, type_code, belligerent), params = params[0:3], params[3:]
 
         chief_type, code = type_code.split('.')
         try:
@@ -486,23 +495,23 @@ class ChiefsParser(CollectingParser):
         except:
             chief_type = None
 
-        chief = {
-            'id': oid,
+        unit = {
+            'id': uid,
             'code': code,
             'type': chief_type,
             'belligerent': to_belligerent(belligerent),
         }
         if params:
             hibernation, skill, recharge_time = params
-            chief.update({
+            unit.update({
                 'hibernation': int(hibernation),
                 'skill': to_skill(skill),
                 'recharge_time': float(recharge_time),
             })
-        self.data.append(chief)
+        self.data.append(unit)
 
     def process_data(self):
-        return {'chiefs': self.data, }
+        return {'moving_units': self.data, }
 
 
 class ChiefRoadParser(CollectingParser):
@@ -510,41 +519,41 @@ class ChiefRoadParser(CollectingParser):
     Parses ``N_Chief_Road`` section.
     View :ref:`detailed description <chief-road-section>`.
     """
-    suffix = "_Chief_Road"
+    id_suffix = "_Chief"
+    section_suffix = "_Road"
+    input_suffix = id_suffix + section_suffix
+    output_prefix = 'route_'
 
     def check_section_name(self, section_name):
-        if not section_name.endswith(self.suffix):
+        if not section_name.endswith(self.input_suffix):
             return False
-        try:
-            self._extract_object_code(section_name)
-        except ValueError:
-            return False
-        else:
-            return True
+        unit_id = self._extract_unit_id(section_name)
+        stop = unit_id.index(self.id_suffix)
+        return unit_id[:stop].isdigit()
 
     def init_parser(self, section_name):
         super(ChiefRoadParser, self).init_parser(section_name)
-        object_code = self._extract_object_code(section_name)
-        self.output_key = "{0}_chief_route".format(object_code)
+        unit_id = self._extract_unit_id(section_name)
+        self.output_key = "{}{}".format(self.output_prefix, unit_id)
 
-    def _extract_object_code(self, section_name):
-        stop = section_name.index('_')
-        return int(section_name[:stop])
+    def _extract_unit_id(self, section_name):
+        stop = section_name.index(self.section_suffix)
+        return section_name[:stop]
 
     def parse_line(self, line):
         params = line.split()
         pos, params = params[0:2], params[3:]
-        way_point = {
+        point = {
             'pos': to_pos(*pos),
         }
         is_check_point = bool(params)
-        way_point['is_check_point'] = is_check_point
+        point['is_check_point'] = is_check_point
         if is_check_point:
-            way_point['delay'] = int(params[0])
-            way_point['section_length'] = int(params[1])
-            way_point['speed'] = float(params[2])
+            point['delay'] = int(params[0])
+            point['section_length'] = int(params[1])
+            point['speed'] = float(params[2])
 
-        self.data.append(way_point)
+        self.data.append(point)
 
     def process_data(self):
         return {self.output_key: self.data}
@@ -832,7 +841,7 @@ class BornPlaceParser(CollectingParser):
             },
             'spawning': {
                 'enabled': not to_bool(disable_spawning),
-                'has_parachutes': to_bool(has_parachutes),
+                'with_parachutes': to_bool(has_parachutes),
                 'max_pilots': int(max_pilots),
                 'aircraft_limits': {
                     'enabled': to_bool(enable_aircraft_limits),
@@ -862,7 +871,7 @@ class BornPlaceParser(CollectingParser):
         })
 
     def process_data(self):
-        return {'homebases': self.data, }
+        return {'home_bases': self.data, }
 
 
 class BornPlaceAircraftsParser(CollectingParser):
@@ -870,10 +879,11 @@ class BornPlaceAircraftsParser(CollectingParser):
     Parses ``BornPlaceN`` section.
     View :ref:`detailed description <bornplace-aircrafts-section>`.
     """
-    prefix = "BornPlace"
+    input_prefix = 'BornPlace'
+    output_prefix = 'home_base_aircrafts_'
 
     def check_section_name(self, section_name):
-        if not section_name.startswith(self.prefix):
+        if not section_name.startswith(self.input_prefix):
             return False
         try:
             self._extract_section_number(section_name)
@@ -885,13 +895,13 @@ class BornPlaceAircraftsParser(CollectingParser):
     def init_parser(self, section_name):
         super(BornPlaceAircraftsParser, self).init_parser(section_name)
         self.output_key = (
-            'homebase_aircrafts_{0}'
-            .format(self._extract_section_number(section_name))
-        )
+            "{}{}".format(self.output_prefix,
+                          self._extract_section_number(section_name)))
         self.aircraft = {}
 
     def _extract_section_number(self, section_name):
-        return int(section_name[len(self.prefix):])
+        start = len(self.input_prefix)
+        return int(section_name[start:])
 
     def parse_line(self, line):
         chunks = line.split()
@@ -924,10 +934,11 @@ class BornPlaceAirForcesParser(CollectingParser):
     Parses ``BornPlaceCountriesN`` section.
     View :ref:`detailed description <bornplace-air-forces-section>`.
     """
-    prefix = "BornPlaceCountries"
+    input_prefix = 'BornPlaceCountries'
+    output_prefix = 'home_base_air_forces_'
 
     def check_section_name(self, section_name):
-        if not section_name.startswith(self.prefix):
+        if not section_name.startswith(self.input_prefix):
             return False
         try:
             self._extract_section_number(section_name)
@@ -938,12 +949,14 @@ class BornPlaceAirForcesParser(CollectingParser):
 
     def init_parser(self, section_name):
         super(BornPlaceAirForcesParser, self).init_parser(section_name)
-        self.output_key = 'homebase_air_forces_{0}'.format(
-            self._extract_section_number(section_name))
+        self.output_key = (
+            "{}{}".format(self.output_prefix,
+                          self._extract_section_number(section_name)))
         self.countries = {}
 
     def _extract_section_number(self, section_name):
-        return int(section_name[len(self.prefix):])
+        start = len(self.input_prefix)
+        return int(section_name[start:])
 
     def parse_line(self, line):
         country = AirForces.get_by_value(line.strip())
@@ -1056,12 +1069,12 @@ class FlightInfoParser(ValuesParser):
 
     def init_parser(self, section_name):
         super(FlightInfoParser, self).init_parser(section_name)
-        self.output_key = "{0}_info".format(section_name)
+        self.output_key = section_name
         self.flight_info = self._decompose_section_name(section_name)
 
     def _decompose_section_name(self, section_name):
         prefix = section_name[:-2]
-        squadron, flight = section_name[-2], section_name[-1]
+        squadron, flight = section_name[-2:]
 
         try:
             regiment = None
@@ -1071,6 +1084,7 @@ class FlightInfoParser(ValuesParser):
             air_force = regiment.air_force
 
         return {
+            'id': section_name,
             'air_force': air_force,
             'regiment': regiment,
             'squadron': int(squadron) + 1,
@@ -1088,7 +1102,7 @@ class FlightInfoParser(ValuesParser):
 
         for i in range(count):
             aircraft = {
-                'id': i,
+                'number': i,
                 'has_markings': self._has_markings(i),
                 'skill': self._get_skill(i),
             }
@@ -1135,18 +1149,19 @@ class FlightRouteParser(CollectingParser):
     Parses ``*_Way`` section.
     View :ref:`detailed description <flight-route-section>`.
     """
-    suffix = "_Way"
+    input_suffix = "_Way"
+    output_prefix = 'flight_route_'
 
     def check_section_name(self, section_name):
-        return section_name.endswith(self.suffix)
+        return section_name.endswith(self.input_suffix)
 
     def _extract_flight_code(self, section_name):
-        return section_name[:-len(self.suffix)]
+        return section_name[:-len(self.input_suffix)]
 
     def init_parser(self, section_name):
         super(FlightRouteParser, self).init_parser(section_name)
         flight_code = self._extract_flight_code(section_name)
-        self.output_key = "{0}_route".format(flight_code)
+        self.output_key = "{}{}".format(self.output_prefix, flight_code)
         self.route_point = None
 
     def parse_line(self, line):
@@ -1296,7 +1311,87 @@ class FileParser(object):
         return None
 
     def process_data(self):
-        """
-        .. todo:: organize final output
-        """
-        return self.data
+        return {
+            'location_loader': self.data.pop('location_loader'),
+            'conditions': self._get_conditions(),
+            'objects': self._get_objects(),
+            'targets': self.data.pop('targets', []),
+            'player': self.data.pop('player'),
+        }
+
+    def _get_conditions(self):
+        return {
+            'time_info': self._get_time_info(),
+            'meteorology': self._get_meteorology(),
+            'radar': self.data.pop('radar'),
+            'scouting': self._get_scouting(),
+            'communication': self.data.pop('communication'),
+            'homebase': self.data.pop('homebase'),
+            'respawn_time': self.data.pop('respawn_time'),
+            'crater_visibility_muptipliers': self.data.pop('crater_visibility_muptipliers'),
+        }
+
+    def _get_time_info(self):
+        timestamp = datetime.datetime.combine(self.data['date'],
+                                              self.data['time']['value'])
+        return {
+            'timestamp': timestamp,
+            'is_fixed': self.data['time']['is_fixed'],
+        }
+
+    def _get_meteorology(self):
+        return dict(
+            {
+                'weather': self.data.pop('weather_conditions'),
+                'cloud_base': self.data.pop('cloud_base'),
+            },
+            **self.data.pop('weather')
+        )
+
+    def _get_scouting(self):
+        data = self.data.pop('scouting')
+        keys = filter(
+            lambda x: x.startswith(MDSScoutsParser.output_prefix),
+            self.data.keys()
+        )
+        data['scouts'] = {
+            self.data[key]['belligerent']: self.data[key]['aircrafts']
+            for key in keys
+        }
+        return data
+
+    def _get_objects(self):
+        return {
+            'moving_units': self._get_moving_units(),
+            'flights': self._get_flights(),
+            'home_bases': self._get_home_bases(),
+            'stationary': self.data.pop('stationary', []),
+            'buildings': self.data.pop('buildings', []),
+            'cameras': self.data.pop('cameras', []),
+            'markers': self.data.pop('markers', []),
+            'rockets': self.data.pop('rockets', []),
+        }
+
+    def _get_moving_units(self):
+        units = self.data.pop('moving_units', [])
+        for unit in units:
+            key = "{}{}".format(ChiefRoadParser.output_prefix, unit['id'])
+            unit['route'] = self.data.pop(key)
+        return units
+
+    def _get_flights(self):
+        keys = self.data.pop('flights', [])
+        flights = [self.data.pop(key) for key in keys]
+        for flight in flights:
+            key = "{}{}".format(FlightRouteParser.output_prefix, flight['id'])
+            flight['route'] = self.data.pop(key)
+        return flights
+
+    def _get_home_bases(self):
+        home_bases = self.data.pop('home_bases', [])
+        for i, home_base in enumerate(home_bases):
+            key = "{}{}".format(BornPlaceAircraftsParser.output_prefix, i)
+            home_base['allowed_aircrafts'] = self.data.pop(key, [])
+            key = "{}{}".format(BornPlaceAirForcesParser.output_prefix, i)
+            home_base['allowed_air_forces'] = self.data.pop(key, [])
+        return home_bases

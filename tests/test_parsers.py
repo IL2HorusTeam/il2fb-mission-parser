@@ -1135,7 +1135,7 @@ class BornPlaceAircraftsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "+ 2xSC1800 2xSC2000",
         ]
         expected = {
-            'homebase_aircrafts_1': [
+            'home_base_aircrafts_1': [
                 {
                     'code': 'Bf-109F-4',
                     'limit': None,
@@ -1182,7 +1182,7 @@ class BornPlaceAirForcesParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "ru",
         ]
         expected = {
-            'homebase_air_forces_1': [
+            'home_base_air_forces_1': [
                 AirForces.luftwaffe,
                 AirForces.vvs_rkka,
             ],
