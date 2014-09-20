@@ -64,7 +64,7 @@ Output example:
                   'y': 88005.43,
               },
               'rotation_angle': 336.92,
-              'restorable': True,
+              'is_restorable': True,
               'skin': 'I-16type24_G1_RoW3.bmp',
               'type': <constant 'UnitTypes.airplane'>,
           },

@@ -17,6 +17,10 @@ from il2fb.commons.organization import AirForces, Belligerents, Regiments
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
+from .constants import (
+    IS_STATIONARY_AIRCRAFT_RESTORABLE, NULL, WEAPONS_CONTINUATION_MARK,
+    ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE,
+)
 from .exceptions import MissionParsingError
 
 
@@ -619,17 +623,18 @@ class NStationaryParser(CollectingParser):
         """
         Parse additional options for ``planes`` type
         """
-        air_force, allows_spawning_restorable = params[1:3]
+        air_force, allows_spawning__restorable = params[1:3]
         skin, has_markings = params[4:]
-        try:
-            air_force = AirForces.get_by_value(air_force)
-        except ValueError:
-            air_force = None
+
+        air_force = None if air_force == NULL else AirForces.get_by_value(air_force)
+        is_restorable = allows_spawning__restorable == IS_STATIONARY_AIRCRAFT_RESTORABLE
+        skin = None if skin == NULL else skin
+
         return {
             'air_force': air_force,
-            'allows_spawning': to_bool(allows_spawning_restorable),
-            'restorable': allows_spawning_restorable == '2',
-            'skin': None if skin == 'null' else skin,
+            'allows_spawning': to_bool(allows_spawning__restorable),
+            'is_restorable': is_restorable,
+            'skin': skin,
             'show_markings': to_bool(has_markings),
         }
 
@@ -884,7 +889,7 @@ class BornPlaceAircraftsParser(CollectingParser):
     def parse_line(self, line):
         chunks = line.split()
 
-        if chunks[0] == '+':
+        if chunks[0] == WEAPONS_CONTINUATION_MARK:
             self.aircraft['weapon_limits'].extend(chunks[1:])
         else:
             if self.aircraft:
@@ -1140,7 +1145,7 @@ class FlightRouteParser(CollectingParser):
     def parse_line(self, line):
         params = line.split()
         type_code, params = params[0], params[1:]
-        if type_code == "TRIGGERS":
+        if type_code == ROUTE_POINT_EXTRA_PARAMETERS_MARK:
             self._parse_options(params)
         else:
             self._finalize_current_point()
@@ -1192,8 +1197,9 @@ class FlightRouteParser(CollectingParser):
             params = params[1:]
         finally:
             formation = Formations.get_by_value(params[0]) if params else None
+            radio_silence = radio_silence == ROUTE_POINT_RADIO_SILENCE
             self.route_point.update({
-                'radio_silence': radio_silence == "&1",
+                'radio_silence': radio_silence,
                 'formation': formation,
             })
 
