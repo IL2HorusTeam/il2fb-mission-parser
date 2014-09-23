@@ -2,4 +2,4 @@
 from .parsers import FileParser
 
 
-parse = FileParser().parse
+parse_mission = FileParser().parse
