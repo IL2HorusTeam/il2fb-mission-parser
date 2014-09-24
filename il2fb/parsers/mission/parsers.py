@@ -1265,32 +1265,38 @@ class FileParser(object):
         ]
         self.flight_info_parser = FlightInfoParser()
 
-    def parse(self, file_path):
+    def parse(self, mission):
+        if mission in six.string_types:
+            with open(mission) as f:
+                return self.parse_file(f)
+        else:
+            return self.parse_file(mission)
+
+    def parse_file(self, mission_file):
         parser = None
 
         def _finalize_parser():
             if parser:
                 self.data.update(parser.stop())
 
-        with open(file_path) as f:
-            for line in f:
-                line = line.strip()
-                if self.has_section_name(line):
-                    _finalize_parser()
-                    section_name = self.get_section_name(line)
-                    parser = self.get_parser(section_name)
-                elif parser:
-                    try:
-                        parser.parse_line(line)
-                    except Exception:
-                        error_type, original_msg, traceback = sys.exc_info()
-                        msg = (
-                            "{} (in line \"{}\")"
-                        ).format(
-                            original_msg, line
-                        )
-                        error = MissionParsingError(msg)
-                        six.reraise(MissionParsingError, error, traceback)
+        for line in mission_file:
+            line = line.strip()
+            if self.has_section_name(line):
+                _finalize_parser()
+                section_name = self.get_section_name(line)
+                parser = self.get_parser(section_name)
+            elif parser:
+                try:
+                    parser.parse_line(line)
+                except Exception:
+                    error_type, original_msg, traceback = sys.exc_info()
+                    msg = (
+                        "{} (in line \"{}\")"
+                    ).format(
+                        original_msg, line
+                    )
+                    error = MissionParsingError(msg)
+                    six.reraise(MissionParsingError, error, traceback)
             _finalize_parser()
 
         return self.process_data()
