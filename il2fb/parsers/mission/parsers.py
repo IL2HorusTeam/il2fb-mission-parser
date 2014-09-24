@@ -1270,16 +1270,16 @@ class FileParser(object):
             with open(mission) as f:
                 return self.parse_file(f)
         else:
-            return self.parse_file(mission)
+            return self.parse_stream(mission)
 
-    def parse_file(self, mission_file):
+    def parse_stream(self, stream):
         parser = None
 
         def _finalize_parser():
             if parser:
                 self.data.update(parser.stop())
 
-        for line in mission_file:
+        for line in stream:
             line = line.strip()
             if self.has_section_name(line):
                 _finalize_parser()
@@ -1297,7 +1297,7 @@ class FileParser(object):
                     )
                     error = MissionParsingError(msg)
                     six.reraise(MissionParsingError, error, traceback)
-            _finalize_parser()
+        _finalize_parser()
 
         return self.process_data()
 
