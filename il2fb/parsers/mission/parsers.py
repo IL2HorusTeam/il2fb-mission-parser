@@ -1281,7 +1281,7 @@ class FileParser(object):
 
         for line in stream:
             line = line.strip()
-            if self.has_section_name(line):
+            if self.is_section_name(line):
                 _finalize_parser()
                 section_name = self.get_section_name(line)
                 parser = self.get_parser(section_name)
@@ -1297,11 +1297,11 @@ class FileParser(object):
                     )
                     error = MissionParsingError(msg)
                     six.reraise(MissionParsingError, error, traceback)
-        _finalize_parser()
 
+        _finalize_parser()
         return self.process_data()
 
-    def has_section_name(self, line):
+    def is_section_name(self, line):
         return line.startswith('[') and line.endswith(']')
 
     def get_section_name(self, line):
