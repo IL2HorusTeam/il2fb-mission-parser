@@ -9,9 +9,14 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
+# Get VERSION, which is all stored in 'il2fb.parsers.mission/version.py'
+version_file = os.path.join('il2fb', 'parsers', 'mission', 'version.py')
+# Use exec for compabibility with Python 3
+exec(open(version_file).read())
+
 setup(
     name='il2fb-mission-parser',
-    version='0.9.0',
+    version=VERSION,
     description="Parse IL-2 FB mission file and produce detailed information "
                 "about mission",
     long_description=README,

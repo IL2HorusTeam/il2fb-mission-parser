@@ -1275,9 +1275,17 @@ class FileParser(object):
     def parse_stream(self, stream):
         parser = None
 
+        def _raise_error(message, traceback):
+            error = MissionParsingError(message)
+            six.reraise(MissionParsingError, error, traceback)
+
         def _finalize_parser():
             if parser:
-                self.data.update(parser.stop())
+                try:
+                    self.data.update(parser.stop())
+                except Exception:
+                    error_type, original_msg, traceback = sys.exc_info()
+                    _raise_error(original_msg, traceback)
 
         for line in stream:
             line = line.strip()
@@ -1295,8 +1303,7 @@ class FileParser(object):
                     ).format(
                         original_msg, line
                     )
-                    error = MissionParsingError(msg)
-                    six.reraise(MissionParsingError, error, traceback)
+                    _raise_error(msg, traceback)
 
         _finalize_parser()
         return self.process_data()
