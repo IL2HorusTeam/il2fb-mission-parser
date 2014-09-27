@@ -11,6 +11,8 @@ Please, `read the docs`_ to get full information about this project.
 
 You can dig around `Wiki pages`_ also.
 
+And you can see how it works live on `project's demo page`_.
+
 .. |Build Status| image:: http://img.shields.io/travis/IL2HorusTeam/il2fb-mission-parser.svg?style=flat&branch=master
    :target: https://travis-ci.org/IL2HorusTeam/il2fb-mission-parser
 .. |Coverage Status| image:: http://img.shields.io/coveralls/IL2HorusTeam/il2fb-mission-parser.svg?style=flat&branch=master
@@ -26,3 +28,4 @@ You can dig around `Wiki pages`_ also.
 
 .. _read the docs: http://il-2-missions-parser.readthedocs.org/en/latest/
 .. _Wiki pages: https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki
+.. _project's demo page: http://il2fb-mission-parser-demo.herokuapp.com/
