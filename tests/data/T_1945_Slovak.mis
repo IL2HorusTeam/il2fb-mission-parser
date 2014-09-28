@@ -38,6 +38,9 @@
   MDS_Misc_BombsCat1_CratersVisibilityMultiplier 1.0
   MDS_Misc_BombsCat2_CratersVisibilityMultiplier 1.0
   MDS_Misc_BombsCat3_CratersVisibilityMultiplier 1.0
+[MDS_Scouts_Blue]
+  Do217_K2
+  JU_52_3MG4E
 [RespawnTime]
   Bigship 1000000
   Ship 1000000

@@ -307,7 +307,7 @@ joining anytime.
 
 ``MDS_Misc_BombsCat3_CratersVisibilityMultiplier``
   Multiplier for visibility time for craters caused by bombs which weight
-  greater then 1000 kg.
+  is greater then 1000 kg.
 
   :Output path: ``crater_visibility_muptipliers.gt_100kg``
   :Output type: :class:`float`

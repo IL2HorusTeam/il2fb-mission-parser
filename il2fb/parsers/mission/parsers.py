@@ -294,7 +294,7 @@ class MainParser(ValuesParser):
             'player': {
                 'belligerent': to_belligerent(self.data['army']),
                 'flight_id': self.data.get('player'),
-                'aircraft_number': int(self.data['playerNum']),
+                'aircraft_index': int(self.data['playerNum']),
                 'fixed_weapons': 'WEAPONSCONSTANT' in self.data,
             },
         }
@@ -546,9 +546,9 @@ class ChiefRoadParser(CollectingParser):
         point = {
             'pos': to_pos(*pos),
         }
-        is_check_point = bool(params)
-        point['is_check_point'] = is_check_point
-        if is_check_point:
+        is_checkpoint = bool(params)
+        point['is_checkpoint'] = is_checkpoint
+        if is_checkpoint:
             point['delay'] = int(params[0])
             point['section_length'] = int(params[1])
             point['speed'] = float(params[2])
@@ -1087,8 +1087,8 @@ class FlightInfoParser(ValuesParser):
             'id': section_name,
             'air_force': air_force,
             'regiment': regiment,
-            'squadron': int(squadron) + 1,
-            'flight': int(flight) + 1,
+            'squadron_index': int(squadron),
+            'flight_index': int(flight),
         }
 
     def process_data(self):
@@ -1241,7 +1241,6 @@ class FileParser(object):
     """
 
     def __init__(self):
-        self.data = {}
         self.parsers = [
             MainParser(),
             SeasonParser(),
@@ -1266,14 +1265,15 @@ class FileParser(object):
         self.flight_info_parser = FlightInfoParser()
 
     def parse(self, mission):
-        if mission in six.string_types:
-            with open(mission) as f:
-                return self.parse_file(f)
+        if isinstance(mission, six.string_types):
+            with open(mission, 'r') as f:
+                return self.parse_stream(f)
         else:
             return self.parse_stream(mission)
 
     def parse_stream(self, stream):
         parser = None
+        self.data = {}
 
         def _raise_error(message, traceback):
             error = MissionParsingError(message)
