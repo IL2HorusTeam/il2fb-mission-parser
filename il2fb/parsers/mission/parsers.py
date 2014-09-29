@@ -1102,14 +1102,14 @@ class FlightInfoParser(ValuesParser):
 
         for i in range(count):
             aircraft = {
-                'number': i,
+                'index': i,
                 'has_markings': self._has_markings(i),
                 'skill': self._get_skill(i),
             }
             _add_if_present(
                 aircraft, 'aircraft_skin', self._get_skin('skin', i))
             _add_if_present(
-                aircraft, 'noseart', self._get_skin('nose_art', i))
+                aircraft, 'nose_art', self._get_skin('nose_art', i))
             _add_if_present(
                 aircraft, 'pilot_skin', self._get_skin('pilot', i))
             _add_if_present(
