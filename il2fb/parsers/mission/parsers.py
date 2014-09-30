@@ -377,46 +377,48 @@ class MDSParser(ValuesParser):
 
     def process_data(self):
         return {
-            'radar': {
-                'advanced_mode': to_bool(self.data['Radar_SetRadarToAdvanceMode']),
-                'refresh_interval': int(self.data['Radar_RefreshInterval']),
-                'ships': {
-                    'big': {
-                        'max_range': int(self.data['Radar_ShipRadar_MaxRange']),
-                        'min_height': int(self.data['Radar_ShipRadar_MinHeight']),
-                        'max_height': int(self.data['Radar_ShipRadar_MaxHeight']),
+            'conditions': {
+                'radar': {
+                    'advanced_mode': to_bool(self.data['Radar_SetRadarToAdvanceMode']),
+                    'refresh_interval': int(self.data['Radar_RefreshInterval']),
+                    'ships': {
+                        'big': {
+                            'max_range': int(self.data['Radar_ShipRadar_MaxRange']),
+                            'min_height': int(self.data['Radar_ShipRadar_MinHeight']),
+                            'max_height': int(self.data['Radar_ShipRadar_MaxHeight']),
+                        },
+                        'small': {
+                            'max_range': int(self.data['Radar_ShipSmallRadar_MaxRange']),
+                            'min_height': int(self.data['Radar_ShipSmallRadar_MinHeight']),
+                            'max_height': int(self.data['Radar_ShipSmallRadar_MaxHeight']),
+                        },
                     },
-                    'small': {
-                        'max_range': int(self.data['Radar_ShipSmallRadar_MaxRange']),
-                        'min_height': int(self.data['Radar_ShipSmallRadar_MinHeight']),
-                        'max_height': int(self.data['Radar_ShipSmallRadar_MaxHeight']),
+                    'scouts': {
+                        'max_range': int(self.data['Radar_ScoutRadar_MaxRange']),
+                        'max_height': int(self.data['Radar_ScoutRadar_DeltaHeight']),
+                        'alpha': int(self.data['Radar_ScoutGroundObjects_Alpha']),
                     },
                 },
-                'scouts': {
-                    'max_range': int(self.data['Radar_ScoutRadar_MaxRange']),
-                    'max_height': int(self.data['Radar_ScoutRadar_DeltaHeight']),
-                    'alpha': int(self.data['Radar_ScoutGroundObjects_Alpha']),
+                'scouting': {
+                    'ships_affect_radar': to_bool(self.data['Radar_ShipsAsRadar']),
+                    'scouts_affect_radar': to_bool(self.data['Radar_ScoutsAsRadar']),
+                    'only_scouts_complete_targets': to_bool(self.data['Radar_ScoutCompleteRecon']),
                 },
-            },
-            'scouting': {
-                'ships_affect_radar': to_bool(self.data['Radar_ShipsAsRadar']),
-                'scouts_affect_radar': to_bool(self.data['Radar_ScoutsAsRadar']),
-                'only_scouts_complete_targets': to_bool(self.data['Radar_ScoutCompleteRecon']),
-            },
-            'communication': {
-                'tower_communication': to_bool(self.data['Radar_EnableTowerCommunications']),
-                'vectoring': not to_bool(self.data['Radar_DisableVectoring']),
-                'ai_radio_silence': to_bool(self.data['Misc_DisableAIRadioChatter']),
-            },
-            'homebase': {
-                'hide_ai_aircrafts_after_landing': to_bool(self.data['Misc_DespawnAIPlanesAfterLanding']),
-                'hide_unpopulated': to_bool(self.data['Radar_HideUnpopulatedAirstripsFromMinimap']),
-                'hide_players_count': to_bool(self.data['Misc_HidePlayersCountOnHomeBase']),
-            },
-            'crater_visibility_muptipliers': {
-                'le_100kg': float(self.data['Misc_BombsCat1_CratersVisibilityMultiplier']),
-                'le_1000kg': float(self.data['Misc_BombsCat2_CratersVisibilityMultiplier']),
-                'gt_1000kg': float(self.data['Misc_BombsCat3_CratersVisibilityMultiplier']),
+                'communication': {
+                    'tower_communication': to_bool(self.data['Radar_EnableTowerCommunications']),
+                    'vectoring': not to_bool(self.data['Radar_DisableVectoring']),
+                    'ai_radio_silence': to_bool(self.data['Misc_DisableAIRadioChatter']),
+                },
+                'home_bases': {
+                    'hide_ai_aircrafts_after_landing': to_bool(self.data['Misc_DespawnAIPlanesAfterLanding']),
+                    'hide_unpopulated': to_bool(self.data['Radar_HideUnpopulatedAirstripsFromMinimap']),
+                    'hide_players_count': to_bool(self.data['Misc_HidePlayersCountOnHomeBase']),
+                },
+                'crater_visibility_muptipliers': {
+                    'le_100kg': float(self.data['Misc_BombsCat1_CratersVisibilityMultiplier']),
+                    'le_1000kg': float(self.data['Misc_BombsCat2_CratersVisibilityMultiplier']),
+                    'gt_1000kg': float(self.data['Misc_BombsCat3_CratersVisibilityMultiplier']),
+                },
             },
         }
 
@@ -821,9 +823,9 @@ class BornPlaceParser(CollectingParser):
 
     def parse_line(self, line):
         (
-            belligerent, range_, pos_x, pos_y, has_parachutes, air_spawn_height,
-            air_spawn_speed, air_spawn_heading, max_pilots, radar_min_height,
-            radar_max_height, radar_range, air_spawn_always,
+            belligerent, the_range, pos_x, pos_y, has_parachutes,
+            air_spawn_height, air_spawn_speed, air_spawn_heading, max_pilots,
+            radar_min_height, radar_max_height, radar_range, air_spawn_always,
             enable_aircraft_limits, aircraft_limits_consider_lost,
             disable_spawning, friction_enabled, friction_value,
             aircraft_limits_consider_stationary, show_default_icon,
@@ -832,7 +834,7 @@ class BornPlaceParser(CollectingParser):
         ) = line.split()
 
         self.data.append({
-            'range': int(range_),
+            'range': int(the_range),
             'belligerent': to_belligerent(belligerent),
             'show_default_icon': to_bool(show_default_icon),
             'friction': {
@@ -843,11 +845,6 @@ class BornPlaceParser(CollectingParser):
                 'enabled': not to_bool(disable_spawning),
                 'with_parachutes': to_bool(has_parachutes),
                 'max_pilots': int(max_pilots),
-                'aircraft_limits': {
-                    'enabled': to_bool(enable_aircraft_limits),
-                    'consider_lost': to_bool(aircraft_limits_consider_lost),
-                    'consider_stationary': to_bool(aircraft_limits_consider_stationary),
-                },
                 'in_stationary': {
                     'enabled': to_bool(spawn_in_stationary),
                     'return_to_start_position': to_bool(return_to_start_position),
@@ -861,6 +858,11 @@ class BornPlaceParser(CollectingParser):
                         'if_deck_is_full': to_bool(air_spawn_if_deck_is_full),
                     },
                 },
+            },
+            'aircraft_limitations': {
+                'enabled': to_bool(enable_aircraft_limits),
+                'consider_lost': to_bool(aircraft_limits_consider_lost),
+                'consider_stationary': to_bool(aircraft_limits_consider_stationary),
             },
             'radar': {
                 'range': int(radar_range),
@@ -907,15 +909,15 @@ class BornPlaceAircraftsParser(CollectingParser):
         chunks = line.split()
 
         if chunks[0] == WEAPONS_CONTINUATION_MARK:
-            self.aircraft['weapon_limits'].extend(chunks[1:])
+            self.aircraft['weapon_limitations'].extend(chunks[1:])
         else:
             if self.aircraft:
                 self.data.append(self.aircraft)
-            (code, limit), weapon_limits = chunks[:2], chunks[2:]
+            (code, limit), allowed_weapons = chunks[:2], chunks[2:]
             self.aircraft = {
                 'code': code,
                 'limit': self._to_limit(limit),
-                'weapon_limits': weapon_limits,
+                'weapon_limitations': allowed_weapons,
             }
 
     def _to_limit(self, value):
@@ -1336,12 +1338,12 @@ class FileParser(object):
         return {
             'time_info': self._get_time_info(),
             'meteorology': self._get_meteorology(),
-            'radar': self.data.pop('radar'),
             'scouting': self._get_scouting(),
-            'communication': self.data.pop('communication'),
-            'homebase': self.data.pop('homebase'),
+            'radar': self.data['conditions'].pop('radar'),
+            'communication': self.data['conditions'].pop('communication'),
+            'home_bases': self.data['conditions'].pop('home_bases'),
+            'crater_visibility_muptipliers': self.data['conditions'].pop('crater_visibility_muptipliers'),
             'respawn_time': self.data.pop('respawn_time'),
-            'crater_visibility_muptipliers': self.data.pop('crater_visibility_muptipliers'),
         }
 
     def _get_time_info(self):
@@ -1362,7 +1364,7 @@ class FileParser(object):
         )
 
     def _get_scouting(self):
-        data = self.data.pop('scouting')
+        data = self.data['conditions'].pop('scouting')
         keys = filter(
             lambda x: x.startswith(MDSScoutsParser.output_prefix),
             self.data.keys()
@@ -1404,7 +1406,8 @@ class FileParser(object):
         home_bases = self.data.pop('home_bases', [])
         for i, home_base in enumerate(home_bases):
             key = "{}{}".format(BornPlaceAircraftsParser.output_prefix, i)
-            home_base['allowed_aircrafts'] = self.data.pop(key, [])
+            home_base['aircraft_limitations']['allowed_aircrafts'] = self.data.pop(key, [])
+
             key = "{}{}".format(BornPlaceAirForcesParser.output_prefix, i)
             home_base['allowed_air_forces'] = self.data.pop(key, [])
         return home_bases
