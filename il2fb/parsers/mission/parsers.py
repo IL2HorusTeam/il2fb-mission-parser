@@ -622,10 +622,10 @@ class NStationaryParser(CollectingParser):
         """
         Parse additional options for ``artillery`` type
         """
-        awakening_time, range_, skill, is_spotter = params
+        awakening_time, the_range, skill, is_spotter = params
         return {
             'awakening_time': float(awakening_time),
-            'range': int(range_),
+            'range': int(the_range),
             'skill': to_skill(skill),
             'use_spotter': to_bool(is_spotter),
         }
