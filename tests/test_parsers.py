@@ -45,7 +45,7 @@ class CommonsTestCase(unittest.TestCase):
         self.assertEqual(to_skill('3'), Skills.ace)
 
     def test_to_unit_type(self):
-        self.assertEqual(to_unit_type('planes'), UnitTypes.airplane)
+        self.assertEqual(to_unit_type('planes'), UnitTypes.aircraft)
 
 
 class SectionParserTestCase(unittest.TestCase):
@@ -103,18 +103,18 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "playerNum 0",
         ]
         expected = {
-            'loader': 'Moscow/sload.ini',
+            'location_loader': 'Moscow/sload.ini',
             'time': {
                 'value': datetime.time(11, 45),
                 'is_fixed': True,
             },
-            'fixed_loadout': True,
             'weather_conditions': Conditions.good,
             'cloud_base': 1500,
             'player': {
                 'belligerent': Belligerents.red,
-                'regiment': "fiLLv24fi00",
-                'number': 0,
+                'flight_id': "fiLLv24fi00",
+                'aircraft_index': 0,
+                'fixed_weapons': True,
             },
         }
         self._test_parser(MainParser, 'MAIN', lines, expected)
@@ -185,45 +185,49 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "MDS_Misc_BombsCat3_CratersVisibilityMultiplier 1.0",
         ]
         expected = {
-            'radar': {
-                'advanced_mode': True,
-                'refresh_interval': 0,
-                'ships': {
-                    'treat_as_radar': False,
-                    'big': {
-                        'max_range': 100,
-                        'min_height': 100,
-                        'max_height': 5000,
+            'conditions': {
+                'radar': {
+                    'advanced_mode': True,
+                    'refresh_interval': 0,
+                    'ships': {
+                        'big': {
+                            'max_range': 100,
+                            'min_height': 100,
+                            'max_height': 5000,
+                        },
+                        'small': {
+                            'max_range': 25,
+                            'min_height': 0,
+                            'max_height': 2000,
+                        },
                     },
-                    'small': {
-                        'max_range': 25,
-                        'min_height': 0,
-                        'max_height': 2000,
+                    'scouts': {
+                        'max_range': 2,
+                        'max_height': 1500,
+                        'alpha': 5,
                     },
                 },
-                'scouts': {
-                    'treat_as_radar': False,
-                    'max_range': 2,
-                    'max_height': 1500,
-                    'alpha': 5,
+                'scouting': {
+                    'scouts_affect_radar': False,
+                    'ships_affect_radar': False,
+                    'only_scouts_complete_targets': False,
                 },
-            },
-            'ai': {
-                'no_radio_chatter': False,
-                'hide_aircrafts_after_landing': True,
-            },
-            'homebase': {
-                'tower_communications': True,
-                'hide_unpopulated': False,
-                'hide_players_count': False,
-            },
-            'crater_visibility_muptipliers': {
-                'le_100kg': 1.0,
-                'le_1000kg': 1.0,
-                'gt_1000kg': 1.0,
-            },
-            'vectoring': True,
-            'only_scounts_complete_recon_targets': False,
+                'home_bases': {
+                    'hide_unpopulated': False,
+                    'hide_players_count': False,
+                    'hide_ai_aircrafts_after_landing': True,
+                },
+                'communication': {
+                    'vectoring': True,
+                    'tower_communication': True,
+                    'ai_radio_silence': False,
+                },
+                'crater_visibility_muptipliers': {
+                    'le_100kg': 1.0,
+                    'le_1000kg': 1.0,
+                    'gt_1000kg': 1.0,
+                },
+            }
         }
         self._test_parser(MDSParser, 'MDS', lines, expected)
 
@@ -259,7 +263,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "3_Chief Ships.G5 1 60 3 2.0",
         ]
         expected = {
-            'chiefs': [
+            'moving_units': [
                 {
                     'id': "0_Chief",
                     'code': "1-BT7",
@@ -362,7 +366,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'rotation_angle': 336.92,
                     'is_restorable': True,
                     'skin': "I-16type24_G1_RoW3.bmp",
-                    'type': UnitTypes.airplane,
+                    'type': UnitTypes.aircraft,
                 },
                 {
                     'air_force': AirForces.luftwaffe,
@@ -378,7 +382,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'rotation_angle': 265.0,
                     'is_restorable': False,
                     'skin': None,
-                    'type': UnitTypes.airplane,
+                    'type': UnitTypes.aircraft,
                 },
                 {
                     'air_force': None,
@@ -394,7 +398,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'rotation_angle': 360.0,
                     'is_restorable': False,
                     'skin': None,
-                    'type': UnitTypes.airplane,
+                    'type': UnitTypes.aircraft,
                 },
                 {
                     'belligerent': Belligerents.blue,
@@ -500,7 +504,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "1 3000 121601 74883 1 1000 200 0 0 0 5000 50 0 1 1 0 0 3.8 1 0 0 0 0",
         ]
         expected = {
-            'homebases': [
+            'home_bases': [
                 {
                     'range': 3000,
                     'belligerent': Belligerents.red,
@@ -511,13 +515,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     },
                     'spawning': {
                         'enabled': True,
-                        'has_parachutes': True,
+                        'with_parachutes': True,
                         'max_pilots': 0,
-                        'aircraft_limits': {
-                            'enabled': True,
-                            'consider_lost': True,
-                            'consider_stationary': True,
-                        },
                         'in_stationary': {
                             'enabled': False,
                             'return_to_start_position': False,
@@ -531,6 +530,11 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                                 'if_deck_is_full': False,
                             },
                         },
+                    },
+                    'aircraft_limitations': {
+                        'enabled': True,
+                        'consider_lost': True,
+                        'consider_stationary': True,
                     },
                     'radar': {
                         'range': 50,
@@ -656,7 +660,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "LANDING_104 185304.27 54570.12 0 0 &1",
         ]
         expected = {
-            '3GvIAP01_route': [
+            'flight_route_3GvIAP01': [
                 {
                     'type': RoutePointTypes.takeoff_normal,
                     'pos': {
@@ -779,11 +783,14 @@ class MDSScoutsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "BeaufighterMk21",
         ]
         expected = {
-            'scout_planes_red': [
-                "B-25H-1NA",
-                "B-25J-1NA",
-                "BeaufighterMk21",
-            ],
+            'scouts_red': {
+                'belligerent': Belligerents.red,
+                'aircrafts': [
+                    "B-25H-1NA",
+                    "B-25J-1NA",
+                    "BeaufighterMk21",
+                ],
+            },
         }
         self._test_parser(MDSScoutsParser, 'MDS_Scouts_Red', lines, expected)
 
@@ -804,9 +811,9 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "84682.13 98423.69 120.00",
         ]
         expected = {
-            '0_chief_route': [
+            'route_0_Chief': [
                 {
-                    'is_check_point': True,
+                    'is_checkpoint': True,
                     'pos': {
                         'x': 21380.02,
                         'y': 41700.34,
@@ -816,14 +823,14 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'delay': 10,
                 },
                 {
-                    'is_check_point': False,
+                    'is_checkpoint': False,
                     'pos': {
                         'x': 21500.00,
                         'y': 41700.00,
                     },
                 },
                 {
-                    'is_check_point': True,
+                    'is_checkpoint': True,
                     'pos': {
                         'x': 50299.58,
                         'y': 35699.85,
@@ -833,14 +840,14 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'delay': 0,
                 },
                 {
-                    'is_check_point': False,
+                    'is_checkpoint': False,
                     'pos': {
                         'x': 60284.10,
                         'y': 59142.93,
                     },
                 },
                 {
-                    'is_check_point': False,
+                    'is_checkpoint': False,
                     'pos': {
                         'x': 84682.13,
                         'y': 98423.69,
@@ -1139,7 +1146,7 @@ class BornPlaceAircraftsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 {
                     'code': 'Bf-109F-4',
                     'limit': None,
-                    'weapon_limits': [
+                    'weapon_limitations': [
                         '1sc250',
                         '4sc50',
                     ],
@@ -1147,12 +1154,12 @@ class BornPlaceAircraftsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 {
                     'code': 'Bf-109G-6_Late',
                     'limit': 0,
-                    'weapon_limits': [],
+                    'weapon_limitations': [],
                 },
                 {
                     'code': 'Ju-88A-4',
                     'limit': 10,
-                    'weapon_limits': [
+                    'weapon_limitations': [
                         '28xSC50',
                         '28xSC50_2xSC250',
                         '28xSC50_4xSC250',
@@ -1219,27 +1226,28 @@ class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "spawn0 0_Static",
         ]
         expected = {
-            '3GvIAP00_info': {
-                'ai_only': False,
+            '3GvIAP00': {
+                'id': '3GvIAP00',
+                'squadron_index': 0,
+                'flight_index': 0,
                 'air_force': AirForces.vvs_rkka,
+                'regiment': Regiments.get_by_code_name('3GvIAP'),
                 'code': "A_20C",
                 'count': 2,
-                'flight': 1,
                 'fuel': 100,
-                'with_parachutes': True,
-                'regiment': Regiments.get_by_code_name('3GvIAP'),
-                'squadron': 1,
                 'weapons': "default",
+                'ai_only': False,
+                'with_parachutes': True,
                 'aircrafts': [
                     {
-                        'id': 0,
+                        'index': 0,
                         'skill': Skills.veteran,
                         'aircraft_skin': "Funky.bmp",
                         'has_markings': True,
                         'spawn_object': '0_Static',
                     },
                     {
-                        'id': 1,
+                        'index': 1,
                         'skill': Skills.ace,
                         'has_markings': False,
                     },
@@ -1260,20 +1268,21 @@ class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "spawn0 0_Static",
         ]
         expected = {
-            '3GvIAP01_info': {
-                'ai_only': False,
+            '3GvIAP01': {
+                'id': '3GvIAP01',
+                'squadron_index': 0,
+                'flight_index': 1,
                 'air_force': AirForces.vvs_rkka,
+                'regiment': Regiments.get_by_code_name('3GvIAP'),
                 'code': "A_20C",
                 'count': 1,
-                'flight': 2,
                 'fuel': 100,
-                'with_parachutes': True,
-                'regiment': Regiments.get_by_code_name('3GvIAP'),
-                'squadron': 1,
                 'weapons': "default",
+                'with_parachutes': True,
+                'ai_only': False,
                 'aircrafts': [
                     {
-                        'id': 0,
+                        'index': 0,
                         'skill': Skills.average,
                         'aircraft_skin': "Funky.bmp",
                         'has_markings': False,
