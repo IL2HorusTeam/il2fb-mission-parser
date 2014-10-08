@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Mission parser tests.
+Functional tests for parsers.
 """
 import datetime
 import unittest
@@ -804,7 +804,7 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
         lines = [
-            "21380.02 41700.34 120.00 10 2 3.055555582046509",
+            "21380.02 41700.34 120.00 10 3 3.055555582046509",
             "21500.00 41700.00 120.00",
             "50299.58 35699.85 120.00 0 3 2.6388890743255615",
             "60284.10 59142.93 120.00",
@@ -818,7 +818,7 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'x': 21380.02,
                         'y': 41700.34,
                     },
-                    'section_length': 2,
+                    'section_length': 3,
                     'speed': 3.055555582046509,
                     'delay': 10,
                 },

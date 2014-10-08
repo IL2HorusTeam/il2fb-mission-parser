@@ -23,10 +23,11 @@ __pycache__
 # Installer logs
 pip-log.txt
 
-# Unit test / coverage reports
+# Unit test / coverage / profiler reports
 .coverage
 .tox
 nosetests.xml
+*.lprof
 
 # Translations
 *.mo
