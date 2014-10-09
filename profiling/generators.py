@@ -2,7 +2,7 @@
 from six.moves import range
 
 
-CYCLES_COUNT = 10 ** 4
+CYCLES_COUNT = 10 ** 5
 
 
 def generate_cheifs_lines():

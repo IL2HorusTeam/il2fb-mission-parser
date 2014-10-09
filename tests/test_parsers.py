@@ -19,6 +19,7 @@ from il2fb.parsers.mission.parsers import (
     BornPlaceAirForcesParser, RocketParser, ChiefRoadParser, WingParser,
     MDSScoutsParser, FlightInfoParser, FlightRouteParser,
 )
+from il2fb.parsers.mission.structures import Point2D, Point3D
 
 
 class CommonsTestCase(unittest.TestCase):
@@ -319,10 +320,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'belligerent': Belligerents.red,
                     'id': '0_Static',
                     'code': 'BarrageBalloon_2400m',
-                    'pos': {
-                        'x': 151781.85,
-                        'y': 89055.58,
-                    },
+                    'pos': Point2D(151781.85, 89055.58),
                     'rotation_angle': 360.00,
                     'type': UnitTypes.balloon,
                 },
@@ -331,10 +329,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'id': '1_Static',
                     'code': 'SdKfz251',
                     'use_spotter': True,
-                    'pos': {
-                        'x': 31333.62,
-                        'y': 90757.91,
-                    },
+                    'pos': Point2D(31333.62, 90757.91),
                     'rotation_angle': 600.29,
                     'range': 0,
                     'skill': Skills.average,
@@ -345,10 +340,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'belligerent': Belligerents.red,
                     'id': '2_Static',
                     'code': 'SL_ManualBlue',
-                    'pos': {
-                        'x': 151740.45,
-                        'y': 88673.74,
-                    },
+                    'pos': Point2D(151740.45, 88673.74),
                     'rotation_angle': 360.00,
                     'type': UnitTypes.light,
                 },
@@ -359,10 +351,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'id': '3_Static',
                     'code': 'I_16TYPE24',
                     'show_markings': True,
-                    'pos': {
-                        'x': 134146.89,
-                        'y': 88005.43,
-                    },
+                    'pos': Point2D(134146.89, 88005.43),
                     'rotation_angle': 336.92,
                     'is_restorable': True,
                     'skin': "I-16type24_G1_RoW3.bmp",
@@ -375,10 +364,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'id': '458_Static',
                     'code': 'FW_190A4FR',
                     'show_markings': False,
-                    'pos': {
-                        'x': 33201.34,
-                        'y': 73105.78,
-                    },
+                    'pos': Point2D(33201.34, 73105.78),
                     'rotation_angle': 265.0,
                     'is_restorable': False,
                     'skin': None,
@@ -391,10 +377,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'id': '459_Static',
                     'code': 'A_20C',
                     'show_markings': False,
-                    'pos': {
-                        'x': 30663.31,
-                        'y': 24632.09,
-                    },
+                    'pos': Point2D(30663.31, 24632.09),
                     'rotation_angle': 360.0,
                     'is_restorable': False,
                     'skin': None,
@@ -404,10 +387,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'belligerent': Belligerents.blue,
                     'id': '4_Static',
                     'code': 'RadioBeacon',
-                    'pos': {
-                        'x': 151679.84,
-                        'y': 88805.39,
-                    },
+                    'pos': Point2D(151679.84, 88805.39),
                     'rotation_angle': 360.00,
                     'type': UnitTypes.radio,
                 },
@@ -415,10 +395,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'belligerent': Belligerents.none,
                     'id': '5_Static',
                     'code': 'CampfireAirfield',
-                    'pos': {
-                        'x': 151428.38,
-                        'y': 88817.52,
-                    },
+                    'pos': Point2D(151428.38, 88817.52),
                     'rotation_angle': 360.00,
                     'type': UnitTypes.stationary,
                 },
@@ -426,10 +403,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'belligerent': Belligerents.none,
                     'id': '6_Static',
                     'code': 'Smoke20',
-                    'pos': {
-                        'x': 151404.61,
-                        'y': 89009.57,
-                    },
+                    'pos': Point2D(151404.61, 89009.57),
                     'rotation_angle': 360.00,
                     'type': UnitTypes.stationary,
                 },
@@ -437,10 +411,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'belligerent': Belligerents.red,
                     'id': '7_Static',
                     'code': 'SirenCity',
-                    'pos': {
-                        'x': 151984.28,
-                        'y': 88577.12,
-                    },
+                    'pos': Point2D(151984.28, 88577.12),
                     'rotation_angle': 360.00,
                     'type': UnitTypes.stationary,
                 },
@@ -448,10 +419,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'belligerent': Belligerents.red,
                     'id': '8_Static',
                     'code': 'Wagon1',
-                    'pos': {
-                        'x': 152292.72,
-                        'y': 89662.80,
-                    },
+                    'pos': Point2D(152292.72, 89662.80),
                     'rotation_angle': 360.00,
                     'type': UnitTypes.stationary,
                 },
@@ -460,10 +428,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'id': '9_Static',
                     'code': 'G5',
                     'recharge_time': 1.4,
-                    'pos': {
-                        'x': 83759.05,
-                        'y': 115021.15,
-                    },
+                    'pos': Point2D(83759.05, 115021.15),
                     'rotation_angle': 360.00,
                     'skill': Skills.ace,
                     'type': UnitTypes.ship,
@@ -486,10 +451,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'belligerent': Belligerents.red,
                     'id': '0_bld',
                     'code': 'Tent_Pyramid_US',
-                    'pos': {
-                        'y': 57962.08,
-                        'x': 43471.34,
-                    },
+                    'pos': Point2D(43471.34, 57962.08),
                     'rotation_angle': 630.00,
                 },
             ],
@@ -541,10 +503,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         'min_height': 0,
                         'max_height': 5000,
                     },
-                    'pos': {
-                        'x': 121601.0,
-                        'y': 74883.0,
-                    },
+                    'pos': Point2D(121601.0, 74883.0),
                 },
             ]
         }
@@ -561,11 +520,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             'cameras': [
                 {
                     'belligerent': Belligerents.blue,
-                    'pos': {
-                        'x': 38426.0,
-                        'y': 65212.0,
-                        'z': 35.0,
-                    },
+                    'pos': Point3D(38426.0, 65212.0, 35.0),
                 },
             ],
         }
@@ -583,10 +538,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 {
                     'belligerent': Belligerents.red,
                     'id': "FrontMarker0",
-                    'pos': {
-                        'x': 7636.65,
-                        'y': 94683.02,
-                    },
+                    'pos': Point2D(7636.65, 94683.02),
                 },
             ],
         }
@@ -603,27 +555,18 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'belligerent': Belligerents.blue,
                     'id': "0_Rocket",
                     'code': "Fi103_V1_ramp",
-                    'pos': {
-                        'x': 84141.38,
-                        'y': 114216.82,
-                    },
+                    'pos': Point2D(84141.38, 114216.82),
                     'rotation_angle': 360.00,
                     'delay': 60.0,
                     'count': 10,
                     'period': 80.0,
-                    'destination': {
-                        'x': 83433.91,
-                        'y': 115445.49,
-                    },
+                    'destination': Point2D(83433.91, 115445.49),
                 },
                 {
                     'belligerent': Belligerents.blue,
                     'id': "1_Rocket",
                     'code': "Fi103_V1_ramp",
-                    'pos': {
-                        'x': 84141.38,
-                        'y': 114216.82,
-                    },
+                    'pos': Point2D(84141.38, 114216.82),
                     'rotation_angle': 360.00,
                     'delay': 60.0,
                     'count': 10,
@@ -663,11 +606,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             'flight_route_3GvIAP01': [
                 {
                     'type': RoutePointTypes.takeoff_normal,
-                    'pos': {
-                        'x': 193373.53,
-                        'y': 99288.17,
-                        'z': 0.0,
-                    },
+                    'pos': Point3D(193373.53, 99288.17, 0.0),
                     'speed': 0.0,
                     'formation': None,
                     'radio_silence': False,
@@ -678,11 +617,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'type': RoutePointTypes.patrol_triangle,
-                    'pos': {
-                        'x': 98616.72,
-                        'y': 78629.31,
-                        'z': 500.00,
-                    },
+                    'pos': Point3D(98616.72, 78629.31, 500.00),
                     'speed': 300.00,
                     'formation': Formations.echelon_right,
                     'radio_silence': False,
@@ -698,11 +633,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'type': RoutePointTypes.air_attack,
-                    'pos': {
-                        'x': 63028.34,
-                        'y': 42772.13,
-                        'z': 500.00,
-                    },
+                    'pos': Point3D(63028.34, 42772.13, 500.00),
                     'speed': 300.00,
                     'formation': None,
                     'target': {
@@ -713,11 +644,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'type': RoutePointTypes.ground_attack,
-                    'pos': {
-                        'x': 99737.30,
-                        'y': 79106.06,
-                        'z': 500.00,
-                    },
+                    'pos': Point3D(99737.30, 79106.06, 500.00),
                     'speed': 300.00,
                     'target': {
                         'id': "0_Chief",
@@ -728,11 +655,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'type': RoutePointTypes.ground_attack,
-                    'pos': {
-                        'x': 74338.61,
-                        'y': 29746.57,
-                        'z': 500.00,
-                    },
+                    'pos': Point3D(74338.61, 29746.57, 500.00),
                     'speed': 300.00,
                     'target': {
                         'id': "4_Static",
@@ -743,11 +666,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'type': RoutePointTypes.ground_attack,
-                    'pos': {
-                        'x': 82387.92,
-                        'y': 51163.75,
-                        'z': 500.00,
-                    },
+                    'pos': Point3D(82387.92, 51163.75, 500.00),
                     'speed': 300.00,
                     'target': {
                         'id': "0_Rocket",
@@ -758,11 +677,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 },
                 {
                     'type': RoutePointTypes.landing_straight,
-                    'pos': {
-                        'x': 185304.27,
-                        'y': 54570.12,
-                        'z': 0.00,
-                    },
+                    'pos': Point3D(185304.27, 54570.12, 0.00),
                     'speed': 0.00,
                     'formation': None,
                     'radio_silence': True,
@@ -814,44 +729,29 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             'route_0_Chief': [
                 {
                     'is_checkpoint': True,
-                    'pos': {
-                        'x': 21380.02,
-                        'y': 41700.34,
-                    },
+                    'pos': Point2D(21380.02, 41700.34),
                     'section_length': 3,
                     'speed': 3.055555582046509,
                     'delay': 10,
                 },
                 {
                     'is_checkpoint': False,
-                    'pos': {
-                        'x': 21500.00,
-                        'y': 41700.00,
-                    },
+                    'pos': Point2D(21500.00, 41700.00),
                 },
                 {
                     'is_checkpoint': True,
-                    'pos': {
-                        'x': 50299.58,
-                        'y': 35699.85,
-                    },
+                    'pos': Point2D(50299.58, 35699.85),
                     'section_length': 3,
                     'speed': 2.6388890743255615,
                     'delay': 0,
                 },
                 {
                     'is_checkpoint': False,
-                    'pos': {
-                        'x': 60284.10,
-                        'y': 59142.93,
-                    },
+                    'pos': Point2D(60284.10, 59142.93),
                 },
                 {
                     'is_checkpoint': False,
-                    'pos': {
-                        'x': 84682.13,
-                        'y': 98423.69,
-                    },
+                    'pos': Point2D(84682.13, 98423.69),
                 },
             ],
         }
@@ -884,17 +784,11 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'in_sleep_mode': False,
                     'delay': 0,
                     'destruction_level': 50,
-                    'pos': {
-                        'x': 90939.0,
-                        'y': 91871.0,
-                    },
+                    'pos': Point2D(90939.0, 91871.0),
                     'object': {
                         'waypoint': 1,
                         'id': '10_Chief',
-                        'pos': {
-                            'x': 91100.0,
-                            'y': 91500.0,
-                        },
+                        'pos': Point2D(91100.0, 91500.0),
                     },
                 },
             ],
@@ -917,10 +811,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'in_sleep_mode': True,
                     'delay': 60,
                     'destruction_level': 75,
-                    'pos': {
-                        'x': 133960.0,
-                        'y': 87552.0,
-                    },
+                    'pos': Point2D(133960.0, 87552.0),
                     'radius': 1350,
                 },
             ],
@@ -942,16 +833,10 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'priority': TargetPriorities.hidden,
                     'in_sleep_mode': True,
                     'delay': 30,
-                    'pos': {
-                        'x': 135786.0,
-                        'y': 84596.0,
-                    },
+                    'pos': Point2D(135786.0, 84596.0),
                     'object': {
                         'id': 'Bridge84',
-                        'pos': {
-                            'x': 135764.0,
-                            'y': 84636.0,
-                        },
+                        'pos': Point2D(135764.0, 84636.0),
                     },
                 },
             ],
@@ -975,10 +860,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'in_sleep_mode': True,
                     'delay': 50,
                     'requires_landing': False,
-                    'pos': {
-                        'x': 133978.0,
-                        'y': 87574.0,
-                    },
+                    'pos': Point2D(133978.0, 87574.0),
                     'radius': 1150,
                 },
                 {
@@ -987,18 +869,12 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'in_sleep_mode': True,
                     'delay': 40,
                     'requires_landing': True,
-                    'pos': {
-                        'x': 134459.0,
-                        'y': 85239.0,
-                    },
+                    'pos': Point2D(134459.0, 85239.0),
                     'radius': 300,
                     'object': {
                         'waypoint': 0,
                         'id': '1_Chief',
-                        'pos': {
-                            'x': 134360.0,
-                            'y': 85346.0,
-                        },
+                        'pos': Point2D(134360.0, 85346.0),
                     },
                 },
             ],
@@ -1021,17 +897,11 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'in_sleep_mode': True,
                     'delay': 10,
                     'destruction_level': 75,
-                    'pos': {
-                        'x': 134183.0,
-                        'y': 85468.0,
-                    },
+                    'pos': Point2D(134183.0, 85468.0),
                     'object': {
                         'waypoint': 1,
                         'id': 'r0100',
-                        'pos': {
-                            'x': 133993.0,
-                            'y': 85287.0,
-                        },
+                        'pos': Point2D(133993.0, 85287.0),
                     },
                 },
             ],
@@ -1054,17 +924,11 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'in_sleep_mode': True,
                     'delay': 20,
                     'destruction_level': 25,
-                    'pos': {
-                        'x': 132865.0,
-                        'y': 87291.0,
-                    },
+                    'pos': Point2D(132865.0, 87291.0),
                     'object': {
                         'waypoint': 1,
                         'id': '1_Chief',
-                        'pos': {
-                            'x': 132866.0,
-                            'y': 86905.0,
-                        },
+                        'pos': Point2D(132866.0, 86905.0),
                     },
                 },
             ],
@@ -1087,10 +951,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'in_sleep_mode': True,
                     'delay': 30,
                     'destruction_level': 50,
-                    'pos': {
-                        'x': 134064.0,
-                        'y': 88188.0,
-                    },
+                    'pos': Point2D(134064.0, 88188.0),
                     'radius': 1350,
                 },
             ],
@@ -1112,16 +973,10 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'priority': TargetPriorities.hidden,
                     'in_sleep_mode': True,
                     'delay': 30,
-                    'pos': {
-                        'x': 135896.0,
-                        'y': 84536.0,
-                    },
+                    'pos': Point2D(135896.0, 84536.0),
                     'object': {
                         'id': 'Bridge84',
-                        'pos': {
-                            'x': 135764.0,
-                            'y': 84636.0,
-                        },
+                        'pos': Point2D(135764.0, 84636.0),
                     },
                 },
             ],

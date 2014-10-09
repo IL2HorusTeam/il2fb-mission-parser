@@ -22,6 +22,7 @@ from .constants import (
     ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE,
 )
 from .exceptions import MissionParsingError
+from .structures import Point2D, Point3D
 
 
 def to_bool(value):
@@ -546,7 +547,7 @@ class ChiefRoadParser(CollectingParser):
         params = line.split()
         pos, params = params[0:2], params[3:]
         point = {
-            'pos': to_pos(*pos),
+            'pos': Point2D(*pos),
         }
         is_checkpoint = bool(params)
         point['is_checkpoint'] = is_checkpoint
@@ -596,7 +597,7 @@ class NStationaryParser(CollectingParser):
             'belligerent': to_belligerent(belligerent),
             'id': oid,
             'code': self._get_code(object_name),
-            'pos': to_pos(*pos),
+            'pos': Point2D(*pos),
             'rotation_angle': float(rotation_angle),
             'type': object_type,
         })
@@ -689,7 +690,7 @@ class BuildingsParser(CollectingParser):
             'id': oid,
             'belligerent': to_belligerent(belligerent),
             'code': code,
-            'pos': to_pos(pos_x, pos_y),
+            'pos': Point2D(pos_x, pos_y),
             'rotation_angle': float(rotation_angle),
         }
         self.data.append(buildings)
@@ -741,11 +742,11 @@ class TargetParser(CollectingParser):
         object_pos = params[6:8]
         return {
             'destruction_level': destruction_level,
-            'pos': to_pos(*pos),
+            'pos': Point2D(*pos),
             'object': {
                 'waypoint': int(waypoint),
                 'id': object_code,
-                'pos': to_pos(*object_pos),
+                'pos': Point2D(*object_pos),
             },
         }
 
@@ -756,10 +757,10 @@ class TargetParser(CollectingParser):
         """
         pos, object_code, object_pos = params[1:3], params[5], params[6:8]
         return {
-            'pos': to_pos(*pos),
+            'pos': Point2D(*pos),
             'object': {
                 'id': object_code,
-                'pos': to_pos(*object_pos),
+                'pos': Point2D(*object_pos),
             },
         }
 
@@ -772,7 +773,7 @@ class TargetParser(CollectingParser):
         pos_x, pos_y, radius = params[1:]
         return {
             'destruction_level': destruction_level,
-            'pos': to_pos(pos_x, pos_y),
+            'pos': Point2D(pos_x, pos_y),
             'radius': int(radius),
         }
 
@@ -785,7 +786,7 @@ class TargetParser(CollectingParser):
         data = {
             'radius': int(radius),
             'requires_landing': requires_landing,
-            'pos': to_pos(*pos),
+            'pos': Point2D(*pos),
         }
         if params:
             waypoint, object_code = params[:2]
@@ -793,7 +794,7 @@ class TargetParser(CollectingParser):
             data['object'] = {
                 'waypoint': int(waypoint),
                 'id': object_code,
-                'pos': to_pos(*object_pos),
+                'pos': Point2D(*object_pos),
             }
         return data
 
@@ -869,7 +870,7 @@ class BornPlaceParser(CollectingParser):
                 'min_height': int(radar_min_height),
                 'max_height': int(radar_max_height),
             },
-            'pos': to_pos(pos_x, pos_y),
+            'pos': Point2D(pos_x, pos_y),
         })
 
     def process_data(self):
@@ -981,7 +982,7 @@ class StaticCameraParser(CollectingParser):
         pos_x, pos_y, pos_z, belligerent = line.split()
         self.data.append({
             'belligerent': to_belligerent(belligerent),
-            'pos': to_pos(pos_x, pos_y, pos_z),
+            'pos': Point3D(pos_x, pos_y, pos_z),
         })
 
     def process_data(self):
@@ -1002,7 +1003,7 @@ class FrontMarkerParser(CollectingParser):
         self.data.append({
             'id': oid,
             'belligerent': to_belligerent(belligerent),
-            'pos': to_pos(pos_x, pos_y),
+            'pos': Point2D(pos_x, pos_y),
         })
 
     def process_data(self):
@@ -1030,12 +1031,12 @@ class RocketParser(CollectingParser):
             'id': oid,
             'code': code,
             'belligerent': to_belligerent(belligerent),
-            'pos': to_pos(*pos),
+            'pos': Point2D(*pos),
             'rotation_angle': float(rotation_angle),
             'delay': float(delay),
             'count': int(count),
             'period': float(period),
-            'destination': to_pos(*destination) if destination else None
+            'destination': Point2D(*destination) if destination else None
         })
 
     def process_data(self):
@@ -1176,7 +1177,7 @@ class FlightRouteParser(CollectingParser):
             pos, speed, params = params[0:3], params[3], params[4:]
             self.route_point = {
                 'type': RoutePointTypes.get_by_value(type_code),
-                'pos': to_pos(*pos),
+                'pos': Point3D(*pos),
                 'speed': float(speed),
             }
             self._parse_extra(params)
