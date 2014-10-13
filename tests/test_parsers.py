@@ -12,14 +12,14 @@ from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
 from il2fb.parsers.mission.parsers import (
-    to_bool, to_pos, to_belligerent, to_skill, to_unit_type, SectionParser,
-    MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
+    to_bool, to_belligerent, to_skill, to_unit_type, SectionParser, MainParser,
+    SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
     BornPlaceAirForcesParser, RocketParser, ChiefRoadParser, WingParser,
     MDSScoutsParser, FlightInfoParser, FlightRouteParser,
 )
-from il2fb.parsers.mission.structures import Point2D, Point3D
+from il2fb.parsers.mission.structures import Point2D, Point3D, GroundRoutePoint
 
 
 class CommonsTestCase(unittest.TestCase):
@@ -28,14 +28,6 @@ class CommonsTestCase(unittest.TestCase):
         self.assertFalse(to_bool('0'))
         self.assertTrue(to_bool('1'))
         self.assertTrue(to_bool('-1'))
-
-    def test_to_pos(self):
-        self.assertEqual(
-            to_pos('100', '200'), {'x': 100, 'y': 200, }
-        )
-        self.assertEqual(
-            to_pos('100', '200', '300'), {'x': 100, 'y': 200, 'z': 300, }
-        )
 
     def test_to_belligerent(self):
         self.assertEqual(to_belligerent('0'), Belligerents.none)
@@ -727,32 +719,32 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         ]
         expected = {
             'route_0_Chief': [
-                {
-                    'is_checkpoint': True,
-                    'pos': Point2D(21380.02, 41700.34),
-                    'section_length': 3,
-                    'speed': 3.055555582046509,
-                    'delay': 10,
-                },
-                {
-                    'is_checkpoint': False,
-                    'pos': Point2D(21500.00, 41700.00),
-                },
-                {
-                    'is_checkpoint': True,
-                    'pos': Point2D(50299.58, 35699.85),
-                    'section_length': 3,
-                    'speed': 2.6388890743255615,
-                    'delay': 0,
-                },
-                {
-                    'is_checkpoint': False,
-                    'pos': Point2D(60284.10, 59142.93),
-                },
-                {
-                    'is_checkpoint': False,
-                    'pos': Point2D(84682.13, 98423.69),
-                },
+                GroundRoutePoint(
+                    pos=Point2D(21380.02, 41700.34),
+                    is_checkpoint=True,
+                    section_length=3,
+                    speed=3.055555582046509,
+                    delay=10,
+                ),
+                GroundRoutePoint(
+                    pos=Point2D(21500.00, 41700.00),
+                    is_checkpoint=False,
+                ),
+                GroundRoutePoint(
+                    is_checkpoint=True,
+                    pos=Point2D(50299.58, 35699.85),
+                    section_length=3,
+                    speed=2.6388890743255615,
+                    delay=0,
+                ),
+                GroundRoutePoint(
+                    is_checkpoint=False,
+                    pos=Point2D(60284.10, 59142.93),
+                ),
+                GroundRoutePoint(
+                    is_checkpoint=False,
+                    pos=Point2D(84682.13, 98423.69),
+                ),
             ],
         }
         self._test_parser(ChiefRoadParser, '0_Chief_Road', lines, expected)

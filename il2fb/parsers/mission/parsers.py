@@ -22,7 +22,7 @@ from .constants import (
     ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE,
 )
 from .exceptions import MissionParsingError
-from .structures import Point2D, Point3D
+from .structures import Point2D, Point3D, GroundRoutePoint
 
 
 def to_bool(value):
@@ -46,37 +46,6 @@ def to_bool(value):
        True
     """
     return value != '0'
-
-
-def to_pos(x, y, z=None):
-    """
-    Converts a string representation of position coordinates into dictionary.
-
-    :param str x: a string representation of x coordinate
-    :param str y: a string representation of y coordinate
-    :param z: a string representation of z coordinate
-    :type z: :class:`str` or ``None``
-
-    :returns: a dictionary of float coordinates which can be accessed by their
-              names
-    :rtype: :class:`dict`
-
-    **Examples:**
-
-    .. code-block:: python
-
-       >>> to_pos('100', '200')
-       {'y': 200.0, 'x': 100.0}
-       >>> to_pos('100', '200', '300')
-       {'y': 200.0, 'x': 100.0, 'z': 300.0}
-    """
-    pos = {
-        'x': float(x),
-        'y': float(y),
-    }
-    if z is not None:
-        pos['z'] = float(z)
-    return pos
 
 
 to_belligerent = lambda value: Belligerents.get_by_value(int(value))
@@ -546,16 +515,18 @@ class ChiefRoadParser(CollectingParser):
     def parse_line(self, line):
         params = line.split()
         pos, params = params[0:2], params[3:]
-        point = {
+
+        args = {
             'pos': Point2D(*pos),
         }
         is_checkpoint = bool(params)
-        point['is_checkpoint'] = is_checkpoint
+        args['is_checkpoint'] = is_checkpoint
         if is_checkpoint:
-            point['delay'] = int(params[0])
-            point['section_length'] = int(params[1])
-            point['speed'] = float(params[2])
+            args['delay'] = int(params[0])
+            args['section_length'] = int(params[1])
+            args['speed'] = float(params[2])
 
+        point = GroundRoutePoint(**args)
         self.data.append(point)
 
     def process_data(self):

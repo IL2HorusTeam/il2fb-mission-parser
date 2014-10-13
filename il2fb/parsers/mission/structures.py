@@ -38,3 +38,34 @@ class Point3D(object):
 
     def __hash__(self):
         return hash((self.x, self.y, self.z))
+
+
+class GroundRoutePoint(object):
+    __slots__ = ['pos', 'is_checkpoint', 'delay', 'section_length', 'speed', ]
+
+    def __init__(self, pos, is_checkpoint, delay=None, section_length=None, speed=None):
+        self.pos = pos
+        self.is_checkpoint = is_checkpoint
+        self.delay = delay
+        self.section_length = section_length
+        self.speed = speed
+
+    def __eq__(self, other):
+        if not isinstance(other, GroundRoutePoint):
+            return NotImplemented
+        return (
+            self.pos == other.pos
+            and self.is_checkpoint == other.is_checkpoint
+            and self.delay == other.delay
+            and self.section_length == other.section_length
+            and self.speed == other.speed
+        )
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __hash__(self):
+        return hash((
+            self.pos, self.is_checkpoint, self.delay, self.section_length,
+            self.speed,
+        ))
