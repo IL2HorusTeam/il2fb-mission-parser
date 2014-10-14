@@ -19,7 +19,9 @@ from il2fb.parsers.mission.parsers import (
     BornPlaceAirForcesParser, RocketParser, ChiefRoadParser, WingParser,
     MDSScoutsParser, FlightInfoParser, FlightRouteParser,
 )
-from il2fb.parsers.mission.structures import Point2D, Point3D, GroundRoutePoint
+from il2fb.parsers.mission.structures import (
+    Point2D, Point3D, GroundRoutePoint, Building
+)
 
 
 class CommonsTestCase(unittest.TestCase):
@@ -439,13 +441,13 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         ]
         expected = {
             'buildings': [
-                {
-                    'belligerent': Belligerents.red,
-                    'id': '0_bld',
-                    'code': 'Tent_Pyramid_US',
-                    'pos': Point2D(43471.34, 57962.08),
-                    'rotation_angle': 630.00,
-                },
+                Building(
+                    belligerent=Belligerents.red,
+                    id='0_bld',
+                    code='Tent_Pyramid_US',
+                    pos=Point2D(43471.34, 57962.08),
+                    rotation_angle=630.00,
+                ),
             ],
         }
         self._test_parser(BuildingsParser, 'Buildings', lines, expected)

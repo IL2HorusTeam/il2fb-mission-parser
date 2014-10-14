@@ -22,7 +22,7 @@ from .constants import (
     ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE,
 )
 from .exceptions import MissionParsingError
-from .structures import Point2D, Point3D, GroundRoutePoint
+from .structures import Point2D, Point3D, GroundRoutePoint, Building
 
 
 def to_bool(value):
@@ -657,14 +657,13 @@ class BuildingsParser(CollectingParser):
         oid, building_object, belligerent = params[:3]
         pos_x, pos_y, rotation_angle = params[3:]
         building_type, code = building_object.split('$')
-        buildings = {
-            'id': oid,
-            'belligerent': to_belligerent(belligerent),
-            'code': code,
-            'pos': Point2D(pos_x, pos_y),
-            'rotation_angle': float(rotation_angle),
-        }
-        self.data.append(buildings)
+        self.data.append(Building(
+            id=oid,
+            belligerent=to_belligerent(belligerent),
+            code=code,
+            pos=Point2D(pos_x, pos_y),
+            rotation_angle=float(rotation_angle),
+        ))
 
     def process_data(self):
         return {'buildings': self.data, }
