@@ -144,3 +144,47 @@ class FrontMarker(object):
 
     def __hash__(self):
         return hash((self.id, self.belligerent, self.pos))
+
+
+class Rocket(object):
+    __slots__ = [
+        'id', 'code', 'belligerent', 'pos', 'rotation_angle', 'delay', 'count',
+        'period', 'destination',
+    ]
+
+    def __init__(self, id, code, belligerent, pos, rotation_angle, delay,
+                 count, period, destination):
+        self.id = id
+        self.code = code
+        self.belligerent = belligerent
+        self.pos = pos
+        self.rotation_angle = rotation_angle
+        self.delay = delay
+        self.count = count
+        self.period = period
+        self.destination = destination
+
+    def __eq__(self, other):
+        if not isinstance(other, Rocket):
+            return NotImplemented
+        return (
+            self.id == other.id
+            and self.code == other.code
+            and self.belligerent == other.belligerent
+            and self.pos == other.pos
+            and self.rotation_angle == other.rotation_angle
+            and self.delay == other.delay
+            and self.count == other.count
+            and self.period == other.period
+            and self.destination == other.destination
+        )
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __hash__(self):
+        return hash((
+            self.id, self.code, self.belligerent, self.pos,
+            self.rotation_angle, self.delay, self.count, self.period,
+            self.destination,
+        ))

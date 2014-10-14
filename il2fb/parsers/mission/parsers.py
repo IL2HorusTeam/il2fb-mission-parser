@@ -24,6 +24,7 @@ from .constants import (
 from .exceptions import MissionParsingError
 from .structures import (
     Point2D, Point3D, GroundRoutePoint, Building, StaticCamera, FrontMarker,
+    Rocket,
 )
 
 
@@ -999,17 +1000,17 @@ class RocketParser(CollectingParser):
         rotation_angle, delay, count, period = params[5:9]
         destination = params[9:]
 
-        self.data.append({
-            'id': oid,
-            'code': code,
-            'belligerent': to_belligerent(belligerent),
-            'pos': Point2D(*pos),
-            'rotation_angle': float(rotation_angle),
-            'delay': float(delay),
-            'count': int(count),
-            'period': float(period),
-            'destination': Point2D(*destination) if destination else None
-        })
+        self.data.append(Rocket(
+            id=oid,
+            code=code,
+            belligerent=to_belligerent(belligerent),
+            pos=Point2D(*pos),
+            rotation_angle=float(rotation_angle),
+            delay=float(delay),
+            count=int(count),
+            period=float(period),
+            destination=Point2D(*destination) if destination else None
+        ))
 
     def process_data(self):
         return {'rockets': self.data}

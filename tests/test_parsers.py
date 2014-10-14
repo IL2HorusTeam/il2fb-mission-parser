@@ -21,6 +21,7 @@ from il2fb.parsers.mission.parsers import (
 )
 from il2fb.parsers.mission.structures import (
     Point2D, Point3D, GroundRoutePoint, Building, StaticCamera, FrontMarker,
+    Rocket,
 )
 
 
@@ -545,28 +546,28 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         ]
         expected = {
             'rockets': [
-                {
-                    'belligerent': Belligerents.blue,
-                    'id': "0_Rocket",
-                    'code': "Fi103_V1_ramp",
-                    'pos': Point2D(84141.38, 114216.82),
-                    'rotation_angle': 360.00,
-                    'delay': 60.0,
-                    'count': 10,
-                    'period': 80.0,
-                    'destination': Point2D(83433.91, 115445.49),
-                },
-                {
-                    'belligerent': Belligerents.blue,
-                    'id': "1_Rocket",
-                    'code': "Fi103_V1_ramp",
-                    'pos': Point2D(84141.38, 114216.82),
-                    'rotation_angle': 360.00,
-                    'delay': 60.0,
-                    'count': 10,
-                    'period': 80.0,
-                    'destination': None,
-                },
+                Rocket(
+                    id='0_Rocket',
+                    code='Fi103_V1_ramp',
+                    belligerent=Belligerents.blue,
+                    pos=Point2D(84141.38, 114216.82),
+                    rotation_angle=360.00,
+                    delay=60.0,
+                    count=10,
+                    period=80.0,
+                    destination=Point2D(83433.91, 115445.49),
+                ),
+                Rocket(
+                    id='1_Rocket',
+                    code='Fi103_V1_ramp',
+                    belligerent=Belligerents.blue,
+                    pos=Point2D(84141.38, 114216.82),
+                    rotation_angle=360.00,
+                    delay=60.0,
+                    count=10,
+                    period=80.0,
+                    destination=None,
+                ),
             ],
         }
         self._test_parser(RocketParser, 'Rocket', lines, expected)
