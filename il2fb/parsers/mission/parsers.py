@@ -22,7 +22,9 @@ from .constants import (
     ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE,
 )
 from .exceptions import MissionParsingError
-from .structures import Point2D, Point3D, GroundRoutePoint, Building
+from .structures import (
+    Point2D, Point3D, GroundRoutePoint, Building, StaticCamera,
+)
 
 
 def to_bool(value):
@@ -950,10 +952,10 @@ class StaticCameraParser(CollectingParser):
 
     def parse_line(self, line):
         pos_x, pos_y, pos_z, belligerent = line.split()
-        self.data.append({
-            'belligerent': to_belligerent(belligerent),
-            'pos': Point3D(pos_x, pos_y, pos_z),
-        })
+        self.data.append(StaticCamera(
+            belligerent=to_belligerent(belligerent),
+            pos=Point3D(pos_x, pos_y, pos_z),
+        ))
 
     def process_data(self):
         return {'cameras': self.data, }

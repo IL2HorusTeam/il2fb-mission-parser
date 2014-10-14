@@ -101,3 +101,22 @@ class Building(object):
             self.id, self.code, self.belligerent, self.pos,
             self.rotation_angle,
         ))
+
+
+class StaticCamera(object):
+    __slots__ = ['belligerent', 'pos', ]
+
+    def __init__(self, belligerent, pos):
+        self.belligerent = belligerent
+        self.pos = pos
+
+    def __eq__(self, other):
+        if not isinstance(other, StaticCamera):
+            return NotImplemented
+        return self.belligerent == other.belligerent and self.pos == other.pos
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __hash__(self):
+        return hash((self.belligerent, self.pos))

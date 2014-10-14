@@ -20,7 +20,7 @@ from il2fb.parsers.mission.parsers import (
     MDSScoutsParser, FlightInfoParser, FlightRouteParser,
 )
 from il2fb.parsers.mission.structures import (
-    Point2D, Point3D, GroundRoutePoint, Building
+    Point2D, Point3D, GroundRoutePoint, Building, StaticCamera
 )
 
 
@@ -512,10 +512,10 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         ]
         expected = {
             'cameras': [
-                {
-                    'belligerent': Belligerents.blue,
-                    'pos': Point3D(38426.0, 65212.0, 35.0),
-                },
+                StaticCamera(
+                    belligerent=Belligerents.blue,
+                    pos=Point3D(38426.0, 65212.0, 35.0),
+                ),
             ],
         }
         self._test_parser(StaticCameraParser, 'StaticCamera', lines, expected)
