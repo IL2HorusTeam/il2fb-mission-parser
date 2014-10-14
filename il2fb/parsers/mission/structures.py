@@ -120,3 +120,27 @@ class StaticCamera(object):
 
     def __hash__(self):
         return hash((self.belligerent, self.pos))
+
+
+class FrontMarker(object):
+    __slots__ = ['id', 'belligerent', 'pos', ]
+
+    def __init__(self, id, belligerent, pos):
+        self.id = id
+        self.belligerent = belligerent
+        self.pos = pos
+
+    def __eq__(self, other):
+        if not isinstance(other, FrontMarker):
+            return NotImplemented
+        return (
+            self.id == other.id
+            and self.belligerent == other.belligerent
+            and self.pos == other.pos
+        )
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __hash__(self):
+        return hash((self.id, self.belligerent, self.pos))

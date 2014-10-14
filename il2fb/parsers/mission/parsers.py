@@ -23,7 +23,7 @@ from .constants import (
 )
 from .exceptions import MissionParsingError
 from .structures import (
-    Point2D, Point3D, GroundRoutePoint, Building, StaticCamera,
+    Point2D, Point3D, GroundRoutePoint, Building, StaticCamera, FrontMarker,
 )
 
 
@@ -972,11 +972,11 @@ class FrontMarkerParser(CollectingParser):
 
     def parse_line(self, line):
         oid, pos_x, pos_y, belligerent = line.split()
-        self.data.append({
-            'id': oid,
-            'belligerent': to_belligerent(belligerent),
-            'pos': Point2D(pos_x, pos_y),
-        })
+        self.data.append(FrontMarker(
+            id=oid,
+            belligerent=to_belligerent(belligerent),
+            pos=Point2D(pos_x, pos_y),
+        ))
 
     def process_data(self):
         return {'markers': self.data, }
