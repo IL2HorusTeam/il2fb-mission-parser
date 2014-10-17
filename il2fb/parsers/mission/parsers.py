@@ -25,7 +25,8 @@ from .exceptions import MissionParsingError
 from .structures import (
     Point2D, Point3D, GroundRoutePoint, Building, StaticCamera, FrontMarker,
     Rocket, StationaryObject, StationaryArtillery, StationaryAircraft,
-    StationaryShip,
+    StationaryShip, FlightRoutePoint, FlightRouteTakeoffPoint,
+    FlightRoutePatrolPoint, FlightRouteAttackPoint,
 )
 
 
@@ -1140,7 +1141,7 @@ class FlightRouteParser(CollectingParser):
         super(FlightRouteParser, self).init_parser(section_name)
         flight_code = self._extract_flight_code(section_name)
         self.output_key = "{}{}".format(self.output_prefix, flight_code)
-        self.route_point = None
+        self.point = None
 
     def parse_line(self, line):
         params = line.split()
@@ -1150,7 +1151,7 @@ class FlightRouteParser(CollectingParser):
         else:
             self._finalize_current_point()
             pos, speed, params = params[0:3], params[3], params[4:]
-            self.route_point = {
+            self.point = {
                 'type': RoutePointTypes.get_by_value(type_code),
                 'pos': Point3D(*pos),
                 'speed': float(speed),
@@ -1160,45 +1161,40 @@ class FlightRouteParser(CollectingParser):
     def _parse_options(self, params):
         try:
             cycles, timeout, angle, side_size, altitude_difference = params
-            self.route_point.update({
-                'options': {
-                    'cycles': int(cycles),
-                    'timeout': int(timeout),
-                },
-                'pattern': {
-                    'angle': int(angle),
-                    'side_size': int(side_size),
-                    'altitude_difference': int(altitude_difference),
-                },
+            self.point.update({
+                'patrol_cycles': int(cycles),
+                'patrol_timeout': int(timeout),
+                'pattern_angle': int(angle),
+                'pattern_side_size': int(side_size),
+                'pattern_altitude_difference': int(altitude_difference),
             })
+            self.point_class = FlightRoutePatrolPoint
         except ValueError:
             delay, spacing = params[1:3]
-            self.route_point.update({
-                'options': {
-                    'delay': int(delay),
-                    'spacing': int(spacing),
-                },
+            self.point.update({
+                'delay': int(delay),
+                'spacing': int(spacing),
             })
+            self.point_class = FlightRouteTakeoffPoint
 
     def _parse_extra(self, params):
         try:
             target_id, target_route_point, radio_silence = params[:3]
             params = params[3:]
-            self.route_point.update({
-                'target': {
-                    'id': target_id,
-                    'route_point': int(target_route_point),
-                },
+            self.point.update({
+                'target_id': target_id,
+                'target_route_point': int(target_route_point),
             })
-            if self.route_point['type'] is RoutePointTypes.normal:
-                self.route_point['type'] = RoutePointTypes.air_attack
+            if self.point['type'] is RoutePointTypes.normal:
+                self.point['type'] = RoutePointTypes.air_attack
+            self.point_class = FlightRouteAttackPoint
         except ValueError:
             radio_silence = params[0]
             params = params[1:]
         finally:
             formation = Formations.get_by_value(params[0]) if params else None
             radio_silence = radio_silence == ROUTE_POINT_RADIO_SILENCE
-            self.route_point.update({
+            self.point.update({
                 'radio_silence': radio_silence,
                 'formation': formation,
             })
@@ -1208,8 +1204,11 @@ class FlightRouteParser(CollectingParser):
         return {self.output_key: self.data}
 
     def _finalize_current_point(self):
-        if self.route_point:
-            self.data.append(self.route_point)
+        if self.point:
+            point_class = getattr(self, 'point_class') or FlightRoutePoint
+            self.data.append(point_class(**self.point))
+            self.point = None
+            self.point_class = None
 
 
 class FileParser(object):

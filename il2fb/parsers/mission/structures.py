@@ -155,3 +155,56 @@ class StationaryShip(StationaryObject):
         self.awakening_time = awakening_time
         self.recharge_time = recharge_time
         self.skill = skill
+
+
+class FlightRoutePoint(Base):
+    __slots__ = ['type', 'pos', 'speed', 'formation', 'radio_silence', ]
+
+    def __init__(self, type, pos, speed, formation, radio_silence):
+        self.type = type
+        self.pos = pos
+        self.speed = speed
+        self.formation = formation
+        self.radio_silence = radio_silence
+
+
+class FlightRouteTakeoffPoint(FlightRoutePoint):
+    __slots__ = FlightRoutePoint.__slots__ + ['delay', 'spacing', ]
+
+    def __init__(self, type, pos, speed, formation, radio_silence, delay,
+                 spacing):
+        super(FlightRouteTakeoffPoint, self).__init__(
+            type, pos, speed, formation, radio_silence)
+        self.delay = delay
+        self.spacing = spacing
+
+
+class FlightRoutePatrolPoint(FlightRoutePoint):
+    __slots__ = FlightRoutePoint.__slots__ + [
+        'patrol_cycles', 'patrol_timeout',
+        'pattern_angle', 'pattern_side_size', 'pattern_altitude_difference',
+    ]
+
+    def __init__(self, type, pos, speed, formation, radio_silence,
+                 patrol_cycles, patrol_timeout, pattern_angle,
+                 pattern_side_size, pattern_altitude_difference):
+        super(FlightRoutePatrolPoint, self).__init__(
+            type, pos, speed, formation, radio_silence)
+        self.patrol_cycles = patrol_cycles
+        self.patrol_timeout = patrol_timeout
+        self.pattern_angle = pattern_angle
+        self.pattern_side_size = pattern_side_size
+        self.pattern_altitude_difference = pattern_altitude_difference
+
+
+class FlightRouteAttackPoint(FlightRoutePoint):
+    __slots__ = FlightRoutePoint.__slots__ + [
+        'target_id', 'target_route_point',
+    ]
+
+    def __init__(self, type, pos, speed, formation, radio_silence, target_id,
+                 target_route_point):
+        super(FlightRouteAttackPoint, self).__init__(
+            type, pos, speed, formation, radio_silence)
+        self.target_id = target_id
+        self.target_route_point = target_route_point

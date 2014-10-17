@@ -22,7 +22,8 @@ from il2fb.parsers.mission.parsers import (
 from il2fb.parsers.mission.structures import (
     Point2D, Point3D, GroundRoutePoint, Building, StaticCamera, FrontMarker,
     Rocket, StationaryObject, StationaryArtillery, StationaryAircraft,
-    StationaryShip,
+    StationaryShip, FlightRoutePoint, FlightRouteTakeoffPoint,
+    FlightRoutePatrolPoint, FlightRouteAttackPoint,
 )
 
 
@@ -600,84 +601,70 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         ]
         expected = {
             'flight_route_3GvIAP01': [
-                {
-                    'type': RoutePointTypes.takeoff_normal,
-                    'pos': Point3D(193373.53, 99288.17, 0.0),
-                    'speed': 0.0,
-                    'formation': None,
-                    'radio_silence': False,
-                    'options': {
-                        'delay': 10,
-                        'spacing': 20,
-                    }
-                },
-                {
-                    'type': RoutePointTypes.patrol_triangle,
-                    'pos': Point3D(98616.72, 78629.31, 500.00),
-                    'speed': 300.00,
-                    'formation': Formations.echelon_right,
-                    'radio_silence': False,
-                    'options': {
-                        'cycles': 1,
-                        'timeout': 1,
-                    },
-                    'pattern': {
-                        'angle': 25,
-                        'side_size': 5,
-                        'altitude_difference': 500,
-                    },
-                },
-                {
-                    'type': RoutePointTypes.air_attack,
-                    'pos': Point3D(63028.34, 42772.13, 500.00),
-                    'speed': 300.00,
-                    'formation': None,
-                    'target': {
-                        'id': "r0100",
-                        'route_point': 1,
-                    },
-                    'radio_silence': False,
-                },
-                {
-                    'type': RoutePointTypes.ground_attack,
-                    'pos': Point3D(99737.30, 79106.06, 500.00),
-                    'speed': 300.00,
-                    'target': {
-                        'id': "0_Chief",
-                        'route_point': 0,
-                    },
-                    'formation': None,
-                    'radio_silence': False,
-                },
-                {
-                    'type': RoutePointTypes.ground_attack,
-                    'pos': Point3D(74338.61, 29746.57, 500.00),
-                    'speed': 300.00,
-                    'target': {
-                        'id': "4_Static",
-                        'route_point': 0,
-                    },
-                    'formation': None,
-                    'radio_silence': False,
-                },
-                {
-                    'type': RoutePointTypes.ground_attack,
-                    'pos': Point3D(82387.92, 51163.75, 500.00),
-                    'speed': 300.00,
-                    'target': {
-                        'id': "0_Rocket",
-                        'route_point': 0,
-                    },
-                    'formation': None,
-                    'radio_silence': False,
-                },
-                {
-                    'type': RoutePointTypes.landing_straight,
-                    'pos': Point3D(185304.27, 54570.12, 0.00),
-                    'speed': 0.00,
-                    'formation': None,
-                    'radio_silence': True,
-                },
+                FlightRouteTakeoffPoint(
+                    type=RoutePointTypes.takeoff_normal,
+                    pos=Point3D(193373.53, 99288.17, 0.0),
+                    speed=0.0,
+                    formation=None,
+                    radio_silence=False,
+                    delay=10,
+                    spacing=20,
+                ),
+                FlightRoutePatrolPoint(
+                    type=RoutePointTypes.patrol_triangle,
+                    pos=Point3D(98616.72, 78629.31, 500.00),
+                    speed=300.00,
+                    formation=Formations.echelon_right,
+                    radio_silence=False,
+                    patrol_cycles=1,
+                    patrol_timeout=1,
+                    pattern_angle=25,
+                    pattern_side_size=5,
+                    pattern_altitude_difference=500,
+                ),
+                FlightRouteAttackPoint(
+                    type=RoutePointTypes.air_attack,
+                    pos=Point3D(63028.34, 42772.13, 500.00),
+                    speed=300.00,
+                    formation=None,
+                    radio_silence=False,
+                    target_id='r0100',
+                    target_route_point=1,
+                ),
+                FlightRouteAttackPoint(
+                    type=RoutePointTypes.ground_attack,
+                    pos=Point3D(99737.30, 79106.06, 500.00),
+                    speed=300.00,
+                    formation=None,
+                    radio_silence=False,
+                    target_id='0_Chief',
+                    target_route_point=0,
+                ),
+                FlightRouteAttackPoint(
+                    type=RoutePointTypes.ground_attack,
+                    pos=Point3D(74338.61, 29746.57, 500.00),
+                    speed=300.00,
+                    formation=None,
+                    radio_silence=False,
+                    target_id='4_Static',
+                    target_route_point=0,
+                ),
+                FlightRouteAttackPoint(
+                    type=RoutePointTypes.ground_attack,
+                    pos=Point3D(82387.92, 51163.75, 500.00),
+                    speed=300.00,
+                    formation=None,
+                    radio_silence=False,
+                    target_id='0_Rocket',
+                    target_route_point=0,
+                ),
+                FlightRoutePoint(
+                    type=RoutePointTypes.landing_straight,
+                    pos=Point3D(185304.27, 54570.12, 0.00),
+                    speed=0.00,
+                    formation=None,
+                    radio_silence=True,
+                ),
             ]
         }
         self._test_parser(FlightRouteParser, '3GvIAP01_Way', lines, expected)
