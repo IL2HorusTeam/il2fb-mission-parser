@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-class BaseObject(object):
+class Base(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -20,7 +20,7 @@ class BaseObject(object):
         ))
 
 
-class Point2D(BaseObject):
+class Point2D(Base):
     __slots__ = ['x', 'y', ]
 
     def __init__(self, x, y):
@@ -28,7 +28,7 @@ class Point2D(BaseObject):
         self.y = float(y)
 
 
-class Point3D(BaseObject):
+class Point3D(Base):
     __slots__ = ['x', 'y', 'z', ]
 
     def __init__(self, x, y, z):
@@ -37,7 +37,7 @@ class Point3D(BaseObject):
         self.z = float(z)
 
 
-class GroundRoutePoint(BaseObject):
+class GroundRoutePoint(Base):
     __slots__ = ['pos', 'is_checkpoint', 'delay', 'section_length', 'speed', ]
 
     def __init__(self, pos, is_checkpoint, delay=None, section_length=None,
@@ -49,7 +49,7 @@ class GroundRoutePoint(BaseObject):
         self.speed = speed
 
 
-class Building(BaseObject):
+class Building(Base):
     __slots__ = ['id', 'belligerent', 'code', 'pos', 'rotation_angle', ]
 
     def __init__(self, id, belligerent, code, pos, rotation_angle):
@@ -60,7 +60,7 @@ class Building(BaseObject):
         self.rotation_angle = rotation_angle
 
 
-class StaticCamera(BaseObject):
+class StaticCamera(Base):
     __slots__ = ['belligerent', 'pos', ]
 
     def __init__(self, belligerent, pos):
@@ -68,7 +68,7 @@ class StaticCamera(BaseObject):
         self.pos = pos
 
 
-class FrontMarker(BaseObject):
+class FrontMarker(Base):
     __slots__ = ['id', 'belligerent', 'pos', ]
 
     def __init__(self, id, belligerent, pos):
@@ -77,7 +77,7 @@ class FrontMarker(BaseObject):
         self.pos = pos
 
 
-class Rocket(BaseObject):
+class Rocket(Base):
     __slots__ = [
         'id', 'code', 'belligerent', 'pos', 'rotation_angle', 'delay', 'count',
         'period', 'destination',
@@ -94,3 +94,64 @@ class Rocket(BaseObject):
         self.count = count
         self.period = period
         self.destination = destination
+
+
+class StationaryObject(Base):
+    __slots__ = [
+        'id', 'belligerent', 'code', 'pos', 'rotation_angle', 'type',
+    ]
+
+    def __init__(self, id, belligerent, code, pos, rotation_angle, type):
+        self.id = id
+        self.belligerent = belligerent
+        self.code = code
+        self.pos = pos
+        self.rotation_angle = rotation_angle
+        self.type = type
+
+
+class StationaryArtillery(StationaryObject):
+    __slots__ = StationaryObject.__slots__ + [
+        'awakening_time', 'range', 'skill', 'use_spotter',
+    ]
+
+    def __init__(self, id, belligerent, code, pos, rotation_angle, type,
+                 awakening_time, range, skill, use_spotter):
+        super(StationaryArtillery, self).__init__(
+            id, belligerent, code, pos, rotation_angle, type)
+        self.awakening_time = awakening_time
+        self.range = range
+        self.skill = skill
+        self.use_spotter = use_spotter
+
+
+class StationaryAircraft(StationaryObject):
+    __slots__ = StationaryObject.__slots__ + [
+        'air_force', 'allows_spawning', 'is_restorable', 'skin',
+        'show_markings',
+    ]
+
+    def __init__(self, id, belligerent, code, pos, rotation_angle, type,
+                 air_force, allows_spawning, is_restorable, skin,
+                 show_markings):
+        super(StationaryAircraft, self).__init__(
+            id, belligerent, code, pos, rotation_angle, type)
+        self.air_force = air_force
+        self.allows_spawning = allows_spawning
+        self.is_restorable = is_restorable
+        self.skin = skin
+        self.show_markings = show_markings
+
+
+class StationaryShip(StationaryObject):
+    __slots__ = StationaryObject.__slots__ + [
+        'awakening_time', 'recharge_time', 'skill',
+    ]
+
+    def __init__(self, id, belligerent, code, pos, rotation_angle, type,
+                 awakening_time, recharge_time, skill):
+        super(StationaryShip, self).__init__(
+            id, belligerent, code, pos, rotation_angle, type)
+        self.awakening_time = awakening_time
+        self.recharge_time = recharge_time
+        self.skill = skill

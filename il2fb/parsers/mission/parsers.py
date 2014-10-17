@@ -24,7 +24,8 @@ from .constants import (
 from .exceptions import MissionParsingError
 from .structures import (
     Point2D, Point3D, GroundRoutePoint, Building, StaticCamera, FrontMarker,
-    Rocket,
+    Rocket, StationaryObject, StationaryArtillery, StationaryAircraft,
+    StationaryShip,
 )
 
 
@@ -542,58 +543,7 @@ class NStationaryParser(CollectingParser):
     View :ref:`detailed description <nstationary-section>`.
     """
 
-    def init_parser(self, section_name):
-        super(NStationaryParser, self).init_parser(section_name)
-        self.subparsers = {
-            'artillery': self._parse_artillery,
-            'planes': self._parse_planes,
-            'ships': self._parse_ships,
-        }
-
-    def check_section_name(self, section_name):
-        return section_name == "NStationary"
-
-    def parse_line(self, line):
-        params = line.split()
-
-        oid, object_name, belligerent = params[0], params[1], params[2]
-        pos = params[3:5]
-        rotation_angle = params[5]
-        params = params[6:]
-
-        type_name = self._get_type_name(object_name)
-        try:
-            object_type = to_unit_type(type_name)
-        except:
-            object_type = None
-
-        static = ({
-            'belligerent': to_belligerent(belligerent),
-            'id': oid,
-            'code': self._get_code(object_name),
-            'pos': Point2D(*pos),
-            'rotation_angle': float(rotation_angle),
-            'type': object_type,
-        })
-
-        subparser = self.subparsers.get(type_name)
-        if subparser:
-            static.update(subparser(params))
-        self.data.append(static)
-
-    def _get_type_name(self, object_name):
-        if object_name.startswith('ships'):
-            return "ships"
-        else:
-            start = object_name.index('.') + 1
-            stop = object_name.rindex('.')
-            return object_name[start:stop]
-
-    def _get_code(self, code):
-        start = code.index('$') + 1
-        return code[start:]
-
-    def _parse_artillery(self, params):
+    def __parse_artillery(params):
         """
         Parse additional options for ``artillery`` type
         """
@@ -605,7 +555,7 @@ class NStationaryParser(CollectingParser):
             'use_spotter': to_bool(is_spotter),
         }
 
-    def _parse_planes(self, params):
+    def __parse_aircraft(params):
         """
         Parse additional options for ``planes`` type
         """
@@ -631,7 +581,7 @@ class NStationaryParser(CollectingParser):
             'show_markings': to_bool(has_markings),
         }
 
-    def _parse_ships(self, params):
+    def __parse_ship(params):
         """
         Parse additional options for ``ships`` type
         """
@@ -641,6 +591,58 @@ class NStationaryParser(CollectingParser):
             'recharge_time': float(recharge_time),
             'skill': to_skill(skill),
         }
+
+    subparsers = {
+        'artillery': (StationaryArtillery, __parse_artillery),
+        'planes': (StationaryAircraft, __parse_aircraft),
+        'ships': (StationaryShip, __parse_ship),
+    }
+
+    def check_section_name(self, section_name):
+        return section_name == "NStationary"
+
+    def parse_line(self, line):
+        params = line.split()
+
+        oid, object_name, belligerent = params[0], params[1], params[2]
+        pos = params[3:5]
+        rotation_angle = params[5]
+        params = params[6:]
+
+        type_name = self._get_type_name(object_name)
+        try:
+            object_type = to_unit_type(type_name)
+        except:
+            object_type = None
+
+        the_object = {
+            'id': oid,
+            'belligerent': to_belligerent(belligerent),
+            'code': self._get_code(object_name),
+            'pos': Point2D(*pos),
+            'rotation_angle': float(rotation_angle),
+            'type': object_type,
+        }
+
+        if type_name in self.subparsers:
+            structure, subparser = self.subparsers.get(type_name)
+            the_object.update(subparser(params))
+        else:
+            structure = StationaryObject
+
+        self.data.append(structure(**the_object))
+
+    def _get_type_name(self, object_name):
+        if object_name.startswith('ships'):
+            return "ships"
+        else:
+            start = object_name.index('.') + 1
+            stop = object_name.rindex('.')
+            return object_name[start:stop]
+
+    def _get_code(self, code):
+        start = code.index('$') + 1
+        return code[start:]
 
     def process_data(self):
         return {'stationary': self.data, }

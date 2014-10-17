@@ -3,9 +3,9 @@
 Memory & time consumption tests for parsers.
 """
 from il2fb.parsers.mission.parsers import (
-    MDSScoutsParser, ChiefsParser, ChiefRoadParser, NStationaryParser,
-    BuildingsParser, TargetParser, BornPlaceParser, StaticCameraParser,
-    FrontMarkerParser, RocketParser, FlightRouteParser,
+    ChiefsParser, ChiefRoadParser, NStationaryParser, BuildingsParser,
+    TargetParser, BornPlaceParser, StaticCameraParser, FrontMarkerParser,
+    RocketParser, FlightRouteParser,
 )
 
 from generators import (
@@ -38,13 +38,6 @@ class ParserWrapper(object):
 
     def parse_line(self, line):
         return self.parser.parse_line(line)
-
-
-@profile
-def profile_chiefs_parser():
-    with ParserWrapper(ChiefsParser, 'Chiefs', generate_cheifs_lines) as pw:
-        for line in pw.lines:
-            pw.parse_line(line)
 
 
 @profile
@@ -111,7 +104,6 @@ def profile_flight_route_parser():
 
 
 if __name__ == '__main__':
-    profile_chiefs_parser()
     profile_chief_road_parser()
     profile_nstationary_parser()
     profile_buildings_parser()
