@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
+
 import os
 
 from setuptools import setup
 
 
-here = os.path.abspath(os.path.dirname(__file__))
+__here__ = os.path.abspath(os.path.dirname(__file__))
 
-README = open(os.path.join(here, 'README.rst')).read()
-REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
+README = open(os.path.join(__here__, 'README.rst')).read()
+REQUIREMENTS = [
+    i.strip()
+    for i in open(os.path.join(__here__, 'requirements.txt')).readlines()
+]
 
 # Get VERSION, which is all stored in 'il2fb.parsers.mission/version.py'
 version_file = os.path.join('il2fb', 'parsers', 'mission', 'version.py')
