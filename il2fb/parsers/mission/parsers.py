@@ -616,7 +616,8 @@ class NStationaryParser(CollectingParser):
         try:
             object_type = to_unit_type(type_name)
         except:
-            object_type = None
+            # Use original string as object's type
+            object_type = type_name
 
         the_object = {
             'id': oid,

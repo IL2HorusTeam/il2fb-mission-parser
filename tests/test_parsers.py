@@ -318,6 +318,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "7_Static vehicles.stationary.Siren$SirenCity 1 151984.28 88577.12 360.00 0.0",
             "8_Static vehicles.stationary.Stationary$Wagon1 1 152292.72 89662.80 360.00 0.0",
             "9_Static ships.Ship$G5 1 83759.05 115021.15 360.00 0.0 60 3 1.4",
+            "10_Static FAKE.SomethingUnknown.FAKE$XXX 1 152292.72 89662.80 360.00 0.0",
         ]
         expected = {
             'stationary': [
@@ -438,6 +439,14 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     skill=Skills.ace,
                     type=UnitTypes.ship,
                     awakening_time=60.0,
+                ),
+                StationaryObject(
+                    belligerent=Belligerents.red,
+                    id='10_Static',
+                    code='XXX',
+                    pos=Point2D(152292.72, 89662.80),
+                    rotation_angle=360.00,
+                    type='SomethingUnknown',
                 ),
             ],
         }
