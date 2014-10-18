@@ -260,35 +260,42 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "1_Chief Vehicles.GAZ67 1",
             "2_Chief Trains.USSR_FuelTrain/AA 1",
             "3_Chief Ships.G5 1 60 3 2.0",
+            "4_Chief SomethingUnknown.XXX 1",
         ]
         expected = {
             'moving_units': [
                 {
-                    'id': "0_Chief",
-                    'code': "1-BT7",
+                    'id': '0_Chief',
+                    'code': '1-BT7',
                     'type': UnitTypes.armor,
                     'belligerent': Belligerents.blue,
                 },
                 {
-                    'id': "1_Chief",
-                    'code': "GAZ67",
+                    'id': '1_Chief',
+                    'code': 'GAZ67',
                     'type': UnitTypes.vehicle,
                     'belligerent': Belligerents.red,
                 },
                 {
-                    'id': "2_Chief",
-                    'code': "USSR_FuelTrain/AA",
+                    'id': '2_Chief',
+                    'code': 'USSR_FuelTrain/AA',
                     'type': UnitTypes.train,
                     'belligerent': Belligerents.red,
                 },
                 {
-                    'id': "3_Chief",
-                    'code': "G5",
+                    'id': '3_Chief',
+                    'code': 'G5',
                     'type': UnitTypes.ship,
                     'belligerent': Belligerents.red,
                     'hibernation': 60,
                     'skill': Skills.ace,
                     'recharge_time': 2.0,
+                },
+                {
+                    'id': '4_Chief',
+                    'code': 'XXX',
+                    'type': 'SomethingUnknown',
+                    'belligerent': Belligerents.red,
                 },
             ],
         }

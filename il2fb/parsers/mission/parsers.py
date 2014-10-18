@@ -4,6 +4,7 @@ This module provides a set of parsers which can be used to obtain information
 about IL-2 FB missions. Every parser is a one-pass parser. They can be used to
 parse a whole mission file or to parse a single given section as well.
 """
+
 import datetime
 import math
 import six
@@ -470,7 +471,8 @@ class ChiefsParser(CollectingParser):
         try:
             chief_type = to_unit_type(chief_type)
         except:
-            chief_type = None
+            # Use original string as unit type
+            pass
 
         unit = {
             'id': uid,
@@ -698,7 +700,7 @@ class TargetParser(CollectingParser):
             'delay': int(delay),
         }
 
-        subparser = TargetParser.subparsers.get(target_type)
+        subparser = TargetParser._subparsers.get(target_type)
         if subparser is not None:
             target.update(subparser(params))
 
@@ -774,7 +776,7 @@ class TargetParser(CollectingParser):
             }
         return data
 
-    subparsers = {
+    _subparsers = {
         TargetTypes.destroy: parse_destroy_or_cover_or_escort,
         TargetTypes.destroy_bridge: parse_destroy_or_cover_bridge,
         TargetTypes.destroy_area: parse_destroy_or_cover_area,
