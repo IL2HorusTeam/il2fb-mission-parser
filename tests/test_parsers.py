@@ -4,6 +4,7 @@ Functional tests for parsers.
 """
 
 import datetime
+import tempfile
 import unittest
 
 from il2fb.commons import Skills, UnitTypes
@@ -12,13 +13,14 @@ from il2fb.commons.organization import AirForces, Belligerents, Regiments
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
+from il2fb.parsers.mission.exceptions import MissionParsingError
 from il2fb.parsers.mission.parsers import (
     to_bool, to_belligerent, to_skill, to_unit_type, SectionParser, MainParser,
     SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
     BornPlaceAirForcesParser, RocketParser, ChiefRoadParser, WingParser,
-    MDSScoutsParser, FlightInfoParser, FlightRouteParser,
+    MDSScoutsParser, FlightInfoParser, FlightRouteParser, FileParser,
 )
 from il2fb.parsers.mission.structures import (
     Point2D, Point3D, GroundRoutePoint, Building, StaticCamera, FrontMarker,
@@ -1151,3 +1153,95 @@ class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
     def test_invalid_section_name(self):
         p = FlightInfoParser()
         self.assertFalse(p.check_section_name("Something unknown"))
+
+
+class FileParserTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.parser = FileParser()
+
+    def test_parse(self):
+        mission = tempfile.NamedTemporaryFile()
+        try:
+            self.assertEqual(self.parser.parse([]), {})
+            self.assertEqual(self.parser.parse(mission), {})
+            self.assertEqual(self.parser.parse(mission.name), {})
+        finally:
+            mission.close()
+
+    def test_parse_line_with_error(self):
+        lines = [
+            "[MAIN]",
+            "  foo",
+        ]
+        with self.assertRaises(MissionParsingError) as cm:
+            self.parser.parse_sequence(lines)
+        self.assertEqual(
+            cm.exception.args[0],
+            "ValueError in line #1 (\"foo\"): need more than 1 value to unpack"
+        )
+
+    def test_parser_finalization_with_error(self):
+        lines = [
+            "[MAIN]",
+            "  foo bar",
+        ]
+        with self.assertRaises(MissionParsingError) as cm:
+            self.parser.parse_sequence(lines)
+        self.assertEqual(
+            cm.exception.args[0],
+            "KeyError during finalization of \"MainParser\": \'CloudType\'"
+        )
+
+    def test_get_flight_info_parser(self):
+        lines = [
+            "[Wing]",
+            "  r0100",
+            "[r0100]",
+            "  Planes 1",
+            "  Skill 1",
+            "  Class air.A_20C",
+            "  Fuel 100",
+            "  weapons default",
+        ]
+        result = self.parser.parse_sequence(lines)
+        self.assertEquals(
+            result,
+            {
+                'objects': {
+                    'flights': [
+                        {
+                            'id': 'r0100',
+                            'squadron_index': 0,
+                            'flight_index': 0,
+                            'air_force': AirForces.vvs_rkka,
+                            'regiment': None,
+                            'code': 'A_20C',
+                            'fuel': 100,
+                            'weapons': 'default',
+                            'ai_only': False,
+                            'with_parachutes': True,
+                            'count': 1,
+                            'aircrafts': [
+                                {
+                                    'index': 0,
+                                    'skill': Skills.average,
+                                    'has_markings': True
+                                },
+                            ],
+                            'route': [],
+                        }
+                    ],
+                },
+            }
+        )
+
+    def test_unknown_section(self):
+        lines = [
+            "[SomethingUnknown]",
+            "  XXX",
+            "  YYY",
+            "  ZZZ",
+        ]
+        result = self.parser.parse_sequence(lines)
+        self.assertEquals(result, {})

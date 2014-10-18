@@ -23,6 +23,7 @@ from .constants import (
     ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE,
 )
 from .exceptions import MissionParsingError
+from .helpers import move_if_present
 from .structures import (
     Point2D, Point3D, GroundRoutePoint, Building, StaticCamera, FrontMarker,
     Rocket, StationaryObject, StationaryArtillery, StationaryAircraft,
@@ -1247,11 +1248,11 @@ class FileParser(object):
     def parse(self, mission):
         if isinstance(mission, six.string_types):
             with open(mission, 'r') as f:
-                return self.parse_stream(f)
+                return self.parse_sequence(f)
         else:
-            return self.parse_stream(mission)
+            return self.parse_sequence(mission)
 
-    def parse_stream(self, stream):
+    def parse_sequence(self, sequence):
         parser = None
         self.data = {}
 
@@ -1265,9 +1266,14 @@ class FileParser(object):
                     self.data.update(parser.stop())
                 except Exception:
                     error_type, original_msg, traceback = sys.exc_info()
-                    _raise_error(original_msg, traceback)
+                    msg = (
+                        "{0} during finalization of \"{1}\": {2}"
+                        .format(error_type.__name__, parser.__class__.__name__,
+                                original_msg)
+                    )
+                    _raise_error(msg, traceback)
 
-        for line in stream:
+        for i, line in enumerate(sequence):
             line = line.strip()
             if self.is_section_name(line):
                 _finalize_parser()
@@ -1279,9 +1285,8 @@ class FileParser(object):
                 except Exception:
                     error_type, original_msg, traceback = sys.exc_info()
                     msg = (
-                        "{} (in line \"{}\")"
-                    ).format(
-                        original_msg, line
+                        "{0} in line #{1} (\"{2}\"): {3}"
+                        .format(error_type.__name__, i, line, original_msg)
                     )
                     _raise_error(msg, traceback)
 
@@ -1304,72 +1309,121 @@ class FileParser(object):
         return None
 
     def process_data(self):
-        return {
-            'location_loader': self.data.pop('location_loader'),
-            'conditions': self._get_conditions(),
-            'objects': self._get_objects(),
-            'targets': self.data.pop('targets', []),
-            'player': self.data.pop('player'),
-        }
+        result = {}
+
+        move_if_present(result, self.data, 'location_loader')
+        move_if_present(result, self.data, 'targets')
+        move_if_present(result, self.data, 'player')
+
+        conditions = self._get_conditions()
+        if conditions:
+            result['conditions'] = conditions
+
+        objects = self._get_objects()
+        if objects:
+            result['objects'] = objects
+
+        return result
 
     def _get_conditions(self):
-        return {
-            'time_info': self._get_time_info(),
-            'meteorology': self._get_meteorology(),
-            'scouting': self._get_scouting(),
-            'radar': self.data['conditions'].pop('radar'),
-            'communication': self.data['conditions'].pop('communication'),
-            'home_bases': self.data['conditions'].pop('home_bases'),
-            'crater_visibility_muptipliers': self.data['conditions'].pop('crater_visibility_muptipliers'),
-            'respawn_time': self.data.pop('respawn_time'),
-        }
+        result = {}
+
+        time_info = self._get_time_info()
+        if time_info:
+            result['time_info'] = time_info
+
+        meteorology = self._get_meteorology()
+        if meteorology:
+            result['meteorology'] = meteorology
+
+        scouting = self._get_scouting()
+        if scouting:
+            result['scouting'] = scouting
+
+        move_if_present(result, self.data, 'respawn_time')
+
+        if 'conditions' in self.data:
+            conditions = self.data['conditions']
+
+            move_if_present(result, conditions, 'radar')
+            move_if_present(result, conditions, 'communication')
+            move_if_present(result, conditions, 'home_bases')
+            move_if_present(result, conditions, 'crater_visibility_muptipliers')
+
+        return result
 
     def _get_time_info(self):
-        timestamp = datetime.datetime.combine(self.data['date'],
-                                              self.data['time']['value'])
-        return {
-            'timestamp': timestamp,
-            'is_fixed': self.data['time']['is_fixed'],
-        }
+        result = {}
+
+        if 'date' in self.data and 'time' in self.data:
+            timestamp = datetime.datetime.combine(self.data['date'],
+                                                  self.data['time']['value'])
+            result.update({
+                'timestamp': timestamp,
+                'is_fixed': self.data['time']['is_fixed'],
+            })
+
+        return result
 
     def _get_meteorology(self):
-        return dict(
-            {
-                'weather': self.data.pop('weather_conditions'),
-                'cloud_base': self.data.pop('cloud_base'),
-            },
-            **self.data.pop('weather')
-        )
+        result = {}
+
+        move_if_present(result, self.data, 'weather', 'weather_conditions')
+        move_if_present(result, self.data, 'cloud_base')
+
+        if 'weather' in self.data:
+            result.update(self.data.pop('weather'))
+
+        return result
 
     def _get_scouting(self):
-        data = self.data['conditions'].pop('scouting')
+        result = {}
+
+        if 'conditions' in self.data and 'scouting' in self.data:
+            conditions = self.data['conditions'].pop('scouting')
+            result.update(conditions)
+
         keys = filter(
             lambda x: x.startswith(MDSScoutsParser.output_prefix),
             self.data.keys()
         )
-        data['scouts'] = {
+        scouts = {
             self.data[key]['belligerent']: self.data[key]['aircrafts']
             for key in keys
         }
-        return data
+        if scouts:
+            result['scouts'] = scouts
+
+        return result
 
     def _get_objects(self):
-        return {
-            'moving_units': self._get_moving_units(),
-            'flights': self._get_flights(),
-            'home_bases': self._get_home_bases(),
-            'stationary': self.data.pop('stationary', []),
-            'buildings': self.data.pop('buildings', []),
-            'cameras': self.data.pop('cameras', []),
-            'markers': self.data.pop('markers', []),
-            'rockets': self.data.pop('rockets', []),
-        }
+        result = {}
+
+        moving_units = self._get_moving_units()
+        if moving_units:
+            result['moving_units'] = moving_units
+
+        flights = self._get_flights()
+        if flights:
+            result['flights'] = flights
+
+        home_bases = self._get_home_bases()
+        if home_bases:
+            result['home_bases'] = home_bases
+
+        move_if_present(result, self.data, 'stationary')
+        move_if_present(result, self.data, 'buildings')
+        move_if_present(result, self.data, 'cameras')
+        move_if_present(result, self.data, 'markers')
+        move_if_present(result, self.data, 'rockets')
+
+        return result
 
     def _get_moving_units(self):
         units = self.data.pop('moving_units', [])
         for unit in units:
             key = "{}{}".format(ChiefRoadParser.output_prefix, unit['id'])
-            unit['route'] = self.data.pop(key)
+            unit['route'] = self.data.pop(key, [])
         return units
 
     def _get_flights(self):
@@ -1377,7 +1431,7 @@ class FileParser(object):
         flights = [self.data.pop(key) for key in keys]
         for flight in flights:
             key = "{}{}".format(FlightRouteParser.output_prefix, flight['id'])
-            flight['route'] = self.data.pop(key)
+            flight['route'] = self.data.pop(key, [])
         return flights
 
     def _get_home_bases(self):
