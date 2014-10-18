@@ -27,6 +27,9 @@ class Point2D(Base):
         self.x = float(x)
         self.y = float(y)
 
+    def __repr__(self):
+        return "<Point2D '{0};{1}'>".format(self.x, self.y)
+
 
 class Point3D(Base):
     __slots__ = ['x', 'y', 'z', ]
@@ -35,6 +38,9 @@ class Point3D(Base):
         self.x = float(x)
         self.y = float(y)
         self.z = float(z)
+
+    def __repr__(self):
+        return "<Point3D '{0};{1};{2}'>".format(self.x, self.y, self.z)
 
 
 class GroundRoutePoint(Base):
@@ -48,6 +54,9 @@ class GroundRoutePoint(Base):
         self.section_length = section_length
         self.speed = speed
 
+    def __repr__(self):
+        return "<GroundRoutePoint '{0};{1}'>".format(self.pos.x, self.pos.y)
+
 
 class Building(Base):
     __slots__ = ['id', 'belligerent', 'code', 'pos', 'rotation_angle', ]
@@ -59,6 +68,9 @@ class Building(Base):
         self.pos = pos
         self.rotation_angle = rotation_angle
 
+    def __repr__(self):
+        return "<Building '{0}'>".format(self.id)
+
 
 class StaticCamera(Base):
     __slots__ = ['belligerent', 'pos', ]
@@ -66,6 +78,12 @@ class StaticCamera(Base):
     def __init__(self, belligerent, pos):
         self.belligerent = belligerent
         self.pos = pos
+
+    def __repr__(self):
+        return (
+            "<StaticCamera '{0};{1};{2}'>"
+            .format(self.pos.x, self.pos.y, self.pos.z)
+        )
 
 
 class FrontMarker(Base):
@@ -75,6 +93,9 @@ class FrontMarker(Base):
         self.id = id
         self.belligerent = belligerent
         self.pos = pos
+
+    def __repr__(self):
+        return "<FrontMarker '{0}'>".format(self.id)
 
 
 class Rocket(Base):
@@ -95,6 +116,9 @@ class Rocket(Base):
         self.period = period
         self.destination = destination
 
+    def __repr__(self):
+        return "<Rocket '{0}'>".format(self.id)
+
 
 class StationaryObject(Base):
     __slots__ = [
@@ -108,6 +132,9 @@ class StationaryObject(Base):
         self.pos = pos
         self.rotation_angle = rotation_angle
         self.type = type
+
+    def __repr__(self):
+        return "<StationaryObject '{0}'>".format(self.id)
 
 
 class StationaryArtillery(StationaryObject):
@@ -166,6 +193,12 @@ class FlightRoutePoint(Base):
         self.speed = speed
         self.formation = formation
         self.radio_silence = radio_silence
+
+    def __repr__(self):
+        return (
+            "<FlightRoutePoint '{0};{1};{2}'>"
+            .format(self.pos.x, self.pos.y, self.pos.z)
+        )
 
 
 class FlightRouteTakeoffPoint(FlightRoutePoint):

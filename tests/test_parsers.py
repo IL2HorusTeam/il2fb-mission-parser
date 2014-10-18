@@ -2,6 +2,7 @@
 """
 Functional tests for parsers.
 """
+
 import datetime
 import unittest
 
@@ -445,8 +446,8 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         expected = {
             'buildings': [
                 Building(
-                    belligerent=Belligerents.red,
                     id='0_bld',
+                    belligerent=Belligerents.red,
                     code='Tent_Pyramid_US',
                     pos=Point2D(43471.34, 57962.08),
                     rotation_angle=630.00,
