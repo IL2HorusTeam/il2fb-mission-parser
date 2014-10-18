@@ -1147,3 +1147,7 @@ class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             },
         }
         self._test_parser(FlightInfoParser, '3GvIAP01', lines, expected)
+
+    def test_invalid_section_name(self):
+        p = FlightInfoParser()
+        self.assertFalse(p.check_section_name("Something unknown"))
