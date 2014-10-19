@@ -2,7 +2,7 @@
 
 import unittest
 
-from il2fb.parsers.mission.helpers import move_if_present
+from il2fb.parsers.mission.helpers import move_if_present, set_if_present
 
 
 class HelpersTestCase(unittest.TestCase):
@@ -25,3 +25,11 @@ class HelpersTestCase(unittest.TestCase):
                 'bar': "bar_string",
             }
         )
+
+    def test_set_if_present(self):
+        dst = {}
+
+        set_if_present(dst, 'foo', 1)
+        set_if_present(dst, 'bar', None)
+
+        self.assertEquals(dst, {'foo': 1})
