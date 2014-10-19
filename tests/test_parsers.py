@@ -1307,8 +1307,9 @@ class FileParserTestCase(unittest.TestCase):
                 },
                 'conditions': {
                     'time_info': {
+                        'date': datetime.date(1942, 8, 25),
+                        'time': datetime.time(11, 45),
                         'is_fixed': True,
-                        'timestamp': datetime.datetime(1942, 8, 25, 11, 45),
                     },
                     'communication': {
                         'ai_radio_silence': False,

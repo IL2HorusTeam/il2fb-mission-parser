@@ -1342,11 +1342,10 @@ class FileParser(object):
     def _get_time_info(self):
         result = {}
 
-        if 'date' in self.data and 'time' in self.data:
-            timestamp = datetime.datetime.combine(self.data['date'],
-                                                  self.data['time']['value'])
+        move_if_present(result, self.data, 'date')
+        if 'time' in self.data:
             result.update({
-                'timestamp': timestamp,
+                'time': self.data['time']['value'],
                 'is_fixed': self.data['time']['is_fixed'],
             })
 
