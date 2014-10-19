@@ -1,16 +1,18 @@
 language: python
 python:
-    - "2.7"
-    - "3.2"
-    - "3.3"
-    - "3.4"
+  - '2.7'
+  - '3.2'
+  - '3.3'
+  - '3.4'
 install:
-    - pip install -e .
-    - pip install coverage coveralls
+  - pip install -e .
+  - pip install coverage coveralls
 script:
-    - coverage run `which nosetests` --nocapture
-    - coverage report -m
+  - coverage run `which nosetests` --nocapture
+  - coverage report -m
 after_success:
-    - coveralls
+  - coveralls
 notifications:
-    email: false
+  email: false
+  slack:
+    secure: nxRz9GAFrugMmfQtX0Mjti2JeH8CLqu2NnU15XthG4DdBwKTVsSWLFygMPhx0b9NmopzRi3OVwWngNhdAW3Pim6HxXeJhCk32H/Vw6Mc6btbJCHGAhBP204EefDyoYZEDy2fo9lU3mGe/kfxHAUBStEFfTzjvXwOYke6xiyZq4Y=
