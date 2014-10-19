@@ -23,7 +23,7 @@ from .constants import (
     ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE,
 )
 from .exceptions import MissionParsingError
-from .helpers import move_if_present
+from .helpers import move_if_present, set_if_present
 from .structures import (
     Point2D, Point3D, GroundRoutePoint, Building, StaticCamera, FrontMarker,
     Rocket, StationaryObject, StationaryArtillery, StationaryAircraft,
@@ -839,11 +839,11 @@ class BornPlaceParser(CollectingParser):
                         'if_deck_is_full': to_bool(air_spawn_if_deck_is_full),
                     },
                 },
-            },
-            'aircraft_limitations': {
-                'enabled': to_bool(enable_aircraft_limits),
-                'consider_lost': to_bool(aircraft_limits_consider_lost),
-                'consider_stationary': to_bool(aircraft_limits_consider_stationary),
+                'aircraft_limitations': {
+                    'enabled': to_bool(enable_aircraft_limits),
+                    'consider_lost': to_bool(aircraft_limits_consider_lost),
+                    'consider_stationary': to_bool(aircraft_limits_consider_stationary),
+                },
             },
             'radar': {
                 'range': int(radar_range),
@@ -1315,30 +1315,17 @@ class FileParser(object):
         move_if_present(result, self.data, 'targets')
         move_if_present(result, self.data, 'player')
 
-        conditions = self._get_conditions()
-        if conditions:
-            result['conditions'] = conditions
-
-        objects = self._get_objects()
-        if objects:
-            result['objects'] = objects
+        set_if_present(result, 'conditions', self._get_conditions())
+        set_if_present(result, 'objects', self._get_objects())
 
         return result
 
     def _get_conditions(self):
         result = {}
 
-        time_info = self._get_time_info()
-        if time_info:
-            result['time_info'] = time_info
-
-        meteorology = self._get_meteorology()
-        if meteorology:
-            result['meteorology'] = meteorology
-
-        scouting = self._get_scouting()
-        if scouting:
-            result['scouting'] = scouting
+        set_if_present(result, 'time_info', self._get_time_info())
+        set_if_present(result, 'meteorology', self._get_meteorology())
+        set_if_present(result, 'scouting', self._get_scouting())
 
         move_if_present(result, self.data, 'respawn_time')
 
@@ -1379,9 +1366,11 @@ class FileParser(object):
     def _get_scouting(self):
         result = {}
 
-        if 'conditions' in self.data and 'scouting' in self.data:
+        try:
             conditions = self.data['conditions'].pop('scouting')
             result.update(conditions)
+        except KeyError:
+            pass
 
         keys = filter(
             lambda x: x.startswith(MDSScoutsParser.output_prefix),
@@ -1391,25 +1380,16 @@ class FileParser(object):
             self.data[key]['belligerent']: self.data[key]['aircrafts']
             for key in keys
         }
-        if scouts:
-            result['scouts'] = scouts
+        set_if_present(result, 'scouts', scouts)
 
         return result
 
     def _get_objects(self):
         result = {}
 
-        moving_units = self._get_moving_units()
-        if moving_units:
-            result['moving_units'] = moving_units
-
-        flights = self._get_flights()
-        if flights:
-            result['flights'] = flights
-
-        home_bases = self._get_home_bases()
-        if home_bases:
-            result['home_bases'] = home_bases
+        set_if_present(result, 'moving_units', self._get_moving_units())
+        set_if_present(result, 'flights', self._get_flights())
+        set_if_present(result, 'home_bases', self._get_home_bases())
 
         move_if_present(result, self.data, 'stationary')
         move_if_present(result, self.data, 'buildings')
@@ -1438,8 +1418,8 @@ class FileParser(object):
         home_bases = self.data.pop('home_bases', [])
         for i, home_base in enumerate(home_bases):
             key = "{}{}".format(BornPlaceAircraftsParser.output_prefix, i)
-            home_base['aircraft_limitations']['allowed_aircrafts'] = self.data.pop(key, [])
+            home_base['spawning']['aircraft_limitations']['allowed_aircrafts'] = self.data.pop(key, [])
 
             key = "{}{}".format(BornPlaceAirForcesParser.output_prefix, i)
-            home_base['allowed_air_forces'] = self.data.pop(key, [])
+            home_base['spawning']['allowed_air_forces'] = self.data.pop(key, [])
         return home_bases

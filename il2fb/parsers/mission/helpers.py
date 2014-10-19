@@ -8,5 +8,5 @@ def move_if_present(dst, src, dst_key, src_key=None):
 
 
 def set_if_present(dst, key, value):
-    if value is not None:
+    if value:
         dst[key] = value

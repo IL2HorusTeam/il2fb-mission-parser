@@ -31,5 +31,6 @@ class HelpersTestCase(unittest.TestCase):
 
         set_if_present(dst, 'foo', 1)
         set_if_present(dst, 'bar', None)
+        set_if_present(dst, 'baz', [])
 
         self.assertEquals(dst, {'foo': 1})
