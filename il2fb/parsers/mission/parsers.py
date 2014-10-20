@@ -1407,7 +1407,7 @@ class FileParser(object):
 
     def _get_flights(self):
         keys = self.data.pop('flights', [])
-        flights = [self.data.pop(key) for key in keys]
+        flights = [self.data.pop(key) for key in keys if key in self.data]
         for flight in flights:
             key = "{}{}".format(FlightRouteParser.output_prefix, flight['id'])
             flight['route'] = self.data.pop(key, [])
