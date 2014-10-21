@@ -52,7 +52,7 @@ def to_bool(value):
        >>> to_bool('-1')
        True
     """
-    return value != '0'
+    return int(value) != 0
 
 
 to_belligerent = lambda value: Belligerents.get_by_value(int(value))
@@ -551,22 +551,33 @@ class NStationaryParser(CollectingParser):
         """
         Parse additional options for ``artillery`` type
         """
-        awakening_time, the_range, skill, is_spotter = params
+        try:
+            awakening_time, the_range, skill, use_spotter = params
+            skill = to_skill(skill)
+            use_spotter = to_bool(use_spotter)
+        except ValueError:
+            awakening_time, the_range = params
+            skill, use_spotter = None, False
+
         return {
             'awakening_time': float(awakening_time),
             'range': int(the_range),
-            'skill': to_skill(skill),
-            'use_spotter': to_bool(is_spotter),
+            'skill': skill,
+            'use_spotter': use_spotter,
         }
 
     def __parse_aircraft(params):
         """
         Parse additional options for ``planes`` type
         """
-        air_force, allows_spawning__restorable = params[1:3]
-        skin, has_markings = params[4:]
+        try:
+            air_force, allows_spawning__restorable = params[1:3]
+            skin, has_markings = params[4:]
+        except ValueError:
+            air_force, allows_spawning__restorable = None, 0
+            skin, has_markings = params[1:]
 
-        if air_force == NULL:
+        if air_force and air_force == NULL:
             air_force = AirForces.vvs_rkka
         else:
             try:

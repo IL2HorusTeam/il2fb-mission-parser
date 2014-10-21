@@ -88,6 +88,8 @@ class ParserTestCaseMixin(object):
 
 class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
 
+    maxDiff = None
+
     def test_main_parser(self):
         """
         Test ``MAIN`` section parser.
@@ -309,11 +311,17 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         """
         lines = [
             "0_Static vehicles.aeronautics.Aeronautics$BarrageBalloon_2400m 1 151781.85 89055.58 360.00 0.0",
+
             "1_Static vehicles.artillery.Artillery$SdKfz251 2 31333.62 90757.91 600.29 0.0 0 1 1",
+            "57_Static vehicles.artillery.Artillery$Flak18_37mm 2 153849.64 163928.12 360.00 0.0 0",
+
             "2_Static vehicles.lights.Searchlight$SL_ManualBlue 1 151740.45 88673.74 360.00 0.0",
+
             "3_Static vehicles.planes.Plane$I_16TYPE24 1 134146.89 88005.43 336.92 0.0 null 2 1.0 I-16type24_G1_RoW3.bmp 1",
             "458_Static vehicles.planes.Plane$FW_190A4FR 2 33201.34 73105.78 265.00 0.0 de 1 1.0 null 0",
             "459_Static vehicles.planes.Plane$A_20C 0 30663.31 24632.09 360.00 0.0 nn 1 1.0 null 0",
+            "19_Static vehicles.planes.Plane$JU_87D3 2 153811.08 164330.47 360.00 0.0 null 1",
+
             "4_Static vehicles.radios.Beacon$RadioBeacon 2 151679.84 88805.39 360.00 0.0",
             "5_Static vehicles.stationary.Campfire$CampfireAirfield 0 151428.38 88817.52 360.00 0.0",
             "6_Static vehicles.stationary.Smoke$Smoke20 0 151404.61 89009.57 360.00 0.00",
@@ -339,10 +347,22 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     pos=Point2D(31333.62, 90757.91),
                     rotation_angle=600.29,
                     type=UnitTypes.artillery,
+                    awakening_time=0.0,
                     range=0,
                     skill=Skills.average,
                     use_spotter=True,
+                ),
+                StationaryArtillery(
+                    id='57_Static',
+                    belligerent=Belligerents.blue,
+                    code='Flak18_37mm',
+                    pos=Point2D(153849.64, 163928.12),
+                    rotation_angle=360.0,
+                    type=UnitTypes.artillery,
                     awakening_time=0.0,
+                    range=0,
+                    skill=None,
+                    use_spotter=False,
                 ),
                 StationaryObject(
                     id='2_Static',
@@ -386,6 +406,19 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     code='A_20C',
                     show_markings=False,
                     pos=Point2D(30663.31, 24632.09),
+                    rotation_angle=360.0,
+                    is_restorable=False,
+                    skin=None,
+                    type=UnitTypes.aircraft,
+                ),
+                StationaryAircraft(
+                    air_force=None,
+                    allows_spawning=False,
+                    belligerent=Belligerents.blue,
+                    id='19_Static',
+                    code='JU_87D3',
+                    show_markings=True,
+                    pos=Point2D(153811.08, 164330.47),
                     rotation_angle=360.0,
                     is_restorable=False,
                     skin=None,
