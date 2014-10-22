@@ -399,7 +399,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     type=UnitTypes.aircraft,
                 ),
                 StationaryAircraft(
-                    air_force=None,
+                    air_force=AirForces.none,
                     allows_spawning=True,
                     belligerent=Belligerents.none,
                     id='459_Static',
@@ -1077,11 +1077,13 @@ class BornPlaceAirForcesParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         lines = [
             "de",
             "ru",
+            "nn",
         ]
         expected = {
             'home_base_air_forces_1': [
                 AirForces.luftwaffe,
                 AirForces.vvs_rkka,
+                AirForces.none,
             ],
         }
         self._test_parser(BornPlaceAirForcesParser, 'BornPlaceCountries1',

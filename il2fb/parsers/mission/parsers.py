@@ -60,6 +60,13 @@ to_skill = lambda value: Skills.get_by_value(int(value))
 to_unit_type = lambda value: UnitTypes.get_by_value(value.lower())
 
 
+def to_air_force(value):
+    if value == NULL:
+        return AirForces.vvs_rkka
+    elif value:
+        return AirForces.get_by_value(value)
+
+
 class SectionParser(object):
     """
     Abstract base parser of a single section in a mission file.
@@ -572,28 +579,20 @@ class NStationaryParser(CollectingParser):
         """
         try:
             air_force, allows_spawning__restorable = params[1:3]
-            skin, has_markings = params[4:]
+            skin, show_markings = params[4:]
         except ValueError:
             air_force, allows_spawning__restorable = None, 0
-            skin, has_markings = params[1:]
-
-        if air_force and air_force == NULL:
-            air_force = AirForces.vvs_rkka
-        else:
-            try:
-                air_force = AirForces.get_by_value(air_force)
-            except ValueError:
-                air_force = None
+            skin, show_markings = params[1:]
 
         is_restorable = allows_spawning__restorable == IS_STATIONARY_AIRCRAFT_RESTORABLE
         skin = None if skin == NULL else skin
 
         return {
-            'air_force': air_force,
+            'air_force': to_air_force(air_force),
             'allows_spawning': to_bool(allows_spawning__restorable),
             'is_restorable': is_restorable,
             'skin': skin,
-            'show_markings': to_bool(has_markings),
+            'show_markings': to_bool(show_markings),
         }
 
     def __parse_ship(params):
@@ -953,8 +952,8 @@ class BornPlaceAirForcesParser(CollectingParser):
         return int(section_name[start:])
 
     def parse_line(self, line):
-        country = AirForces.get_by_value(line.strip())
-        self.data.append(country)
+        air_force = to_air_force(line.strip())
+        self.data.append(air_force)
 
     def process_data(self):
         return {self.output_key: self.data, }
