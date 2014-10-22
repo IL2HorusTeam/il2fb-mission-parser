@@ -20,7 +20,8 @@ from il2fb.commons.weather import Conditions, Gust, Turbulence
 
 from .constants import (
     IS_STATIONARY_AIRCRAFT_RESTORABLE, NULL, WEAPONS_CONTINUATION_MARK,
-    ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE,
+    ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE_ON,
+    ROUTE_POINT_RADIO_SILENCE_OFF,
 )
 from .exceptions import MissionParsingError
 from .helpers import move_if_present, set_if_present
@@ -1156,6 +1157,7 @@ class FlightRouteParser(CollectingParser):
         flight_code = self._extract_flight_code(section_name)
         self.output_key = "{}{}".format(self.output_prefix, flight_code)
         self.point = None
+        self.point_class = None
 
     def parse_line(self, line):
         params = line.split()
@@ -1192,9 +1194,23 @@ class FlightRouteParser(CollectingParser):
             self.point_class = FlightRouteTakeoffPoint
 
     def _parse_extra(self, params):
-        try:
-            target_id, target_route_point, radio_silence = params[:3]
-            params = params[3:]
+        if (
+            ROUTE_POINT_RADIO_SILENCE_ON in params
+            or ROUTE_POINT_RADIO_SILENCE_OFF in params
+        ):
+            try:
+                index = params.index(ROUTE_POINT_RADIO_SILENCE_ON)
+            except ValueError:
+                index = params.index(ROUTE_POINT_RADIO_SILENCE_OFF)
+
+            params, radio_silence, extra = params[:index], params[index], params[index+1:]
+            formation = Formations.get_by_value(extra[0]) if extra else None
+        else:
+            radio_silence = '0'
+            formation = None
+
+        if params:
+            target_id, target_route_point = params[:2]
             self.point.update({
                 'target_id': target_id,
                 'target_route_point': int(target_route_point),
@@ -1202,16 +1218,12 @@ class FlightRouteParser(CollectingParser):
             if self.point['type'] is RoutePointTypes.normal:
                 self.point['type'] = RoutePointTypes.air_attack
             self.point_class = FlightRouteAttackPoint
-        except ValueError:
-            radio_silence = params[0]
-            params = params[1:]
-        finally:
-            formation = Formations.get_by_value(params[0]) if params else None
-            radio_silence = radio_silence == ROUTE_POINT_RADIO_SILENCE
-            self.point.update({
-                'radio_silence': radio_silence,
-                'formation': formation,
-            })
+
+        radio_silence = radio_silence == ROUTE_POINT_RADIO_SILENCE_ON
+        self.point.update({
+            'radio_silence': radio_silence,
+            'formation': formation,
+        })
 
     def process_data(self):
         self._finalize_current_point()
