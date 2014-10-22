@@ -314,6 +314,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
 
             "1_Static vehicles.artillery.Artillery$SdKfz251 2 31333.62 90757.91 600.29 0.0 0 1 1",
             "57_Static vehicles.artillery.Artillery$Flak18_37mm 2 153849.64 163928.12 360.00 0.0 0",
+            "58_Static vehicles.artillery.Artillery$Flak18_88mm 2 87591.03 115255.62 690.00 0.0",
 
             "2_Static vehicles.lights.Searchlight$SL_ManualBlue 1 151740.45 88673.74 360.00 0.0",
 
@@ -358,6 +359,18 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     code='Flak18_37mm',
                     pos=Point2D(153849.64, 163928.12),
                     rotation_angle=360.0,
+                    type=UnitTypes.artillery,
+                    awakening_time=0.0,
+                    range=0,
+                    skill=None,
+                    use_spotter=False,
+                ),
+                StationaryArtillery(
+                    id='58_Static',
+                    belligerent=Belligerents.blue,
+                    code='Flak18_88mm',
+                    pos=Point2D(87591.03, 115255.62),
+                    rotation_angle=690.00,
                     type=UnitTypes.artillery,
                     awakening_time=0.0,
                     range=0,

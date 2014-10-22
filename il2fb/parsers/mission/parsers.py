@@ -564,7 +564,10 @@ class NStationaryParser(CollectingParser):
             skill = to_skill(skill)
             use_spotter = to_bool(use_spotter)
         except ValueError:
-            awakening_time, the_range = params
+            try:
+                awakening_time, the_range = params
+            except ValueError:
+                awakening_time, the_range = params[0], 0
             skill, use_spotter = None, False
 
         return {
