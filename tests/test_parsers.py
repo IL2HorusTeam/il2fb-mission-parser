@@ -265,6 +265,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "2_Chief Trains.USSR_FuelTrain/AA 1",
             "3_Chief Ships.G5 1 60 3 2.0",
             "4_Chief SomethingUnknown.XXX 1",
+            "5_Chief Ships.Niobe 2",
         ]
         expected = {
             'moving_units': [
@@ -300,6 +301,12 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                     'code': 'XXX',
                     'type': 'SomethingUnknown',
                     'belligerent': Belligerents.red,
+                },
+                {
+                    'id': '5_Chief',
+                    'code': 'Niobe',
+                    'type': UnitTypes.ship,
+                    'belligerent': Belligerents.blue,
                 },
             ],
         }
