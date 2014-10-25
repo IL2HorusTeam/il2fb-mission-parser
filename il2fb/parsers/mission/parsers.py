@@ -21,7 +21,7 @@ from il2fb.commons.weather import Conditions, Gust, Turbulence
 from .constants import (
     IS_STATIONARY_AIRCRAFT_RESTORABLE, NULL, WEAPONS_CONTINUATION_MARK,
     ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE_ON,
-    ROUTE_POINT_RADIO_SILENCE_OFF,
+    ROUTE_POINT_RADIO_SILENCE_OFF, COMMENT_MARKERS,
 )
 from .exceptions import MissionParsingError
 from .helpers import move_if_present, set_if_present
@@ -66,6 +66,17 @@ def to_air_force(value):
         return AirForces.vvs_rkka
     elif value:
         return AirForces.get_by_value(value)
+
+
+def clean_line(line):
+    for marker in COMMENT_MARKERS:
+        try:
+            index = line.index(marker)
+        except ValueError:
+            pass
+        else:
+            line = line[:index]
+    return line.strip()
 
 
 class SectionParser(object):
@@ -1299,7 +1310,7 @@ class FileParser(object):
                     _raise_error(msg, traceback)
 
         for i, line in enumerate(sequence):
-            line = line.strip()
+            line = clean_line(line)
             if self.is_section_name(line):
                 _finalize_parser()
                 section_name = self.get_section_name(line)
@@ -1337,8 +1348,8 @@ class FileParser(object):
         result = {}
 
         move_if_present(result, self.data, 'location_loader')
-        move_if_present(result, self.data, 'targets')
         move_if_present(result, self.data, 'player')
+        move_if_present(result, self.data, 'targets')
 
         set_if_present(result, 'conditions', self._get_conditions())
         set_if_present(result, 'objects', self._get_objects())

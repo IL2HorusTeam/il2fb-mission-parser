@@ -4,6 +4,7 @@ Functional tests for parsers.
 """
 
 import datetime
+import itertools
 import tempfile
 import unittest
 
@@ -13,10 +14,11 @@ from il2fb.commons.organization import AirForces, Belligerents, Regiments
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
+from il2fb.parsers.mission.constants import COMMENT_MARKERS
 from il2fb.parsers.mission.exceptions import MissionParsingError
 from il2fb.parsers.mission.parsers import (
-    to_bool, to_belligerent, to_skill, to_unit_type, SectionParser, MainParser,
-    SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
+    to_bool, to_belligerent, to_skill, to_unit_type, clean_line, SectionParser,
+    MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
     NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
     FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
     BornPlaceAirForcesParser, RocketParser, ChiefRoadParser, WingParser,
@@ -47,6 +49,21 @@ class CommonsTestCase(unittest.TestCase):
 
     def test_to_unit_type(self):
         self.assertEqual(to_unit_type('planes'), UnitTypes.aircraft)
+
+    def test_clean_line(self):
+        line = "  123   \n"
+        self.assertEqual(clean_line(line), "123")
+
+        line = "  {:} \n".format(''.join(COMMENT_MARKERS))
+        self.assertEqual(clean_line(line), "")
+
+        for marker in COMMENT_MARKERS:
+            line = "  123 {:} 456 ".format(marker)
+            self.assertEqual(clean_line(line), "123")
+
+        for combination in itertools.permutations(COMMENT_MARKERS):
+            line = "  123 {:} 456 ".format(''.join(combination))
+            self.assertEqual(clean_line(line), "123")
 
 
 class SectionParserTestCase(unittest.TestCase):
