@@ -1,8 +1,13 @@
 Usage
 =====
 
+.. note::
+
+    `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5>`_
+
+
 The most common usage
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 
 The main purpose of this library is to parse the whole mission file. So, let's
 start::
@@ -16,7 +21,7 @@ not need to do something else. Go formard to
 contained inside ``mission`` or you can dig around next 2 sections.
 
 Where it comes from
-^^^^^^^^^^^^^^^^^^^
+-------------------
 
 Let's talk about what's going on above. This library provides a Python module
 called :mod:`il2fb.parsers.mission.parsers` which has a lot of parsers for each
@@ -30,7 +35,7 @@ the whole mission file and gives all you need in one time. Nevertheless you can
 use any other parser for your needs.
 
 Manual parsing
-^^^^^^^^^^^^^^
+--------------
 
 Each parser listed above (except ``FileParser``) extends an abstract class
 :class:`~il2fb.parsers.mission.parsers.SectionParser`, so they share a common
