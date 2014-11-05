@@ -6,15 +6,13 @@ IL-2 FB Mission Parser
 |Build Status| |Coverage Status| |Health| |Code Review| |Requirements|
 
 
-.. list-table::
-   :header-rows: 1
+.. note::
 
-   * - Note
-     - Примечание
-   * - This is project's documentation in English.
-       `Visit Wiki <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki>`_ to get information in Russian.
-     - Это англоязычная документация проекта. Для получения русскоязычной
-       версии `посетите Вики <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki>`_.
+  This is project's documentation in English.
+  `Visit Wiki <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki>`_ to get information in Russian.
+
+  Это англоязычная документация проекта. Для получения русскоязычной версии
+  `посетите Вики <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki>`_.
 
 
 ``il2fb-mission-parser`` — is a free Python library for parsing mission files
