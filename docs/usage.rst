@@ -5,41 +5,87 @@ Usage
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5>`_
 
+The main purpose of this library is to parse a whole mission file.
 
-The most common usage
----------------------
 
-The main purpose of this library is to parse the whole mission file. So, let's
-start::
+Parse by file name
+------------------
 
-    >>> import il2fb.parsers.mission
-    >>> mission = il2fb.parsers.mission.parse('path/to/your/mission.mis')
+The most common usage case is to give path to a mission file and get a parsed
+result:
+
+.. code-block:: python
+
+    >>> from il2fb.parsers.mission import parse_mission
+    >>> mission = parse_mission("path/to/your/mission.mis")
 
 This will put a big dictionary into a ``mission`` variable. That's it. You do
-not need to do something else. Go formard to
-:doc:`output format description <parsers/file_parser>` to know what is
-contained inside ``mission`` or you can dig around next 2 sections.
+not need to do something else.
 
-Where it comes from
+
+Parse sequence of lines
+-----------------------
+
+``parse_mission`` function can accept not only a path to a file, but any object
+which can generate a sequence of lines: a text file, list, generator and so on.
+For example:
+
+.. code-block:: python
+
+    >>> from il2fb.parsers.mission import parse_mission
+    >>> with open("path/to/your/mission.mis") as f:
+    ...     mission = parse_mission(f)
+
+Or:
+
+.. code-block:: python
+
+    >>> lines = [
+    ...     "[Wing]",
+    ...     "  r0100",
+    ...     "[r0100]",
+    ...     "  Planes 1",
+    ...     "  Skill 1",
+    ...     "  Class air.A_20C",
+    ...     "  Fuel 100",
+    ...     "  weapons default",
+    ... ]
+    >>> mission = parse_mission(lines)
+
+
+Dealing with result
 -------------------
+
+Since the output dictionary can be really big and complex, it's recommended to
+use `t_dict`_ or `aadict`_ library to make access to elements of result easier.
+
+You can go forward to :doc:`description of output format <parsers/file-parser>`
+to get to know what is contained inside ``mission`` or you can continue reading
+this chapter.
+
+
+Behind the scene
+----------------
 
 Let's talk about what's going on above. This library provides a Python module
 called :mod:`il2fb.parsers.mission.parsers` which has a lot of parsers for each
-kind of section in mission files (see :doc:`all of them <output_format>`).
+kind of section in mission files (see :doc:`all of them <section-parsing>`).
 
-The function :func:`~il2fb.parsers.mission.parse`, which was used above, is a
+The function ``parse_mission``, which was used in the example above, is a
 reference to :meth:`~il2fb.parsers.mission.parsers.FileParser.parse` method
-which belongs to :class:`~il2fb.parsers.mission.parsers.FileParser`. This
-parser as a swiss-knife combines all of the other parsers in itself, processes
-the whole mission file and gives all you need in one time. Nevertheless you can
-use any other parser for your needs.
+which belongs to an instanse of :class:`~il2fb.parsers.mission.parsers.FileParser`.
+This parser just like a swiss-knife combines all of the other parsers in
+itself, processes the whole mission file and gives all you need at one time.
 
-Manual parsing
---------------
+You can use any other parser separately for your needs also (see below).
 
-Each parser listed above (except ``FileParser``) extends an abstract class
-:class:`~il2fb.parsers.mission.parsers.SectionParser`, so they share a common
-approach of section processing.
+
+Manual section parsing
+----------------------
+
+Each parser listed in :doc:`section-parsing` (except ``FileParser``) extends an
+abstract class :class:`~il2fb.parsers.mission.parsers.SectionParser`, so they
+share a common approach for section processing.
 
 .. note::
 
@@ -48,7 +94,9 @@ approach of section processing.
     side-effect that you can use them for your needs.
 
 If you really need to parse some section, you need to prepare string lines
-and tell parser the name of section. E.g.::
+and tell parser the name of section. E.g.:
+
+.. code-block:: python
 
     >>> lines = [
     ...     "MAP Moscow/sload.ini",
@@ -70,16 +118,21 @@ and tell parser the name of section. E.g.::
     ...
     >>> p.stop()
     {
-        'fixed_time': True,
-        'clouds_height': 1500.0,
-        'army': 'red',
-        'time': datetime.time(11, 45),
-        'player_num': '0',
-        'fixed_weapon': True,
-        'weather_type': 'clear',
-        'player_regiment': 'fiLLv24fi00',
-        'loader': 'Moscow/sload.ini'
+        'location_loader': 'Moscow/sload.ini',
+        'time': {
+            'is_fixed': True,
+            'value': datetime.time(11, 45),
+        },
+        'cloud_base': 1500,
+        'weather_conditions': <constant 'Conditions.good'>,
+        'player': {
+            'aircraft_index': 0,
+            'belligerent': <constant 'Belligerents.red'>,
+            'fixed_weapons': True,
+            'flight_id': 'fiLLv24fi00',
+        },
     }
+
 
 As you can see, you need to import a desired parser and create it's instance.
 
@@ -98,10 +151,14 @@ otherwise.
 
 Now it's a time to feed the parser with some data. As it was mentioned above,
 you can pass only one line at a time to
-:meth:`~il2fb.parsers.mission.parsers.SectionParser.parse_line` method. you can
+:meth:`~il2fb.parsers.mission.parsers.SectionParser.parse_line` method. You can
 do it in any suitable manner.
 
 When you have passed all the data, call
 :meth:`~il2fb.parsers.mission.parsers.SectionParser.stop` method to stop
 parsing. This method will return fully-parsed data which is a dictionary in
 general.
+
+
+.. _aadict: https://pypi.python.org/pypi/aadict
+.. _t_dict: https://pypi.python.org/pypi/t_dict
