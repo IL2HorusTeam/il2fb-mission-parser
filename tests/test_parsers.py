@@ -82,7 +82,7 @@ class SectionParserTestCase(unittest.TestCase):
     def setUp(self):
         self.parser = SectionParserTestCase.FooParser()
 
-    def test_process_data(self):
+    def test_clean(self):
         self.parser.start("foo")
         result = self.parser.stop()
         self.assertIsNone(result)

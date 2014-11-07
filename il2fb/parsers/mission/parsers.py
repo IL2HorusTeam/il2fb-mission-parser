@@ -173,7 +173,7 @@ class SectionParser(object):
         """
         Stops parser and returns fully processed data.
 
-        :returns: a data structure returned by :meth:`process_data` method
+        :returns: a data structure returned by :meth:`clean` method
 
         :raises RuntimeError: if parser was not started
         """
@@ -181,9 +181,9 @@ class SectionParser(object):
             raise RuntimeError("Cannot stop parser which is not running")
 
         self.running = False
-        return self.process_data()
+        return self.clean()
 
-    def process_data(self):
+    def clean(self):
         """
         Returns fully parsed data. Is called by :meth:`stop` method.
 
@@ -273,9 +273,9 @@ class MainParser(ValuesParser):
         """
         return section_name == "MAIN"
 
-    def process_data(self):
+    def clean(self):
         """
-        Redefines base method. See :meth:`SectionParser.process_data` for
+        Redefines base method. See :meth:`SectionParser.clean` for
         semantics.
         """
         weather_conditions = int(self.data['CloudType'])
@@ -314,9 +314,9 @@ class SeasonParser(ValuesParser):
         """
         return section_name == "SEASON"
 
-    def process_data(self):
+    def clean(self):
         """
-        Redefines base method. See :meth:`SectionParser.process_data` for
+        Redefines base method. See :meth:`SectionParser.clean` for
         semantics.
 
         Combines day, time and year into :class:`datetime.date` object.
@@ -340,9 +340,9 @@ class WeatherParser(ValuesParser):
         """
         return section_name == "WEATHER"
 
-    def process_data(self):
+    def clean(self):
         """
-        Redefines base method. See :meth:`SectionParser.process_data` for
+        Redefines base method. See :meth:`SectionParser.clean` for
         semantics.
         """
         gust = int(self.data['Gust'])
@@ -371,7 +371,7 @@ class MDSParser(ValuesParser):
     def parse_line(self, line):
         super(MDSParser, self).parse_line(line.replace('MDS_', ''))
 
-    def process_data(self):
+    def clean(self):
         return {
             'conditions': {
                 'radar': {
@@ -442,7 +442,7 @@ class MDSScoutsParser(CollectingParser):
     def _get_belligerent_name(self, section_name):
         return section_name[len(self.input_prefix):].lower()
 
-    def process_data(self):
+    def clean(self):
         return {
             self.output_key: {
                 'belligerent': self.belligerent,
@@ -460,7 +460,7 @@ class RespawnTimeParser(ValuesParser):
     def check_section_name(self, section_name):
         return section_name == "RespawnTime"
 
-    def process_data(self):
+    def clean(self):
         return {
             'respawn_time': {
                 'ships': {
@@ -509,7 +509,7 @@ class ChiefsParser(CollectingParser):
             })
         self.data.append(unit)
 
-    def process_data(self):
+    def clean(self):
         return {'moving_units': self.data, }
 
 
@@ -556,7 +556,7 @@ class ChiefRoadParser(CollectingParser):
         point = GroundRoutePoint(**args)
         self.data.append(point)
 
-    def process_data(self):
+    def clean(self):
         return {self.output_key: self.data}
 
 
@@ -674,7 +674,7 @@ class NStationaryParser(CollectingParser):
         start = code.index('$') + 1
         return code[start:]
 
-    def process_data(self):
+    def clean(self):
         return {'stationary': self.data, }
 
 
@@ -700,7 +700,7 @@ class BuildingsParser(CollectingParser):
             rotation_angle=float(rotation_angle),
         ))
 
-    def process_data(self):
+    def clean(self):
         return {'buildings': self.data, }
 
 
@@ -814,7 +814,7 @@ class TargetParser(CollectingParser):
         TargetTypes.cover_bridge: parse_destroy_or_cover_bridge,
     }
 
-    def process_data(self):
+    def clean(self):
         return {'targets': self.data, }
 
 
@@ -878,7 +878,7 @@ class BornPlaceParser(CollectingParser):
             'pos': Point2D(pos_x, pos_y),
         })
 
-    def process_data(self):
+    def clean(self):
         return {'home_bases': self.data, }
 
 
@@ -929,7 +929,7 @@ class BornPlaceAircraftsParser(CollectingParser):
     def _to_limit(self, value):
         return int(value) if int(value) >= 0 else None
 
-    def process_data(self):
+    def clean(self):
         if self.aircraft:
             aircraft, self.aircraft = self.aircraft, None
             self.data.append(aircraft)
@@ -970,7 +970,7 @@ class BornPlaceAirForcesParser(CollectingParser):
         air_force = to_air_force(line.strip())
         self.data.append(air_force)
 
-    def process_data(self):
+    def clean(self):
         return {self.output_key: self.data, }
 
 
@@ -990,7 +990,7 @@ class StaticCameraParser(CollectingParser):
             pos=Point3D(pos_x, pos_y, pos_z),
         ))
 
-    def process_data(self):
+    def clean(self):
         return {'cameras': self.data, }
 
 
@@ -1011,7 +1011,7 @@ class FrontMarkerParser(CollectingParser):
             pos=Point2D(pos_x, pos_y),
         ))
 
-    def process_data(self):
+    def clean(self):
         return {'markers': self.data, }
 
 
@@ -1044,7 +1044,7 @@ class RocketParser(CollectingParser):
             destination=Point2D(*destination) if destination else None
         ))
 
-    def process_data(self):
+    def clean(self):
         return {'rockets': self.data}
 
 
@@ -1057,7 +1057,7 @@ class WingParser(CollectingParser):
     def check_section_name(self, section_name):
         return section_name == "Wing"
 
-    def process_data(self):
+    def clean(self):
         return {'flights': self.data}
 
 
@@ -1099,7 +1099,7 @@ class FlightInfoParser(ValuesParser):
             'flight_index': int(flight),
         }
 
-    def process_data(self):
+    def clean(self):
         count = int(self.data['Planes'])
         code = self.data['Class'].split('.', 1)[1]
         aircrafts = []
@@ -1239,7 +1239,7 @@ class FlightRouteParser(CollectingParser):
             'formation': formation,
         })
 
-    def process_data(self):
+    def clean(self):
         self._finalize_current_point()
         return {self.output_key: self.data}
 
@@ -1327,7 +1327,7 @@ class FileParser(object):
                     _raise_error(msg, traceback)
 
         _finalize_parser()
-        return self.process_data()
+        return self.clean()
 
     def is_section_name(self, line):
         return line.startswith('[') and line.endswith(']')
@@ -1344,7 +1344,7 @@ class FileParser(object):
                 return parser
         return None
 
-    def process_data(self):
+    def clean(self):
         result = {}
 
         move_if_present(result, self.data, 'location_loader')
