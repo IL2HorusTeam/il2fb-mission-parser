@@ -36,6 +36,10 @@ Output example:
         },
     }
 
+
+Output contains a :class:`dict` with ``respawn_time`` element.
+
+
 **Description**:
 
 Respawn time is measured by seconds.
@@ -75,9 +79,9 @@ Respawn time is measured by seconds.
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
+
 ----------
 
 Footnotes:
 
-.. [#] See what big and small ships are:
-       :ref:`ships categories <ships-categories>`.
+.. [#] See what big and small ships are: :ref:`ships categories <ships-categories>`.
