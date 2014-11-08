@@ -3,7 +3,8 @@ IL-2 FB Mission Parser
 
 |PyPi package| |PyPi downloads| |Docs| |License|
 
-|Build Status| |Coverage Status| |Health| |Code Review| |Requirements|
+|Build Status| |Coverage Status| |Code Review| |Health| |Quality| |Requirements|
+
 
 
 .. note::
@@ -65,12 +66,15 @@ Indices and tables
    :target: `read the docs`_
 .. |License| image:: https://img.shields.io/badge/license-LGPLv3-brightgreen.svg?style=flat
    :target: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/LICENSE
-.. |Health| image:: https://landscape.io/github/IL2HorusTeam/il2fb-mission-parser/master/landscape.png?style=flat
-   :target: https://landscape.io/github/IL2HorusTeam/il2fb-mission-parser/master
-   :alt: Code Health
 .. |Code Review| image:: https://www.codacy.com/project/badge/4c79f2cb39234620bce5d4c49a54be52
     :target: https://www.codacy.com/public/IL2HorusTeam/il2fbmissionparser/dashboard
     :alt: Codacy Code Review
+.. |Health| image:: https://landscape.io/github/IL2HorusTeam/il2fb-mission-parser/master/landscape.png?style=flat
+   :target: https://landscape.io/github/IL2HorusTeam/il2fb-mission-parser/master
+   :alt: Code Health
+.. |Quality| image:: https://scrutinizer-ci.com/g/IL2HorusTeam/il2fb-mission-parser/badges/quality-score.png?b=master&style=flat
+   :target: https://scrutinizer-ci.com/g/IL2HorusTeam/il2fb-mission-parser/?branch=master
+   :alt: Scrutinizer Code Quality
 .. |Requirements| image:: https://requires.io/github/IL2HorusTeam/il2fb-mission-parser/requirements.svg?branch=master&style=flat
     :target: https://requires.io/github/IL2HorusTeam/il2fb-mission-parser/requirements/?branch=master
     :alt: Requirements Status
