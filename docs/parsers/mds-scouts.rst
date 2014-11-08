@@ -30,7 +30,7 @@ Output example:
 .. code-block:: python
 
     {
-        'scout_planes_red': [
+        'scouts_red': [
             "B-25H-1NA",
             "B-25J-1NA",
             "BeaufighterMk21",
@@ -38,8 +38,8 @@ Output example:
     }
 
 Output contains a dictionary with a single value. That value is a list of
-aircraft code names. It can be accessed by ``scout_planes_{suffix}`` key, where
+aircraft code names. It can be accessed by ``scouts_{suffix}`` key, where
 ``suffix`` is original suffix, converted to lower case. So, possible keys are:
 
-#. ``scout_planes_red``
-#. ``scout_planes_blue``
+#. ``scouts_red``
+#. ``scouts_blue``
