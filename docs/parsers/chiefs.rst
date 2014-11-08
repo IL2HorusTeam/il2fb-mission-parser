@@ -24,7 +24,8 @@ Section example::
       0_Chief Armor.1-BT7 2
       1_Chief Vehicles.GAZ67 1
       2_Chief Trains.USSR_FuelTrain/AA 1
-      3_Chief Ships.G5 1 60 3 2.0
+      3_Chief Ships.Niobe 2
+      4_Chief Ships.G5 1 60 3 2.0
 
 
 Output example:
@@ -32,48 +33,54 @@ Output example:
 .. code-block:: python
 
     {
-        'chiefs': [
+        'moving_units': [
             {
-                'belligerent': <constant 'Belligerents.blue'>,
-                'id': "0_Chief",
-                'code': "1-BT7",
+                'id': '0_Chief',
+                'code': '1-BT7',
                 'type': <constant 'UnitTypes.armor'>,
+                'belligerent': <constant 'Belligerents.blue'>,
             },
             {
-                'belligerent': <constant 'Belligerents.red'>,
-                'id': "1_Chief",
-                'code': "GAZ67",
+                'id': '1_Chief',
+                'code': 'GAZ67',
                 'type': <constant 'UnitTypes.vehicle'>,
+                'belligerent': <constant 'Belligerents.red'>,
             },
             {
-                'belligerent': <constant 'Belligerents.red'>,
-                'id': "2_Chief",
-                'code': "USSR_FuelTrain/AA",
+                'id': '2_Chief',
+                'code': 'USSR_FuelTrain/AA',
                 'type': <constant 'UnitTypes.train'>,
+                'belligerent': <constant 'Belligerents.red'>,
             },
             {
-                'belligerent': <constant 'Belligerents.red'>,
-                'id': "3_Chief",
-                'code': "G5",
-                'recharge_time': 2.0,
-                'skill': <constant 'Skills.ace'>,
-                'hibernation': 60,
+                'id': '3_Chief',
+                'code': 'Niobe',
                 'type': <constant 'UnitTypes.ship'>,
+                'belligerent': <constant 'Belligerents.blue'>,
+            },
+            {
+                'id': '4_Chief',
+                'code': 'G5',
+                'type': <constant 'UnitTypes.ship'>,
+                'belligerent': <constant 'Belligerents.red'>,
+                'hibernation': 60,
+                'skill': <constant 'Skills.ace'>,
+                'recharge_time': 2.0,
             },
         ],
     }
 
+
 **Description**:
 
-The output of the parser is a dictionary with a single item. It is accessible
-by ``chiefs`` key. The value is a list of of dictionaries containing
-information about each object.
+The output of the parser is a dictionary with ``moving_units`` element. It contains a
+list of dictionaries containing information about each object.
 
 
 Common parameters
 -----------------
 
-Let's examine common parameters using first object as example::
+Let's examine common parameters using first line from example above::
 
     0_Chief Armor.1-BT7 2
 
@@ -109,6 +116,7 @@ Let's examine common parameters using first object as example::
   :Output path: ``belligerent``
   :Output type: complex `belligerents`_ constant
 
+
 Ships extra parameters
 ----------------------
 
@@ -141,6 +149,6 @@ parameters are:
   :Output value: original value converted to float number
 
 
-.. _unit type: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L34
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L17
-.. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L27
+.. _unit type: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L35
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L20
+.. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L28
