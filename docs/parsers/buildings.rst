@@ -9,7 +9,7 @@ Buildings section
 
 :class:`~il2fb.parsers.mission.parsers.BuildingsParser` is responsible for
 parsing ``Buildings`` section. Each line of this section describes a single
-house.
+building.
 
 Section example::
 
@@ -22,24 +22,23 @@ Output example:
 
   {
       'buildings': [
-          {
-              'belligerent': <constant 'Belligerents.red'>,
-              'id': '0_bld',
-              'code': 'Tent_Pyramid_US',
-              'pos': {
-                  'y': 57962.08,
-                  'x': 43471.34,
-              },
-              'rotation_angle': 630.00,
-          },
+          Building(
+              id='0_bld',
+              belligerent=Belligerents.red,
+              code='Tent_Pyramid_US',
+              pos=Point2D(43471.34, 57962.08),
+              rotation_angle=630.00,
+          ),
       ],
   }
 
-**Description**:
+The result is a :class:`dict` with ``buildings`` item which contains a list of
+buildings.
 
-The output of the parser is a dictionary with a single item. It is accessible
-by ``buildings`` key. The value is a list of dictionaries. Each dictionary
-represents a single house.
+We use `Building structure`_ to store information about buildings.
+
+
+**Description**:
 
 ``0_bld``
   Object ID which is given by full mission editor. Contains ``bld`` word
@@ -58,7 +57,7 @@ represents a single house.
   :Output value: original string value
 
 ``1``
-  Code number of army the object belongs to.
+  Code number of belligerent the object belongs to.
 
   :Output path: ``belligerent``
   :Output type: complex `belligerents`_ constant
@@ -85,4 +84,5 @@ represents a single house.
   :Output value: original value converted to float number
 
 
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L17
+.. _Building structure: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/il2fb/parsers/mission/structures.py#L61
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L20
