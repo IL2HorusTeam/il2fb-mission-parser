@@ -8,8 +8,8 @@ WEATHER section
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Weather>`_
 
 :class:`~il2fb.parsers.mission.parsers.WeatherParser` is responsible for
-parsing ``WEATHER`` section. This section contains one key-value pair per each
-line.
+parsing ``WEATHER`` section. This section describes additional weather
+conditions and contains one key-value pair per each line.
 
 Section example::
 
@@ -33,6 +33,9 @@ Output example:
             'turbulence': <constant 'Turbulence.very_strong'>,
         },
     }
+
+Output contains a :class:`dict` with ``weather`` element.
+
 
 **Description**:
 
@@ -63,5 +66,5 @@ Output example:
   :Output type: complex `turbulence`_ constant
 
 
-.. _gust: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/weather.py#L20
-.. _turbulence: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/weather.py#L27
+.. _gust: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/weather.py#L21
+.. _turbulence: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/weather.py#L28
