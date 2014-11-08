@@ -28,20 +28,23 @@ Output example:
 .. code-block:: python
 
     {
-      'loader': 'Moscow/sload.ini',
-      'time': {
-          'value': datetime.time(11, 45),
-          'is_fixed': True,
-      },
-      'fixed_loadout': True,
-      'weather_conditions': <constant 'Conditions.good'>,
-      'cloud_base': 1500,
-      'player': {
-          'belligerent': <constant 'Belligerents.red'>,
-          'regiment': "fiLLv24fi00",
-          'number': 0,
-      },
+        'location_loader': 'Moscow/sload.ini',
+        'time': {
+            'value': datetime.time(11, 45),
+            'is_fixed': True,
+        },
+        'weather_conditions': <constant 'Conditions.good'>,
+        'cloud_base': 1500,
+        'player': {
+            'belligerent': <constant 'Belligerents.red'>,
+            'flight_id': "fiLLv24fi00",
+            'aircraft_index': 0,
+            'fixed_weapons': True,
+        },
     }
+
+As you can see, we have a :class:`dict` as a result.
+
 
 **Description**:
 
@@ -50,14 +53,14 @@ Output example:
   (textures, air pressure, air temperature, list of map labels, etc) and can be
   found inside ``fb_maps*.SFS`` archives.
 
-  :Output path: ``loader``
+  :Output path: ``location_loader``
   :Output type: :class:`str`
   :Output value: original string value
 
 ``TIME``
   Initial time in mission. Defined as a real number. Integer part defines
   hour. Fractional part defines minutes as a fraction of 60 minutes, so
-  ``0.75`` is ``60 * 0.75 = 45`` indeed.
+  ``0.75`` is ``60 * 0.75 = 45`` minutes indeed.
 
   :Output path: ``time.value``
   :Output type: :class:`datetime.time`
@@ -70,9 +73,9 @@ Output example:
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 ``WEAPONSCONSTANT``
-  Whether player's loadout is fixed.
+  Whether player's loadout is fixed (usually used in single player).
 
-  :Output path: ``fixed_loadout``
+  :Output path: ``player.fixed_weapons``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
@@ -90,22 +93,37 @@ Output example:
   :Output value: original value converted to integer number
 
 ``player`` [1]_
-  Code name of player's regiment.
+  ID of AI flight which player will be the part of during single mission or
+  campaign mission.
 
-  :Output path: ``player.regiment``
+  :Output path: ``player.flight_id``
   :Output type: :class:`str`
   :Output value: original string value or ``None`` if not present
 
 ``army`` [1]_
-  Code number of player's army.
+  Code number of player's belligerent. This value is primarily used to
+  correctly define types of targets for a particular player.
+
+  For example, this value equals to ``1`` and there are 2 targets defined for
+  mission:
+  1) destroy an object; 2) protect objects in an area.
+
+  In this case, Allies will see these targets on map without changes.
+
+  But for the Axis these targets will be displayed with the opposite meaning,
+  i.e.: 1) protect an object; 2) destroy objects in an area.
+
+  This principle works only if there are only 2 belligerents in mission:
+  red and blue.
 
   :Output path: ``player.belligerent``
   :Output type: complex `belligerents`_ constant
 
 ``playerNum`` [1]_
-  Player's position in flight. Always equal to ``0`` if ``player`` is not set
+  Player's position in flight defined by ``player``. It's always equal to
+  ``0`` if ``player`` is not set.
 
-  :Output path: ``player.number``
+  :Output path: ``player.aircraft_index``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
@@ -116,5 +134,6 @@ Footnotes:
 .. [#] For single player mode only.
 
 
-.. _weather conditions: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/weather.py#L10
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L17
+.. _weather conditions: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/weather.py#L11
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L20
+
