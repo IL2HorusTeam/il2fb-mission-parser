@@ -912,34 +912,36 @@ class BornPlaceAircraftsParser(CollectingParser):
         return int(section_name[start:])
 
     def parse_line(self, line):
-        chunks = line.split()
+        parts = line.split()
 
-        if chunks[0] == WEAPONS_CONTINUATION_MARK:
-            self.aircraft['weapon_limitations'].extend(chunks[1:])
+        if parts[0] == WEAPONS_CONTINUATION_MARK:
+            self.aircraft['weapon_limitations'].extend(parts[1:])
         else:
-            # Finalize previous aircraft
             if self.aircraft:
+                # Finalize previous aircraft
                 self.data.append(self.aircraft)
-
-            code = chunks.pop(0)
-
-            try:
-                limit = chunks.pop(0)
-            except IndexError:
-                limit = None
-            else:
-                limit = BornPlaceAircraftsParser._to_limit(limit)
-
-            self.aircraft = {
-                'code': code,
-                'limit': limit,
-                'weapon_limitations': chunks,
-            }
+            self.aircraft = BornPlaceAircraftsParser._parse_new_item(parts)
 
     @staticmethod
-    def _to_limit(value):
-        value = int(value)
-        return value if value >= 0 else None
+    def _parse_new_item(parts):
+        code = parts.pop(0)
+        limit = BornPlaceAircraftsParser._extract_limit(parts)
+        return {
+            'code': code,
+            'limit': limit,
+            'weapon_limitations': parts,
+        }
+
+    @staticmethod
+    def _extract_limit(parts):
+        try:
+            limit = parts.pop(0)
+        except IndexError:
+            limit = None
+        else:
+            limit = int(limit)
+            limit = limit if limit >= 0 else None
+        return limit
 
     def clean(self):
         if self.aircraft:
