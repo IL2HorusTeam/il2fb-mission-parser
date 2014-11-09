@@ -16,16 +16,15 @@ Section example::
   [BornPlace]
     1 3000 121601 74883 1 1000 200 0 0 0 5000 50 0 1 1 0 0 3.8 1 0 0 0 0
 
-
 Output example:
 
 .. code-block:: python
 
   {
-      'homebases': [
+      'home_bases': [
           {
               'range': 3000,
-              'belligerent': <constant 'Belligerents.red'>,
+              'belligerent': Belligerents.red,
               'show_default_icon': False,
               'friction': {
                   'enabled': False,
@@ -33,13 +32,8 @@ Output example:
               },
               'spawning': {
                   'enabled': True,
-                  'has_parachutes': True,
+                  'with_parachutes': True,
                   'max_pilots': 0,
-                  'aircraft_limits': {
-                      'enabled': True,
-                      'consider_lost': True,
-                      'consider_stationary': True,
-                  },
                   'in_stationary': {
                       'enabled': False,
                       'return_to_start_position': False,
@@ -53,25 +47,28 @@ Output example:
                           'if_deck_is_full': False,
                       },
                   },
+                  'aircraft_limitations': {
+                      'enabled': True,
+                      'consider_lost': True,
+                      'consider_stationary': True,
+                  },
               },
               'radar': {
                   'range': 50,
                   'min_height': 0,
                   'max_height': 5000,
               },
-              'pos': {
-                  'x': 121601.0,
-                  'y': 74883.0,
-              },
+              'pos': Point2D(121601.0, 74883.0),
           },
-      ]
+      ],
   }
+
 
 **Description**:
 
-The output of the parser is a dictionary with a single item. It is accessible
-by ``homebases`` key. The value is a list of of dictionaries containing
-information about each homebase.
+The output of the parser is a :class:`dict` with  ``homebases`` item which
+contains a list of of dictionaries. Each dictionary contains information about
+single homebase.
 
 ``1``
   Code number of army the object belongs to.
@@ -103,7 +100,7 @@ information about each homebase.
 ``1``
   Tells whether users will have parachutes.
 
-  :Output path: ``has_parachutes``
+  :Output path: ``spawning.with_parachutes``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
@@ -167,14 +164,14 @@ information about each homebase.
 ``1``
   Enable aircraft limits.
 
-  :Output path: ``spawning.aircraft_limits.enabled``
+  :Output path: ``spawning.aircraft_limitations.enabled``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 ``1``
   Homebase looses aircrafts as they get destroyed.
 
-  :Output path: ``spawning.aircraft_limits.consider_lost``
+  :Output path: ``spawning.aircraft_limitations.consider_lost``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
@@ -202,7 +199,7 @@ information about each homebase.
 ``1``
   Homebase looses aircrafts as stationary aircrafts get destroyed.
 
-  :Output path: ``spawning.aircraft_limits.consider_stationary``
+  :Output path: ``spawning.aircraft_limitations.consider_stationary``
   :Output type: :class:`bool`
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
@@ -235,4 +232,4 @@ information about each homebase.
   :Output value: ``True`` if ``1``, ``False`` otherwise
 
 
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L17
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L20
