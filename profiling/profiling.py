@@ -29,7 +29,7 @@ class ParserWrapper(object):
         self.parser.start(self.section_name)
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, exception_type, exception, traceback):
         self.parser.stop()
 
     @property
