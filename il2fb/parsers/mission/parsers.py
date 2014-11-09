@@ -902,10 +902,9 @@ class BornPlaceAircraftsParser(CollectingParser):
 
     def init_parser(self, section_name):
         super(BornPlaceAircraftsParser, self).init_parser(section_name)
-        self.output_key = (
-            "{}{}".format(self.output_prefix,
-                          self._extract_section_number(section_name)))
-        self.aircraft = {}
+        section_number = self._extract_section_number(section_name)
+        self.output_key = self.output_prefix + section_number
+        self.aircraft = None
 
     def _extract_section_number(self, section_name):
         start = len(self.input_prefix)
