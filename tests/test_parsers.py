@@ -1089,6 +1089,7 @@ class BornPlaceAircraftsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "Bf-109G-6_Late 0",
             "Ju-88A-4 10 28xSC50 28xSC50_2xSC250 28xSC50_4xSC250",
             "+ 2xSC1800 2xSC2000",
+            "CantZ1007bis",
         ]
         expected = {
             'home_base_aircrafts_1': [
@@ -1115,6 +1116,11 @@ class BornPlaceAircraftsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                         '2xSC1800',
                         '2xSC2000',
                     ],
+                },
+                {
+                    'code': 'CantZ1007bis',
+                    'limit': None,
+                    'weapon_limitations': [],
                 },
             ],
         }

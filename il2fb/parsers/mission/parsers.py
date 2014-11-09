@@ -917,17 +917,29 @@ class BornPlaceAircraftsParser(CollectingParser):
         if chunks[0] == WEAPONS_CONTINUATION_MARK:
             self.aircraft['weapon_limitations'].extend(chunks[1:])
         else:
+            # Finalize previous aircraft
             if self.aircraft:
                 self.data.append(self.aircraft)
-            (code, limit), allowed_weapons = chunks[:2], chunks[2:]
+
+            code = chunks.pop(0)
+
+            try:
+                limit = chunks.pop(0)
+            except IndexError:
+                limit = None
+            else:
+                limit = BornPlaceAircraftsParser._to_limit(limit)
+
             self.aircraft = {
                 'code': code,
-                'limit': self._to_limit(limit),
-                'weapon_limitations': allowed_weapons,
+                'limit': limit,
+                'weapon_limitations': chunks,
             }
 
-    def _to_limit(self, value):
-        return int(value) if int(value) >= 0 else None
+    @staticmethod
+    def _to_limit(value):
+        value = int(value)
+        return value if value >= 0 else None
 
     def clean(self):
         if self.aircraft:
