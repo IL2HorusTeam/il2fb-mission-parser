@@ -2,6 +2,7 @@
 
 
 class Base(object):
+    __slots__ = ()
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
