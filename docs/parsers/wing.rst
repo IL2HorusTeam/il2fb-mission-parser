@@ -11,7 +11,7 @@ Wing section
 ``Wing`` section. This section contains a list of defined air flights.
 
 Each line contains an ID of a single air flight. ID consists of regiment code
-or default squadron prefix, squadron number and flight number.
+or default squadron prefix, squadron index and flight index.
 
 Section example::
 
@@ -32,6 +32,5 @@ Output example:
       ],
   }
 
-The output of the parser is a dictionary with a single item. It is accessible
-by ``flights`` key. The value is a list of strings, where a each line
-represents a single flight ID.
+The output of the parser is a :class:`dict` with ``flights`` item. It contains
+a list of strings, where a each line represents a single flight ID.
