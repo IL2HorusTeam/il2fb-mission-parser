@@ -3,13 +3,13 @@
 Memory & time consumption tests for parsers.
 """
 from il2fb.parsers.mission.parsers import (
-    ChiefsParser, ChiefRoadParser, NStationaryParser, BuildingsParser,
+    ChiefRoadParser, NStationaryParser, BuildingsParser,
     TargetParser, BornPlaceParser, StaticCameraParser, FrontMarkerParser,
     RocketParser, FlightRouteParser,
 )
 
 from generators import (
-    generate_cheifs_lines, generate_cheif_road_lines,
+    generate_cheif_road_lines,
     generate_nstationary_lines, generate_buildings_lines,
     generate_target_lines, generate_born_place_lines,
     generate_static_camera_lines, generate_front_marker_lines,
