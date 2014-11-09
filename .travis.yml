@@ -6,12 +6,13 @@ python:
   - '3.4'
 install:
   - pip install -e .
-  - pip install coverage coveralls
+  - pip install coverage coveralls nose scrutinizer-ocular
 script:
   - coverage run `which nosetests` --nocapture
   - coverage report -m
 after_success:
   - coveralls
+  - ocular --data-file ".coverage" --config-file ".coveragerc"
 notifications:
   email: false
   slack:
