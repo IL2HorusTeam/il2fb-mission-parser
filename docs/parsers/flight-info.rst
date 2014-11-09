@@ -12,10 +12,9 @@ parsing sections which provide information about aircrafts in a single flight.
 That information includes general data about all aircrafts and it can include
 data about individual aircrafts.
 
-The output of the parser is a dictionary with a single item. It is accessible
-by ``FLIGHT_ID_info`` key, where ``FLIGHT_ID`` is an ID of the flight which is
-listed in :ref:`wing-section`. The value is a dictionary with information about
-flight.
+The output of the parser is a :class:`dict` with a ``FLIGHT_ID_info`` item,
+where ``FLIGHT_ID`` is ID of the flight which is listed in :doc:`wing`.
+The item contains a dictionary with information about flight.
 
 .. contents::
     :local:
@@ -26,15 +25,14 @@ flight.
 Section names
 -------------
 
-Sections which describe flights use flight IDs as own names. Flight ID consists
-of code name and two digits at the right side, e.g. ``3GvIAP10``.
+Sections which describe flights use flight IDs as their names. Flight ID
+consists of code name and two digits at the right side, e.g. ``3GvIAP10``.
 
 Code name is a code name of a regiment or a default code of a particular air
 force. For example, ``3GvIAP`` is a name of regiment of VVS RKKA and ``r01``
-is default prefix for that air force (see the
-`list of air forces <http://bit.ly/1lGPDPE>`_).
+is default prefix for that air force (see the `list of air forces`_).
 
-Two digits in the flight ID mean squadron and flight number respectively. Both
+Two digits in the flight ID mean squadron and flight indexes respectively. Both
 of them use zero-based numbering, so ``00`` means 1st squadron, 1st flight.
 There can be up to 4 squadrons in a regiment with up to 4 flights in a
 squadron. Code of the 4th flight in the 4th squadron will be ``33``.
@@ -47,20 +45,20 @@ Parser's output contains air force, regiment, squadron and flight number:
 ..
 
   :Output path: ``regiment``
-  :Output type: `Regiment`_ class
+  :Output type: class `Regiment`_
   :Output value: ``Regiment`` object or ``None``
 
 ..
 
   :Output path: ``squadron``
   :Output type: :class:`int`
-  :Output value: original value converted to integer number and increased by 1
+  :Output value: original value converted to integer number
 
 ..
 
   :Output path: ``flight``
   :Output type: :class:`int`
-  :Output value: original value converted to integer number and increased by 1
+  :Output value: original value converted to integer number
 
 
 General information
@@ -83,35 +81,37 @@ Output example:
 
   {
       '3GvIAP10_info': {
+          'id': '3GvIAP10',
           'air_force': <constant 'AirForces.vvs_rkka'>,
           'regiment': <Regiment '3GvIAP'>,
-          'squadron': 2,
-          'flight': 1,
-          'count': 3,
+          'squadron_index': 1,
+          'flight_index': 0,
           'code': 'A_20C',
+          'count': 3,
           'weapons': 'default',
           'fuel': 100,
           'ai_only': True,
           'with_parachutes': False,
           'aircrafts': [
               {
-                  'id': 0,
+                  'index': 0,
                   'has_markings': True,
                   'skill': <constant 'Skills.average'>,
               },
               {
-                  'id': 1,
+                  'index': 1,
                   'has_markings': True,
                   'skill': <constant 'Skills.average'>,
               },
               {
-                  'id': 2,
+                  'index': 2,
                   'has_markings': True,
                   'skill': <constant 'Skills.average'>,
               },
           ],
       },
   }
+
 
 Description:
 
@@ -147,7 +147,7 @@ Description:
   :Input presence:
     present only if all aircrafts in flight have same level of skills
   :Output path:
-    ``aircrafts[i].skill``, where ``i`` is aircraft index - skills are applied
+    ``aircrafts[i].skill``, where ``i`` is aircraft index. Skills are applied
     to every aircraft individually (see section below)
   :Output type: complex `skills`_ constant
 
@@ -157,7 +157,7 @@ Description:
   :Input presence: always present
   :Output path: ``code``
   :Output type: :class:`str`
-  :Output value: original string value
+  :Output value: original string value without ``air.`` prefix
 
 ``Fuel``
   Fullness of fuel (in percents).
@@ -171,9 +171,10 @@ Description:
   Weapons code name.
 
   :Input presence: always present
-  :Output path: ``code``
+  :Output path: ``weapons``
   :Output type: :class:`str`
   :Output value: original string value
+
 
 Individual skills
 -----------------
@@ -198,22 +199,22 @@ Output example:
         'UN_NN03_info': {
             'air_force': <constant 'AirForces.usn'>,
             'regiment': None,
-            'squadron': 1,
-            'flight': 4,
-            'count': 2,
+            'squadron_index': 0,
+            'flight_index': 3,
             'code': 'B_17G',
+            'count': 2,
             'weapons': 'default',
             'fuel': 100,
             'ai_only': False,
             'with_parachutes': True,
             'aircrafts': [
                 {
-                    'id': 0,
+                    'index': 0,
                     'has_markings': True,
                     'skill': <constant 'Skills.veteran'>,
                 },
                 {
-                    'id': 1,
+                    'index': 1,
                     'has_markings': True,
                     'skill': <constant 'Skills.ace'>,
                 },
@@ -221,15 +222,17 @@ Output example:
         },
     }
 
-As you can see in the previous section, flight info can contain ``Skill``
+
+As you can see from the previous section, flight info can contain ``Skill``
 parameter. It defines skill level for all aircrafts in the flight. However,
 if you need to override skill level even for a single aircraft, ``Skill``
-paramenter will be decomposed into 4 (even if you have less than 4 aircraft in
-the flight): ``Skill0``, ``Skill1``, ``Skill2`` and ``Skill3``. In our example
-we have 2 aircrafts in a flight with veteran (``Skill0 2``) and ace
-(``Skill1 3``) skill levels respectively. Other skill entries (``Skill2 1`` and
-``Skill3 1``) have really no meaning. Their values are equal to default skill
-level for this flight which was set before overriding.
+paramenter will be decomposed into 4 paramenters (even if you have less than 4
+aircraft in the flight): ``Skill0``, ``Skill1``, ``Skill2`` and ``Skill3``.
+
+In our example we have 2 aircrafts in a flight with veteran (``Skill0 2``) and
+ace (``Skill1 3``) skill levels respectively. Other skill entries (``Skill2 1``
+and ``Skill3 1``) have really no meaning. Their values are equal to default
+skill level for this flight which was set before it was overridden.
 
 
 Other individual parameters
@@ -257,17 +260,17 @@ Output example:
         'UN_NN02_info': {
             'air_force': <constant 'AirForces.usn'>,
             'regiment': None,
-            'squadron': 1,
-            'flight': 3,
-            'count': 1,
+            'squadron_index': 1,
+            'flight_index': 3,
             'code': 'B_17G',
+            'count': 1,
             'weapons': 'default',
             'fuel': 100,
             'ai_only': False,
             'with_parachutes': True,
             'aircrafts': [
                 {
-                    'id': 0,
+                    'index': 0,
                     'has_markings': False,
                     'skill': <constant 'Skills.average'>,
                     'aircraft_skin': 'RRG_N7-B_Damaged.bmp',
@@ -279,20 +282,21 @@ Output example:
         },
     }
 
-As you can see from the previous examples, parsed individual aircraft
-parameters are stored in ``aircrafts`` list. Each element of this list is a
-dictionary with information about a single aircraft.
 
-Aircraft ID is accessed by ``id`` key. ID is a number in range 0-3.
+As you can see from the previous examples, parsed individual parameters for
+are stored in ``aircrafts`` list. Each element of this list is a dictionary
+with information about a single aircraft.
+
+Aircraft index is accessed by ``index`` key. Index is a number in range 0-3.
 
 We have discussed individual skills already: skill level is accessed by
 ``skill`` key.
 
-Flight information section may contain some extra individual parameters which
-are suffixed by aircraft ID they are related to:
+Section with information about flight may contain some extra individual
+parameters which are suffixed by index of the aircraft they are related to:
 
 ``skinX``
-  Name of custom skin for aircraft with ID ``X``.
+  Name of custom skin for aircraft with index ``X``.
 
   :Input presence: present only if non-default skin was selected
   :Output path: ``aircraft_skin``
@@ -300,7 +304,7 @@ are suffixed by aircraft ID they are related to:
   :Output value: original string value
 
 ``noseartX``
-  Name of used nose art for aircraft with ID ``X``.
+  Name of used nose art for aircraft with index ``X``.
 
   :Input presence: present only if nose art was selected
   :Output path: ``nose_art``
@@ -308,7 +312,7 @@ are suffixed by aircraft ID they are related to:
   :Output value: original string value
 
 ``pilotX``
-  Name of custom skin for crew members of aircraft with ID ``X``.
+  Name of custom skin for crew members of aircraft with index ``X``.
 
   :Input presence: present only if non-default skin was selected
   :Output path: ``pilot_skin``
@@ -316,7 +320,7 @@ are suffixed by aircraft ID they are related to:
   :Output value: original string value
 
 ``numberOnX``
-  Tells whether markings are present for aircraft with ID ``X``.
+  Tells whether markings are present for aircraft with index ``X``.
 
   :Input presence: present only if turned off
   :Output path: ``has_markings``
@@ -325,7 +329,7 @@ are suffixed by aircraft ID they are related to:
   :Output default: ``True``
 
 ``spawnX``
-  ID of static object which is used for spawning aircraft with ID ``X``.
+  ID of static object which is used for spawning aircraft with index ``X``.
 
   :Input presence: present only if spawn object was set
   :Output path: ``spawn_object``
@@ -333,6 +337,8 @@ are suffixed by aircraft ID they are related to:
   :Output value: original string value
 
 
-.. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L27
-.. _air force: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L89
-.. _Regiment: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L236
+.. _air force: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L94
+.. _list of air forces: `air force`_
+
+.. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L28
+.. _Regiment: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L268
