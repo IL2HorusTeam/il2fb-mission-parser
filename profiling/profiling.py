@@ -2,6 +2,16 @@
 """
 Memory & time consumption tests for parsers.
 """
+if not 'profile' in locals():
+    try:
+        from memory_profiler import profile
+    except ImportError:
+        import __builtin__
+        try:
+            profile = __builtin__.profile
+        except AttributeError:
+            profile = lambda x: x
+
 from il2fb.parsers.mission.parsers import (
     ChiefRoadParser, NStationaryParser, BuildingsParser,
     TargetParser, BornPlaceParser, StaticCameraParser, FrontMarkerParser,
