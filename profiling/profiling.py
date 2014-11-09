@@ -7,9 +7,9 @@ if 'profile' not in locals():
         from memory_profiler import profile
     except ImportError:
         import __builtin__
-        if hasattr(__builtin__, 'profile'):
+        try:
             profile = __builtin__.profile
-        else:
+        except AttributeError:
             profile = lambda x: x
 
 from il2fb.parsers.mission.parsers import (
