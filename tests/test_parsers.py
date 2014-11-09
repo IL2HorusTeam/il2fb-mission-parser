@@ -32,6 +32,34 @@ from il2fb.parsers.mission.structures import (
 )
 
 
+class ParserTestCaseMixin(object):
+
+    maxDiff = None
+
+    def assertRaisesWithMessage(self, exception_type, message, func, *args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except exception_type as e:
+            self.assertEqual(e.args[0], message)
+        else:
+            self.fail(
+                '"{:}" was expected to throw "{:}" exception'
+                .format(func.__name__, exception_type.__name__))
+
+
+class SectionParserTestCaseMixin(ParserTestCaseMixin):
+
+    maxDiff = None
+
+    def _test_parser(self, parser_class, section_name, lines, expected):
+        parser = parser_class()
+        self.assertTrue(parser.start(section_name))
+        for line in lines:
+            parser.parse_line(line)
+        result = parser.stop()
+        self.assertEqual(result, expected)
+
+
 class CommonsTestCase(unittest.TestCase):
 
     def test_to_bool(self):
@@ -91,20 +119,7 @@ class SectionParserTestCase(unittest.TestCase):
         self.assertRaises(RuntimeError, self.parser.stop)
 
 
-class ParserTestCaseMixin(object):
-
-    maxDiff = None
-
-    def _test_parser(self, parser_class, section_name, lines, expected):
-        parser = parser_class()
-        self.assertTrue(parser.start(section_name))
-        for line in lines:
-            parser.parse_line(line)
-        result = parser.stop()
-        self.assertEqual(result, expected)
-
-
-class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
+class MissionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
 
     def test_main_parser(self):
         """
@@ -780,7 +795,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self._test_parser(FlightRouteParser, '3GvIAP01_Way', lines, expected)
 
 
-class MDSScoutsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
+class MDSScoutsParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``MDS_Scouts`` section parser.
     """
@@ -808,7 +823,7 @@ class MDSScoutsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self.assertFalse(parser.start('MDS_Scouts_'))
 
 
-class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
+class ChiefRoadParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
         lines = [
@@ -856,7 +871,7 @@ class ChiefRoadParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self.assertFalse(parser.start('X_Chief_Road'))
 
 
-class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
+class TargetsParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``Target`` section parser.
     """
@@ -1077,7 +1092,7 @@ class TargetsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self._test_parser(TargetParser, 'Target', lines, expected)
 
 
-class BornPlaceAircraftsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
+class BornPlaceAircraftsParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
         """
@@ -1132,7 +1147,7 @@ class BornPlaceAircraftsParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self.assertFalse(parser.start('BornPlaceX'))
 
 
-class BornPlaceAirForcesParserTestCase(ParserTestCaseMixin, unittest.TestCase):
+class BornPlaceAirForcesParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
         """
@@ -1159,7 +1174,7 @@ class BornPlaceAirForcesParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self.assertFalse(parser.start('BornPlaceCountriesX'))
 
 
-class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
+class FlightInfoParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
 
     def test_check_section_name(self):
         parser = FlightInfoParser()
@@ -1254,7 +1269,7 @@ class FlightInfoParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self.assertFalse(p.check_section_name("Something unknown"))
 
 
-class FileParserTestCase(unittest.TestCase):
+class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
 
     maxDiff = None
 
@@ -1275,24 +1290,20 @@ class FileParserTestCase(unittest.TestCase):
             "[MAIN]",
             "  foo",
         ]
-        with self.assertRaises(MissionParsingError) as cm:
-            self.parser.parse_sequence(lines)
-        self.assertEqual(
-            cm.exception.args[0],
-            "ValueError in line #1 (\"foo\"): need more than 1 value to unpack"
-        )
+        self.assertRaisesWithMessage(
+            MissionParsingError,
+            "ValueError in line #1 (\"foo\"): need more than 1 value to unpack",
+            self.parser.parse_sequence, lines)
 
     def test_parser_finalization_with_error(self):
         lines = [
             "[MAIN]",
             "  foo bar",
         ]
-        with self.assertRaises(MissionParsingError) as cm:
-            self.parser.parse_sequence(lines)
-        self.assertEqual(
-            cm.exception.args[0],
-            "KeyError during finalization of \"MainParser\": \'CloudType\'"
-        )
+        self.assertRaisesWithMessage(
+            MissionParsingError,
+            "KeyError during finalization of \"MainParser\": \'CloudType\'",
+            self.parser.parse_sequence, lines)
 
     def test_get_flight_info_parser(self):
         lines = [
