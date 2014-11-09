@@ -902,8 +902,9 @@ class BornPlaceAircraftsParser(CollectingParser):
 
     def init_parser(self, section_name):
         super(BornPlaceAircraftsParser, self).init_parser(section_name)
-        section_number = self._extract_section_number(section_name)
-        self.output_key = self.output_prefix + section_number
+        self.output_key = (
+            "{}{}".format(self.output_prefix,
+                          self._extract_section_number(section_name)))
         self.aircraft = None
 
     def _extract_section_number(self, section_name):
@@ -1219,36 +1220,52 @@ class FlightRouteParser(CollectingParser):
             self.point_class = FlightRouteTakeoffPoint
 
     def _parse_extra(self, params):
-        if (
-            ROUTE_POINT_RADIO_SILENCE_ON in params
-            or ROUTE_POINT_RADIO_SILENCE_OFF in params
-        ):
-            try:
-                index = params.index(ROUTE_POINT_RADIO_SILENCE_ON)
-            except ValueError:
-                index = params.index(ROUTE_POINT_RADIO_SILENCE_OFF)
-
-            params, radio_silence, extra = params[:index], params[index], params[index+1:]
-            formation = Formations.get_by_value(extra[0]) if extra else None
+        if FlightRouteParser._is_new_game_version(params):
+            radio_silence, formation, params = FlightRouteParser._parse_new_version_extra(params)
+            if params:
+                self._parse_target(params)
         else:
-            radio_silence = '0'
+            radio_silence = False
             formation = None
 
-        if params:
-            target_id, target_route_point = params[:2]
-            self.point.update({
-                'target_id': target_id,
-                'target_route_point': int(target_route_point),
-            })
-            if self.point['type'] is RoutePointTypes.normal:
-                self.point['type'] = RoutePointTypes.air_attack
-            self.point_class = FlightRouteAttackPoint
-
-        radio_silence = radio_silence == ROUTE_POINT_RADIO_SILENCE_ON
         self.point.update({
             'radio_silence': radio_silence,
             'formation': formation,
         })
+
+    @staticmethod
+    def _is_new_game_version(params):
+        return (
+            ROUTE_POINT_RADIO_SILENCE_ON in params
+            or ROUTE_POINT_RADIO_SILENCE_OFF in params
+        )
+
+    @staticmethod
+    def _parse_new_version_extra(params):
+        try:
+            index = params.index(ROUTE_POINT_RADIO_SILENCE_ON)
+        except ValueError:
+            index = params.index(ROUTE_POINT_RADIO_SILENCE_OFF)
+
+        params, radio_silence, extra = params[:index], params[index], params[index+1:]
+
+        radio_silence = radio_silence == ROUTE_POINT_RADIO_SILENCE_ON
+        formation = Formations.get_by_value(extra[0]) if extra else None
+
+        return radio_silence, formation, params
+
+    def _parse_target(self, params):
+        target_id, target_route_point = params[:2]
+
+        self.point.update({
+            'target_id': target_id,
+            'target_route_point': int(target_route_point),
+        })
+
+        if self.point['type'] is RoutePointTypes.normal:
+            self.point['type'] = RoutePointTypes.air_attack
+
+        self.point_class = FlightRouteAttackPoint
 
     def clean(self):
         self._finalize_current_point()

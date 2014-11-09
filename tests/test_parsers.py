@@ -100,12 +100,11 @@ class ParserTestCaseMixin(object):
         self.assertTrue(parser.start(section_name))
         for line in lines:
             parser.parse_line(line)
-        self.assertEqual(expected, parser.stop())
+        result = parser.stop()
+        self.assertEqual(result, expected)
 
 
 class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
-
-    maxDiff = None
 
     def test_main_parser(self):
         """
