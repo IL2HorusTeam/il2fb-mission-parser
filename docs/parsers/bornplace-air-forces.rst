@@ -12,7 +12,7 @@ for parsing ``BornPlaceCountriesN`` section, where ``N`` is sequence number of
 the homebase. This section defines a list of available airforces for
 homebase #N.
 
-Each line contains a code name of a single airforce.
+Each line contains a code name of a single air force.
 
 Section example::
 
@@ -25,14 +25,15 @@ Output example:
 .. code-block:: python
 
   {
-      'homebase_air_forces_1': [
+      'home_base_air_forces_1': [
           <constant 'AirForces.luftwaffe'>,
           <constant 'AirForces.vvs_rkka'>,
       ],
   }
 
-The output of the parser is a dictionary with a single item. It is accessible
-by ``homebase_air_forces_N`` key, where ``N`` is original homebase number. The
-value is a list of `air forces`_.
+The output of the parser is a :class:`dict` with ``home_base_air_forces_N``
+item, where ``N`` is original homebase number. The value is a list of
+`air forces`_.
 
-.. _air forces: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L89
+
+.. _air forces: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L94
