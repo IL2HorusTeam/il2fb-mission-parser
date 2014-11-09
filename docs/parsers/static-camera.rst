@@ -23,21 +23,18 @@ Output example:
   {
       'cameras': [
           {
-              'belligerent': <constant 'Belligerents.blue'>,
-              'pos': {
-                  'x': 38426.0,
-                  'y': 65212.0,
-                  'z': 35.0,
-              },
+              'belligerent': Belligerents.blue,
+              'pos': Point3D(38426.0, 65212.0, 35.0),
           },
       ],
   }
 
+
 **Description**:
 
-The output of the parser is a dictionary with a single item. It is accessible
-by ``cameras`` key. The value is a list of dictionaries. Each dictionary
-represents a single camera.
+The output of the parser is a :class:`dict` with a ``cameras`` item. It
+contains a list of dictionaries where each dictionary represents a single
+camera.
 
 ``38426``
   X coordinate.
@@ -67,4 +64,4 @@ represents a single camera.
   :Output type: complex `belligerents`_ constant
 
 
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L17
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L20
