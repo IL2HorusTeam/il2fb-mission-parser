@@ -1348,12 +1348,16 @@ class FileParser(object):
         return line.strip('[]')
 
     def get_parser(self, section_name):
+        parser = self.flight_info_parser
         flights = self.data.get('flights')
-        if flights is not None and self.flight_info_parser.start(section_name):
-            return self.flight_info_parser
+
+        if flights is not None and parser.start(section_name):
+            return parser
+
         for parser in self.parsers:
             if parser.start(section_name):
                 return parser
+
         return None
 
     def clean(self):
