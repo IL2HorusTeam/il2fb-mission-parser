@@ -934,13 +934,11 @@ class BornPlaceAircraftsParser(CollectingParser):
 
     @staticmethod
     def _extract_limit(parts):
-        try:
-            limit = parts.pop(0)
-        except IndexError:
-            limit = None
-        else:
-            limit = int(limit)
+        if parts:
+            limit = int(parts.pop(0))
             limit = limit if limit >= 0 else None
+        else:
+            limit = None
         return limit
 
     def clean(self):
