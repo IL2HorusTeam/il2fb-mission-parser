@@ -1155,13 +1155,13 @@ class FlightInfoParser(ValuesParser):
             return to_skill(self.data['Skill{:}'.format(aircraft_id)])
 
     def _has_markings(self, aircraft_id):
-            return 'numberOn{:}'.format(aircraft_id) not in self.data
+        return 'numberOn{:}'.format(aircraft_id) not in self.data
 
     def _get_skin(self, prefix, aircraft_id):
         return self.data.get('{:}{:}'.format(prefix, aircraft_id))
 
     def _get_spawn_object_id(self, aircraft_id):
-            return self.data.get('spawn{:}'.format(aircraft_id))
+        return self.data.get('spawn{:}'.format(aircraft_id))
 
 
 class FlightRouteParser(CollectingParser):
