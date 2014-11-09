@@ -9,7 +9,7 @@ FrontMarker section
 
 :class:`~il2fb.parsers.mission.parsers.FrontMarkerParser` is responsible for
 parsing ``FrontMarker`` section. Each line of this section describes a single
-front marker.
+frontline marker.
 
 Section example::
 
@@ -23,21 +23,19 @@ Output example:
   {
       'markers': [
           {
-              'belligerent': <constant 'Belligerents.red'>,
               'id': "FrontMarker0",
-              'pos': {
-                  'x': 7636.65,
-                  'y': 94683.02,
-              },
+              'belligerent': Belligerents.red,
+              'pos': Point2D(7636.65, 94683.02),
           },
       ],
   }
 
+
 **Description**:
 
-The output of the parser is a dictionary with a single item. It is accessible
-by ``markers`` key. The value is a list of dictionaries. Each dictionary
-represents a single front marker.
+The output of the parser is a :class:`dict` with  ``markers`` item. It contains
+a list of dictionaries where each dictionary represents a single frontline
+marker.
 
 ``FrontMarker0``
   Marker ID which is given by full mission editor. Contains ``FrontMarker``
@@ -68,4 +66,4 @@ represents a single front marker.
   :Output type: complex `belligerents`_ constant
 
 
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L17
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L20
