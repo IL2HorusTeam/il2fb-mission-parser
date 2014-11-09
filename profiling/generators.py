@@ -75,9 +75,9 @@ def generate_rocket_lines():
 def generate_flight_route_lines():
     for i in range(0, CYCLES_COUNT, 7):
         yield "TAKEOFF {0}.00 {0}.00 0 0 &0".format(i)
-        yield "TRIGGERS 0 10 20 0".format(i)
+        yield "TRIGGERS 0 10 20 0"
         yield "NORMFLY_401 {0}.00 {0}.00 500.00 300.00 &0 F2".format(i)
-        yield "TRIGGERS 1 1 25 5 500".format(i)
+        yield "TRIGGERS 1 1 25 5 500"
         yield "NORMFLY {0}.00 {0}.00 500.00 300.00 r0100 1 &0".format(i)
         yield "GATTACK {0}.00 {0}.00 500.00 300.00 0_Chief 0 &0".format(i)
         yield "LANDING_104 {0}.00 {0}.00 0 0 &1".format(i)
