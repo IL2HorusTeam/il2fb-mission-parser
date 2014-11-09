@@ -29,10 +29,7 @@ Output example:
               'in_sleep_mode': True,
               'delay': 50,
               'requires_landing': False,
-              'pos': {
-                  'x': 133978.0,
-                  'y': 87574.0,
-              },
+              'pos': Point2D(133978.0, 87574.0),
               'radius': 1150,
           },
           {
@@ -41,26 +38,19 @@ Output example:
               'in_sleep_mode': True,
               'delay': 40,
               'requires_landing': True,
-              'pos': {
-                  'x': 134459.0,
-                  'y': 85239.0,
-              },
+              'pos': Point2D(134459.0, 85239.0),
               'radius': 300,
               'object': {
                   'waypoint': 0,
                   'id': '1_Chief',
-                  'pos': {
-                      'x': 134360.0,
-                      'y': 85346.0,
-                  },
+                  'pos': Point2D(134360.0, 85346.0),
               },
           },
       ],
   }
 
-The output of the parser is a dictionary with a single item. It is accessible
-by ``targets`` key. The value is a list of dictionaries. Each dictionary
-represents a single target.
+The output of the parser is a :class:`dict` with ``targets`` item which
+contains a list of dictionaries. Each dictionary represents a single target.
 
 There are 8 different types of targets and 3 types of target priorities. Some
 different types of targets have identical sets of parameters.
@@ -90,21 +80,16 @@ Output example:
               'in_sleep_mode': False,
               'delay': 0,
               'destruction_level': 50,
-              'pos': {
-                  'x': 90939.0,
-                  'y': 91871.0,
-              },
+              'pos': Point2D(90939.0, 91871.0),
               'object': {
                   'waypoint': 1,
                   'id': '10_Chief',
-                  'pos': {
-                      'x': 91100.0,
-                      'y': 91500.0,
-                  },
+                  'pos': Point2D(91100.0, 91500.0),
               },
           },
       ],
   }
+
 
 ``0``
   Target type (destroy).
@@ -154,7 +139,7 @@ Output example:
   :Output value: original value converted to float number
 
 ``0``
-  Is not used for this target type.
+  Is not used by targets of this type.
 
 ``1``
   Waypoint number of the object which must be destroyed.
@@ -204,14 +189,12 @@ Output example:
               'in_sleep_mode': True,
               'delay': 60,
               'destruction_level': 75,
-              'pos': {
-                  'x': 133960.0,
-                  'y': 87552.0,
-              },
+              'pos': Point2D(133960.0, 87552.0),
               'radius': 1350,
           },
       ],
   }
+
 
 ``1``
   Target type (destroy area).
@@ -286,20 +269,15 @@ Output example:
               'priority': <constant 'TargetPriorities.hidden'>,
               'in_sleep_mode': True,
               'delay': 30,
-              'pos': {
-                  'x': 135786.0,
-                  'y': 84596.0,
-              },
+              'pos': Point2D(135786.0, 84596.0),
               'object': {
                   'id': 'Bridge84',
-                  'pos': {
-                      'x': 135764.0,
-                      'y': 84636.0,
-                  },
+                  'pos': Point2D(135764.0, 84636.0),
               },
           },
       ],
   }
+
 
 ``2``
   Target type (destroy bridge).
@@ -328,7 +306,7 @@ Output example:
   :Output value: original value converted to integer number
 
 ``500``
-  Is not used for this target type.
+  Is not used by targets of this type.
 
 ``133960``
   X coordinate.
@@ -345,10 +323,10 @@ Output example:
   :Output value: original value converted to float number
 
 ``0``
-  Is not used for this target type.
+  Is not used by targets of this type.
 
 ``0``
-  Is not used for this target type.
+  Is not used by targets of this type.
 
 ``Bridge84``
   ID of the bridge which must be destroyed.
@@ -392,10 +370,7 @@ Output example:
               'in_sleep_mode': True,
               'delay': 50,
               'requires_landing': False,
-              'pos': {
-                  'x': 133978.0,
-                  'y': 87574.0,
-              },
+              'pos': Point2D(133978.0, 87574.0),
               'radius': 1150,
           },
           {
@@ -404,22 +379,17 @@ Output example:
               'in_sleep_mode': True,
               'delay': 40,
               'requires_landing': True,
-              'pos': {
-                  'x': 134459.0,
-                  'y': 85239.0,
-              },
+              'pos': Point2D(134459.0, 85239.0),
               'radius': 300,
               'object': {
                   'waypoint': 0,
                   'id': '1_Chief',
-                  'pos': {
-                      'x': 134360.0,
-                      'y': 85346.0,
-                  },
+                  'pos': Point2D(134360.0, 85346.0),
               },
           },
       ],
   }
+
 
 Let's examine second definition:
 
@@ -518,28 +488,23 @@ Output example:
 .. code-block:: python
 
   {
-    'targets': [
-        {
-            'type': <constant 'TargetTypes.escort'>,
-            'priority': <constant 'TargetPriorities.primary'>,
-            'in_sleep_mode': True,
-            'delay': 10,
-            'destruction_level': 75,
-            'pos': {
-                'x': 134183.0,
-                'y': 85468.0,
-            },
-            'object': {
-                'waypoint': 1,
-                'id': 'r0100',
-                'pos': {
-                    'x': 133993.0,
-                    'y': 85287.0,
-                },
-            },
-        },
-    ],
-}
+      'targets': [
+          {
+              'type': <constant 'TargetTypes.escort'>,
+              'priority': <constant 'TargetPriorities.primary'>,
+              'in_sleep_mode': True,
+              'delay': 10,
+              'destruction_level': 75,
+              'pos': Point2D(134183.0, 85468.0),
+              'object': {
+                  'waypoint': 1,
+                  'id': 'r0100',
+                  'pos': Point2D(133993.0, 85287.0),
+              },
+          },
+      ],
+  }
+
 
 ``4``
   Target type (escort).
@@ -589,7 +554,7 @@ Output example:
   :Output value: original value converted to float number
 
 ``0``
-  Is not used for this target type.
+  Is not used by targets of this type.
 
 ``1``
   Waypoint number of the flight which must be escorted.
@@ -639,17 +604,11 @@ Output example:
               'in_sleep_mode': True,
               'delay': 20,
               'destruction_level': 25,
-              'pos': {
-                  'x': 132865.0,
-                  'y': 87291.0,
-              },
+              'pos': Point2D(132865.0, 87291.0),
               'object': {
                   'waypoint': 1,
                   'id': '1_Chief',
-                  'pos': {
-                      'x': 132866.0,
-                      'y': 86905.0,
-                  },
+                  'pos': Point2D(132866.0, 86905.0),
               },
           },
       ],
@@ -704,7 +663,7 @@ Output example:
   :Output value: original value converted to float number
 
 ``0``
-  Is not used for this target type.
+  Is not used by targets of this type.
 
 ``1``
   Waypoint number of the object which must be covered.
@@ -754,14 +713,12 @@ Output example:
               'in_sleep_mode': True,
               'delay': 30,
               'destruction_level': 50,
-              'pos': {
-                  'x': 134064.0,
-                  'y': 88188.0,
-              },
+              'pos': Point2D(134064.0, 88188.0),
               'radius': 1350,
           },
       ],
   }
+
 
 ``6``
   Target type (cover area).
@@ -836,20 +793,15 @@ Output example:
               'priority': <constant 'TargetPriorities.hidden'>,
               'in_sleep_mode': True,
               'delay': 30,
-              'pos': {
-                  'x': 135896.0,
-                  'y': 84536.0,
-              },
+              'pos': Point2D(135896.0, 84536.0),
               'object': {
                   'id': 'Bridge84',
-                  'pos': {
-                      'x': 135764.0,
-                      'y': 84636.0,
-                  },
+                  'pos': Point2D(135764.0, 84636.0),
               },
           },
       ],
   }
+
 
 ``7``
   Target type (cover bridge).
@@ -878,7 +830,7 @@ Output example:
   :Output value: original value converted to integer number
 
 ``500``
-  Is not used for this target type.
+  Is not used by targets of this type.
 
 ``135896``
   X coordinate.
@@ -895,10 +847,10 @@ Output example:
   :Output value: original value converted to float number
 
 ``0``
-  Is not used for this target type.
+  Is not used by targets of this type.
 
 ``0``
-  Is not used for this target type.
+  Is not used by targets of this type.
 
 ``Bridge84``
   ID of the bridge which must be covered.
@@ -922,5 +874,5 @@ Output example:
   :Output value: original value converted to float number
 
 
-.. _target type: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/targets.py#L10
-.. _target priority: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/targets.py#L21
+.. _target type: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/targets.py#L11
+.. _target priority: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/targets.py#L22
