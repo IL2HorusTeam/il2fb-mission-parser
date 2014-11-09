@@ -1301,53 +1301,30 @@ class FileParser(object):
             return self.parse_sequence(mission)
 
     def parse_sequence(self, sequence):
-        parser = None
+        self._current_parser = None
         self.data = {}
-
-        def _raise_error(message, traceback):
-            error = MissionParsingError(message)
-            six.reraise(MissionParsingError, error, traceback)
-
-        def _finalize_parser():
-            if parser:
-                try:
-                    self.data.update(parser.stop())
-                except Exception:
-                    error_type, original_msg, traceback = sys.exc_info()
-                    msg = (
-                        "{0} during finalization of \"{1}\": {2}"
-                        .format(error_type.__name__, parser.__class__.__name__,
-                                original_msg)
-                    )
-                    _raise_error(msg, traceback)
 
         for i, line in enumerate(sequence):
             line = clean_line(line)
-            if self.is_section_name(line):
-                _finalize_parser()
-                section_name = self.get_section_name(line)
-                parser = self.get_parser(section_name)
-            elif parser:
-                try:
-                    parser.parse_line(line)
-                except Exception:
-                    error_type, original_msg, traceback = sys.exc_info()
-                    msg = (
-                        "{0} in line #{1} (\"{2}\"): {3}"
-                        .format(error_type.__name__, i, line, original_msg)
-                    )
-                    _raise_error(msg, traceback)
+            if FileParser.is_section_name(line):
+                self._finalize_current_parser()
+                section_name = FileParser.get_section_name(line)
+                self._current_parser = self._get_parser(section_name)
+            elif self._current_parser:
+                self._try_to_parse_line(i, line)
 
-        _finalize_parser()
-        return self.clean()
+        self._finalize_current_parser()
+        return self._clean()
 
-    def is_section_name(self, line):
+    @staticmethod
+    def is_section_name(line):
         return line.startswith('[') and line.endswith(']')
 
-    def get_section_name(self, line):
+    @staticmethod
+    def get_section_name(line):
         return line.strip('[]')
 
-    def get_parser(self, section_name):
+    def _get_parser(self, section_name):
         parser = self.flight_info_parser
         flights = self.data.get('flights')
 
@@ -1360,7 +1337,40 @@ class FileParser(object):
 
         return None
 
-    def clean(self):
+    def _finalize_current_parser(self):
+        if not self._current_parser:
+            return
+        try:
+            data = self._current_parser.stop()
+        except Exception:
+            error_type, original_msg, traceback = sys.exc_info()
+            msg = (
+                "{0} during finalization of \"{1}\": {2}"
+                .format(error_type.__name__,
+                        self._current_parser.__class__.__name__,
+                        original_msg))
+            FileParser._raise_error(msg, traceback)
+        else:
+            self.data.update(data)
+        finally:
+            self._current_parser = None
+
+    def _try_to_parse_line(self, line_number, line):
+        try:
+            self._current_parser.parse_line(line)
+        except Exception:
+            error_type, original_msg, traceback = sys.exc_info()
+            msg = (
+                "{0} in line #{1} (\"{2}\"): {3}"
+                .format(error_type.__name__, line_number, line, original_msg))
+            FileParser._raise_error(msg, traceback)
+
+    @staticmethod
+    def _raise_error(message, traceback):
+        error = MissionParsingError(message)
+        six.reraise(MissionParsingError, error, traceback)
+
+    def _clean(self):
         result = {}
 
         move_if_present(result, self.data, 'location_loader')
