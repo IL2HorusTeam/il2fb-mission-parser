@@ -23,48 +23,38 @@ Output example:
 
   {
       'rockets': [
-          {
-              'belligerent': <constant 'Belligerents.blue'>,
-              'id': "0_Rocket",
-              'code': "Fi103_V1_ramp",
-              'pos': {
-                  'x': 84141.38,
-                  'y': 114216.82,
-              },
-              'rotation_angle': 360.00,
-              'delay': 60.0,
-              'count': 10,
-              'period': 80.0,
-              'destination': {
-                  'x': 83433.91,
-                  'y': 115445.49,
-              },
-          },
-          {
-              'belligerent': <constant 'Belligerents.blue'>,
-              'id': "1_Rocket",
-              'code': "Fi103_V1_ramp",
-              'pos': {
-                  'x': 84141.38,
-                  'y': 114216.82,
-              },
-              'rotation_angle': 360.00,
-              'delay': 60.0,
-              'count': 10,
-              'period': 80.0,
-              'destination': None,
-          },
+          Rocket(
+              id='0_Rocket',
+              code='Fi103_V1_ramp',
+              belligerent=Belligerents.blue,
+              pos=Point2D(84141.38, 114216.82),
+              rotation_angle=360.00,
+              delay=60.0,
+              count=10,
+              period=80.0,
+              destination=Point2D(83433.91, 115445.49),
+          ),
+          Rocket(
+              id='1_Rocket',
+              code='Fi103_V1_ramp',
+              belligerent=Belligerents.blue,
+              pos=Point2D(84141.38, 114216.82),
+              rotation_angle=360.00,
+              delay=60.0,
+              count=10,
+              period=80.0,
+              destination=None,
+          ),
       ],
   }
 
 
-The output of the parser is a dictionary with a single item. It is accessible
-by ``rockets`` key. The value is a list of dictionaries. Each dictionary
-represents a single rocket.
+The output of the parser is a :class:`dict` with ``rockets`` item. It contains
+a list of dictionaries where each dictionary represents a single rocket.
 
-A line can have 2 optional parameters: X and Y destination coordinates.
+A line can have 2 optional parameters: ``X`` and ``Y`` destination coordinates.
 
-Let's examine first line.
+Let's examine the first line.
 
 ``0_Rocket``
   Rocket ID which is given by full mission editor. Contains ``Rocket`` word
@@ -145,4 +135,4 @@ Let's examine first line.
   :Output value: original value converted to float number
 
 
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L17
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L20
