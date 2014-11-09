@@ -40,7 +40,7 @@ def generate_buildings_lines():
 
 
 def generate_target_lines():
-    for i in range(0, CYCLES_COUNT, 9):
+    for __ in range(0, CYCLES_COUNT, 9):
         yield "0 0 0 0 500 90939 91871 0 1 10_Chief 91100 91500"
         yield "1 1 1 60 750 133960 87552 1350"
         yield "2 2 1 30 500 135786 84596 0 0  Bridge84 135764 84636"

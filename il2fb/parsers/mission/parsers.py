@@ -296,7 +296,7 @@ class MainParser(ValuesParser):
         }
 
     def _to_time(self, value):
-        time = float(self.data['TIME'])
+        time = float(value)
         minutes, hours = math.modf(time)
         return datetime.time(int(hours), int(minutes * 60))
 
@@ -490,7 +490,7 @@ class ChiefsParser(CollectingParser):
         chief_type, code = type_code.split('.')
         try:
             chief_type = to_unit_type(chief_type)
-        except:
+        except Exception:
             # Use original string as unit type
             pass
 
@@ -641,7 +641,7 @@ class NStationaryParser(CollectingParser):
         type_name = self._get_type_name(object_name)
         try:
             object_type = to_unit_type(type_name)
-        except:
+        except Exception:
             # Use original string as object's type
             object_type = type_name
 
@@ -691,7 +691,7 @@ class BuildingsParser(CollectingParser):
         params = line.split()
         oid, building_object, belligerent = params[:3]
         pos_x, pos_y, rotation_angle = params[3:]
-        building_type, code = building_object.split('$')
+        code = building_object.split('$')[1]
         self.data.append(Building(
             id=oid,
             belligerent=to_belligerent(belligerent),
@@ -1082,7 +1082,7 @@ class FlightInfoParser(ValuesParser):
     def check_section_name(self, section_name):
         try:
             self._decompose_section_name(section_name)
-        except:
+        except Exception:
             return False
         else:
             return True
