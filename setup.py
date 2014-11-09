@@ -41,7 +41,7 @@ setup(
     include_package_data=True,
     install_requires=REQUIREMENTS,
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
         'License :: Free for non-commercial use',
