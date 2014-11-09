@@ -9,11 +9,11 @@ BornPlace aircrafts section
 
 :class:`~il2fb.parsers.mission.parsers.BornPlaceAircraftsParser` is responsible
 for parsing ``BornPlaceN`` section, where ``N`` is sequence number of the
-homebase. This section describes aircrafts which are available on the
-homebase #N.
+home base. This section describes aircrafts which are available on the
+home base #N.
 
-Each line describes attributes of a single aircraft. Lines which start with
-``+`` mark continuation of previous line. Max line lenght is approximately
+Each line describes attributes of a single aircraft. Lines, which start with
+``+``, mark continuation of previous line. Max line length is approximately
 210-220 characters.
 
 Section example::
@@ -29,11 +29,11 @@ Output example:
 .. code-block:: python
 
   {
-      'homebase_aircrafts_1': [
+      'home_base_aircrafts_1': [
           {
               'code': 'Bf-109F-4',
               'limit': None,
-              'weapon_limits': [
+              'weapon_limitations': [
                   '1sc250',
                   '4sc50',
               ],
@@ -41,12 +41,12 @@ Output example:
           {
               'code': 'Bf-109G-6_Late',
               'limit': 0,
-              'weapon_limits': [],
+              'weapon_limitations': [],
           },
           {
               'code': 'Ju-88A-4',
               'limit': 10,
-              'weapon_limits': [
+              'weapon_limitations': [
                   '28xSC50',
                   '28xSC50_2xSC250',
                   '28xSC50_4xSC250',
@@ -57,13 +57,14 @@ Output example:
       ],
   }
 
+
 **Description**:
 
-The output of the parser is a dictionary with a single item. It is accessible
-by ``homebase_aircrafts_N`` key, where ``N`` is original homebase number. The
-value is a list of dictionaries. Each dictionary represents a single aircraft.
+The output of the parser is a :class:`dict` with ``home_base_aircrafts_N``
+item, where ``N`` is original home base number. This item contains a list of
+dictionaries. Each dictionary stores information about single aircraft.
 
-Let's examine first line.
+Let's examine the first line.
 
 ``Bf-109F-4``
   Aircraft code name.
@@ -73,18 +74,19 @@ Let's examine first line.
   :Output value: original string value
 
 ``0``
-  Number of available aircrafts. This parameter makes sence only if homebase
-  has aircraft limitation turned on.
+  Number of available aircrafts. This parameter makes sence only if home base
+  has aircraft limitations turned on.
 
   ``-1`` means that the number of aircrafts is unlimited.
 
-  ``0`` means that aircraft will not even be presentin the list of available
-  aircrafts.
+  ``0`` means that aircraft will not even be present in the list of available
+  aircrafts in briefing.
 
   :Output path: ``limit``
   :Output type: :class:`int`
   :Output value:
     ``None`` if ``-1``, original value converted to integer number otherwise
+    (always ``None`` for games of old versions)
 
 ``1sc250 4sc50``
   List of code names of allowed weapons for this aircraft. This part is
@@ -92,4 +94,5 @@ Let's examine first line.
 
   :Output path: ``weapon_limits``
   :Output type: :class:`list`
-  :Output value: list of strings
+  :Output value:
+    list of strings (list is always empty for games of old versions)
