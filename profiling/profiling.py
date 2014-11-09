@@ -2,14 +2,14 @@
 """
 Memory & time consumption tests for parsers.
 """
-if not 'profile' in locals():
+if 'profile' not in locals():
     try:
         from memory_profiler import profile
     except ImportError:
         import __builtin__
-        try:
+        if hasattr(__builtin__, 'profile'):
             profile = __builtin__.profile
-        except AttributeError:
+        else:
             profile = lambda x: x
 
 from il2fb.parsers.mission.parsers import (
