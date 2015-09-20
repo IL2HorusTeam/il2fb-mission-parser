@@ -5,6 +5,7 @@ Functional tests for parsers.
 
 import datetime
 import itertools
+import os
 import tempfile
 import unittest
 
@@ -1276,20 +1277,22 @@ class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
     def setUp(self):
         self.parser = FileParser()
 
-    def test_parse(self):
+    def test_parse_empty_data(self):
         self.assertEqual(self.parser.parse([]), {})
 
+    def test_parse_empty_file(self):
         mission = tempfile.NamedTemporaryFile()
         try:
             self.assertEqual(self.parser.parse(mission), {})
         finally:
             mission.close()
 
-        mission = tempfile.NamedTemporaryFile()
+    def test_parse_empty_file_by_file_name(self):
+        fd, path = tempfile.mkstemp()
         try:
-            self.assertEqual(self.parser.parse(mission.name), {})
+            self.assertEqual(self.parser.parse(path), {})
         finally:
-            mission.close()
+            os.close(fd)
 
     def test_parse_line_with_error(self):
         lines = [
