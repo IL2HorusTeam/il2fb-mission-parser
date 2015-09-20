@@ -1277,10 +1277,16 @@ class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self.parser = FileParser()
 
     def test_parse(self):
+        self.assertEqual(self.parser.parse([]), {})
+
         mission = tempfile.NamedTemporaryFile()
         try:
-            self.assertEqual(self.parser.parse([]), {})
             self.assertEqual(self.parser.parse(mission), {})
+        finally:
+            mission.close()
+
+        mission = tempfile.NamedTemporaryFile()
+        try:
             self.assertEqual(self.parser.parse(mission.name), {})
         finally:
             mission.close()
