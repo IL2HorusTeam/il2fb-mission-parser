@@ -1299,7 +1299,7 @@ class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self.assertRaisesWithMessage(
             MissionParsingError,
             "ValueError in line #1 (\"foo\"): need more than 1 value to unpack",
-            self.parser.parse_sequence, lines)
+            self.parser.parse_stream, lines)
 
     def test_parser_finalization_with_error(self):
         lines = [
@@ -1309,7 +1309,7 @@ class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         self.assertRaisesWithMessage(
             MissionParsingError,
             "KeyError during finalization of \"MainParser\": \'CloudType\'",
-            self.parser.parse_sequence, lines)
+            self.parser.parse_stream, lines)
 
     def test_get_flight_info_parser(self):
         lines = [
@@ -1322,7 +1322,7 @@ class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "  Fuel 100",
             "  weapons default",
         ]
-        result = self.parser.parse_sequence(lines)
+        result = self.parser.parse_stream(lines)
         self.assertEquals(
             result,
             {
@@ -1361,7 +1361,7 @@ class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "  YYY",
             "  ZZZ",
         ]
-        result = self.parser.parse_sequence(lines)
+        result = self.parser.parse_stream(lines)
         self.assertEquals(result, {})
 
     def test_get_conditions(self):
@@ -1410,7 +1410,7 @@ class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "  MDS_Misc_BombsCat2_CratersVisibilityMultiplier 1.0",
             "  MDS_Misc_BombsCat3_CratersVisibilityMultiplier 1.0",
         ]
-        result = self.parser.parse_sequence(lines)
+        result = self.parser.parse_stream(lines)
         self.assertEqual(
             result,
             {
@@ -1515,7 +1515,7 @@ class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "  Bf-109F-4",
             "  Ju-88A-4",
         ]
-        result = self.parser.parse_sequence(lines)
+        result = self.parser.parse_stream(lines)
         self.assertEqual(
             result['conditions']['scouting'],
             {
@@ -1546,7 +1546,7 @@ class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "  60284.10 59142.93 120.00",
             "  84682.13 98423.69 120.00",
         ]
-        result = self.parser.parse_sequence(lines)
+        result = self.parser.parse_stream(lines)
         self.assertEqual(
             result,
             {
@@ -1604,7 +1604,7 @@ class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "  de",
             "  ru",
         ]
-        result = self.parser.parse_sequence(lines)
+        result = self.parser.parse_stream(lines)
         self.assertEqual(
             result,
             {
