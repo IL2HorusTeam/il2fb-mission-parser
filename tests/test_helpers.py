@@ -2,7 +2,7 @@
 
 import unittest
 
-from il2fb.parsers.mission.helpers import move_if_present, set_if_present
+from il2fb.parsers.mission.utils import move_if_present, set_if_present
 
 
 class HelpersTestCase(unittest.TestCase):

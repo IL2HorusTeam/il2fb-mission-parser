@@ -12,10 +12,10 @@ il2fb.parsers.mission.constants module
     :undoc-members:
     :show-inheritance:
 
-il2fb.parsers.mission.helpers module
+il2fb.parsers.mission.utils module
 ------------------------------------
 
-.. automodule:: il2fb.parsers.mission.helpers
+.. automodule:: il2fb.parsers.mission.utils
     :members:
     :undoc-members:
     :show-inheritance:

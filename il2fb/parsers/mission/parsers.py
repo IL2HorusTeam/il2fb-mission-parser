@@ -25,7 +25,7 @@ from .constants import (
     ROUTE_POINT_RADIO_SILENCE_OFF, COMMENT_MARKERS,
 )
 from .exceptions import MissionParsingError
-from .helpers import move_if_present, set_if_present
+from .utils import move_if_present, set_if_present
 from .structures import (
     GroundRoutePoint, Building, StaticCamera, FrontMarker, Rocket,
     StationaryObject, StationaryArtillery, StationaryAircraft, StationaryShip,
