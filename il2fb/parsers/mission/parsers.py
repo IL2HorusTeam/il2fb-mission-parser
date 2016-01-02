@@ -1312,11 +1312,11 @@ class FileParser(object):
     def parse(self, mission):
         if isinstance(mission, six.string_types):
             with open(mission, 'r') as f:
-                return self.parse_sequence(f)
+                return self.parse_stream(f)
         else:
-            return self.parse_sequence(mission)
+            return self.parse_stream(mission)
 
-    def parse_sequence(self, sequence):
+    def parse_stream(self, sequence):
         self._current_parser = None
         self.data = {}
 

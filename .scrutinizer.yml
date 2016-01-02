@@ -9,4 +9,3 @@ filter:
     excluded_paths:
         - tests/*
         - profiling/*
-
