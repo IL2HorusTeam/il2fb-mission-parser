@@ -21,30 +21,19 @@ from il2fb.commons.weather import Conditions, Gust, Turbulence
 from .constants import (
     IS_STATIONARY_AIRCRAFT_RESTORABLE, NULL, WEAPONS_CONTINUATION_MARK,
     ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE_ON,
-    ROUTE_POINT_RADIO_SILENCE_OFF, COMMENT_MARKERS,
+    ROUTE_POINT_RADIO_SILENCE_OFF,
 )
 from .converters import (
     to_bool, to_belligerent, to_skill, to_unit_type, to_air_force,
 )
 from .exceptions import MissionParsingError
-from .utils import move_if_present, set_if_present
+from .utils import move_if_present, set_if_present, strip_comments
 from .structures import (
     GroundRoutePoint, Building, StaticCamera, FrontMarker, Rocket,
     StationaryObject, StationaryArtillery, StationaryAircraft, StationaryShip,
     FlightRoutePoint, FlightRouteTakeoffPoint, FlightRoutePatrolPoint,
     FlightRouteAttackPoint,
 )
-
-
-def clean_line(line):
-    for marker in COMMENT_MARKERS:
-        try:
-            index = line.index(marker)
-        except ValueError:
-            pass
-        else:
-            line = line[:index]
-    return line.strip()
 
 
 class SectionParser(object):
@@ -1289,7 +1278,7 @@ class FileParser(object):
         self.data = {}
 
         for i, line in enumerate(sequence):
-            line = clean_line(line)
+            line = strip_comments(line)
             if FileParser.is_section_name(line):
                 self._finalize_current_parser()
                 section_name = FileParser.get_section_name(line)
