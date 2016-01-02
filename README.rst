@@ -1,9 +1,12 @@
+======================
 IL-2 FB Mission Parser
 ======================
 
-|PyPi package| |PyPi downloads| |Docs| |License|
+|pypi_package| |pypi_downloads| |python_versions| |docs| |license|
 
-|Build Status| |Coverage Status| |Code Review| |Health| |Quality| |Requirements|
+|unix_build| |windows_build| |coverage_status|
+
+|code_issues| |codeclimate| |codacy| |quality| |health| |requirements|
 
 
 This is a library for parsing mission file of ``IL-2 Forgotten Battles``. It
@@ -16,30 +19,55 @@ You can dig around `Wiki pages`_ also.
 And you can see how it works live on `project's demo page`_.
 
 
-.. |Build Status| image:: http://img.shields.io/travis/IL2HorusTeam/il2fb-mission-parser.svg?style=flat&branch=master
-   :target: https://travis-ci.org/IL2HorusTeam/il2fb-mission-parser
-.. |Coverage Status| image:: http://img.shields.io/coveralls/IL2HorusTeam/il2fb-mission-parser.svg?style=flat&branch=master
-   :target: https://coveralls.io/r/IL2HorusTeam/il2fb-mission-parser?branch=master
-.. |PyPi package| image:: http://img.shields.io/pypi/v/il2fb-mission-parser.svg?style=flat
+.. |pypi_package| image:: http://img.shields.io/pypi/v/il2fb-mission-parser.svg?style=flat
    :target: http://badge.fury.io/py/il2fb-mission-parser/
-.. |PyPi downloads| image:: http://img.shields.io/pypi/dm/il2fb-mission-parser.svg?style=flat
+
+.. |pypi_downloads| image:: http://img.shields.io/pypi/dm/il2fb-mission-parser.svg?style=flat
    :target: https://crate.io/packages/il2fb-mission-parser/
-.. |Docs| image:: https://readthedocs.org/projects/il-2-missions-parser/badge/?version=latest&style=flat
+
+.. |python_versions| image:: https://img.shields.io/badge/Python-2.7,3.4-brightgreen.svg?style=flat
+   :alt: Supported versions of Python
+
+.. |docs| image:: https://readthedocs.org/projects/il-2-missions-parser/badge/?version=latest&style=flat
    :target: `read the docs`_
-.. |License| image:: https://img.shields.io/badge/license-LGPLv3-brightgreen.svg?style=flat
+
+.. |license| image:: https://img.shields.io/badge/license-LGPLv3-brightgreen.svg?style=flat
    :target: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/LICENSE
-.. |Code Review| image:: https://www.codacy.com/project/badge/4c79f2cb39234620bce5d4c49a54be52
-    :target: https://www.codacy.com/public/IL2HorusTeam/il2fbmissionparser/dashboard
-    :alt: Codacy Code Review
-.. |Health| image:: https://landscape.io/github/IL2HorusTeam/il2fb-mission-parser/master/landscape.png?style=flat
-   :target: https://landscape.io/github/IL2HorusTeam/il2fb-mission-parser/master
-   :alt: Code Health
-.. |Quality| image:: https://scrutinizer-ci.com/g/IL2HorusTeam/il2fb-mission-parser/badges/quality-score.png?b=master&style=flat
+
+.. |unix_build| image:: http://img.shields.io/travis/IL2HorusTeam/il2fb-mission-parser.svg?style=flat&branch=master
+   :target: https://travis-ci.org/IL2HorusTeam/il2fb-mission-parser
+
+.. |windows_build| image:: https://ci.appveyor.com/api/projects/status/f92qc8g689es612d/branch/master?svg=true
+   :target: https://ci.appveyor.com/project/oblalex/il2fb-mission-parser/branch/master
+   :alt: Build status of the master branch on Windows
+
+.. |coverage_status| image:: https://codecov.io/github/IL2HorusTeam/il2fb-mission-parser/coverage.svg?branch=master
+   :target: https://codecov.io/github/IL2HorusTeam/il2fb-mission-parser?branch=master
+   :alt: Test coverage
+
+.. |code_issues| image:: https://www.quantifiedcode.com/api/v1/project/54ed860c1791402f96b7880112e6d166/badge.svg
+  :target: https://www.quantifiedcode.com/app/project/54ed860c1791402f96b7880112e6d166
+  :alt: Code issues
+
+.. |codeclimate| image:: https://codeclimate.com/github/IL2HorusTeam/il2fb-mission-parser/badges/gpa.svg
+   :target: https://codeclimate.com/github/IL2HorusTeam/il2fb-mission-parser
+   :alt: Code Climate
+
+.. |codacy| image:: https://www.codacy.com/project/badge/4c79f2cb39234620bce5d4c49a54be52
+   :target: https://www.codacy.com/public/IL2HorusTeam/il2fbmissionparser/dashboard
+   :alt: Codacy Code Review
+
+.. |quality| image:: https://scrutinizer-ci.com/g/IL2HorusTeam/il2fb-mission-parser/badges/quality-score.png?b=master&style=flat
    :target: https://scrutinizer-ci.com/g/IL2HorusTeam/il2fb-mission-parser/?branch=master
    :alt: Scrutinizer Code Quality
-.. |Requirements| image:: https://requires.io/github/IL2HorusTeam/il2fb-mission-parser/requirements.svg?branch=master&style=flat
-    :target: https://requires.io/github/IL2HorusTeam/il2fb-mission-parser/requirements/?branch=master
-    :alt: Requirements Status
+
+.. |health| image:: https://landscape.io/github/IL2HorusTeam/il2fb-mission-parser/master/landscape.png?style=flat
+   :target: https://landscape.io/github/IL2HorusTeam/il2fb-mission-parser/master
+   :alt: Code Health
+
+.. |requirements| image:: https://requires.io/github/IL2HorusTeam/il2fb-mission-parser/requirements.svg?branch=master&style=flat
+   :target: https://requires.io/github/IL2HorusTeam/il2fb-mission-parser/requirements/?branch=master
+   :alt: Requirements Status
 
 
 .. _read the docs: http://il-2-missions-parser.readthedocs.org/en/latest/
