@@ -1,50 +1,9 @@
 # -*- coding: utf-8 -*-
 
-
-class Base(object):
-    __slots__ = ()
-
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return all([
-            getattr(self, x) == getattr(other, x)
-            for x in self.__slots__
-        ])
-
-    def __ne__(self, other):
-        return not (self == other)
-
-    def __hash__(self):
-        return hash(tuple(
-            getattr(self, x) for x in self.__slots__
-        ))
+from il2fb.commons.structures import BaseStructure
 
 
-class Point2D(Base):
-    __slots__ = ['x', 'y', ]
-
-    def __init__(self, x, y):
-        self.x = float(x)
-        self.y = float(y)
-
-    def __repr__(self):
-        return "<Point2D '{0};{1}'>".format(self.x, self.y)
-
-
-class Point3D(Base):
-    __slots__ = ['x', 'y', 'z', ]
-
-    def __init__(self, x, y, z):
-        self.x = float(x)
-        self.y = float(y)
-        self.z = float(z)
-
-    def __repr__(self):
-        return "<Point3D '{0};{1};{2}'>".format(self.x, self.y, self.z)
-
-
-class GroundRoutePoint(Base):
+class GroundRoutePoint(BaseStructure):
     __slots__ = ['pos', 'is_checkpoint', 'delay', 'section_length', 'speed', ]
 
     def __init__(self, pos, is_checkpoint, delay=None, section_length=None,
@@ -59,7 +18,7 @@ class GroundRoutePoint(Base):
         return "<GroundRoutePoint '{0};{1}'>".format(self.pos.x, self.pos.y)
 
 
-class Building(Base):
+class Building(BaseStructure):
     __slots__ = ['id', 'belligerent', 'code', 'pos', 'rotation_angle', ]
 
     def __init__(self, id, belligerent, code, pos, rotation_angle):
@@ -73,7 +32,7 @@ class Building(Base):
         return "<Building '{0}'>".format(self.id)
 
 
-class StaticCamera(Base):
+class StaticCamera(BaseStructure):
     __slots__ = ['belligerent', 'pos', ]
 
     def __init__(self, belligerent, pos):
@@ -87,7 +46,7 @@ class StaticCamera(Base):
         )
 
 
-class FrontMarker(Base):
+class FrontMarker(BaseStructure):
     __slots__ = ['id', 'belligerent', 'pos', ]
 
     def __init__(self, id, belligerent, pos):
@@ -99,7 +58,7 @@ class FrontMarker(Base):
         return "<FrontMarker '{0}'>".format(self.id)
 
 
-class Rocket(Base):
+class Rocket(BaseStructure):
     __slots__ = [
         'id', 'code', 'belligerent', 'pos', 'rotation_angle', 'delay', 'count',
         'period', 'destination',
@@ -121,7 +80,7 @@ class Rocket(Base):
         return "<Rocket '{0}'>".format(self.id)
 
 
-class StationaryObject(Base):
+class StationaryObject(BaseStructure):
     __slots__ = [
         'id', 'belligerent', 'code', 'pos', 'rotation_angle', 'type',
     ]
@@ -185,7 +144,7 @@ class StationaryShip(StationaryObject):
         self.skill = skill
 
 
-class FlightRoutePoint(Base):
+class FlightRoutePoint(BaseStructure):
     __slots__ = ['type', 'pos', 'speed', 'formation', 'radio_silence', ]
 
     def __init__(self, type, pos, speed, formation, radio_silence):

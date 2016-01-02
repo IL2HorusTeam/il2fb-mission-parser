@@ -5,60 +5,14 @@ import unittest
 from il2fb.commons import Skills, UnitTypes
 from il2fb.commons.flight import Formations, RoutePointTypes
 from il2fb.commons.organization import AirForces, Belligerents
+from il2fb.commons.spatial import Point2D, Point3D
 
 from il2fb.parsers.mission.structures import (
-    Base, Point2D, Point3D, GroundRoutePoint, Building, StaticCamera,
-    FrontMarker, Rocket, StationaryObject, StationaryArtillery,
-    StationaryAircraft, StationaryShip, FlightRoutePoint,
-    FlightRouteTakeoffPoint, FlightRoutePatrolPoint, FlightRouteAttackPoint,
+    GroundRoutePoint, Building, StaticCamera, FrontMarker, Rocket,
+    StationaryObject, StationaryArtillery, StationaryAircraft, StationaryShip,
+    FlightRoutePoint, FlightRouteTakeoffPoint, FlightRoutePatrolPoint,
+    FlightRouteAttackPoint,
 )
-
-
-class BaseTestCase(unittest.TestCase):
-
-    class Foo(Base):
-        __slots__ = ['a', 'b', 'c', ]
-
-        def __init__(self, a, b, c):
-            self.a = a
-            self.b = b
-            self.c = c
-
-    def test_creation(self):
-        foo = BaseTestCase.Foo(1, 2, 3)
-        self.assertEqual(foo.a, 1)
-        self.assertEqual(foo.b, 2)
-        self.assertEqual(foo.c, 3)
-
-    def test_equals(self):
-        foo = BaseTestCase.Foo(1, 2, 3)
-        bar = BaseTestCase.Foo(1, 2, 3)
-
-        self.assertNotEqual(id(foo), id(bar))
-        self.assertEqual(foo, bar)
-
-    def test_not_equals(self):
-        self.assertNotEqual(
-            BaseTestCase.Foo(1, 2, 3),
-            BaseTestCase.Foo(4, 5, 6)
-        )
-        self.assertNotEqual(
-            BaseTestCase.Foo(1, 2, 3),
-            int(123),
-        )
-
-    def test_hash(self):
-        foo = BaseTestCase.Foo(1, 2, 3)
-
-        self.assertEqual(
-            hash(foo),
-            hash((1, 2, 3))
-        )
-
-        bar = BaseTestCase.Foo(1, 2, 3)
-        d = {foo: 123}
-
-        self.assertEqual(d[bar], 123)
 
 
 class StructuresTestCase(unittest.TestCase):
@@ -76,22 +30,6 @@ class StructuresTestCase(unittest.TestCase):
 
         self.assertNotEqual(id(structure_a), id(structure_b))
         self.assertEqual(structure_a, structure_b)
-
-    def test_point2d(self):
-        data = dict(x=1, y=2)
-        self._test_structure(Point2D, **data)
-        self.assertEqual(
-            repr(Point2D(**data)),
-            "<Point2D '1.0;2.0'>"
-        )
-
-    def test_point3d(self):
-        data = dict(x=1, y=2, z=3)
-        self._test_structure(Point3D, **data)
-        self.assertEqual(
-            repr(Point3D(**data)),
-            "<Point3D '1.0;2.0;3.0'>"
-        )
 
     def test_ground_route_point(self):
         data = dict(

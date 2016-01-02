@@ -12,6 +12,7 @@ import unittest
 from il2fb.commons import Skills, UnitTypes
 from il2fb.commons.flight import Formations, RoutePointTypes
 from il2fb.commons.organization import AirForces, Belligerents, Regiments
+from il2fb.commons.spatial import Point2D, Point3D
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
@@ -26,10 +27,10 @@ from il2fb.parsers.mission.parsers import (
     MDSScoutsParser, FlightInfoParser, FlightRouteParser, FileParser,
 )
 from il2fb.parsers.mission.structures import (
-    Point2D, Point3D, GroundRoutePoint, Building, StaticCamera, FrontMarker,
-    Rocket, StationaryObject, StationaryArtillery, StationaryAircraft,
-    StationaryShip, FlightRoutePoint, FlightRouteTakeoffPoint,
-    FlightRoutePatrolPoint, FlightRouteAttackPoint,
+    GroundRoutePoint, Building, StaticCamera, FrontMarker, Rocket,
+    StationaryObject, StationaryArtillery, StationaryAircraft, StationaryShip,
+    FlightRoutePoint, FlightRouteTakeoffPoint, FlightRoutePatrolPoint,
+    FlightRouteAttackPoint,
 )
 
 

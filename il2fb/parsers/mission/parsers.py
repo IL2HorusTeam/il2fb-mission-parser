@@ -15,6 +15,7 @@ from abc import ABCMeta, abstractmethod
 from il2fb.commons import Skills, UnitTypes
 from il2fb.commons.flight import Formations, RoutePointTypes
 from il2fb.commons.organization import AirForces, Belligerents, Regiments
+from il2fb.commons.spatial import Point2D, Point3D
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
@@ -26,10 +27,10 @@ from .constants import (
 from .exceptions import MissionParsingError
 from .helpers import move_if_present, set_if_present
 from .structures import (
-    Point2D, Point3D, GroundRoutePoint, Building, StaticCamera, FrontMarker,
-    Rocket, StationaryObject, StationaryArtillery, StationaryAircraft,
-    StationaryShip, FlightRoutePoint, FlightRouteTakeoffPoint,
-    FlightRoutePatrolPoint, FlightRouteAttackPoint,
+    GroundRoutePoint, Building, StaticCamera, FrontMarker, Rocket,
+    StationaryObject, StationaryArtillery, StationaryAircraft, StationaryShip,
+    FlightRoutePoint, FlightRouteTakeoffPoint, FlightRoutePatrolPoint,
+    FlightRouteAttackPoint,
 )
 
 
