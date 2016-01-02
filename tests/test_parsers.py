@@ -19,12 +19,12 @@ from il2fb.commons.weather import Conditions, Gust, Turbulence
 from il2fb.parsers.mission.constants import COMMENT_MARKERS
 from il2fb.parsers.mission.exceptions import MissionParsingError
 from il2fb.parsers.mission.parsers import (
-    to_bool, to_belligerent, to_skill, to_unit_type, clean_line, SectionParser,
-    MainParser, SeasonParser, RespawnTimeParser, WeatherParser, MDSParser,
-    NStationaryParser, BuildingsParser, StaticCameraParser, TargetParser,
-    FrontMarkerParser, BornPlaceParser, ChiefsParser, BornPlaceAircraftsParser,
-    BornPlaceAirForcesParser, RocketParser, ChiefRoadParser, WingParser,
-    MDSScoutsParser, FlightInfoParser, FlightRouteParser, FileParser,
+    clean_line, SectionParser, MainParser, SeasonParser, RespawnTimeParser,
+    WeatherParser, MDSParser, NStationaryParser, BuildingsParser,
+    StaticCameraParser, TargetParser, FrontMarkerParser, BornPlaceParser,
+    ChiefsParser, BornPlaceAircraftsParser, BornPlaceAirForcesParser,
+    RocketParser, ChiefRoadParser, WingParser, MDSScoutsParser,
+    FlightInfoParser, FlightRouteParser, FileParser,
 )
 from il2fb.parsers.mission.structures import (
     GroundRoutePoint, Building, StaticCamera, FrontMarker, Rocket,
@@ -63,22 +63,6 @@ class SectionParserTestCaseMixin(ParserTestCaseMixin):
 
 
 class CommonsTestCase(unittest.TestCase):
-
-    def test_to_bool(self):
-        self.assertFalse(to_bool('0'))
-        self.assertTrue(to_bool('1'))
-        self.assertTrue(to_bool('-1'))
-
-    def test_to_belligerent(self):
-        self.assertEqual(to_belligerent('0'), Belligerents.none)
-        self.assertEqual(to_belligerent('1'), Belligerents.red)
-        self.assertEqual(to_belligerent('2'), Belligerents.blue)
-
-    def test_to_skill(self):
-        self.assertEqual(to_skill('3'), Skills.ace)
-
-    def test_to_unit_type(self):
-        self.assertEqual(to_unit_type('planes'), UnitTypes.aircraft)
 
     def test_clean_line(self):
         line = "  123   \n"

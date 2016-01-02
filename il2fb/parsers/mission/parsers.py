@@ -12,7 +12,6 @@ import sys
 
 from abc import ABCMeta, abstractmethod
 
-from il2fb.commons import Skills, UnitTypes
 from il2fb.commons.flight import Formations, RoutePointTypes
 from il2fb.commons.organization import AirForces, Belligerents, Regiments
 from il2fb.commons.spatial import Point2D, Point3D
@@ -24,6 +23,9 @@ from .constants import (
     ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE_ON,
     ROUTE_POINT_RADIO_SILENCE_OFF, COMMENT_MARKERS,
 )
+from .converters import (
+    to_bool, to_belligerent, to_skill, to_unit_type, to_air_force,
+)
 from .exceptions import MissionParsingError
 from .utils import move_if_present, set_if_present
 from .structures import (
@@ -32,41 +34,6 @@ from .structures import (
     FlightRoutePoint, FlightRouteTakeoffPoint, FlightRoutePatrolPoint,
     FlightRouteAttackPoint,
 )
-
-
-def to_bool(value):
-    """
-    Converts a string representation of a number into boolean.
-
-    :param str value: a string representation of a number to convert
-
-    :returns: `False` if `value` is equal to `'0'`, `True` otherwise
-    :rtype: :class:`bool`
-
-    **Examples:**
-
-    .. code-block:: python
-
-       >>> to_bool('0')
-       False
-       >>> to_bool('1')
-       True
-       >>> to_bool('-1')
-       True
-    """
-    return int(value) != 0
-
-
-to_belligerent = lambda value: Belligerents.get_by_value(int(value))
-to_skill = lambda value: Skills.get_by_value(int(value))
-to_unit_type = lambda value: UnitTypes.get_by_value(value.lower())
-
-
-def to_air_force(value):
-    if value == NULL:
-        return AirForces.vvs_rkka
-    elif value:
-        return AirForces.get_by_value(value)
 
 
 def clean_line(line):
