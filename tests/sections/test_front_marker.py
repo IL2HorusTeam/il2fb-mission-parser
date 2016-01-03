@@ -6,7 +6,7 @@ from il2fb.commons.organization import Belligerents
 from il2fb.commons.spatial import Point2D
 
 from il2fb.parsers.mission.sections.front_marker import (
-    FrontMarkerParser, FrontMarker,
+    FrontMarkerSectionParser, FrontMarker,
 )
 
 from ..mixins import StructureTestCaseMixin
@@ -27,7 +27,7 @@ class FrontMarkerTestCase(StructureTestCaseMixin, unittest.TestCase):
         self.assertEqual(repr(instance), "<FrontMarker 'FrontMarker0'>")
 
 
-class FrontMarkerParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class FrontMarkerSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``FrontMarker`` section parser.
     """
@@ -45,4 +45,4 @@ class FrontMarkerParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 ),
             ],
         }
-        self.assertParser(FrontMarkerParser, 'FrontMarker', lines, expected)
+        self.assertParser(FrontMarkerSectionParser, 'FrontMarker', lines, expected)

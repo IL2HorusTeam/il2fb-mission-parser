@@ -7,9 +7,9 @@ NStationary section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-NStationary>`_
 
-:class:`~il2fb.parsers.mission.parsers.NStationaryParser` is responsible for
-parsing ``NStationary`` section. Each line of this section describes a single
-stationary object (except buildings and houses).
+:class:`~il2fb.parsers.mission.sections.nstationary.NStationarySectionParser`
+is responsible for parsing ``NStationary`` section. Each line of this section
+describes a single stationary object (except buildings and houses).
 
 Section example::
 

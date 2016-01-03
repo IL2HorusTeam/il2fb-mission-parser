@@ -5,7 +5,7 @@ import unittest
 from il2fb.commons.organization import Belligerents
 from il2fb.commons.spatial import Point2D
 
-from il2fb.parsers.mission.sections.rocket import RocketParser, Rocket
+from il2fb.parsers.mission.sections.rocket import RocketSectionParser, Rocket
 
 from ..mixins import StructureTestCaseMixin
 from .mixins import SectionParserTestCaseMixin
@@ -31,7 +31,7 @@ class RocketTestCase(StructureTestCaseMixin, unittest.TestCase):
         self.assertEqual(repr(instance), "<Rocket '0_Rocket'>")
 
 
-class RocketParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class RocketSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``Rocket`` section parser.
     """
@@ -67,4 +67,4 @@ class RocketParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 ),
             ],
         }
-        self.assertParser(RocketParser, 'Rocket', lines, expected)
+        self.assertParser(RocketSectionParser, 'Rocket', lines, expected)

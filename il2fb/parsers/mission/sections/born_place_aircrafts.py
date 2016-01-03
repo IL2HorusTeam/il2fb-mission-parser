@@ -4,7 +4,7 @@ from ..constants import WEAPONS_CONTINUATION_MARK
 from . import CollectingParser
 
 
-class BornPlaceAircraftsParser(CollectingParser):
+class BornPlaceAircraftsSectionParser(CollectingParser):
     """
     Parses ``BornPlaceN`` section.
     View :ref:`detailed description <bornplace-aircrafts-section>`.
@@ -23,7 +23,7 @@ class BornPlaceAircraftsParser(CollectingParser):
             return True
 
     def init_parser(self, section_name):
-        super(BornPlaceAircraftsParser, self).init_parser(section_name)
+        super(BornPlaceAircraftsSectionParser, self).init_parser(section_name)
         self.output_key = (
             "{}{}".format(self.output_prefix,
                           self._extract_section_number(section_name)))
@@ -42,12 +42,12 @@ class BornPlaceAircraftsParser(CollectingParser):
             if self.aircraft:
                 # Finalize previous aircraft
                 self.data.append(self.aircraft)
-            self.aircraft = BornPlaceAircraftsParser._parse_new_item(parts)
+            self.aircraft = BornPlaceAircraftsSectionParser._parse_new_item(parts)
 
     @staticmethod
     def _parse_new_item(parts):
         code = parts.pop(0)
-        limit = BornPlaceAircraftsParser._extract_limit(parts)
+        limit = BornPlaceAircraftsSectionParser._extract_limit(parts)
         return {
             'code': code,
             'limit': limit,

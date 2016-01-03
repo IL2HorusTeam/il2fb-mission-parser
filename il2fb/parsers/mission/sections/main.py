@@ -6,7 +6,7 @@ from ..converters import to_belligerent, to_time
 from . import ValuesParser
 
 
-class MainParser(ValuesParser):
+class MainSectionParser(ValuesParser):
     """
     Parses ``MAIN`` section.
     View :ref:`detailed description <main-section>`.

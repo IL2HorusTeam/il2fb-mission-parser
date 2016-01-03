@@ -4,12 +4,12 @@ import unittest
 
 from il2fb.commons.organization import Belligerents
 
-from il2fb.parsers.mission.sections.mds_scouts import MDSScoutsParser
+from il2fb.parsers.mission.sections.mds_scouts import MDSScoutsSectionParser
 
 from .mixins import SectionParserTestCaseMixin
 
 
-class MDSScoutsParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class MDSScoutsSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``MDS_Scouts`` section parser.
     """
@@ -30,9 +30,9 @@ class MDSScoutsParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 ],
             },
         }
-        self.assertParser(MDSScoutsParser, 'MDS_Scouts_Red', lines, expected)
+        self.assertParser(MDSScoutsSectionParser, 'MDS_Scouts_Red', lines, expected)
 
     def test_invalid_section_name(self):
-        parser = MDSScoutsParser()
+        parser = MDSScoutsSectionParser()
         self.assertFalse(parser.start('foo section'))
         self.assertFalse(parser.start('MDS_Scouts_'))

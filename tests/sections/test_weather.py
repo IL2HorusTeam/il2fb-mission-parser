@@ -4,12 +4,12 @@ import unittest
 
 from il2fb.commons.weather import Gust, Turbulence
 
-from il2fb.parsers.mission.sections.weather import WeatherParser
+from il2fb.parsers.mission.sections.weather import WeatherSectionParser
 
 from .mixins import SectionParserTestCaseMixin
 
 
-class WeatherParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class WeatherSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``WEATHER`` section parser.
     """
@@ -31,4 +31,4 @@ class WeatherParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 'turbulence': Turbulence.very_strong,
             },
         }
-        self.assertParser(WeatherParser, 'WEATHER', lines, expected)
+        self.assertParser(WeatherSectionParser, 'WEATHER', lines, expected)

@@ -29,7 +29,7 @@ class Rocket(BaseStructure):
         return "<Rocket '{0}'>".format(self.id)
 
 
-class RocketParser(CollectingParser):
+class RocketSectionParser(CollectingParser):
     """
     Parses ``Rocket`` section.
     View :ref:`detailed description <rocket-section>`.

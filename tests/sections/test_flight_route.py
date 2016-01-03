@@ -6,7 +6,7 @@ from il2fb.commons.flight import Formations, RoutePointTypes
 from il2fb.commons.spatial import Point3D
 
 from il2fb.parsers.mission.sections.flight_route import (
-    FlightRouteParser, FlightRoutePoint, FlightRouteTakeoffPoint,
+    FlightRouteSectionParser, FlightRoutePoint, FlightRouteTakeoffPoint,
     FlightRouteAttackPoint, FlightRoutePatrolPoint,
 )
 
@@ -95,7 +95,7 @@ class FlightRouteAttackPointTestCase(StructureTestCaseMixin, unittest.TestCase):
             "<FlightRouteAttackPoint '63028.34;42772.13;500.0'>")
 
 
-class FlightRouteParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class FlightRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
 
     def test_flight_route_parser(self):
         lines = [
@@ -198,4 +198,4 @@ class FlightRouteParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 ),
             ]
         }
-        self.assertParser(FlightRouteParser, '3GvIAP01_Way', lines, expected)
+        self.assertParser(FlightRouteSectionParser, '3GvIAP01_Way', lines, expected)

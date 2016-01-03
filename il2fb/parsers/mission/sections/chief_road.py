@@ -21,7 +21,7 @@ class GroundRoutePoint(BaseStructure):
         return "<GroundRoutePoint '{0};{1}'>".format(self.pos.x, self.pos.y)
 
 
-class ChiefRoadParser(CollectingParser):
+class ChiefRoadSectionParser(CollectingParser):
     """
     Parses ``N_Chief_Road`` section.
     View :ref:`detailed description <chief-road-section>`.
@@ -39,7 +39,7 @@ class ChiefRoadParser(CollectingParser):
         return unit_id[:stop].isdigit()
 
     def init_parser(self, section_name):
-        super(ChiefRoadParser, self).init_parser(section_name)
+        super(ChiefRoadSectionParser, self).init_parser(section_name)
         unit_id = self._extract_unit_id(section_name)
         self.output_key = "{}{}".format(self.output_prefix, unit_id)
 

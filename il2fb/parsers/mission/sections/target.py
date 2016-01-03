@@ -7,7 +7,7 @@ from ..converters import to_bool
 from . import CollectingParser
 
 
-class TargetParser(CollectingParser):
+class TargetSectionParser(CollectingParser):
     """
     Parses ``Target`` section.
     View :ref:`detailed description <target-section>`.
@@ -30,7 +30,7 @@ class TargetParser(CollectingParser):
             'delay': int(delay),
         }
 
-        subparser = TargetParser._subparsers.get(target_type)
+        subparser = TargetSectionParser._subparsers.get(target_type)
         if subparser is not None:
             target.update(subparser(params))
 
@@ -45,7 +45,7 @@ class TargetParser(CollectingParser):
         Parse extra parameters for targets with type 'destroy' or 'cover' or
         'escort'.
         """
-        destruction_level = TargetParser.to_destruction_level(params[0])
+        destruction_level = TargetSectionParser.to_destruction_level(params[0])
         pos, waypoint, object_code = params[1:3], params[4], params[5]
         object_pos = params[6:8]
         return {
@@ -77,7 +77,7 @@ class TargetParser(CollectingParser):
         Parse extra parameters for targets with type 'destroy area' or
         'cover area'.
         """
-        destruction_level = TargetParser.to_destruction_level(params[0])
+        destruction_level = TargetSectionParser.to_destruction_level(params[0])
         pos_x, pos_y, radius = params[1:]
         return {
             'destruction_level': destruction_level,

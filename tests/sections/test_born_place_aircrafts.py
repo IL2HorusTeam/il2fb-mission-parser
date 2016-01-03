@@ -2,12 +2,12 @@
 
 import unittest
 
-from il2fb.parsers.mission.sections.born_place_aircrafts import BornPlaceAircraftsParser
+from il2fb.parsers.mission.sections.born_place_aircrafts import BornPlaceAircraftsSectionParser
 
 from .mixins import SectionParserTestCaseMixin
 
 
-class BornPlaceAircraftsParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class BornPlaceAircraftsSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``BornPlaceN`` section parser.
     """
@@ -53,9 +53,9 @@ class BornPlaceAircraftsParserTestCase(SectionParserTestCaseMixin, unittest.Test
                 },
             ],
         }
-        self.assertParser(BornPlaceAircraftsParser, 'BornPlace1', lines, expected)
+        self.assertParser(BornPlaceAircraftsSectionParser, 'BornPlace1', lines, expected)
 
     def test_invalid_section_name(self):
-        parser = BornPlaceAircraftsParser()
+        parser = BornPlaceAircraftsSectionParser()
         self.assertFalse(parser.start('foo section'))
         self.assertFalse(parser.start('BornPlaceX'))

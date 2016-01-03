@@ -5,7 +5,7 @@ import datetime
 from . import ValuesParser
 
 
-class SeasonParser(ValuesParser):
+class SeasonSectionParser(ValuesParser):
     """
     Parses ``SEASON`` section.
     View :ref:`detailed description <season-section>`.

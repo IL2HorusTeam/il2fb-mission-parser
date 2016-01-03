@@ -4,7 +4,7 @@ from ..converters import to_bool
 from . import ValuesParser
 
 
-class MDSParser(ValuesParser):
+class MDSSectionParser(ValuesParser):
     """
     Parses ``MDS`` section.
     View :ref:`detailed description <mds-section>`.
@@ -14,7 +14,7 @@ class MDSParser(ValuesParser):
         return section_name == "MDS"
 
     def parse_line(self, line):
-        super(MDSParser, self).parse_line(line.replace('MDS_', ''))
+        super(MDSSectionParser, self).parse_line(line.replace('MDS_', ''))
 
     def clean(self):
         return {

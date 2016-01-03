@@ -6,7 +6,7 @@ from ..converters import to_skill
 from . import ValuesParser
 
 
-class FlightInfoParser(ValuesParser):
+class FlightInfoSectionParser(ValuesParser):
     """
     Parses settings for a moving flight group.
     View :ref:`detailed description <flight-info-section>`.
@@ -21,7 +21,7 @@ class FlightInfoParser(ValuesParser):
             return True
 
     def init_parser(self, section_name):
-        super(FlightInfoParser, self).init_parser(section_name)
+        super(FlightInfoSectionParser, self).init_parser(section_name)
         self.output_key = section_name
         self.flight_info = self._decompose_section_name(section_name)
 

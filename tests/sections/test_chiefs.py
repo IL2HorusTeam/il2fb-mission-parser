@@ -5,12 +5,12 @@ import unittest
 from il2fb.commons import Skills, UnitTypes
 from il2fb.commons.organization import Belligerents
 
-from il2fb.parsers.mission.sections.chiefs import ChiefsParser
+from il2fb.parsers.mission.sections.chiefs import ChiefsSectionParser
 
 from .mixins import SectionParserTestCaseMixin
 
 
-class ChiefsParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class ChiefsSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``Chiefs`` section parser.
     """
@@ -67,4 +67,4 @@ class ChiefsParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 },
             ],
         }
-        self.assertParser(ChiefsParser, 'Chiefs', lines, expected)
+        self.assertParser(ChiefsSectionParser, 'Chiefs', lines, expected)

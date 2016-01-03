@@ -7,9 +7,9 @@ StaticCamera section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-StaticCamera>`_
 
-:class:`~il2fb.parsers.mission.parsers.StaticCameraParser` is responsible for
-parsing ``StaticCamera`` section. Each line of this section describes a single
-camera.
+:class:`~il2fb.parsers.mission.sections.static_camera.StaticCameraSectionParser`
+is responsible for parsing ``StaticCamera`` section. Each line of this section
+describes a single camera.
 
 Section example::
 

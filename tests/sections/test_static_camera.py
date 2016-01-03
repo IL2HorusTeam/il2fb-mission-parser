@@ -6,7 +6,7 @@ from il2fb.commons.organization import Belligerents
 from il2fb.commons.spatial import Point3D
 
 from il2fb.parsers.mission.sections.static_camera import (
-    StaticCameraParser, StaticCamera,
+    StaticCameraSectionParser, StaticCamera,
 )
 
 from ..mixins import StructureTestCaseMixin
@@ -28,7 +28,7 @@ class StaticCameraTestCase(StructureTestCaseMixin, unittest.TestCase):
             "<StaticCamera '38426.0;65212.0;35.0'>")
 
 
-class StaticCameraParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class StaticCameraSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``StaticCamera`` section parser.
     """
@@ -45,4 +45,4 @@ class StaticCameraParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 ),
             ],
         }
-        self.assertParser(StaticCameraParser, 'StaticCamera', lines, expected)
+        self.assertParser(StaticCameraSectionParser, 'StaticCamera', lines, expected)

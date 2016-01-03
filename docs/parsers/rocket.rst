@@ -7,9 +7,9 @@ Rocket section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Rocket>`_
 
-:class:`~il2fb.parsers.mission.parsers.RocketParser` is responsible for parsing
-``Rocket`` section. Each line of this section describes a single launchable
-rocket.
+:class:`~il2fb.parsers.mission.sections.rocket.RocketSectionParser` is
+responsible for parsing ``Rocket`` section. Each line of this section describes
+a single launchable rocket.
 
 Section example::
 

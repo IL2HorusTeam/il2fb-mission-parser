@@ -2,12 +2,12 @@
 
 import unittest
 
-from il2fb.parsers.mission.sections.respawn_time import RespawnTimeParser
+from il2fb.parsers.mission.sections.respawn_time import RespawnTimeSectionParser
 
 from .mixins import SectionParserTestCaseMixin
 
 
-class RespawnTimeParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class RespawnTimeSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``RespawnTime`` section parser.
     """
@@ -31,4 +31,4 @@ class RespawnTimeParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 'searchlights': 1000000,
             },
         }
-        self.assertParser(RespawnTimeParser, 'RespawnTime', lines, expected)
+        self.assertParser(RespawnTimeSectionParser, 'RespawnTime', lines, expected)

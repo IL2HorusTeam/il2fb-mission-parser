@@ -4,7 +4,7 @@ from ..converters import to_belligerent, to_skill, to_unit_type
 from . import CollectingParser
 
 
-class ChiefsParser(CollectingParser):
+class ChiefsSectionParser(CollectingParser):
     """
     Parses ``Chiefs`` section.
     View :ref:`detailed description <chiefs-section>`.

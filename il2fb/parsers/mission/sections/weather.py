@@ -5,7 +5,7 @@ from il2fb.commons.weather import Gust, Turbulence
 from . import ValuesParser
 
 
-class WeatherParser(ValuesParser):
+class WeatherSectionParser(ValuesParser):
     """
     Parses ``WEATHER`` section.
     View :ref:`detailed description <weather-section>`.

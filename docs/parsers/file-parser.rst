@@ -8,7 +8,7 @@ File parser
   `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%9F%D0%B0%D1%80%D1%81%D0%B5%D1%80-%D1%84%D0%B0%D0%B9%D0%BB%D0%B0-%D0%BC%D0%B8%D1%81%D1%81%D0%B8%D0%B8>`_
 
 
-:class:`~il2fb.parsers.mission.parsers.FileParser` is responsible for parsing
+:class:`~il2fb.parsers.mission.MissionParser` is responsible for parsing
 whole mission files or sequences of strings which look like mission definition.
 Instance of exactly this class is used when you call ``parse_mission`` function
 (see :doc:`../usage`).

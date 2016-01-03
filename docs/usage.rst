@@ -72,8 +72,8 @@ called :mod:`il2fb.parsers.mission.parsers` which has a lot of parsers for each
 kind of section in mission files (see :doc:`all of them <section-parsing>`).
 
 The function ``parse_mission``, which was used in the example above, is a
-reference to :meth:`~il2fb.parsers.mission.parsers.FileParser.parse` method
-which belongs to an instanse of :class:`~il2fb.parsers.mission.parsers.FileParser`.
+reference to :meth:`~il2fb.parsers.mission.MissionParser.parse` method
+which belongs to an instanse of :class:`~il2fb.parsers.mission.MissionParser`.
 This parser just like a swiss-knife combines all of the other parsers in
 itself, processes the whole mission file and gives all you need at one time.
 
@@ -83,13 +83,13 @@ You can use any other parser separately for your needs also (see below).
 Manual section parsing
 ----------------------
 
-Each parser listed in :doc:`section-parsing` (except ``FileParser``) extends an
+Each parser listed in :doc:`section-parsing` (except ``MissionParser``) extends an
 abstract class :class:`~il2fb.parsers.mission.parsers.SectionParser`, so they
 share a common approach for section processing.
 
 .. note::
 
-    Since these parsers were designed to be used by the ``FileParser``, which
+    Since these parsers were designed to be used by the ``MissionParser``, which
     is a one-pass parser, they can parse only one line at a time. It's just a
     side-effect that you can use them for your needs.
 
@@ -109,8 +109,8 @@ and tell parser the name of section. E.g.:
     ...     "army 1",
     ...     "playerNum 0",
     ... ]
-    >>> from il2fb.parsers.mission.parsers import MainParser
-    >>> p = MainParser()
+    >>> from il2fb.parsers.mission.sections import MainSectionParser
+    >>> p = MainSectionParser()
     >>> p.start('MAIN')
     True
     >>> for line in lines:

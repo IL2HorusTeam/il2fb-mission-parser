@@ -5,7 +5,7 @@ from il2fb.commons.organization import Belligerents
 from . import CollectingParser
 
 
-class MDSScoutsParser(CollectingParser):
+class MDSScoutsSectionParser(CollectingParser):
     """
     Parses ``MDS_Scouts`` section.
     View :ref:`detailed description <mds-scouts-section>`.
@@ -20,7 +20,7 @@ class MDSScoutsParser(CollectingParser):
         return bool(belligerent_name)
 
     def init_parser(self, section_name):
-        super(MDSScoutsParser, self).init_parser(section_name)
+        super(MDSScoutsSectionParser, self).init_parser(section_name)
         belligerent_name = self._get_belligerent_name(section_name)
         self.belligerent = Belligerents[belligerent_name]
         self.output_key = "{}{}".format(self.output_prefix, belligerent_name)

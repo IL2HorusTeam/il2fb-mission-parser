@@ -6,12 +6,12 @@ import unittest
 from il2fb.commons.organization import Belligerents
 from il2fb.commons.weather import Conditions
 
-from il2fb.parsers.mission.sections.main import MainParser
+from il2fb.parsers.mission.sections.main import MainSectionParser
 
 from .mixins import SectionParserTestCaseMixin
 
 
-class MainParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class MainSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``MAIN`` section parser.
     """
@@ -43,4 +43,4 @@ class MainParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 'fixed_weapons': True,
             },
         }
-        self.assertParser(MainParser, 'MAIN', lines, expected)
+        self.assertParser(MainSectionParser, 'MAIN', lines, expected)

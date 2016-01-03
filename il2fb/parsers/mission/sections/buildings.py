@@ -21,7 +21,7 @@ class Building(BaseStructure):
         return "<Building '{0}'>".format(self.id)
 
 
-class BuildingsParser(CollectingParser):
+class BuildingsSectionParser(CollectingParser):
     """
     Parses ``Buildings`` section.
     View :ref:`detailed description <buildings-section>`.

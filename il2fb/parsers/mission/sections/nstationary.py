@@ -74,7 +74,7 @@ class StationaryShip(StationaryObject):
         self.skill = skill
 
 
-class NStationaryParser(CollectingParser):
+class NStationarySectionParser(CollectingParser):
     """
     Parses ``NStationary`` section.
     View :ref:`detailed description <nstationary-section>`.

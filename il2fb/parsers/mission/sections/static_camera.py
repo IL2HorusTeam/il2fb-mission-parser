@@ -22,7 +22,7 @@ class StaticCamera(BaseStructure):
         )
 
 
-class StaticCameraParser(CollectingParser):
+class StaticCameraSectionParser(CollectingParser):
     """
     Parses ``StaticCamera`` section.
     View :ref:`detailed description <static-camera-section>`.

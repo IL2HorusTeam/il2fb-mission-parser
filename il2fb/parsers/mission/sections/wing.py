@@ -3,7 +3,7 @@
 from . import CollectingParser
 
 
-class WingParser(CollectingParser):
+class WingSectionParser(CollectingParser):
     """
     Parses ``Wing`` section.
     View :ref:`detailed description <wing-section>`.

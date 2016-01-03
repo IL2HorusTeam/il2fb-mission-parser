@@ -7,9 +7,9 @@ Target section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Target>`_
 
-:class:`~il2fb.parsers.mission.parsers.TargetParser` is responsible for
-parsing ``Target`` section. Each line of this section describes a single
-mision target.
+:class:`~il2fb.parsers.mission.sections.target.TargetSectionParser` is
+responsible for parsing ``Target`` section. Each line of this section describes
+a single mision target.
 
 Section example::
 

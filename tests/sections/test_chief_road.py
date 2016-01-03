@@ -5,7 +5,7 @@ import unittest
 from il2fb.commons.spatial import Point2D
 
 from il2fb.parsers.mission.sections.chief_road import (
-    ChiefRoadParser, GroundRoutePoint,
+    ChiefRoadSectionParser, GroundRoutePoint,
 )
 
 from ..mixins import StructureTestCaseMixin
@@ -30,7 +30,7 @@ class GroundRoutePointTestCase(StructureTestCaseMixin, unittest.TestCase):
             "<GroundRoutePoint '21380.02;41700.34'>")
 
 
-class ChiefRoadParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class ChiefRoadSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
         lines = [
@@ -70,9 +70,9 @@ class ChiefRoadParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 ),
             ],
         }
-        self.assertParser(ChiefRoadParser, '0_Chief_Road', lines, expected)
+        self.assertParser(ChiefRoadSectionParser, '0_Chief_Road', lines, expected)
 
     def test_invalid_section_name(self):
-        parser = ChiefRoadParser()
+        parser = ChiefRoadSectionParser()
         self.assertFalse(parser.start('foo section'))
         self.assertFalse(parser.start('X_Chief_Road'))

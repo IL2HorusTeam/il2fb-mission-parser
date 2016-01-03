@@ -7,9 +7,9 @@ WEATHER section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Weather>`_
 
-:class:`~il2fb.parsers.mission.parsers.WeatherParser` is responsible for
-parsing ``WEATHER`` section. This section describes additional weather
-conditions and contains one key-value pair per each line.
+:class:`~il2fb.parsers.mission.sections.weather.WeatherSectionParser` is
+responsible for parsing ``WEATHER`` section. This section describes additional
+weather conditions and contains one key-value pair per each line.
 
 Section example::
 

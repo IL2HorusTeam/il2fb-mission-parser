@@ -4,7 +4,7 @@ from ..converters import to_air_force
 from . import CollectingParser
 
 
-class BornPlaceAirForcesParser(CollectingParser):
+class BornPlaceAirForcesSectionParser(CollectingParser):
     """
     Parses ``BornPlaceCountriesN`` section.
     View :ref:`detailed description <bornplace-air-forces-section>`.
@@ -23,7 +23,7 @@ class BornPlaceAirForcesParser(CollectingParser):
             return True
 
     def init_parser(self, section_name):
-        super(BornPlaceAirForcesParser, self).init_parser(section_name)
+        super(BornPlaceAirForcesSectionParser, self).init_parser(section_name)
         self.output_key = (
             "{}{}".format(self.output_prefix,
                           self._extract_section_number(section_name)))

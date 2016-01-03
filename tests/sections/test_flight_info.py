@@ -5,15 +5,15 @@ import unittest
 from il2fb.commons import Skills
 from il2fb.commons.organization import AirForces, Regiments
 
-from il2fb.parsers.mission.sections.flight_info import FlightInfoParser
+from il2fb.parsers.mission.sections.flight_info import FlightInfoSectionParser
 
 from .mixins import SectionParserTestCaseMixin
 
 
-class FlightInfoParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class FlightInfoSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
 
     def test_check_section_name(self):
-        parser = FlightInfoParser()
+        parser = FlightInfoSectionParser()
         self.assertTrue(parser.check_section_name('r0100'))
         self.assertTrue(parser.check_section_name('3GvIAP00'))
 
@@ -61,7 +61,7 @@ class FlightInfoParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 ],
             },
         }
-        self.assertParser(FlightInfoParser, '3GvIAP00', lines, expected)
+        self.assertParser(FlightInfoSectionParser, '3GvIAP00', lines, expected)
 
     def test_single_aircraft(self):
         lines = [
@@ -98,8 +98,8 @@ class FlightInfoParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 ],
             },
         }
-        self.assertParser(FlightInfoParser, '3GvIAP01', lines, expected)
+        self.assertParser(FlightInfoSectionParser, '3GvIAP01', lines, expected)
 
     def test_invalid_section_name(self):
-        p = FlightInfoParser()
+        p = FlightInfoSectionParser()
         self.assertFalse(p.check_section_name("Something unknown"))

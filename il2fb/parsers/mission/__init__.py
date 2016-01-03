@@ -4,30 +4,30 @@ import six
 import sys
 
 from .exceptions import MissionParsingError
-from .sections.main import MainParser
-from .sections.season import SeasonParser
-from .sections.weather import WeatherParser
-from .sections.respawn_time import RespawnTimeParser
-from .sections.mds import MDSParser
-from .sections.mds_scouts import MDSScoutsParser
-from .sections.chiefs import ChiefsParser
-from .sections.chief_road import ChiefRoadParser
-from .sections.nstationary import NStationaryParser
-from .sections.buildings import BuildingsParser
-from .sections.target import TargetParser
-from .sections.born_place import BornPlaceParser
-from .sections.born_place_aircrafts import BornPlaceAircraftsParser
-from .sections.born_place_air_forces import BornPlaceAirForcesParser
-from .sections.static_camera import StaticCameraParser
-from .sections.front_marker import FrontMarkerParser
-from .sections.rocket import RocketParser
-from .sections.wing import WingParser
-from .sections.flight_info import FlightInfoParser
-from .sections.flight_route import FlightRouteParser
+from .sections.main import MainSectionParser
+from .sections.season import SeasonSectionParser
+from .sections.weather import WeatherSectionParser
+from .sections.respawn_time import RespawnTimeSectionParser
+from .sections.mds import MDSSectionParser
+from .sections.mds_scouts import MDSScoutsSectionParser
+from .sections.chiefs import ChiefsSectionParser
+from .sections.chief_road import ChiefRoadSectionParser
+from .sections.nstationary import NStationarySectionParser
+from .sections.buildings import BuildingsSectionParser
+from .sections.target import TargetSectionParser
+from .sections.born_place import BornPlaceSectionParser
+from .sections.born_place_aircrafts import BornPlaceAircraftsSectionParser
+from .sections.born_place_air_forces import BornPlaceAirForcesSectionParser
+from .sections.static_camera import StaticCameraSectionParser
+from .sections.front_marker import FrontMarkerSectionParser
+from .sections.rocket import RocketSectionParser
+from .sections.wing import WingSectionParser
+from .sections.flight_info import FlightInfoSectionParser
+from .sections.flight_route import FlightRouteSectionParser
 from .utils import move_if_present, set_if_present, strip_comments
 
 
-class FileParser(object):
+class MissionParser(object):
     """
     Parses a whole mission file.
     View :ref:`detailed description <file-parser>`.
@@ -35,27 +35,27 @@ class FileParser(object):
 
     def __init__(self):
         self.parsers = [
-            MainParser(),
-            SeasonParser(),
-            WeatherParser(),
-            RespawnTimeParser(),
-            MDSParser(),
-            MDSScoutsParser(),
-            ChiefsParser(),
-            ChiefRoadParser(),
-            NStationaryParser(),
-            BuildingsParser(),
-            TargetParser(),
-            BornPlaceParser(),
-            BornPlaceAircraftsParser(),
-            BornPlaceAirForcesParser(),
-            StaticCameraParser(),
-            FrontMarkerParser(),
-            RocketParser(),
-            WingParser(),
-            FlightRouteParser(),
+            MainSectionParser(),
+            SeasonSectionParser(),
+            WeatherSectionParser(),
+            RespawnTimeSectionParser(),
+            MDSSectionParser(),
+            MDSScoutsSectionParser(),
+            ChiefsSectionParser(),
+            ChiefRoadSectionParser(),
+            NStationarySectionParser(),
+            BuildingsSectionParser(),
+            TargetSectionParser(),
+            BornPlaceSectionParser(),
+            BornPlaceAircraftsSectionParser(),
+            BornPlaceAirForcesSectionParser(),
+            StaticCameraSectionParser(),
+            FrontMarkerSectionParser(),
+            RocketSectionParser(),
+            WingSectionParser(),
+            FlightRouteSectionParser(),
         ]
-        self.flight_info_parser = FlightInfoParser()
+        self.flight_info_parser = FlightInfoSectionParser()
 
     def parse(self, mission):
         if isinstance(mission, six.string_types):
@@ -198,7 +198,7 @@ class FileParser(object):
             pass
 
         keys = filter(
-            lambda x: x.startswith(MDSScoutsParser.output_prefix),
+            lambda x: x.startswith(MDSScoutsSectionParser.output_prefix),
             self.data.keys()
         )
         scouts = {
@@ -227,7 +227,7 @@ class FileParser(object):
     def _get_moving_units(self):
         units = self.data.pop('moving_units', [])
         for unit in units:
-            key = "{}{}".format(ChiefRoadParser.output_prefix, unit['id'])
+            key = "{}{}".format(ChiefRoadSectionParser.output_prefix, unit['id'])
             unit['route'] = self.data.pop(key, [])
         return units
 
@@ -235,16 +235,16 @@ class FileParser(object):
         keys = self.data.pop('flights', [])
         flights = [self.data.pop(key) for key in keys if key in self.data]
         for flight in flights:
-            key = "{}{}".format(FlightRouteParser.output_prefix, flight['id'])
+            key = "{}{}".format(FlightRouteSectionParser.output_prefix, flight['id'])
             flight['route'] = self.data.pop(key, [])
         return flights
 
     def _get_home_bases(self):
         home_bases = self.data.pop('home_bases', [])
         for i, home_base in enumerate(home_bases):
-            key = "{}{}".format(BornPlaceAircraftsParser.output_prefix, i)
+            key = "{}{}".format(BornPlaceAircraftsSectionParser.output_prefix, i)
             home_base['spawning']['aircraft_limitations']['allowed_aircrafts'] = self.data.pop(key, [])
 
-            key = "{}{}".format(BornPlaceAirForcesParser.output_prefix, i)
+            key = "{}{}".format(BornPlaceAirForcesSectionParser.output_prefix, i)
             home_base['spawning']['allowed_air_forces'] = self.data.pop(key, [])
         return home_bases

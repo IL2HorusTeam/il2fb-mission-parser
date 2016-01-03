@@ -70,7 +70,7 @@ class FlightRouteAttackPoint(FlightRoutePoint):
         self.target_route_point = target_route_point
 
 
-class FlightRouteParser(CollectingParser):
+class FlightRouteSectionParser(CollectingParser):
     """
     Parses ``*_Way`` section.
     View :ref:`detailed description <flight-route-section>`.
@@ -85,7 +85,7 @@ class FlightRouteParser(CollectingParser):
         return section_name[:-len(self.input_suffix)]
 
     def init_parser(self, section_name):
-        super(FlightRouteParser, self).init_parser(section_name)
+        super(FlightRouteSectionParser, self).init_parser(section_name)
         flight_code = self._extract_flight_code(section_name)
         self.output_key = "{}{}".format(self.output_prefix, flight_code)
         self.point = None
@@ -126,8 +126,8 @@ class FlightRouteParser(CollectingParser):
             self.point_class = FlightRouteTakeoffPoint
 
     def _parse_extra(self, params):
-        if FlightRouteParser._is_new_game_version(params):
-            radio_silence, formation, params = FlightRouteParser._parse_new_version_extra(params)
+        if FlightRouteSectionParser._is_new_game_version(params):
+            radio_silence, formation, params = FlightRouteSectionParser._parse_new_version_extra(params)
             if params:
                 self._parse_target(params)
         else:

@@ -9,7 +9,7 @@ Section parsing
 This chapter describes output formats for all parsers. Datailed description of
 input data aslo included.
 
-Note, that :class:`~il2fb.parsers.mission.parsers.FileParser` is the root
+Note, that :class:`~il2fb.parsers.mission.MissionParser` is the root
 parser. It gets data from all other parsers and organizes it in special manner.
 
 .. note::

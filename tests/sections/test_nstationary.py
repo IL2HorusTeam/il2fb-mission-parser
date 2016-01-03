@@ -7,7 +7,7 @@ from il2fb.commons.organization import Belligerents, AirForces
 from il2fb.commons.spatial import Point2D
 
 from il2fb.parsers.mission.sections.nstationary import (
-    NStationaryParser, StationaryObject, StationaryArtillery,
+    NStationarySectionParser, StationaryObject, StationaryArtillery,
     StationaryAircraft, StationaryShip,
 )
 
@@ -95,7 +95,7 @@ class StationaryShipTestCase(StructureTestCaseMixin, unittest.TestCase):
         self.assertEqual(repr(instance), "<StationaryShip '9_Static'>")
 
 
-class NStationaryParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class NStationarySectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``NStationary`` section parser.
     """
@@ -291,4 +291,4 @@ class NStationaryParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 ),
             ],
         }
-        self.assertParser(NStationaryParser, 'NStationary', lines, expected)
+        self.assertParser(NStationarySectionParser, 'NStationary', lines, expected)

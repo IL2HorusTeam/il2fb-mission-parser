@@ -2,12 +2,12 @@
 
 import unittest
 
-from il2fb.parsers.mission.sections.wing import WingParser
+from il2fb.parsers.mission.sections.wing import WingSectionParser
 
 from .mixins import SectionParserTestCaseMixin
 
 
-class WingParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class WingSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``Wing`` section parser.
     """
@@ -23,4 +23,4 @@ class WingParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 "1GvIAP13",
             ],
         }
-        self.assertParser(WingParser, 'Wing', lines, expected)
+        self.assertParser(WingSectionParser, 'Wing', lines, expected)

@@ -2,12 +2,12 @@
 
 import unittest
 
-from il2fb.parsers.mission.sections.mds import MDSParser
+from il2fb.parsers.mission.sections.mds import MDSSectionParser
 
 from .mixins import SectionParserTestCaseMixin
 
 
-class MDSParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class MDSSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``MDS`` section parser.
     """
@@ -83,4 +83,4 @@ class MDSParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 },
             }
         }
-        self.assertParser(MDSParser, 'MDS', lines, expected)
+        self.assertParser(MDSSectionParser, 'MDS', lines, expected)

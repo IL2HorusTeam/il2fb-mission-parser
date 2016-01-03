@@ -7,9 +7,10 @@ Chiefs section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Chiefs>`_
 
-:class:`~il2fb.parsers.mission.parsers.ChiefsParser` is responsible for parsing
-``Chiefs`` section. It describes moving objects or their groups. Each of them
-is defined on a separate line. There are 4 types of moving objects:
+:class:`~il2fb.parsers.mission.sections.chiefs.ChiefsSectionParser` is
+responsible for parsing ``Chiefs`` section. It describes moving objects or
+their groups. Each of them is defined on a separate line. There are 4 types of
+moving objects:
 
 #. usual vehicles;
 #. armored vehicles;

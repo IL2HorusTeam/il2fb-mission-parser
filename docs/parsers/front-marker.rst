@@ -7,9 +7,9 @@ FrontMarker section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-FrontMarker>`_
 
-:class:`~il2fb.parsers.mission.parsers.FrontMarkerParser` is responsible for
-parsing ``FrontMarker`` section. Each line of this section describes a single
-frontline marker.
+:class:`~il2fb.parsers.mission.sections.front_marker.FrontMarkerSectionParser`
+is responsible for parsing ``FrontMarker`` section. Each line of this section
+describes a single frontline marker.
 
 Section example::
 

@@ -7,10 +7,10 @@ BornPlace aircrafts section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-BornPlace-Aircrafts>`_
 
-:class:`~il2fb.parsers.mission.parsers.BornPlaceAircraftsParser` is responsible
-for parsing ``BornPlaceN`` section, where ``N`` is sequence number of the
-home base. This section describes aircrafts which are available on the
-home base #N.
+:class:`~il2fb.parsers.mission.sections.born_place_aircrafts.BornPlaceAircraftsSectionParser`
+is responsible for parsing ``BornPlaceN`` section, where ``N`` is sequence
+number of the home base. This section describes aircrafts which are available
+on the home base #N.
 
 Each line describes attributes of a single aircraft. Lines, which start with
 ``+``, mark continuation of previous line. Max line length is approximately

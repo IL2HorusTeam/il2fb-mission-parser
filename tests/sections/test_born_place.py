@@ -5,12 +5,12 @@ import unittest
 from il2fb.commons.organization import Belligerents
 from il2fb.commons.spatial import Point2D
 
-from il2fb.parsers.mission.sections.born_place import BornPlaceParser
+from il2fb.parsers.mission.sections.born_place import BornPlaceSectionParser
 
 from .mixins import SectionParserTestCaseMixin
 
 
-class BornPlaceParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class BornPlaceSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``BornPlace`` section parser.
     """
@@ -61,4 +61,4 @@ class BornPlaceParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 },
             ]
         }
-        self.assertParser(BornPlaceParser, 'BornPlace', lines, expected)
+        self.assertParser(BornPlaceSectionParser, 'BornPlace', lines, expected)

@@ -6,7 +6,7 @@ from ..converters import to_bool, to_belligerent
 from . import CollectingParser
 
 
-class BornPlaceParser(CollectingParser):
+class BornPlaceSectionParser(CollectingParser):
     """
     Parses ``BornPlace`` section.
     View :ref:`detailed description <bornplace-section>`.

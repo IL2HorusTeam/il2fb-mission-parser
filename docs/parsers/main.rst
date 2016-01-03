@@ -7,8 +7,9 @@ MAIN section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-MAIN>`_
 
-:class:`~il2fb.parsers.mission.parsers.MainParser` is responsible for parsing
-``MAIN`` section. This section contains one key-value pair per each line.
+:class:`~il2fb.parsers.mission.sections.main.MainSectionParser` is responsible
+for parsing ``MAIN`` section. This section contains one key-value pair per each
+line.
 
 Section example::
 

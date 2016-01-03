@@ -7,9 +7,9 @@ BornPlace section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-BornPlace>`_
 
-:class:`~il2fb.parsers.mission.parsers.BornPlaceParser` is responsible for
-parsing ``BornPlace`` section. Each line of this section describes a single
-homebase.
+:class:`~il2fb.parsers.mission.sections.born_place.BornPlaceSectionParser` is
+responsible for parsing ``BornPlace`` section. Each line of this section
+describes a single homebase.
 
 Section example::
 

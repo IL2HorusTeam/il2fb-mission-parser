@@ -19,7 +19,7 @@ class FrontMarker(BaseStructure):
         return "<FrontMarker '{0}'>".format(self.id)
 
 
-class FrontMarkerParser(CollectingParser):
+class FrontMarkerSectionParser(CollectingParser):
     """
     Parses ``FrontMarker`` section.
     View :ref:`detailed description <front-marker-section>`.

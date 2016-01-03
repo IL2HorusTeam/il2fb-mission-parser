@@ -12,11 +12,16 @@ if 'profile' not in locals():
         except AttributeError:
             profile = lambda x: x
 
-from il2fb.parsers.mission.parsers import (
-    ChiefRoadParser, NStationaryParser, BuildingsParser,
-    TargetParser, BornPlaceParser, StaticCameraParser, FrontMarkerParser,
-    RocketParser, FlightRouteParser,
-)
+
+from il2fb.parsers.mission.sections.chief_road import ChiefRoadSectionParser
+from il2fb.parsers.mission.sections.nstationary import NStationarySectionParser
+from il2fb.parsers.mission.sections.buildings import BuildingsSectionParser
+from il2fb.parsers.mission.sections.target import TargetSectionParser
+from il2fb.parsers.mission.sections.born_place import BornPlaceSectionParser
+from il2fb.parsers.mission.sections.static_camera import StaticCameraSectionParser
+from il2fb.parsers.mission.sections.front_marker import FrontMarkerSectionParser
+from il2fb.parsers.mission.sections.rocket import RocketSectionParser
+from il2fb.parsers.mission.sections.flight_route import FlightRouteSectionParser
 
 from generators import (
     generate_cheif_road_lines,
@@ -52,63 +57,63 @@ class ParserWrapper(object):
 
 @profile
 def profile_chief_road_parser():
-    with ParserWrapper(ChiefRoadParser, '0_Chief_Road', generate_cheif_road_lines) as pw:
+    with ParserWrapper(ChiefRoadSectionParser, '0_Chief_Road', generate_cheif_road_lines) as pw:
         for line in pw.lines:
             pw.parse_line(line)
 
 
 @profile
 def profile_nstationary_parser():
-    with ParserWrapper(NStationaryParser, 'NStationary', generate_nstationary_lines) as pw:
+    with ParserWrapper(NStationarySectionParser, 'NStationary', generate_nstationary_lines) as pw:
         for line in pw.lines:
             pw.parse_line(line)
 
 
 @profile
 def profile_buildings_parser():
-    with ParserWrapper(BuildingsParser, 'Buildings', generate_buildings_lines) as pw:
+    with ParserWrapper(BuildingsSectionParser, 'Buildings', generate_buildings_lines) as pw:
         for line in pw.lines:
             pw.parse_line(line)
 
 
 @profile
 def profile_target_parser():
-    with ParserWrapper(TargetParser, 'Target', generate_target_lines) as pw:
+    with ParserWrapper(TargetSectionParser, 'Target', generate_target_lines) as pw:
         for line in pw.lines:
             pw.parse_line(line)
 
 
 @profile
 def profile_born_place_parser():
-    with ParserWrapper(BornPlaceParser, 'BornPlace', generate_born_place_lines) as pw:
+    with ParserWrapper(BornPlaceSectionParser, 'BornPlace', generate_born_place_lines) as pw:
         for line in pw.lines:
             pw.parse_line(line)
 
 
 @profile
 def profile_static_camera_parser():
-    with ParserWrapper(StaticCameraParser, 'StaticCamera', generate_static_camera_lines) as pw:
+    with ParserWrapper(StaticCameraSectionParser, 'StaticCamera', generate_static_camera_lines) as pw:
         for line in pw.lines:
             pw.parse_line(line)
 
 
 @profile
 def profile_front_marker_parser():
-    with ParserWrapper(FrontMarkerParser, 'FrontMarker', generate_front_marker_lines) as pw:
+    with ParserWrapper(FrontMarkerSectionParser, 'FrontMarker', generate_front_marker_lines) as pw:
         for line in pw.lines:
             pw.parse_line(line)
 
 
 @profile
 def profile_rocket_parser():
-    with ParserWrapper(RocketParser, 'Rocket', generate_rocket_lines) as pw:
+    with ParserWrapper(RocketSectionParser, 'Rocket', generate_rocket_lines) as pw:
         for line in pw.lines:
             pw.parse_line(line)
 
 
 @profile
 def profile_flight_route_parser():
-    with ParserWrapper(FlightRouteParser, '3GvIAP01_Way', generate_flight_route_lines) as pw:
+    with ParserWrapper(FlightRouteSectionParser, '3GvIAP01_Way', generate_flight_route_lines) as pw:
         for line in pw.lines:
             pw.parse_line(line)
 

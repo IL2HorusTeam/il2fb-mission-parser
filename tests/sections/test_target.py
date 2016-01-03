@@ -5,12 +5,12 @@ import unittest
 from il2fb.commons.spatial import Point2D
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 
-from il2fb.parsers.mission.sections.target import TargetParser
+from il2fb.parsers.mission.sections.target import TargetSectionParser
 
 from .mixins import SectionParserTestCaseMixin
 
 
-class TargetParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class TargetSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``Target`` section parser.
     """
@@ -40,7 +40,7 @@ class TargetParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 },
             ],
         }
-        self.assertParser(TargetParser, 'Target', lines, expected)
+        self.assertParser(TargetSectionParser, 'Target', lines, expected)
 
     def test_target_destroy_area(self):
         """
@@ -63,7 +63,7 @@ class TargetParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 },
             ],
         }
-        self.assertParser(TargetParser, 'Target', lines, expected)
+        self.assertParser(TargetSectionParser, 'Target', lines, expected)
 
     def test_target_destroy_bridge(self):
         """
@@ -88,7 +88,7 @@ class TargetParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 },
             ],
         }
-        self.assertParser(TargetParser, 'Target', lines, expected)
+        self.assertParser(TargetSectionParser, 'Target', lines, expected)
 
     def test_target_recon(self):
         """
@@ -126,7 +126,7 @@ class TargetParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 },
             ],
         }
-        self.assertParser(TargetParser, 'Target', lines, expected)
+        self.assertParser(TargetSectionParser, 'Target', lines, expected)
 
     def test_target_escort(self):
         """
@@ -153,7 +153,7 @@ class TargetParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 },
             ],
         }
-        self.assertParser(TargetParser, 'Target', lines, expected)
+        self.assertParser(TargetSectionParser, 'Target', lines, expected)
 
     def test_target_cover(self):
         """
@@ -180,7 +180,7 @@ class TargetParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 },
             ],
         }
-        self.assertParser(TargetParser, 'Target', lines, expected)
+        self.assertParser(TargetSectionParser, 'Target', lines, expected)
 
     def test_target_cover_area(self):
         """
@@ -203,7 +203,7 @@ class TargetParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 },
             ],
         }
-        self.assertParser(TargetParser, 'Target', lines, expected)
+        self.assertParser(TargetSectionParser, 'Target', lines, expected)
 
     def test_target_cover_bridge(self):
         """
@@ -228,4 +228,4 @@ class TargetParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
                 },
             ],
         }
-        self.assertParser(TargetParser, 'Target', lines, expected)
+        self.assertParser(TargetSectionParser, 'Target', lines, expected)

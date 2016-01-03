@@ -3,7 +3,7 @@
 from . import ValuesParser
 
 
-class RespawnTimeParser(ValuesParser):
+class RespawnTimeSectionParser(ValuesParser):
     """
     Parses ``RespawnTime`` section.
     View :ref:`detailed description <respawn-time-section>`.

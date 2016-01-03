@@ -10,19 +10,19 @@ from il2fb.commons.organization import AirForces, Belligerents
 from il2fb.commons.spatial import Point2D
 from il2fb.commons.weather import Conditions, Gust, Turbulence
 
-from il2fb.parsers.mission import FileParser
+from il2fb.parsers.mission import MissionParser
 from il2fb.parsers.mission.exceptions import MissionParsingError
 from il2fb.parsers.mission.sections.chief_road import GroundRoutePoint
 
 from .mixins import ParserTestCaseMixin
 
 
-class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
+class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
 
     maxDiff = None
 
     def setUp(self):
-        self.parser = FileParser()
+        self.parser = MissionParser()
 
     def test_parse_empty_data(self):
         self.assertEqual(self.parser.parse([]), {})
@@ -58,7 +58,7 @@ class FileParserTestCase(ParserTestCaseMixin, unittest.TestCase):
         ]
         self.assertRaisesWithMessage(
             MissionParsingError,
-            "KeyError during finalization of \"MainParser\": \'CloudType\'",
+            "KeyError during finalization of \"MainSectionParser\": \'CloudType\'",
             self.parser.parse_stream, lines)
 
     def test_get_flight_info_parser(self):
