@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import datetime
+import math
+
 from il2fb.commons import Skills, UnitTypes
 from il2fb.commons.organization import AirForces, Belligerents
 
@@ -46,3 +49,9 @@ def to_air_force(value):
         return AirForces.vvs_rkka
     elif value:
         return AirForces.get_by_value(value)
+
+
+def to_time(value):
+    time = float(value)
+    minutes, hours = math.modf(time)
+    return datetime.time(int(hours), int(minutes * 60))
