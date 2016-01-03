@@ -72,7 +72,7 @@ def generate_rocket_lines():
         yield "{0}_Rocket Fi103_V1_ramp 2 {0}.00 {0}.00 360.00 60.0 10 80.0 {0}.00 {0}.00".format(i)
 
 
-def generate_flight_route_lines():
+def generate_wing_route_lines():
     for i in range(0, CYCLES_COUNT, 7):
         yield "TAKEOFF {0}.00 {0}.00 0 0 &0".format(i)
         yield "TRIGGERS 0 10 20 0"

@@ -38,7 +38,7 @@ class MainSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
             'cloud_base': 1500,
             'player': {
                 'belligerent': Belligerents.red,
-                'flight_id': "fiLLv24fi00",
+                'wing_id': "fiLLv24fi00",
                 'aircraft_index': 0,
                 'fixed_weapons': True,
             },

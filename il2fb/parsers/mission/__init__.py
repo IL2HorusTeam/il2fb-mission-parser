@@ -8,22 +8,21 @@ from .sections.main import MainSectionParser
 from .sections.season import SeasonSectionParser
 from .sections.weather import WeatherSectionParser
 from .sections.respawn_time import RespawnTimeSectionParser
-from .sections.mds import MDSSectionParser
-from .sections.mds_scouts import MDSScoutsSectionParser
-from .sections.chiefs import ChiefsSectionParser
-from .sections.chief_road import ChiefRoadSectionParser
+from .sections.mds import MDSSectionParser, MDSScoutsSectionParser
+from .sections.chiefs import ChiefsSectionParser, ChiefRoadSectionParser
 from .sections.nstationary import NStationarySectionParser
 from .sections.buildings import BuildingsSectionParser
 from .sections.target import TargetSectionParser
-from .sections.born_place import BornPlaceSectionParser
-from .sections.born_place_aircrafts import BornPlaceAircraftsSectionParser
-from .sections.born_place_air_forces import BornPlaceAirForcesSectionParser
+from .sections.born_place import (
+    BornPlaceSectionParser, BornPlaceAircraftsSectionParser,
+    BornPlaceAirForcesSectionParser,
+)
 from .sections.static_camera import StaticCameraSectionParser
 from .sections.front_marker import FrontMarkerSectionParser
 from .sections.rocket import RocketSectionParser
-from .sections.wing import WingSectionParser
-from .sections.flight_info import FlightInfoSectionParser
-from .sections.flight_route import FlightRouteSectionParser
+from .sections.wing import (
+    WingSectionParser, WingInfoSectionParser, WingRouteSectionParser,
+)
 from .utils import move_if_present, set_if_present, strip_comments
 
 
@@ -53,9 +52,9 @@ class MissionParser(object):
             FrontMarkerSectionParser(),
             RocketSectionParser(),
             WingSectionParser(),
-            FlightRouteSectionParser(),
+            WingRouteSectionParser(),
         ]
-        self.flight_info_parser = FlightInfoSectionParser()
+        self.wing_info_parser = WingInfoSectionParser()
 
     def parse(self, mission):
         if isinstance(mission, six.string_types):
@@ -89,10 +88,10 @@ class MissionParser(object):
         return line.strip('[]')
 
     def _get_parser(self, section_name):
-        parser = self.flight_info_parser
-        flights = self.data.get('flights')
+        parser = self.wing_info_parser
+        wings = self.data.get('wings')
 
-        if flights is not None and parser.start(section_name):
+        if wings is not None and parser.start(section_name):
             return parser
 
         for parser in self.parsers:
@@ -213,7 +212,7 @@ class MissionParser(object):
         result = {}
 
         set_if_present(result, 'moving_units', self._get_moving_units())
-        set_if_present(result, 'flights', self._get_flights())
+        set_if_present(result, 'wings', self._get_wings())
         set_if_present(result, 'home_bases', self._get_home_bases())
 
         move_if_present(result, self.data, 'stationary')
@@ -231,13 +230,13 @@ class MissionParser(object):
             unit['route'] = self.data.pop(key, [])
         return units
 
-    def _get_flights(self):
-        keys = self.data.pop('flights', [])
-        flights = [self.data.pop(key) for key in keys if key in self.data]
-        for flight in flights:
-            key = "{}{}".format(FlightRouteSectionParser.output_prefix, flight['id'])
-            flight['route'] = self.data.pop(key, [])
-        return flights
+    def _get_wings(self):
+        keys = self.data.pop('wings', [])
+        wings = [self.data.pop(key) for key in keys if key in self.data]
+        for wing in wings:
+            key = "{}{}".format(WingRouteSectionParser.output_prefix, wing['id'])
+            wing['route'] = self.data.pop(key, [])
+        return wings
 
     def _get_home_bases(self):
         home_bases = self.data.pop('home_bases', [])

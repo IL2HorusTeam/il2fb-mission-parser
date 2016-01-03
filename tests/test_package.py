@@ -12,7 +12,7 @@ from il2fb.commons.weather import Conditions, Gust, Turbulence
 
 from il2fb.parsers.mission import MissionParser
 from il2fb.parsers.mission.exceptions import MissionParsingError
-from il2fb.parsers.mission.sections.chief_road import GroundRoutePoint
+from il2fb.parsers.mission.sections.chiefs import GroundRoutePoint
 
 from .mixins import ParserTestCaseMixin
 
@@ -61,7 +61,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "KeyError during finalization of \"MainSectionParser\": \'CloudType\'",
             self.parser.parse_stream, lines)
 
-    def test_get_flight_info_parser(self):
+    def test_get_wing_info_parser(self):
         lines = [
             "[Wing]",
             "  r0100",
@@ -77,11 +77,11 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             result,
             {
                 'objects': {
-                    'flights': [
+                    'wings': [
                         {
                             'id': 'r0100',
                             'squadron_index': 0,
-                            'flight_index': 0,
+                            'wing_index': 0,
                             'air_force': AirForces.vvs_rkka,
                             'regiment': None,
                             'code': 'A_20C',
@@ -167,7 +167,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                 'location_loader': 'Moscow/sload.ini',
                 'player': {
                     'belligerent': Belligerents.red,
-                    'flight_id': 'fiLLv24fi00',
+                    'wing_id': 'fiLLv24fi00',
                     'aircraft_index': 0,
                     'fixed_weapons': True,
                 },

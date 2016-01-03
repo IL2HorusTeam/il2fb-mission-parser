@@ -35,7 +35,7 @@ class MainSectionParser(ValuesParser):
             'cloud_base': int(float(self.data['CloudHeight'])),
             'player': {
                 'belligerent': to_belligerent(self.data['army']),
-                'flight_id': self.data.get('player'),
+                'wing_id': self.data.get('player'),
                 'aircraft_index': int(self.data['playerNum']),
                 'fixed_weapons': 'WEAPONSCONSTANT' in self.data,
             },
