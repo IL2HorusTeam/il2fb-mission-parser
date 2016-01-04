@@ -21,7 +21,7 @@ from .sections.static_camera import StaticCameraSectionParser
 from .sections.front_marker import FrontMarkerSectionParser
 from .sections.rocket import RocketSectionParser
 from .sections.wing import (
-    WingSectionParser, WingInfoSectionParser, WingRouteSectionParser,
+    FlightSectionParser, FlightInfoSectionParser, FlightRouteSectionParser,
 )
 from .utils import move_if_present, set_if_present, strip_comments
 
@@ -51,10 +51,10 @@ class MissionParser(object):
             StaticCameraSectionParser(),
             FrontMarkerSectionParser(),
             RocketSectionParser(),
-            WingSectionParser(),
-            WingRouteSectionParser(),
+            FlightSectionParser(),
+            FlightRouteSectionParser(),
         ]
-        self.wing_info_parser = WingInfoSectionParser()
+        self.flight_info_parser = FlightInfoSectionParser()
 
     def parse(self, mission):
         if isinstance(mission, six.string_types):
@@ -88,10 +88,10 @@ class MissionParser(object):
         return line.strip('[]')
 
     def _get_parser(self, section_name):
-        parser = self.wing_info_parser
-        wings = self.data.get('wings')
+        parser = self.flight_info_parser
+        flights = self.data.get('flights')
 
-        if wings is not None and parser.start(section_name):
+        if flights is not None and parser.start(section_name):
             return parser
 
         for parser in self.parsers:
@@ -212,7 +212,7 @@ class MissionParser(object):
         result = {}
 
         set_if_present(result, 'moving_units', self._get_moving_units())
-        set_if_present(result, 'wings', self._get_wings())
+        set_if_present(result, 'flights', self._get_flights())
         set_if_present(result, 'home_bases', self._get_home_bases())
 
         move_if_present(result, self.data, 'stationary')
@@ -230,13 +230,13 @@ class MissionParser(object):
             unit['route'] = self.data.pop(key, [])
         return units
 
-    def _get_wings(self):
-        keys = self.data.pop('wings', [])
-        wings = [self.data.pop(key) for key in keys if key in self.data]
-        for wing in wings:
-            key = "{}{}".format(WingRouteSectionParser.output_prefix, wing['id'])
-            wing['route'] = self.data.pop(key, [])
-        return wings
+    def _get_flights(self):
+        keys = self.data.pop('flights', [])
+        flights = [self.data.pop(key) for key in keys if key in self.data]
+        for flight in flights:
+            key = "{}{}".format(FlightRouteSectionParser.output_prefix, flight['id'])
+            flight['route'] = self.data.pop(key, [])
+        return flights
 
     def _get_home_bases(self):
         home_bases = self.data.pop('home_bases', [])

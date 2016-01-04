@@ -7,7 +7,7 @@ Flight route section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Flight-route>`_
 
-:class:`~il2fb.parsers.mission.sections.flight_route.FlightRouteSectionParser`
+:class:`~il2fb.parsers.mission.sections.wing.FlightRouteSectionParser`
 is responsible for parsing sections which provide information about route of a
 single flight.
 

@@ -7,7 +7,7 @@ Flight info section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Flight-info>`_
 
-:class:`~il2fb.parsers.mission.sections.flight_info.FlightInfoSectionParser` is
+:class:`~il2fb.parsers.mission.sections.wing.FlightInfoSectionParser` is
 responsible for parsing sections which provide information about aircrafts in a
 single flight. That information includes general data about all aircrafts and
 it can include data about individual aircrafts.
@@ -50,13 +50,13 @@ Parser's output contains air force, regiment, squadron and flight number:
 
 ..
 
-  :Output path: ``squadron``
+  :Output path: ``squadron_index``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 
 ..
 
-  :Output path: ``flight``
+  :Output path: ``flight_index``
   :Output type: :class:`int`
   :Output value: original value converted to integer number
 

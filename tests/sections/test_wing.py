@@ -8,16 +8,16 @@ from il2fb.commons.organization import AirForces, Regiments
 from il2fb.commons.spatial import Point3D
 
 from il2fb.parsers.mission.sections.wing import (
-    WingSectionParser, WingInfoSectionParser, WingRouteSectionParser,
-    WingRoutePoint, WingRouteTakeoffPoint, WingRouteAttackPoint,
-    WingRoutePatrolPoint,
+    FlightSectionParser, FlightInfoSectionParser, FlightRouteSectionParser,
+    FlightRoutePoint, FlightRouteTakeoffPoint, FlightRouteAttackPoint,
+    FlightRoutePatrolPoint,
 )
 
 from ..mixins import StructureTestCaseMixin
 from .mixins import SectionParserTestCaseMixin
 
 
-class WingSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class FlightSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
     """
     Test ``Wing`` section parser.
     """
@@ -28,18 +28,18 @@ class WingSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
             "1GvIAP13",
         ]
         expected = {
-            'wings': [
+            'flights': [
                 "1GvIAP12",
                 "1GvIAP13",
             ],
         }
-        self.assertParser(WingSectionParser, 'Wing', lines, expected)
+        self.assertParser(FlightSectionParser, 'Wing', lines, expected)
 
 
-class WingInfoSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class FlightInfoSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
 
     def test_check_section_name(self):
-        parser = WingInfoSectionParser()
+        parser = FlightInfoSectionParser()
         self.assertTrue(parser.check_section_name('r0100'))
         self.assertTrue(parser.check_section_name('3GvIAP00'))
 
@@ -62,7 +62,7 @@ class WingInfoSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCas
             '3GvIAP00': {
                 'id': '3GvIAP00',
                 'squadron_index': 0,
-                'wing_index': 0,
+                'flight_index': 0,
                 'air_force': AirForces.vvs_rkka,
                 'regiment': Regiments.get_by_code_name('3GvIAP'),
                 'code': "A_20C",
@@ -87,7 +87,7 @@ class WingInfoSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCas
                 ],
             },
         }
-        self.assertParser(WingInfoSectionParser, '3GvIAP00', lines, expected)
+        self.assertParser(FlightInfoSectionParser, '3GvIAP00', lines, expected)
 
     def test_single_aircraft(self):
         lines = [
@@ -104,7 +104,7 @@ class WingInfoSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCas
             '3GvIAP01': {
                 'id': '3GvIAP01',
                 'squadron_index': 0,
-                'wing_index': 1,
+                'flight_index': 1,
                 'air_force': AirForces.vvs_rkka,
                 'regiment': Regiments.get_by_code_name('3GvIAP'),
                 'code': "A_20C",
@@ -124,14 +124,14 @@ class WingInfoSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCas
                 ],
             },
         }
-        self.assertParser(WingInfoSectionParser, '3GvIAP01', lines, expected)
+        self.assertParser(FlightInfoSectionParser, '3GvIAP01', lines, expected)
 
     def test_invalid_section_name(self):
-        p = WingInfoSectionParser()
+        p = FlightInfoSectionParser()
         self.assertFalse(p.check_section_name("Something unknown"))
 
 
-class WingRoutePointTestCase(StructureTestCaseMixin, unittest.TestCase):
+class FlightRoutePointTestCase(StructureTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
         data = dict(
@@ -141,15 +141,15 @@ class WingRoutePointTestCase(StructureTestCaseMixin, unittest.TestCase):
             formation=None,
             radio_silence=True,
         )
-        self.assertStructure(WingRoutePoint, **data)
+        self.assertStructure(FlightRoutePoint, **data)
 
-        instance = WingRoutePoint(**data)
+        instance = FlightRoutePoint(**data)
         self.assertEqual(
             repr(instance),
-            "<WingRoutePoint '185304.27;54570.12;0.0'>")
+            "<FlightRoutePoint '185304.27;54570.12;0.0'>")
 
 
-class WingRouteTakeoffPointTestCase(StructureTestCaseMixin, unittest.TestCase):
+class FlightRouteTakeoffPointTestCase(StructureTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
         data = dict(
@@ -161,15 +161,15 @@ class WingRouteTakeoffPointTestCase(StructureTestCaseMixin, unittest.TestCase):
             delay=10,
             spacing=20,
         )
-        self.assertStructure(WingRouteTakeoffPoint, **data)
+        self.assertStructure(FlightRouteTakeoffPoint, **data)
 
-        instance = WingRouteTakeoffPoint(**data)
+        instance = FlightRouteTakeoffPoint(**data)
         self.assertEqual(
             repr(instance),
-            "<WingRouteTakeoffPoint '193373.53;99288.17;0.0'>")
+            "<FlightRouteTakeoffPoint '193373.53;99288.17;0.0'>")
 
 
-class WingRoutePatrolPointTestCase(StructureTestCaseMixin, unittest.TestCase):
+class FlightRoutePatrolPointTestCase(StructureTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
         data = dict(
@@ -184,15 +184,15 @@ class WingRoutePatrolPointTestCase(StructureTestCaseMixin, unittest.TestCase):
             pattern_side_size=5,
             pattern_altitude_difference=500,
         )
-        self.assertStructure(WingRoutePatrolPoint, **data)
+        self.assertStructure(FlightRoutePatrolPoint, **data)
 
-        instance = WingRoutePatrolPoint(**data)
+        instance = FlightRoutePatrolPoint(**data)
         self.assertEqual(
             repr(instance),
-            "<WingRoutePatrolPoint '98616.72;78629.31;500.0'>")
+            "<FlightRoutePatrolPoint '98616.72;78629.31;500.0'>")
 
 
-class WingRouteAttackPointTestCase(StructureTestCaseMixin, unittest.TestCase):
+class FlightRouteAttackPointTestCase(StructureTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
         data = dict(
@@ -204,17 +204,17 @@ class WingRouteAttackPointTestCase(StructureTestCaseMixin, unittest.TestCase):
             target_id='r0100',
             target_route_point=1,
         )
-        self.assertStructure(WingRouteAttackPoint, **data)
+        self.assertStructure(FlightRouteAttackPoint, **data)
 
-        instance = WingRouteAttackPoint(**data)
+        instance = FlightRouteAttackPoint(**data)
         self.assertEqual(
             repr(instance),
-            "<WingRouteAttackPoint '63028.34;42772.13;500.0'>")
+            "<FlightRouteAttackPoint '63028.34;42772.13;500.0'>")
 
 
-class WingRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class FlightRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
 
-    def test_wing_route_parser(self):
+    def test_flight_route_parser(self):
         lines = [
             "TAKEOFF 193373.53 99288.17 0 0 &0",
             "TRIGGERS 0 10 20 0",
@@ -232,8 +232,8 @@ class WingRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
             "LANDING_104 185304.27 54570.12 0 0 &1",
         ]
         expected = {
-            'wing_route_3GvIAP01': [
-                WingRouteTakeoffPoint(
+            'flight_route_3GvIAP01': [
+                FlightRouteTakeoffPoint(
                     type=RoutePointTypes.takeoff_normal,
                     pos=Point3D(193373.53, 99288.17, 0.0),
                     speed=0.0,
@@ -242,14 +242,14 @@ class WingRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
                     delay=10,
                     spacing=20,
                 ),
-                WingRoutePoint(
+                FlightRoutePoint(
                     type=RoutePointTypes.normal,
                     pos=Point3D(102105.11, 129548.84, 250.00),
                     speed=300.00,
                     radio_silence=False,
                     formation=None,
                 ),
-                WingRoutePatrolPoint(
+                FlightRoutePatrolPoint(
                     type=RoutePointTypes.patrol_triangle,
                     pos=Point3D(98616.72, 78629.31, 500.00),
                     speed=300.00,
@@ -261,7 +261,7 @@ class WingRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
                     pattern_side_size=5,
                     pattern_altitude_difference=500,
                 ),
-                WingRouteAttackPoint(
+                FlightRouteAttackPoint(
                     type=RoutePointTypes.air_attack,
                     pos=Point3D(63028.34, 42772.13, 500.00),
                     speed=300.00,
@@ -270,7 +270,7 @@ class WingRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
                     target_id='r0100',
                     target_route_point=1,
                 ),
-                WingRouteAttackPoint(
+                FlightRouteAttackPoint(
                     type=RoutePointTypes.ground_attack,
                     pos=Point3D(99737.30, 79106.06, 500.00),
                     speed=300.00,
@@ -279,7 +279,7 @@ class WingRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
                     target_id='0_Chief',
                     target_route_point=0,
                 ),
-                WingRouteAttackPoint(
+                FlightRouteAttackPoint(
                     type=RoutePointTypes.ground_attack,
                     pos=Point3D(74338.61, 29746.57, 500.00),
                     speed=300.00,
@@ -288,7 +288,7 @@ class WingRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
                     target_id='4_Static',
                     target_route_point=0,
                 ),
-                WingRouteAttackPoint(
+                FlightRouteAttackPoint(
                     type=RoutePointTypes.ground_attack,
                     pos=Point3D(82387.92, 51163.75, 500.00),
                     speed=300.00,
@@ -297,7 +297,7 @@ class WingRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
                     target_id='0_Rocket',
                     target_route_point=0,
                 ),
-                WingRouteAttackPoint(
+                FlightRouteAttackPoint(
                     type=RoutePointTypes.ground_attack,
                     pos=Point3D(98720.93, 108662.92, 250.00),
                     speed=300.00,
@@ -306,7 +306,7 @@ class WingRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
                     target_id='0_Chief',
                     target_route_point=6,
                 ),
-                WingRoutePoint(
+                FlightRoutePoint(
                     type=RoutePointTypes.landing_straight,
                     pos=Point3D(185304.27, 54570.12, 0.00),
                     speed=0.00,
@@ -315,4 +315,4 @@ class WingRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
                 ),
             ]
         }
-        self.assertParser(WingRouteSectionParser, '3GvIAP01_Way', lines, expected)
+        self.assertParser(FlightRouteSectionParser, '3GvIAP01_Way', lines, expected)

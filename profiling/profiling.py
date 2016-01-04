@@ -21,14 +21,14 @@ from il2fb.parsers.mission.sections.born_place import BornPlaceSectionParser
 from il2fb.parsers.mission.sections.static_camera import StaticCameraSectionParser
 from il2fb.parsers.mission.sections.front_marker import FrontMarkerSectionParser
 from il2fb.parsers.mission.sections.rocket import RocketSectionParser
-from il2fb.parsers.mission.sections.wing import WingRouteSectionParser
+from il2fb.parsers.mission.sections.wing import FlightRouteSectionParser
 
 from generators import (
     generate_cheif_road_lines,
     generate_nstationary_lines, generate_buildings_lines,
     generate_target_lines, generate_born_place_lines,
     generate_static_camera_lines, generate_front_marker_lines,
-    generate_rocket_lines, generate_wing_route_lines,
+    generate_rocket_lines, generate_flight_route_lines,
 )
 
 
@@ -112,8 +112,8 @@ def profile_rocket_parser():
 
 
 @profile
-def profile_wing_route_parser():
-    with ParserWrapper(WingRouteSectionParser, '3GvIAP01_Way', generate_wing_route_lines) as pw:
+def profile_flight_route_parser():
+    with ParserWrapper(FlightRouteSectionParser, '3GvIAP01_Way', generate_flight_route_lines) as pw:
         for line in pw.lines:
             pw.parse_line(line)
 
@@ -127,4 +127,4 @@ if __name__ == '__main__':
     profile_static_camera_parser()
     profile_front_marker_parser()
     profile_rocket_parser()
-    profile_wing_route_parser()
+    profile_flight_route_parser()

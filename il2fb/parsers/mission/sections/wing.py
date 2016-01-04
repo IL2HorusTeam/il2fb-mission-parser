@@ -1,4 +1,16 @@
 # -*- coding: utf-8 -*-
+"""
+This module contains parsers which work with sections related to air flights.
+
+List of flights is defined in "Wing" section of game's mission file. However,
+it contains list of flights, not wings. Wings stay above flight in air force
+unit organization. See example for USA:
+http://usmilitary.about.com/cs/airforce/a/aforganization.htm
+
+Despite inconsistency between section name (Wing) and its contents (list of
+flights), this module was named after section name to keep clear the origin of
+the data.
+"""
 
 from il2fb.commons.flight import Formations, RoutePointTypes
 from il2fb.commons.organization import AirForces, Regiments
@@ -13,7 +25,7 @@ from ..converters import to_skill
 from . import CollectingParser, ValuesParser
 
 
-class WingSectionParser(CollectingParser):
+class FlightSectionParser(CollectingParser):
     """
     Parses ``Wing`` section.
     View :ref:`detailed description <wing-section>`.
@@ -23,13 +35,13 @@ class WingSectionParser(CollectingParser):
         return section_name == "Wing"
 
     def clean(self):
-        return {'wings': self.data}
+        return {'flights': self.data}
 
 
-class WingInfoSectionParser(ValuesParser):
+class FlightInfoSectionParser(ValuesParser):
     """
-    Parses settings for a moving wing group.
-    View :ref:`detailed description <wing-info-section>`.
+    Parses settings for a moving flight group.
+    View :ref:`detailed description <flight-info-section>`.
     """
 
     def check_section_name(self, section_name):
@@ -41,13 +53,13 @@ class WingInfoSectionParser(ValuesParser):
             return True
 
     def init_parser(self, section_name):
-        super(WingInfoSectionParser, self).init_parser(section_name)
+        super(FlightInfoSectionParser, self).init_parser(section_name)
         self.output_key = section_name
-        self.wing_info = self._decompose_section_name(section_name)
+        self.flight_info = self._decompose_section_name(section_name)
 
     def _decompose_section_name(self, section_name):
         prefix = section_name[:-2]
-        squadron, wing = section_name[-2:]
+        squadron, flight = section_name[-2:]
 
         try:
             regiment = None
@@ -61,7 +73,7 @@ class WingInfoSectionParser(ValuesParser):
             'air_force': air_force,
             'regiment': regiment,
             'squadron_index': int(squadron),
-            'wing_index': int(wing),
+            'flight_index': int(flight),
         }
 
     def clean(self):
@@ -89,7 +101,7 @@ class WingInfoSectionParser(ValuesParser):
                 aircraft, 'spawn_object', self._get_spawn_object_id(i))
             aircrafts.append(aircraft)
 
-        self.wing_info.update({
+        self.flight_info.update({
             'ai_only': 'OnlyAI' in self.data,
             'aircrafts': aircrafts,
             'code': code,
@@ -99,7 +111,7 @@ class WingInfoSectionParser(ValuesParser):
             'weapons': self.data['weapons'],
         })
 
-        return {self.output_key: self.wing_info}
+        return {self.output_key: self.flight_info}
 
     def _get_skill(self, aircraft_id):
         if 'Skill' in self.data:
@@ -117,7 +129,7 @@ class WingInfoSectionParser(ValuesParser):
         return self.data.get('spawn{:}'.format(aircraft_id))
 
 
-class WingRoutePoint(BaseStructure):
+class FlightRoutePoint(BaseStructure):
     __slots__ = ['type', 'pos', 'speed', 'formation', 'radio_silence', ]
 
     def __init__(self, type, pos, speed, formation, radio_silence):
@@ -133,19 +145,19 @@ class WingRoutePoint(BaseStructure):
                         self.pos.x, self.pos.y, self.pos.z))
 
 
-class WingRouteTakeoffPoint(WingRoutePoint):
-    __slots__ = WingRoutePoint.__slots__ + ['delay', 'spacing', ]
+class FlightRouteTakeoffPoint(FlightRoutePoint):
+    __slots__ = FlightRoutePoint.__slots__ + ['delay', 'spacing', ]
 
     def __init__(self, type, pos, speed, formation, radio_silence, delay,
                  spacing):
-        super(WingRouteTakeoffPoint, self).__init__(
+        super(FlightRouteTakeoffPoint, self).__init__(
             type, pos, speed, formation, radio_silence)
         self.delay = delay
         self.spacing = spacing
 
 
-class WingRoutePatrolPoint(WingRoutePoint):
-    __slots__ = WingRoutePoint.__slots__ + [
+class FlightRoutePatrolPoint(FlightRoutePoint):
+    __slots__ = FlightRoutePoint.__slots__ + [
         'patrol_cycles', 'patrol_timeout',
         'pattern_angle', 'pattern_side_size', 'pattern_altitude_difference',
     ]
@@ -153,7 +165,7 @@ class WingRoutePatrolPoint(WingRoutePoint):
     def __init__(self, type, pos, speed, formation, radio_silence,
                  patrol_cycles, patrol_timeout, pattern_angle,
                  pattern_side_size, pattern_altitude_difference):
-        super(WingRoutePatrolPoint, self).__init__(
+        super(FlightRoutePatrolPoint, self).__init__(
             type, pos, speed, formation, radio_silence)
         self.patrol_cycles = patrol_cycles
         self.patrol_timeout = patrol_timeout
@@ -162,37 +174,37 @@ class WingRoutePatrolPoint(WingRoutePoint):
         self.pattern_altitude_difference = pattern_altitude_difference
 
 
-class WingRouteAttackPoint(WingRoutePoint):
-    __slots__ = WingRoutePoint.__slots__ + [
+class FlightRouteAttackPoint(FlightRoutePoint):
+    __slots__ = FlightRoutePoint.__slots__ + [
         'target_id', 'target_route_point',
     ]
 
     def __init__(self, type, pos, speed, formation, radio_silence, target_id,
                  target_route_point):
-        super(WingRouteAttackPoint, self).__init__(
+        super(FlightRouteAttackPoint, self).__init__(
             type, pos, speed, formation, radio_silence)
         self.target_id = target_id
         self.target_route_point = target_route_point
 
 
-class WingRouteSectionParser(CollectingParser):
+class FlightRouteSectionParser(CollectingParser):
     """
     Parses ``*_Way`` section.
-    View :ref:`detailed description <wing-route-section>`.
+    View :ref:`detailed description <flight-route-section>`.
     """
     input_suffix = "_Way"
-    output_prefix = 'wing_route_'
+    output_prefix = 'flight_route_'
 
     def check_section_name(self, section_name):
         return section_name.endswith(self.input_suffix)
 
-    def _extract_wing_code(self, section_name):
+    def _extract_flight_code(self, section_name):
         return section_name[:-len(self.input_suffix)]
 
     def init_parser(self, section_name):
-        super(WingRouteSectionParser, self).init_parser(section_name)
-        wing_code = self._extract_wing_code(section_name)
-        self.output_key = "{}{}".format(self.output_prefix, wing_code)
+        super(FlightRouteSectionParser, self).init_parser(section_name)
+        flight_code = self._extract_flight_code(section_name)
+        self.output_key = "{}{}".format(self.output_prefix, flight_code)
         self.point = None
         self.point_class = None
 
@@ -221,18 +233,18 @@ class WingRouteSectionParser(CollectingParser):
                 'pattern_side_size': int(side_size),
                 'pattern_altitude_difference': int(altitude_difference),
             })
-            self.point_class = WingRoutePatrolPoint
+            self.point_class = FlightRoutePatrolPoint
         except ValueError:
             delay, spacing = params[1:3]
             self.point.update({
                 'delay': int(delay),
                 'spacing': int(spacing),
             })
-            self.point_class = WingRouteTakeoffPoint
+            self.point_class = FlightRouteTakeoffPoint
 
     def _parse_extra(self, params):
-        if WingRouteSectionParser._is_new_game_version(params):
-            radio_silence, formation, params = WingRouteSectionParser._parse_new_version_extra(params)
+        if FlightRouteSectionParser._is_new_game_version(params):
+            radio_silence, formation, params = FlightRouteSectionParser._parse_new_version_extra(params)
             if params:
                 self._parse_target(params)
         else:
@@ -276,7 +288,7 @@ class WingRouteSectionParser(CollectingParser):
         if self.point['type'] is RoutePointTypes.normal:
             self.point['type'] = RoutePointTypes.air_attack
 
-        self.point_class = WingRouteAttackPoint
+        self.point_class = FlightRouteAttackPoint
 
     def clean(self):
         self._finalize_current_point()
@@ -284,7 +296,7 @@ class WingRouteSectionParser(CollectingParser):
 
     def _finalize_current_point(self):
         if self.point:
-            point_class = getattr(self, 'point_class') or WingRoutePoint
+            point_class = getattr(self, 'point_class') or FlightRoutePoint
             self.data.append(point_class(**self.point))
             self.point = None
             self.point_class = None
