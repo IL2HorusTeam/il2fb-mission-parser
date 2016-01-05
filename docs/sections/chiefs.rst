@@ -38,34 +38,34 @@ Output example:
             {
                 'id': '0_Chief',
                 'code': '1-BT7',
-                'type': <constant 'UnitTypes.armor'>,
-                'belligerent': <constant 'Belligerents.blue'>,
+                'type': UnitTypes.armor,
+                'belligerent': Belligerents.blue,
             },
             {
                 'id': '1_Chief',
                 'code': 'GAZ67',
-                'type': <constant 'UnitTypes.vehicle'>,
-                'belligerent': <constant 'Belligerents.red'>,
+                'type': UnitTypes.vehicle,
+                'belligerent': Belligerents.red,
             },
             {
                 'id': '2_Chief',
                 'code': 'USSR_FuelTrain/AA',
-                'type': <constant 'UnitTypes.train'>,
-                'belligerent': <constant 'Belligerents.red'>,
+                'type': UnitTypes.train,
+                'belligerent': Belligerents.red,
             },
             {
                 'id': '3_Chief',
                 'code': 'Niobe',
-                'type': <constant 'UnitTypes.ship'>,
-                'belligerent': <constant 'Belligerents.blue'>,
+                'type': UnitTypes.ship,
+                'belligerent': Belligerents.blue,
             },
             {
                 'id': '4_Chief',
                 'code': 'G5',
-                'type': <constant 'UnitTypes.ship'>,
-                'belligerent': <constant 'Belligerents.red'>,
+                'type': UnitTypes.ship,
+                'belligerent': Belligerents.red,
                 'hibernation': 60,
-                'skill': <constant 'Skills.ace'>,
+                'skill': Skills.ace,
                 'recharge_time': 2.0,
             },
         ],
@@ -74,8 +74,8 @@ Output example:
 
 **Description**:
 
-The output of the parser is a dictionary with ``moving_units`` element. It contains a
-list of dictionaries containing information about each object.
+The output of the parser is a dictionary with ``moving_units`` element. It
+contains a list of dictionaries containing information about each object.
 
 
 Common parameters
@@ -104,8 +104,6 @@ Let's examine common parameters using first line from example above::
 
   :Output path: ``type``
   :Output type: complex `unit type`_ constant
-
-  ..
 
   :Output path: ``code``
   :Output type: :class:`str`
@@ -150,6 +148,6 @@ parameters are:
   :Output value: original value converted to float number
 
 
-.. _unit type: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L35
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L20
-.. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L28
+.. _unit type: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L27
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L21
+.. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L20

@@ -7,7 +7,7 @@ Chief Road section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-Chief_Road>`_
 
-:class:`~il2fb.parsers.mission.sections.chief_road.ChiefRoadSectionParser` is
+:class:`~il2fb.parsers.mission.sections.chiefs.ChiefRoadSectionParser` is
 responsible for parsing ``N_Chief_Road`` section. Every object listed in
 :doc:`chiefs` has own route described in own ``N_Chief_Road`` section, where
 ``N`` is the sequence number within ``Chiefs`` section.
@@ -65,7 +65,7 @@ two types of waypoints: created by user and created automatically by full
 mission editor.
 
 The output of the parser is a dictionary with ``route_N_Chief`` item which is a
-list of `route points`_.
+list of :class:`~il2fb.parsers.mission.sections.chiefs.GroundRoutePoint`.
 
 Manually created waipoints have 6 parameters, while auto-created ones have only
 3 of them. The last waypoint always has 3 parameters, and it is always defined
@@ -152,6 +152,3 @@ It has all parameters included::
   :Output value:
     ``True`` if point defines start of a section, ``False`` if it is an
     intermediate point or the last point
-
-
-.. _route points: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/il2fb/parsers/mission/structures.py#L46

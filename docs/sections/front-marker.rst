@@ -22,11 +22,11 @@ Output example:
 
   {
       'markers': [
-          {
-              'id': "FrontMarker0",
-              'belligerent': Belligerents.red,
-              'pos': Point2D(7636.65, 94683.02),
-          },
+          FrontMarker(
+              id="FrontMarker0",
+              belligerent=Belligerents.red,
+              pos=Point2D(7636.65, 94683.02),
+          ),
       ],
   }
 
@@ -66,4 +66,4 @@ marker.
   :Output type: complex `belligerents`_ constant
 
 
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L20
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L21

@@ -29,7 +29,7 @@ from .utils import move_if_present, set_if_present, strip_comments
 class MissionParser(object):
     """
     Parses a whole mission file.
-    View :ref:`detailed description <file-parser>`.
+    View :ref:`detailed description <mission-parser>`.
     """
 
     def __init__(self):

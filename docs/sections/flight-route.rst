@@ -159,7 +159,8 @@ Output example:
       spacing=20,
   )
 
-Take-off points are defined by `FlightRouteTakeoffPoint data structure`_.
+Take-off points are defined by
+:class:`~il2fb.parsers.mission.sections.wing.FlightRouteTakeoffPoint`.
 
 Let's examine defined lines:
 
@@ -277,9 +278,10 @@ Output example:
       pattern_altitude_difference=500,
   )
 
-Patrol points are defined by `FlightRoutePatrolPoint data structure`_. In
-other cases (normal flight and artillery spotter)
-`FlightRoutePoint data structure`_ is used.
+Patrol points are defined by
+:class:`~il2fb.parsers.mission.sections.wing.FlightRoutePatrolPoint`. In other
+cases (normal flight and artillery spotter)
+:class:`~il2fb.parsers.mission.sections.wing.FlightRoutePoint` is used.
 
 Let's examine defined lines:
 
@@ -422,7 +424,8 @@ Output example:
   ]
 
 
-Attack points are defined by `FlightRouteAttackPoint data structure`_.
+Attack points are defined by
+:class:`~il2fb.parsers.mission.sections.wing.FlightRouteAttackPoint`.
 
 Let's examine the second line:
 
@@ -518,7 +521,7 @@ Output example:
 
 
 Landing points do not have special parameters and they are defined by
-`FlightRoutePoint data structure`_.
+:class:`~il2fb.parsers.mission.sections.wing.FlightRoutePoint`.
 
 Description:
 
@@ -569,11 +572,6 @@ Description:
 Footnotes:
 
 .. [#] For patrol points only.
-
-.. _FlightRoutePoint data structure: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/il2fb/parsers/mission/structures.py#L187
-.. _FlightRouteTakeoffPoint data structure: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/il2fb/parsers/mission/structures.py#L204
-.. _FlightRoutePatrolPoint data structure: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/il2fb/parsers/mission/structures.py#L215
-.. _FlightRouteAttackPoint data structure: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/il2fb/parsers/mission/structures.py#L233
 
 .. _route point types: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/flight.py#L21
 .. _types of route points: `route point types`_

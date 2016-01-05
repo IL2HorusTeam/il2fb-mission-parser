@@ -1,6 +1,6 @@
-.. _flight-section:
+.. _wing-section:
 
-Flight section
+Wing section
 ============
 
 .. note::

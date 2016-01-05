@@ -34,10 +34,10 @@ Output example:
             'value': datetime.time(11, 45),
             'is_fixed': True,
         },
-        'weather_conditions': <constant 'Conditions.good'>,
+        'weather_conditions': Conditions.good,
         'cloud_base': 1500,
         'player': {
-            'belligerent': <constant 'Belligerents.red'>,
+            'belligerent': Belligerents.red,
             'flight_id': "fiLLv24fi00",
             'aircraft_index': 0,
             'fixed_weapons': True,
@@ -136,5 +136,5 @@ Footnotes:
 
 
 .. _weather conditions: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/weather.py#L11
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L20
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L21
 

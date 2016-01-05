@@ -82,7 +82,7 @@ Output example:
   {
       '3GvIAP10_info': {
           'id': '3GvIAP10',
-          'air_force': <constant 'AirForces.vvs_rkka'>,
+          'air_force': AirForces.vvs_rkka,
           'regiment': <Regiment '3GvIAP'>,
           'squadron_index': 1,
           'flight_index': 0,
@@ -96,17 +96,17 @@ Output example:
               {
                   'index': 0,
                   'has_markings': True,
-                  'skill': <constant 'Skills.average'>,
+                  'skill': Skills.average,
               },
               {
                   'index': 1,
                   'has_markings': True,
-                  'skill': <constant 'Skills.average'>,
+                  'skill': Skills.average,
               },
               {
                   'index': 2,
                   'has_markings': True,
-                  'skill': <constant 'Skills.average'>,
+                  'skill': Skills.average,
               },
           ],
       },
@@ -197,7 +197,7 @@ Output example:
 
     {
         'UN_NN03_info': {
-            'air_force': <constant 'AirForces.usn'>,
+            'air_force': AirForces.usn,
             'regiment': None,
             'squadron_index': 0,
             'flight_index': 3,
@@ -211,12 +211,12 @@ Output example:
                 {
                     'index': 0,
                     'has_markings': True,
-                    'skill': <constant 'Skills.veteran'>,
+                    'skill': Skills.veteran,
                 },
                 {
                     'index': 1,
                     'has_markings': True,
-                    'skill': <constant 'Skills.ace'>,
+                    'skill': Skills.ace,
                 },
             ],
         },
@@ -258,7 +258,7 @@ Output example:
 
     {
         'UN_NN02_info': {
-            'air_force': <constant 'AirForces.usn'>,
+            'air_force': AirForces.usn,
             'regiment': None,
             'squadron_index': 1,
             'flight_index': 3,
@@ -272,7 +272,7 @@ Output example:
                 {
                     'index': 0,
                     'has_markings': False,
-                    'skill': <constant 'Skills.average'>,
+                    'skill': Skills.average,
                     'aircraft_skin': 'RRG_N7-B_Damaged.bmp',
                     'pilot_skin': 'fi_18.bmp',
                     'nose_art': 'Angry_Ox.bmp',
@@ -337,8 +337,8 @@ parameters which are suffixed by index of the aircraft they are related to:
   :Output value: original string value
 
 
-.. _air force: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L94
+.. _air force: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L108
 .. _list of air forces: `air force`_
 
-.. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L28
-.. _Regiment: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L268
+.. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L20
+.. _Regiment: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L282

@@ -35,7 +35,8 @@ Output example:
 The result is a :class:`dict` with ``buildings`` item which contains a list of
 buildings.
 
-We use `Building structure`_ to store information about buildings.
+We use :class:`~il2fb.parsers.mission.sections.buildings.Building` structure to
+store information about buildings.
 
 
 **Description**:
@@ -84,5 +85,4 @@ We use `Building structure`_ to store information about buildings.
   :Output value: original value converted to float number
 
 
-.. _Building structure: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/il2fb/parsers/mission/structures.py#L61
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L20
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L21

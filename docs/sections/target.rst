@@ -24,8 +24,8 @@ Output example:
   {
       'targets': [
           {
-              'type': <constant 'TargetTypes.recon'>,
-              'priority': <constant 'TargetPriorities.secondary'>,
+              'type': TargetTypes.recon,
+              'priority': TargetPriorities.secondary,
               'in_sleep_mode': True,
               'delay': 50,
               'requires_landing': False,
@@ -33,8 +33,8 @@ Output example:
               'radius': 1150,
           },
           {
-              'type': <constant 'TargetTypes.recon'>,
-              'priority': <constant 'TargetPriorities.primary'>,
+              'type': TargetTypes.recon,
+              'priority': TargetPriorities.primary,
               'in_sleep_mode': True,
               'delay': 40,
               'requires_landing': True,
@@ -75,8 +75,8 @@ Output example:
   {
       'targets': [
           {
-              'type': <constant 'TargetTypes.destroy'>,
-              'priority': <constant 'TargetPriorities.primary'>,
+              'type': TargetTypes.destroy,
+              'priority': TargetPriorities.primary,
               'in_sleep_mode': False,
               'delay': 0,
               'destruction_level': 50,
@@ -184,8 +184,8 @@ Output example:
   {
       'targets': [
           {
-              'type': <constant 'TargetTypes.destroy_area'>,
-              'priority': <constant 'TargetPriorities.secondary'>,
+              'type': TargetTypes.destroy_area,
+              'priority': TargetPriorities.secondary,
               'in_sleep_mode': True,
               'delay': 60,
               'destruction_level': 75,
@@ -265,8 +265,8 @@ Output example:
   {
       'targets': [
           {
-              'type': <constant 'TargetTypes.destroy_bridge'>,
-              'priority': <constant 'TargetPriorities.hidden'>,
+              'type': TargetTypes.destroy_bridge,
+              'priority': TargetPriorities.hidden,
               'in_sleep_mode': True,
               'delay': 30,
               'pos': Point2D(135786.0, 84596.0),
@@ -365,8 +365,8 @@ Output example:
   {
       'targets': [
           {
-              'type': <constant 'TargetTypes.recon'>,
-              'priority': <constant 'TargetPriorities.secondary'>,
+              'type': TargetTypes.recon,
+              'priority': TargetPriorities.secondary,
               'in_sleep_mode': True,
               'delay': 50,
               'requires_landing': False,
@@ -374,8 +374,8 @@ Output example:
               'radius': 1150,
           },
           {
-              'type': <constant 'TargetTypes.recon'>,
-              'priority': <constant 'TargetPriorities.primary'>,
+              'type': TargetTypes.recon,
+              'priority': TargetPriorities.primary,
               'in_sleep_mode': True,
               'delay': 40,
               'requires_landing': True,
@@ -490,8 +490,8 @@ Output example:
   {
       'targets': [
           {
-              'type': <constant 'TargetTypes.escort'>,
-              'priority': <constant 'TargetPriorities.primary'>,
+              'type': TargetTypes.escort,
+              'priority': TargetPriorities.primary,
               'in_sleep_mode': True,
               'delay': 10,
               'destruction_level': 75,
@@ -599,8 +599,8 @@ Output example:
   {
       'targets': [
           {
-              'type': <constant 'TargetTypes.cover'>,
-              'priority': <constant 'TargetPriorities.secondary'>,
+              'type': TargetTypes.cover,
+              'priority': TargetPriorities.secondary,
               'in_sleep_mode': True,
               'delay': 20,
               'destruction_level': 25,
@@ -708,8 +708,8 @@ Output example:
   {
       'targets': [
           {
-              'type': <constant 'TargetTypes.cover_area'>,
-              'priority': <constant 'TargetPriorities.secondary'>,
+              'type': TargetTypes.cover_area,
+              'priority': TargetPriorities.secondary,
               'in_sleep_mode': True,
               'delay': 30,
               'destruction_level': 50,
@@ -789,8 +789,8 @@ Output example:
   {
       'targets': [
           {
-              'type': <constant 'TargetTypes.cover_bridge'>,
-              'priority': <constant 'TargetPriorities.hidden'>,
+              'type': TargetTypes.cover_bridge,
+              'priority': TargetPriorities.hidden,
               'in_sleep_mode': True,
               'delay': 30,
               'pos': Point2D(135896.0, 84536.0),

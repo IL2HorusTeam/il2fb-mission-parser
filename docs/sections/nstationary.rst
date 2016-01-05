@@ -98,8 +98,8 @@ Usual objects
 Usual objects — these are all objects which have usual set of parameters,
 namely: ballons, lights, radio stations, trains, vehicles and so on.
 
-We use `StationaryObject data structure`_ to store information about such
-objects.
+We use :class:`~il2fb.parsers.mission.sections.nstationary.StationaryObject`
+data structure to store information about such objects.
 
 Definition example::
 
@@ -163,8 +163,8 @@ Artillery
 Artillery has all the same parameters as usual objects. Also artillery in new
 versions of game has some extra parameters which are described below.
 
-We use `StationaryArtillery data structure`_ to store information about
-artillery.
+We use :class:`~il2fb.parsers.mission.sections.nstationary.StationaryArtillery`
+data structure to store information about artillery.
 
 Definition example::
 
@@ -212,8 +212,8 @@ Aircrafts
 Aircrafts have all the same parameters as usual objects. Also aircrafts in new
 versions of game have some extra parameters which are described below.
 
-We use `StationaryAircraft data structure`_ to store information about
-aircrafts.
+We use :class:`~il2fb.parsers.mission.sections.nstationary.StationaryAircraft`
+data structure to store information about aircrafts.
 
 Definition example::
 
@@ -287,7 +287,8 @@ Ships
 Ships have all the same parameters as usual objects. Also ships in new versions
 of game have some extra parameters which are described below.
 
-We use `StationaryShip data structure`_ to store information about ships.
+We use :class:`~il2fb.parsers.mission.sections.nstationary.StationaryShip` data
+structure to store information about ships.
 
 Definition example::
 
@@ -320,14 +321,9 @@ Definition example::
     (``0.0`` for objects from old game versions)
 
 
-.. _StationaryObject data structure: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/il2fb/parsers/mission/structures.py#L123
-.. _StationaryArtillery data structure: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/il2fb/parsers/mission/structures.py#L140
-.. _StationaryAircraft data structure: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/il2fb/parsers/mission/structures.py#L155
-.. _StationaryShip data structure: https://github.com/IL2HorusTeam/il2fb-mission-parser/blob/master/il2fb/parsers/mission/structures.py#L173
-
-.. _unit type: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L35
+.. _unit type: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L27
 .. _types of units: `unit type`_
 
-.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L20
-.. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L28
-.. _air forces: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L94
+.. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L21
+.. _skills: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/__init__.py#L20
+.. _air forces: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L108

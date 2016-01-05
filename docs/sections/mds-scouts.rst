@@ -7,7 +7,7 @@ MDS_Scouts section
 
     `Russian version <https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki/%D0%A1%D0%B5%D0%BA%D1%86%D0%B8%D1%8F-MDS_Scouts>`_
 
-:class:`~il2fb.parsers.mission.sections.mds_scouts.MDSScoutsSectionParser` is
+:class:`~il2fb.parsers.mission.sections.mds.MDSScoutsSectionParser` is
 responsible for parsing sections which starts with ``MDS_Scouts_`` prefix.
 Those sections define lists of aircrafts which can be used as scouts.
 

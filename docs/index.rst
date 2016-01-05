@@ -19,8 +19,8 @@ IL-2 FB Mission Parser
 
 
 ``il2fb-mission-parser`` — is a free Python library for parsing mission files
-of IL-2 FB aviasim. It helps you to convert a text file in a tricky format into
-a pretty Python object.
+of IL-2 FB aviasimulator. It helps you to convert a text file in a tricky
+format into a pretty Python object.
 
 
 Contents:
@@ -31,17 +31,11 @@ Contents:
 
    installation
    usage
+   mission-parser
    comments-in-missions
-   section-parsing
+   sections/section-parsing
    demo
 
-
-Modules:
-
-.. toctree::
-   :maxdepth: 2
-
-   modules.rst
 
 Project's repository:
 

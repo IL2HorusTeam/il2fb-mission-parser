@@ -12,6 +12,23 @@ il2fb.parsers.mission.constants module
     :undoc-members:
     :show-inheritance:
 
+il2fb.parsers.mission.converters module
+---------------------------------------
+
+.. automodule:: il2fb.parsers.mission.converters
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+il2fb.parsers.mission.exceptions module
+---------------------------------------
+
+.. automodule:: il2fb.parsers.mission.exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
 il2fb.parsers.mission.utils module
 ------------------------------------
 
@@ -20,21 +37,14 @@ il2fb.parsers.mission.utils module
     :undoc-members:
     :show-inheritance:
 
-il2fb.parsers.mission.parsers module
-------------------------------------
+il2fb.parsers.mission.sections module
+-------------------------------------
 
-.. automodule:: il2fb.parsers.mission.parsers
+.. automodule:: il2fb.parsers.mission.sections
     :members:
     :undoc-members:
     :show-inheritance:
-
-il2fb.parsers.mission.regiments module
---------------------------------------
-
-.. automodule:: il2fb.parsers.mission.regiments
-    :members:
-    :undoc-members:
-    :show-inheritance:
+    :noindex:
 
 
 Module contents

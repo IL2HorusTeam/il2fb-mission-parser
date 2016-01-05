@@ -29,8 +29,8 @@ Output example:
                 'direction': 120.0,
                 'speed': 3.0,
             },
-            'gust': <constant 'Gust.none'>,
-            'turbulence': <constant 'Turbulence.very_strong'>,
+            'gust': Gust.none,
+            'turbulence': Turbulence.very_strong,
         },
     }
 
