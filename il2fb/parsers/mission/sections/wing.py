@@ -22,6 +22,7 @@ from ..constants import (
     ROUTE_POINT_RADIO_SILENCE_OFF,
 )
 from ..converters import to_skill
+from ..utils import set_if_present
 from . import CollectingParser, ValuesParser
 
 
@@ -79,39 +80,36 @@ class FlightInfoSectionParser(ValuesParser):
     def clean(self):
         count = int(self.data['Planes'])
         code = self.data['Class'].split('.', 1)[1]
-        aircrafts = []
-
-        def _add_if_present(target, key, value):
-            if value:
-                target[key] = value
-
-        for i in range(count):
-            aircraft = {
-                'index': i,
-                'has_markings': self._has_markings(i),
-                'skill': self._get_skill(i),
-            }
-            _add_if_present(
-                aircraft, 'aircraft_skin', self._get_skin('skin', i))
-            _add_if_present(
-                aircraft, 'nose_art', self._get_skin('nose_art', i))
-            _add_if_present(
-                aircraft, 'pilot_skin', self._get_skin('pilot', i))
-            _add_if_present(
-                aircraft, 'spawn_object', self._get_spawn_object_id(i))
-            aircrafts.append(aircraft)
+        aircrafts = self._get_aircrafts(count)
 
         self.flight_info.update({
             'ai_only': 'OnlyAI' in self.data,
-            'aircrafts': aircrafts,
             'code': code,
             'fuel': int(self.data['Fuel']),
             'with_parachutes': 'Parachute' not in self.data,
             'count': count,
             'weapons': self.data['weapons'],
+            'aircrafts': aircrafts,
         })
 
         return {self.output_key: self.flight_info}
+
+    def _get_aircrafts(self, aircrafts_count):
+        results = []
+
+        for i in range(aircrafts_count):
+            info = {
+                'index': i,
+                'has_markings': self._has_markings(i),
+                'skill': self._get_skill(i),
+            }
+            set_if_present(info, 'aircraft_skin', self._get_skin('skin', i))
+            set_if_present(info, 'nose_art', self._get_skin('nose_art', i))
+            set_if_present(info, 'pilot_skin', self._get_skin('pilot', i))
+            set_if_present(info, 'spawn_object', self._get_spawn_object_id(i))
+            results.append(info)
+
+        return results
 
     def _get_skill(self, aircraft_id):
         if 'Skill' in self.data:
