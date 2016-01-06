@@ -188,18 +188,15 @@ class MissionParser(object):
         return result
 
     def _get_scouting(self):
-        result = {}
-
         try:
-            conditions = self.data['conditions'].pop('scouting')
-            result.update(conditions)
+            result = self.data['conditions'].pop('scouting')
         except KeyError:
-            pass
+            result = {}
 
-        keys = filter(
-            lambda x: x.startswith(MDSScoutsSectionParser.output_prefix),
-            self.data.keys()
-        )
+        keys = [
+            key for key in self.data.keys()
+            if key.startswith(MDSScoutsSectionParser.output_prefix)
+        ]
         scouts = {
             self.data[key]['belligerent']: self.data[key]['aircrafts']
             for key in keys
