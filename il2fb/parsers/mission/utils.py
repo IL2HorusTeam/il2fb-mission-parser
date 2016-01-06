@@ -16,11 +16,6 @@ def set_if_present(dst, key, value):
 
 def strip_comments(line):
     for marker in COMMENT_MARKERS:
-        try:
-            index = line.index(marker)
-        except ValueError:
-            pass
-        else:
-            line = line[:index]
+        line = line.split(marker, 1)[0]
 
     return line.strip()
