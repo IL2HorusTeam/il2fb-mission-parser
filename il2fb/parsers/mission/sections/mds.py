@@ -85,7 +85,7 @@ class MDSScoutsSectionParser(CollectingParser):
         super(MDSScoutsSectionParser, self).init_parser(section_name)
         belligerent_name = self._get_belligerent_name(section_name)
         self.belligerent = Belligerents[belligerent_name]
-        self.output_key = "{}{}".format(self.output_prefix, belligerent_name)
+        self.output_key = "{0}{1}".format(self.output_prefix, belligerent_name)
 
     def _get_belligerent_name(self, section_name):
         return section_name[len(self.input_prefix):].lower()

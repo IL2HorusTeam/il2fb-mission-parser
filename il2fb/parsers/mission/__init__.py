@@ -223,7 +223,7 @@ class MissionParser(object):
     def _get_moving_units(self):
         units = self.data.pop('moving_units', [])
         for unit in units:
-            key = "{}{}".format(ChiefRoadSectionParser.output_prefix, unit['id'])
+            key = "{0}{1}".format(ChiefRoadSectionParser.output_prefix, unit['id'])
             unit['route'] = self.data.pop(key, [])
         return units
 
@@ -231,16 +231,16 @@ class MissionParser(object):
         keys = self.data.pop('flights', [])
         flights = [self.data.pop(key) for key in keys if key in self.data]
         for flight in flights:
-            key = "{}{}".format(FlightRouteSectionParser.output_prefix, flight['id'])
+            key = "{0}{1}".format(FlightRouteSectionParser.output_prefix, flight['id'])
             flight['route'] = self.data.pop(key, [])
         return flights
 
     def _get_home_bases(self):
         home_bases = self.data.pop('home_bases', [])
         for i, home_base in enumerate(home_bases):
-            key = "{}{}".format(BornPlaceAircraftsSectionParser.output_prefix, i)
+            key = "{0}{1}".format(BornPlaceAircraftsSectionParser.output_prefix, i)
             home_base['spawning']['aircraft_limitations']['allowed_aircrafts'] = self.data.pop(key, [])
 
-            key = "{}{}".format(BornPlaceAirForcesSectionParser.output_prefix, i)
+            key = "{0}{1}".format(BornPlaceAirForcesSectionParser.output_prefix, i)
             home_base['spawning']['allowed_air_forces'] = self.data.pop(key, [])
         return home_bases

@@ -85,7 +85,7 @@ class ChiefRoadSectionParser(CollectingParser):
     def init_parser(self, section_name):
         super(ChiefRoadSectionParser, self).init_parser(section_name)
         unit_id = self._extract_unit_id(section_name)
-        self.output_key = "{}{}".format(self.output_prefix, unit_id)
+        self.output_key = "{0}{1}".format(self.output_prefix, unit_id)
 
     def _extract_unit_id(self, section_name):
         stop = section_name.index(self.section_suffix)

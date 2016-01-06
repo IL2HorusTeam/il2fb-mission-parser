@@ -92,8 +92,8 @@ class BornPlaceAirForcesSectionParser(CollectingParser):
     def init_parser(self, section_name):
         super(BornPlaceAirForcesSectionParser, self).init_parser(section_name)
         self.output_key = (
-            "{}{}".format(self.output_prefix,
-                          self._extract_section_number(section_name)))
+            "{0}{1}".format(self.output_prefix,
+                            self._extract_section_number(section_name)))
         self.countries = {}
 
     def _extract_section_number(self, section_name):

@@ -202,7 +202,7 @@ class FlightRouteSectionParser(CollectingParser):
     def init_parser(self, section_name):
         super(FlightRouteSectionParser, self).init_parser(section_name)
         flight_code = self._extract_flight_code(section_name)
-        self.output_key = "{}{}".format(self.output_prefix, flight_code)
+        self.output_key = "{0}{1}".format(self.output_prefix, flight_code)
         self.point = None
         self.point_class = None
 
