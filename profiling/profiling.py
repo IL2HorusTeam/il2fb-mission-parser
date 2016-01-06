@@ -2,6 +2,7 @@
 """
 Memory & time consumption tests for parsers.
 """
+
 if 'profile' not in locals():
     try:
         from memory_profiler import profile
@@ -10,7 +11,8 @@ if 'profile' not in locals():
         try:
             profile = __builtin__.profile
         except AttributeError:
-            profile = lambda x: x
+            def profile(call):
+                return call
 
 
 from il2fb.parsers.mission.sections.chiefs import ChiefRoadSectionParser
