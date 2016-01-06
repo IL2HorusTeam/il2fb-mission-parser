@@ -18,19 +18,15 @@ class ChiefsSectionParser(CollectingParser):
 
     def parse_line(self, line):
         params = line.split()
-        (uid, type_code, belligerent), params = params[0:3], params[3:]
+        (uid, type__code, belligerent), params = params[0:3], params[3:]
 
-        chief_type, code = type_code.split('.')
-        try:
-            chief_type = to_unit_type(chief_type)
-        except Exception:
-            # Use original string as unit type
-            pass
+        type_code, unit_code = type__code.split('.')
+        unit_type = self._get_unit_type(type_code)
 
         unit = {
             'id': uid,
-            'code': code,
-            'type': chief_type,
+            'code': unit_code,
+            'type': unit_type,
             'belligerent': to_belligerent(belligerent),
         }
         if params:
@@ -41,6 +37,14 @@ class ChiefsSectionParser(CollectingParser):
                 'recharge_time': float(recharge_time),
             })
         self.data.append(unit)
+
+    @staticmethod
+    def _get_unit_type(type_code):
+        try:
+            return to_unit_type(type_code)
+        except:
+            # Use original string as unit type
+            return type_code
 
     def clean(self):
         return {'moving_units': self.data, }
