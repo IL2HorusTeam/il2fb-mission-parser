@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from il2fb.commons import UnitTypes
 from il2fb.commons.spatial import Point2D
 from il2fb.commons.structures import BaseStructure
 
@@ -74,15 +75,29 @@ class StationaryShip(StationaryObject):
         self.skill = skill
 
 
+__UNIT_TYPES_MAP = {
+    UnitTypes.aircraft: StationaryAircraft,
+    UnitTypes.artillery: StationaryArtillery,
+    UnitTypes.ship: StationaryShip,
+}
+
+
+def structure_class_by_unit_type(value):
+    return __UNIT_TYPES_MAP.get(value, StationaryObject)
+
+
 class NStationarySectionParser(CollectingParser):
     """
     Parses ``NStationary`` section.
     View :ref:`detailed description <nstationary-section>`.
     """
 
+    def check_section_name(self, section_name):
+        return section_name == "NStationary"
+
     def __parse_artillery(params):
         """
-        Parse additional options for ``artillery`` type
+        Parse additional options for ``artillery`` type.
         """
         try:
             awakening_time, the_range, skill, use_spotter = params
@@ -104,7 +119,7 @@ class NStationarySectionParser(CollectingParser):
 
     def __parse_aircraft(params):
         """
-        Parse additional options for ``planes`` type
+        Parse additional options for ``planes`` type.
         """
         try:
             air_force, allows_spawning__restorable = params[1:3]
@@ -126,7 +141,7 @@ class NStationarySectionParser(CollectingParser):
 
     def __parse_ship(params):
         """
-        Parse additional options for ``ships`` type
+        Parse additional options for ``ships`` type.
         """
         awakening_time, skill, recharge_time = params[1:]
         return {
@@ -135,14 +150,11 @@ class NStationarySectionParser(CollectingParser):
             'skill': to_skill(skill),
         }
 
-    subparsers = {
-        'artillery': (StationaryArtillery, __parse_artillery),
-        'planes': (StationaryAircraft, __parse_aircraft),
-        'ships': (StationaryShip, __parse_ship),
+    __subparsers = {
+        UnitTypes.aircraft: __parse_aircraft,
+        UnitTypes.artillery: __parse_artillery,
+        UnitTypes.ship: __parse_ship,
     }
-
-    def check_section_name(self, section_name):
-        return section_name == "NStationary"
 
     def parse_line(self, line):
         params = line.split()
@@ -152,31 +164,33 @@ class NStationarySectionParser(CollectingParser):
         rotation_angle = params[5]
         params = params[6:]
 
-        type_name = self._get_type_name(object_name)
-        try:
-            object_type = to_unit_type(type_name)
-        except Exception:
-            # Use original string as object's type
-            object_type = type_name
-
-        the_object = {
+        unit_type = self._get_type(object_name)
+        info = {
             'id': oid,
             'belligerent': to_belligerent(belligerent),
             'code': self._get_code(object_name),
             'pos': Point2D(*pos),
             'rotation_angle': float(rotation_angle),
-            'type': object_type,
+            'type': unit_type,
         }
 
-        if type_name in self.subparsers:
-            structure, subparser = self.subparsers.get(type_name)
-            the_object.update(subparser(params))
-        else:
-            structure = StationaryObject
+        subparser = self.__subparsers.get(unit_type)
+        if subparser:
+            info.update(subparser(params))
 
-        self.data.append(structure(**the_object))
+        structure_class = structure_class_by_unit_type(unit_type)
+        self.data.append(structure_class(**info))
 
-    def _get_type_name(self, object_name):
+    def _get_type(self, object_name):
+        type_name = self._get_type_name(object_name)
+        try:
+            return to_unit_type(type_name)
+        except:
+            # Use original string as object's type
+            return type_name
+
+    @staticmethod
+    def _get_type_name(object_name):
         if object_name.startswith('ships'):
             return "ships"
         else:
@@ -184,9 +198,10 @@ class NStationarySectionParser(CollectingParser):
             stop = object_name.rindex('.')
             return object_name[start:stop]
 
-    def _get_code(self, code):
+    @staticmethod
+    def _get_code(code):
         start = code.index('$') + 1
         return code[start:]
 
     def clean(self):
-        return {'stationary': self.data, }
+        return {'stationary': self.data}
