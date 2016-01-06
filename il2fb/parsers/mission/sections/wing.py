@@ -241,8 +241,8 @@ class FlightRouteSectionParser(CollectingParser):
             self.point_class = FlightRouteTakeoffPoint
 
     def _parse_extra(self, params):
-        if FlightRouteSectionParser._is_new_game_version(params):
-            radio_silence, formation, params = FlightRouteSectionParser._parse_new_version_extra(params)
+        if self._is_new_game_version(params):
+            radio_silence, formation, params = self._parse_new_version_extra(params)
             if params:
                 self._parse_target(params)
         else:

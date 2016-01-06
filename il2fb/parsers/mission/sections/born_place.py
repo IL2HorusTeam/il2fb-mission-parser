@@ -146,12 +146,12 @@ class BornPlaceAircraftsSectionParser(CollectingParser):
             if self.aircraft:
                 # Finalize previous aircraft
                 self.data.append(self.aircraft)
-            self.aircraft = BornPlaceAircraftsSectionParser._parse_new_item(parts)
+            self.aircraft = self._parse_new_item(parts)
 
-    @staticmethod
-    def _parse_new_item(parts):
+    @classmethod
+    def _parse_new_item(cls, parts):
         code = parts.pop(0)
-        limit = BornPlaceAircraftsSectionParser._extract_limit(parts)
+        limit = cls._extract_limit(parts)
         return {
             'code': code,
             'limit': limit,
