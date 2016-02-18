@@ -7,14 +7,14 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-env/
 bin/
-build/
 develop-eggs/
 dist/
 eggs/
+env/
 lib/
 lib64/
+node_modules/
 parts/
 sdist/
 var/

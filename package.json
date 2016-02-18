@@ -1,0 +1,62 @@
+{
+  "name": "mission-parser",
+  "version": "1.1.0-dev0",
+  "description": "Parse IL-2 FB mission file and produce detailed information about mission.",
+  "keywords": [
+    "il2",
+    "il-2",
+    "fb",
+    "forgotten battles",
+    "parser",
+    "mission"
+  ],
+  "license": "LGPL-3.0",
+  "author": "Alexander Oblovatniy, Alexander Kamyhin",
+  "homepage": "http://il-2-missions-parser.readthedocs.org/en/latest/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IL2HorusTeam/il2fb-mission-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/IL2HorusTeam/il2fb-mission-parser/issues"
+  },
+  "main": "src/app.js",
+  "dependencies": {
+    "babel-runtime": "v6.5.0",
+    "react": "0.14.7",
+    "redux": "v3.3.1"
+  },
+  "devDependencies": {
+    "babelify": "v7.2.0",
+    "babel-preset-es2015": "v6.5.0",
+    "babel-preset-react": "v6.5.0",
+    "browserify": "v13.0.0",
+    "envify": "v3.4.0",
+    "jest-cli": "v0.8.2",
+    "reactify": "v1.1.1",
+    "uglify-js": "v2.6.1",
+    "watchify": "v3.7.0"
+  },
+  "scripts": {
+    "start": "watchify -t [envify --NODE_ENV local] -o build/bundle.js -v -d src/app.js & sass -w ./styles:./build",
+    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > build/bundle.js; sass --update ./styles:./build",
+    "test": "jest"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015",
+            "react"
+          ]
+        }
+      ],
+      "envify"
+    ]
+  },
+  "jest": {
+    "rootDir": "./src"
+  }
+}
