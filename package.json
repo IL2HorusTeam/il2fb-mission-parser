@@ -23,8 +23,12 @@
   "main": "src/app.js",
   "dependencies": {
     "babel-runtime": "v6.5.0",
-    "react": "0.14.7",
-    "redux": "v3.3.1"
+    "material-ui": "^0.15.0",
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1",
+    "react-tap-event-plugin": "^1.0.0",
+    "redux": "v3.3.1",
+    "superagent": "^1.8.3"
   },
   "devDependencies": {
     "babelify": "v7.2.0",
@@ -38,8 +42,8 @@
     "watchify": "v3.7.0"
   },
   "scripts": {
-    "start": "watchify -t [envify --NODE_ENV local] -o build/bundle.js -v -d src/app.js & sass -w ./styles:./build",
-    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > build/bundle.js; sass --update ./styles:./build",
+    "start": "watchify -t [envify --NODE_ENV local] -o build/bundle.js -v -d src/app.js & sass -w ./assets/css:./build",
+    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > build/bundle.js; sass --update ./assets/css:./build",
     "test": "jest"
   },
   "browserify": {
