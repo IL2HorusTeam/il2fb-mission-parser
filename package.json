@@ -11,7 +11,7 @@
     "mission"
   ],
   "license": "LGPL-3.0",
-  "author": "Alexander Oblovatniy, Alexander Kamyhin",
+  "author": "Alexander Oblovatniy",
   "homepage": "http://il-2-missions-parser.readthedocs.org/en/latest/",
   "repository": {
     "type": "git",
@@ -20,14 +20,11 @@
   "bugs": {
     "url": "https://github.com/IL2HorusTeam/il2fb-mission-parser/issues"
   },
-  "main": "src/app.js",
   "dependencies": {
     "babel-runtime": "v6.5.0",
     "material-ui": "^0.15.0",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
-    "react-tap-event-plugin": "^1.0.0",
-    "redux": "v3.3.1",
     "superagent": "^1.8.3"
   },
   "devDependencies": {
@@ -36,15 +33,14 @@
     "babel-preset-react": "v6.5.0",
     "browserify": "v13.0.0",
     "envify": "v3.4.0",
-    "jest-cli": "v0.8.2",
     "reactify": "v1.1.1",
     "uglify-js": "v2.6.1",
     "watchify": "v3.7.0"
   },
+  "main": "jsx/app.jsx",
   "scripts": {
-    "start": "watchify -t [envify --NODE_ENV local] -o build/bundle.js -v -d src/app.js & sass -w ./assets/css:./build",
-    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > build/bundle.js; sass --update ./assets/css:./build",
-    "test": "jest"
+    "start": "watchify -t [envify --NODE_ENV local] -o ./build/bundle.js -v -d jsx/app.jsx & sass -w ./styles:./build",
+    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > ./build/bundle.js; sass --update ./styles:./build"
   },
   "browserify": {
     "transform": [
@@ -61,6 +57,6 @@
     ]
   },
   "jest": {
-    "rootDir": "./src"
+    "rootDir": "./jsx"
   }
 }

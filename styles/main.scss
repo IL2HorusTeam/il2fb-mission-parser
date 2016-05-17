@@ -1,0 +1,26 @@
+$font-stack: 'Roboto', sans-serif;
+
+@mixin font-smoothing($value: on) {
+  @if $value == on {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @else {
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+  }
+}
+
+html {
+  font: 100% $font-stack;
+  @include font-smoothing();
+}
+
+body, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+body {
+  font-size: 15px;
+  line-height: 24px;
+}
