@@ -25,6 +25,7 @@
     "material-ui": "^0.15.0",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
+    "react-dropzone": "^3.4.0",
     "superagent": "^1.8.3"
   },
   "devDependencies": {
@@ -34,13 +35,12 @@
     "browserify": "v13.0.0",
     "envify": "v3.4.0",
     "reactify": "v1.1.1",
-    "uglify-js": "v2.6.1",
-    "watchify": "v3.7.0"
+    "uglify-js": "v2.6.1"
   },
   "main": "./src/jsx/app.jsx",
   "scripts": {
-    "start": "watchify -t [envify --NODE_ENV local] -o ./build/bundle.js -v -d ./src/jsx/app.jsx & sass -w ./src/scss:./build",
-    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > ./build/bundle.js; sass --update ./src/scss:./build"
+    "dev": "browserify . -t [envify --APP_ENV development] | uglifyjs -cm > ./build/bundle.js; sass --update ./src/scss:./build",
+    "prod": "browserify . -t [envify --APP_ENV production] | uglifyjs -cm > ./build/bundle.js; sass --update ./src/scss:./build"
   },
   "browserify": {
     "transform": [
