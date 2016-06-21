@@ -21,10 +21,14 @@ export default class Main extends React.Component {
     this.state = {
       response: null
     };
+
+    this.onDrop = this.onDrop.bind(this);
   }
 
   onDrop(fileArray) {
-    var file = fileArray[0];
+    var file = fileArray[0],
+        self = this;
+
     request
       .post(config.parserURL)
       .attach("file", file)
@@ -38,7 +42,7 @@ export default class Main extends React.Component {
           response = response.body;
         }
 
-        this.setState({response: response});
+        self.setState({response: response});
       })
   }
 
