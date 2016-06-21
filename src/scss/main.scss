@@ -1,4 +1,5 @@
-$font-stack: 'Roboto', sans-serif;
+$roboto-font-stack: 'Roboto', sans-serif;
+$oxygen-font-stack: 'Oxygen', arial, verdana, sans-serif;
 
 @mixin font-smoothing($value: on) {
   @if $value == on {
@@ -11,18 +12,60 @@ $font-stack: 'Roboto', sans-serif;
   }
 }
 
-html {
-  font: 100% $font-stack;
-  @include font-smoothing();
+* {
+  margin: 0;
 }
 
-body, h1, h2, h3, h4, h5, h6 {
-  margin: 0;
+html {
+  font: 100% $roboto-font-stack;
+  @include font-smoothing();
+  min-height: 100%;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
 }
 
 body {
   font-size: 15px;
   line-height: 24px;
+}
+
+#main, #main > div {
+  height: 100%;
+}
+
+article {
+  height: 100%;
+  margin-bottom: -100px;
+}
+
+article:after {
+  content: "";
+  display: block;
+  height: 100px;
+}
+
+footer {
+  margin-top: 40px;
+  border-top: 1px solid #C0C0C0;
+  height: 59px;
+  text-align: center;
+}
+
+.footer-buttons {
+  display: inline-block;
+}
+
+.footer-buttons > div {
+  margin: 12px 6px;
+  float: left;
+}
+
+.dialog p + p {
+  margin: 12px 0;
 }
 
 .dropzone {

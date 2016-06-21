@@ -1,18 +1,25 @@
-import React from 'react';
-import Dropzone from 'react-dropzone';
-import request from 'superagent';
+import React from "react";
+import injectTapEventPlugin from "react-tap-event-plugin";
+import Dropzone from "react-dropzone";
+import request from "superagent";
 
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
-var config = require('../config/index.jsx');
+import Footer from "./footer";
+
+
+injectTapEventPlugin();
+
+var config = require("../config/index");
+
 
 export default class Main extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      data: null
+      response: null
     };
   }
 
@@ -20,13 +27,18 @@ export default class Main extends React.Component {
     var file = fileArray[0];
     request
       .post(config.parserURL)
-      .attach('file', file)
-      .end(function(err, res) {
-        if (err || !res.ok) {
-          console.log('Oh no! error');
+      .attach("file", file)
+      .end(function(error, response) {
+
+        if (error || !response.ok) {
+          console.log("Oh no! error");
+
+          response = null;
         } else {
-          console.log(res.body);
+          response = response.body;
         }
+
+        this.setState({response: response});
       })
   }
 
@@ -34,13 +46,21 @@ export default class Main extends React.Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <div>
-          <h1>il2fb-mission-parser demo</h1>
-          <h3></h3>
-          <Dropzone onDrop={this.onDrop} className='dropzone' multiple={false}>
-            <div>Start by selecting your mission file. Click or drop here.</div>
-          </Dropzone>
+
+          <article>
+            <h1>il2fb-mission-parser demo</h1>
+            <h3></h3>
+
+            <Dropzone onDrop={this.onDrop} className="dropzone" multiple={false}>
+              <div>Click here to select mission file or drop it here.</div>
+            </Dropzone>
+          </article>
+
+          <Footer />
+
         </div>
       </MuiThemeProvider>
     );
   }
+
 }
