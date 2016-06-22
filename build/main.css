@@ -44,6 +44,10 @@ footer {
 .dialog p + p {
   margin: 12px 0; }
 
+.response-wait {
+  width: 300px !important;
+  text-align: center; }
+
 .dropzone {
   cursor: pointer;
   margin-top: 1rem;
