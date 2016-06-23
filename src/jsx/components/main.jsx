@@ -19,6 +19,23 @@ injectTapEventPlugin();
 var config = require("../config/index");
 
 
+class ResponseWaitDialog extends React.Component {
+
+  render() {
+    return (
+        <Dialog
+          title="Waiting for server..."
+          modal={true}
+          open={this.props.open}
+          contentClassName="response-wait-dialog-content"
+        >
+          <CircularProgress />
+        </Dialog>
+    );
+  }
+
+}
+
 export default class Main extends React.Component {
 
   constructor(props) {
@@ -104,18 +121,11 @@ export default class Main extends React.Component {
               <div>Click here to select mission file or drop it here.</div>
             </Dropzone>
           </article>
-
           <Footer />
 
-          <Dialog
-            title="Waiting for server..."
-            modal={true}
+          <ResponseWaitDialog
             open={this.state.isWaitingForResponse}
-            contentClassName="response-wait-dialog-content"
-          >
-            <CircularProgress />
-          </Dialog>
-
+          />
           <ErrorDialog
             onClose={this.handleCloseErrorDialog}
             error={this.state.error}

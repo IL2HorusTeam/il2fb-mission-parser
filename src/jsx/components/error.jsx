@@ -117,9 +117,9 @@ export default class ErrorDialog extends React.Component {
         autoScrollBodyContent={true}
         bodyClassName="error-dialog-content"
       >
-        <FormattedError error={this.props.error}/>
+        <FormattedError error={this.props.error} />
       </Dialog>
-    )
+    );
   }
 
 }
