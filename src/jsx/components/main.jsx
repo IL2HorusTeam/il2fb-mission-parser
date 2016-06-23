@@ -11,7 +11,7 @@ import Dropzone from 'react-dropzone';
 import FlatButton from "material-ui/FlatButton";
 
 import Footer from "./footer";
-import FormattedError from "./error";
+import ErrorDialog from "./error";
 
 
 injectTapEventPlugin();
@@ -29,11 +29,11 @@ export default class Main extends React.Component {
       , isWaitingForResponse: false
     };
 
-    this.handleDrop = this.handleDrop.bind(this);
-    this.handleErrorClose = this.handleErrorClose.bind(this);
+    this.handleFileDrop = this.handleFileDrop.bind(this);
+    this.handleCloseErrorDialog = this.handleCloseErrorDialog.bind(this);
   }
 
-  handleDrop(fileArray) {
+  handleFileDrop(fileArray) {
     var file = fileArray[0]
       , self = this;
 
@@ -81,7 +81,7 @@ export default class Main extends React.Component {
     setTimeout(_makeRequest, 0);
   }
 
-  handleErrorClose() {
+  handleCloseErrorDialog() {
     this.setState({
         mission: null
       , error: null
@@ -90,21 +90,17 @@ export default class Main extends React.Component {
   }
 
   render() {
-    const errorActions = [
-      <FlatButton
-        label="Close"
-        primary={true}
-        onTouchTap={this.handleErrorClose}
-      />,
-    ];
-
     return (
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <div>
           <article>
             <h1>il2fb-mission-parser demo</h1>
             <h3></h3>
-            <Dropzone onDrop={this.handleDrop} className="dropzone" multiple={false}>
+            <Dropzone
+              onDrop={this.handleFileDrop}
+              className="dropzone"
+              multiple={false}
+            >
               <div>Click here to select mission file or drop it here.</div>
             </Dropzone>
           </article>
@@ -120,18 +116,10 @@ export default class Main extends React.Component {
             <CircularProgress />
           </Dialog>
 
-          <Dialog
-            title="Error"
-            actions={errorActions}
-            modal={true}
-            open={this.state.error}
-            onRequestClose={this.handleErrorClose}
-            autoScrollBodyContent={true}
-            bodyClassName="error-dialog-content"
-          >
-            <FormattedError error={this.state.error}/>
-          </Dialog>
-
+          <ErrorDialog
+            onClose={this.handleCloseErrorDialog}
+            error={this.state.error}
+          />
         </div>
       </MuiThemeProvider>
     );

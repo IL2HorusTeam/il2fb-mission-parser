@@ -1,7 +1,11 @@
 import React from "react";
 
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
+
 import nl2br from "react-nl2br";
 import intersperse from "intersperse";
+
 
 class FormattedIssue extends React.Component {
 
@@ -73,7 +77,7 @@ class FormattedTraceback extends React.Component {
 }
 
 
-export default class FormattedError extends React.Component {
+class FormattedError extends React.Component {
 
   render() {
     if (!this.props.error) {
@@ -88,6 +92,34 @@ export default class FormattedError extends React.Component {
         <FormattedTraceback traceback={this.props.error.traceback} />
       </div>
     );
+  }
+
+}
+
+export default class ErrorDialog extends React.Component {
+
+  render() {
+    const actions = [
+      <FlatButton
+        label="Close"
+        primary={true}
+        onTouchTap={this.props.onClose}
+      />,
+    ];
+
+    return (
+      <Dialog
+        title="Error"
+        actions={actions}
+        modal={true}
+        open={this.props.error}
+        onRequestClose={this.props.onClose}
+        autoScrollBodyContent={true}
+        bodyClassName="error-dialog-content"
+      >
+        <FormattedError error={this.props.error}/>
+      </Dialog>
+    )
   }
 
 }
