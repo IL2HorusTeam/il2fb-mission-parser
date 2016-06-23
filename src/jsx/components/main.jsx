@@ -1,5 +1,7 @@
 import React from "react";
 import injectTapEventPlugin from "react-tap-event-plugin";
+import update from "react-addons-update";
+
 import request from "superagent";
 
 import getMuiTheme from "material-ui/styles/getMuiTheme";
@@ -16,7 +18,7 @@ import ErrorDialog from "./error";
 
 injectTapEventPlugin();
 
-var config = require("../config/index");
+const config = require("../config/index");
 
 
 class ResponseWaitDialog extends React.Component {
@@ -80,11 +82,10 @@ export default class Main extends React.Component {
       , self = this;
 
     function _beforeRequest() {
-      self.setState({
-          mission: null
-        , error: null
+      self.setState(update(self.state, {$merge: {
+          error: null
         , isWaitingForResponse: true
-      });
+      }}));
     }
 
     function _makeRequest() {
@@ -112,11 +113,11 @@ export default class Main extends React.Component {
         mission = response.body;
       }
 
-      self.setState({
+      self.setState(update(self.state, {$merge: {
           mission: mission
         , error: errorInfo
         , isWaitingForResponse: false
-      });
+      }}));
     }
 
     setTimeout(_beforeRequest, 0);
@@ -124,11 +125,9 @@ export default class Main extends React.Component {
   }
 
   handleCloseErrorDialog() {
-    this.setState({
-        mission: null
-      , error: null
-      , isWaitingForResponse: false
-    });
+    this.setState(update(this.state, {$merge: {
+      error: null
+    }}));
   }
 
   render() {
