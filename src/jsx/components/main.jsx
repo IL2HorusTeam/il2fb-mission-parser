@@ -23,18 +23,43 @@ class ResponseWaitDialog extends React.Component {
 
   render() {
     return (
-        <Dialog
-          title="Waiting for server..."
-          modal={true}
-          open={this.props.open}
-          contentClassName="response-wait-dialog-content"
-        >
-          <CircularProgress />
-        </Dialog>
+      <Dialog
+        title="Waiting for server..."
+        modal={true}
+        open={this.props.open}
+        contentClassName="response-wait-dialog-content"
+      >
+        <CircularProgress />
+      </Dialog>
     );
   }
 
 }
+
+
+class Body extends React.Component {
+
+  render() {
+    return (
+      <article>
+        <h1>il2fb-mission-parser demo</h1>
+        <h3></h3>
+
+        <Dropzone
+          onDrop={this.props.onFileDrop}
+          className="dropzone"
+          multiple={false}
+        >
+          <div>
+            Click here to select mission file or drop it here.
+          </div>
+        </Dropzone>
+      </article>
+    );
+  }
+
+}
+
 
 export default class Main extends React.Component {
 
@@ -110,19 +135,10 @@ export default class Main extends React.Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <div>
-          <article>
-            <h1>il2fb-mission-parser demo</h1>
-            <h3></h3>
-            <Dropzone
-              onDrop={this.handleFileDrop}
-              className="dropzone"
-              multiple={false}
-            >
-              <div>Click here to select mission file or drop it here.</div>
-            </Dropzone>
-          </article>
+          <Body
+            onFileDrop={this.handleFileDrop}
+          />
           <Footer />
-
           <ResponseWaitDialog
             open={this.state.isWaitingForResponse}
           />
