@@ -57,7 +57,9 @@ pre.traceback {
   margin: 10px 0;
   background-color: #fafafa;
   padding: 10px;
-  border: 1px solid #ddd; }
+  border: 1px solid #ddd;
+  font-size: 12px;
+  line-height: 15px; }
 
 .dropzone {
   cursor: pointer;
