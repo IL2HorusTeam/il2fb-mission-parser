@@ -22,10 +22,12 @@
   },
   "dependencies": {
     "babel-runtime": "v6.5.0",
+    "intersperse": "^1.0.0",
     "material-ui": "^0.15.0",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
     "react-dropzone": "^3.4.0",
+    "react-nl2br": "^0.1.1",
     "react-tap-event-plugin": "^1.0.0",
     "superagent": "^1.8.3",
     "webpack": "^1.13.1"

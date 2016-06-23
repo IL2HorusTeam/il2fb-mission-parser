@@ -40,6 +40,7 @@ body {
 article {
   height: 100%;
   margin-bottom: -100px;
+  text-align: center;
 }
 
 article:after {
@@ -68,9 +69,21 @@ footer {
   margin: 12px 0;
 }
 
-.response-wait {
+.response-wait-dialog-content {
   width: 300px !important;
   text-align: center;
+}
+
+.error-dialog-content {
+  margin: 10px 0;
+}
+
+pre.traceback {
+  overflow-x: scroll;
+  margin: 10px 0;
+  background-color: #fafafa;
+  padding: 10px;
+  border: 1px solid #ddd;
 }
 
 .dropzone {
