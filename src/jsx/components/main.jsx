@@ -60,6 +60,12 @@ class Body extends React.Component {
             Click here to select mission file or drop it here.
           </div>
         </Dropzone>
+
+        <div className="samples">
+          <a href="#" target="_blank">Get sample mission 1</a>
+          <span className="separator">|</span>
+          <a href="#" target="_blank">Get sample mission 2</a>
+        </div>
       </article>
     );
   }
