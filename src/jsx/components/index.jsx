@@ -68,7 +68,12 @@ class Body extends React.Component {
           <a href="#" target="_blank">Get sample mission 2</a>
         </div>
 
-        <Mission mission={this.props.mission} />
+        {this.props.mission &&
+          <Mission
+            mission={this.props.mission}
+            key={this.props.mission.file_name}
+          />
+        }
       </article>
     );
   }
