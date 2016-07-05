@@ -19,40 +19,31 @@ $oxygen-font-stack: 'Oxygen', arial, verdana, sans-serif;
 html {
   font: 100% $roboto-font-stack;
   @include font-smoothing();
+  position: relative;
   min-height: 100%;
 }
 
 html, body {
-  height: 100%;
-  width: 100%;
   padding: 0;
 }
 
 body {
   font-size: 15px;
   line-height: 24px;
-}
-
-#main, #main > div {
-  height: 100%;
+  margin: 0 0 110px;
 }
 
 article {
-  height: 100%;
-  margin-bottom: -100px;
   text-align: center;
 }
 
-article:after {
-  content: "";
-  display: block;
-  height: 100px;
-}
-
 footer {
-  margin-top: 40px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
   border-top: 1px solid #C0C0C0;
-  height: 59px;
+  height: 60px;
+  width: 100%;
   text-align: center;
 }
 
@@ -61,7 +52,7 @@ footer {
 }
 
 .footer-buttons > div {
-  margin: 12px 6px;
+  margin: 12px 5px 5px;
   float: left;
 }
 
@@ -86,6 +77,20 @@ pre.traceback {
   border: 1px solid #ddd;
   font-size: 12px;
   line-height: 15px;
+}
+
+h1.logo {
+  margin-top: 50px;
+  margin-bottom: 15px;
+  font: 36px $oxygen-font-stack;
+  font-weight: bold;
+}
+
+h3.logo {
+  margin-bottom: 30px;
+  font: 18px $oxygen-font-stack;
+  font-weight: normal;
+  font-style: italic;
 }
 
 .dropzone {

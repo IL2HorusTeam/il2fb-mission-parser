@@ -44,8 +44,12 @@ class Body extends React.Component {
   render() {
     return (
       <article>
-        <h1>il2fb-mission-parser demo</h1>
-        <h3></h3>
+        <h1 className="logo">
+          il2fb-mission-parser demo
+        </h1>
+        <h3 className="logo">
+          test library and see mission data visualized
+        </h3>
 
         <Dropzone
           onDrop={this.props.onFileDrop}
