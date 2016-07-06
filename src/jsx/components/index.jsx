@@ -12,9 +12,9 @@ import Dialog from "material-ui/Dialog";
 import Dropzone from 'react-dropzone';
 import FlatButton from "material-ui/FlatButton";
 
-import ErrorDialog from "./error";
-import Footer from "./footer";
-import Mission from "./mission";
+import ErrorDialog from "./Error";
+import Footer from "./Footer";
+import Mission from "./Mission";
 
 
 injectTapEventPlugin();

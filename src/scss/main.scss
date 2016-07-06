@@ -121,11 +121,16 @@ h3.logo {
   color: rgba(0, 0, 0, 0.35);
 }
 
-.mission {
+.mission-details-pane {
   max-width: 960px;
   margin: 40px auto;
 }
-
-.menu {
-  display: inline-block;
+.mission-details {
+  display: flex;
+}
+.mission-details-menu {
+  margin-right: 10px;
+}
+.mission-details-data {
+  flex: 1;
 }

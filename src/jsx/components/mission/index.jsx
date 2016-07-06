@@ -1,9 +1,36 @@
-import React, {PropTypes} from "react";
+import React from "react";
 import update from "react-addons-update";
 
 import {Card, CardTitle} from 'material-ui/Card';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+
+import Buildings from './Buildings';
+import Cameras from './Cameras';
+import Flights from './Flights';
+import GeneralInfo from './GeneralInfo';
+import HomeBases from './HomeBases';
+import Markers from './Markers';
+import MovingUnits from './MovingUnits';
+import PlayerInfo from './PlayerInfo';
+import Rockets from './Rockets';
+import StationaryObjects from './StationaryObjects';
+import Targets from './Targets';
+
+
+const tabs_to_components_map = {
+  'buildings': Buildings,
+  'cameras': Cameras,
+  'flights': Flights,
+  'generalInfo': GeneralInfo,
+  'homeBases': HomeBases,
+  'markers': Markers,
+  'movingUnits': MovingUnits,
+  'playerInfo': PlayerInfo,
+  'rockets': Rockets,
+  'stationaryObjects': StationaryObjects,
+  'targets': Targets,
+}
 
 
 export default class Mission extends React.Component {
@@ -28,15 +55,17 @@ export default class Mission extends React.Component {
       return false;
     }
 
+    var Details = tabs_to_components_map[this.state.activeTab];
+
     return (
-      <Card className="mission">
+      <Card className="mission-details-pane">
         <CardTitle
           title="Mission details"
           subtitle={this.props.mission.file_name}
         />
 
-        <div>
-          <div className="menu">
+        <div className="mission-details">
+          <div className="mission-details-menu">
             <Menu
               value={this.state.activeTab}
               onItemTouchTap={this.handleMenuItemSelected}
@@ -62,8 +91,8 @@ export default class Mission extends React.Component {
                 value="homeBases"
               />
               <MenuItem
-                primaryText="Static objects"
-                value="staticObjects"
+                primaryText="Stationary objects"
+                value="stationaryObjects"
               />
               <MenuItem
                 primaryText="Buildings"
@@ -86,6 +115,10 @@ export default class Mission extends React.Component {
                 value="markers"
               />
             </Menu>
+          </div>
+
+          <div className="mission-details-data">
+            <Details data={this.props.mission.data}/>
           </div>
         </div>
       </Card>
