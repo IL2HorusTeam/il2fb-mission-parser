@@ -30,16 +30,25 @@ Output example:
 .. code-block:: python
 
     {
-        'scouts_red': [
-            "B-25H-1NA",
-            "B-25J-1NA",
-            "BeaufighterMk21",
-        ],
+        'scouts_red': {
+          'belligerent': Belligerents.red,
+          'aircrafts': [
+              "B-25H-1NA",
+              "B-25J-1NA",
+              "BeaufighterMk21",
+          ],
+        }
     }
 
-Output contains a dictionary with a single value. That value is a list of
-aircraft code names. It can be accessed by ``scouts_{suffix}`` key, where
-``suffix`` is original suffix, converted to lower case. So, possible keys are:
+Output contains a dictionary with a single value. It can be accessed by
+``scouts_{suffix}`` key, where ``suffix`` is original suffix, converted to
+lower case. So, possible keys are:
 
 #. ``scouts_red``
 #. ``scouts_blue``
+
+The value itself is also a dictionary, which contains a list of aircraft code
+names and a `belligerent`_ constant.
+
+
+.. _belligerent: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L21

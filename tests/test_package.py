@@ -266,24 +266,28 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "  Ju-88A-4",
         ]
         result = self.parser.parse_stream(lines)
-        self.assertEqual(
-            result['conditions']['scouting'],
+        result = result['conditions']['scouting']
+
+        self.assertEqual(result['only_scouts_complete_targets'], False)
+        self.assertEqual(result['scouts_affect_radar'], False)
+        self.assertEqual(result['ships_affect_radar'], False)
+
+        self.assertEqual(result['scouts'], [
             {
-                'only_scouts_complete_targets': False,
-                'scouts_affect_radar': False,
-                'ships_affect_radar': False,
-                'scouts': {
-                    Belligerents.red: [
-                        'B-25H-1NA',
-                        'B-25J-1NA'
-                    ],
-                    Belligerents.blue: [
-                        'Bf-109F-4',
-                        'Ju-88A-4'
-                    ],
-                },
-            }
-        )
+                'belligerent': Belligerents.blue,
+                'aircrafts': [
+                    'Bf-109F-4',
+                    'Ju-88A-4',
+                ],
+            },
+            {
+                'belligerent': Belligerents.red,
+                'aircrafts': [
+                    'B-25H-1NA',
+                    'B-25J-1NA',
+                ],
+            },
+        ])
 
     def test_get_moving_units(self):
         lines = [

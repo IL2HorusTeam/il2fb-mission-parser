@@ -193,15 +193,13 @@ class MissionParser(object):
         except KeyError:
             result = {}
 
-        keys = [
-            key for key in self.data.keys()
+        scouts = [
+            self.data[key]
+            for key in sorted(self.data.keys())
             if key.startswith(MDSScoutsSectionParser.output_prefix)
         ]
-        scouts = {
-            self.data[key]['belligerent']: self.data[key]['aircrafts']
-            for key in keys
-        }
-        set_if_present(result, 'scouts', scouts)
+        if scouts:
+            result['scouts'] = scouts
 
         return result
 
