@@ -49,7 +49,7 @@ class Body extends React.Component {
           il2fb-mission-parser demo
         </h1>
         <h3 className="logo">
-          test library and see mission data visualized
+          test library and explore visualized mission data
         </h3>
 
         <Dropzone
@@ -68,7 +68,8 @@ class Body extends React.Component {
           <a href="#" target="_blank">Get sample mission 2</a>
         </div>
 
-        {this.props.mission &&
+        {
+          this.props.mission &&
           <Mission
             mission={this.props.mission}
             key={this.props.mission.file_name}

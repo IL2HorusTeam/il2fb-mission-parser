@@ -2,13 +2,12 @@ import React from "react";
 import update from "react-addons-update";
 
 import {Card, CardTitle} from 'material-ui/Card';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import {List, ListItem, MakeSelectable} from 'material-ui/List';
 
 import Buildings from './Buildings';
 import Cameras from './Cameras';
 import Flights from './Flights';
-import GeneralInfo from './GeneralInfo';
+import Conditions from './Conditions';
 import HomeBases from './HomeBases';
 import Markers from './Markers';
 import MovingUnits from './MovingUnits';
@@ -18,18 +17,20 @@ import StationaryObjects from './StationaryObjects';
 import Targets from './Targets';
 
 
-const tabs_to_components_map = {
-  'buildings': Buildings,
-  'cameras': Cameras,
-  'flights': Flights,
-  'generalInfo': GeneralInfo,
-  'homeBases': HomeBases,
-  'markers': Markers,
-  'movingUnits': MovingUnits,
-  'playerInfo': PlayerInfo,
-  'rockets': Rockets,
-  'stationaryObjects': StationaryObjects,
-  'targets': Targets,
+let SelectableList = MakeSelectable(List);
+
+const tabsToComponentsMap = {
+  buildings: Buildings,
+  cameras: Cameras,
+  conditions: Conditions,
+  flights: Flights,
+  homeBases: HomeBases,
+  markers: Markers,
+  movingUnits: MovingUnits,
+  playerInfo: PlayerInfo,
+  rockets: Rockets,
+  stationaryObjects: StationaryObjects,
+  targets: Targets,
 }
 
 
@@ -38,15 +39,15 @@ export default class Mission extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: 'generalInfo'
+      activeTab: 'conditions'
     };
 
-    this.handleMenuItemSelected = this.handleMenuItemSelected.bind(this);
+    this.handleListItemSelected = this.handleListItemSelected.bind(this);
   }
 
-  handleMenuItemSelected(event, menuItem, index) {
+  handleListItemSelected(event, value) {
     this.setState(update(this.state, {$merge: {
-      activeTab: menuItem.props.value
+      activeTab: value
     }}));
   }
 
@@ -55,7 +56,7 @@ export default class Mission extends React.Component {
       return false;
     }
 
-    var Details = tabs_to_components_map[this.state.activeTab];
+    var Details = tabsToComponentsMap[this.state.activeTab];
 
     return (
       <Card className="mission-details-pane">
@@ -66,62 +67,62 @@ export default class Mission extends React.Component {
 
         <div className="mission-details">
           <div className="mission-details-menu">
-            <Menu
+            <SelectableList
               value={this.state.activeTab}
-              onItemTouchTap={this.handleMenuItemSelected}
+              onChange={this.handleListItemSelected}
             >
-              <MenuItem
-                primaryText="General info"
-                value="generalInfo"
+              <ListItem
+                primaryText="Conditions"
+                value="conditions"
               />
-              <MenuItem
+              <ListItem
                 primaryText="Player info"
                 value="playerInfo"
               />
-              <MenuItem
+              <ListItem
                 primaryText="Moving units"
                 value="movingUnits"
               />
-              <MenuItem
+              <ListItem
                 primaryText="Flights"
                 value="flights"
               />
-              <MenuItem
+              <ListItem
                 primaryText="Home bases"
                 value="homeBases"
               />
-              <MenuItem
+              <ListItem
                 primaryText="Stationary objects"
                 value="stationaryObjects"
               />
-              <MenuItem
+              <ListItem
                 primaryText="Buildings"
                 value="buildings"
               />
-              <MenuItem
+              <ListItem
                 primaryText="Rockets"
                 value="rockets"
               />
-              <MenuItem
+              <ListItem
                 primaryText="Targets"
                 value="targets"
               />
-              <MenuItem
+              <ListItem
                 primaryText="Cameras"
                 value="cameras"
               />
-              <MenuItem
+              <ListItem
                 primaryText="Markers"
                 value="markers"
               />
-            </Menu>
+            </SelectableList>
           </div>
 
           <div className="mission-details-data">
-            <Details data={this.props.mission.data}/>
+            <Details data={this.props.mission.data} />
           </div>
         </div>
       </Card>
-    )
+    );
   }
 }

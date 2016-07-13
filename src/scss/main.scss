@@ -1,5 +1,6 @@
 $roboto-font-stack: 'Roboto', sans-serif;
 $oxygen-font-stack: 'Oxygen', arial, verdana, sans-serif;
+$monospace-font-stack: Consolas, 'Andale Mono WT', 'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', Monaco, 'Courier New', Courier, monospace;
 
 @mixin font-smoothing($value: on) {
   @if $value == on {
@@ -33,11 +34,21 @@ body {
   margin: 0 0 110px;
 }
 
+code{
+  padding: 3px;
+  font-family: 0.9em $monospace-font-stack;
+  color: #518BAB;
+  border: 1px solid lightblue;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
+
 footer {
   position: absolute;
   left: 0;
   bottom: 0;
-  border-top: 1px solid #C0C0C0;
+  border-top: 1px solid rgb(204, 204, 204);
   height: 60px;
   width: 100%;
   text-align: center;
@@ -127,10 +138,17 @@ h3.logo {
 }
 .mission-details {
   display: flex;
+  padding-bottom: 15px;
 }
 .mission-details-menu {
-  margin-right: 10px;
 }
 .mission-details-data {
   flex: 1;
+  border-left: 1px solid rgb(204, 204, 204);
+  padding: 10px;
+}
+
+.material-icons.fixation {
+  top: 5px;
+  padding-right: 5px;
 }

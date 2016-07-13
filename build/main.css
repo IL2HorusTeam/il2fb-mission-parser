@@ -16,11 +16,20 @@ body {
   line-height: 24px;
   margin: 0 0 110px; }
 
+code {
+  padding: 3px;
+  font-family: 0.9em Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+  color: #518BAB;
+  border: 1px solid lightblue;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px; }
+
 footer {
   position: absolute;
   left: 0;
   bottom: 0;
-  border-top: 1px solid #C0C0C0;
+  border-top: 1px solid #cccccc;
   height: 60px;
   width: 100%;
   text-align: center; }
@@ -101,12 +110,16 @@ h3.logo {
   margin: 40px auto; }
 
 .mission-details {
-  display: flex; }
-
-.mission-details-menu {
-  margin-right: 10px; }
+  display: flex;
+  padding-bottom: 15px; }
 
 .mission-details-data {
-  flex: 1; }
+  flex: 1;
+  border-left: 1px solid #cccccc;
+  padding: 10px; }
+
+.material-icons.fixation {
+  top: 5px;
+  padding-right: 5px; }
 
 /*# sourceMappingURL=main.css.map */
