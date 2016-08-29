@@ -7,12 +7,31 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 class Wind extends React.Component {
 
   render() {
+    var data = this.props.data || {};
+
     return (
-      <Card>
-        <CardHeader title="Wind" />
+      <Card
+        className="mission-details-card sub"
+      >
+        <CardHeader
+          className="mission-details-card-header"
+          title="Wind"
+        />
         <CardText>
-          <p>Direction: {this.props.data.direction} °</p>
-          <p>Speed: {this.props.data.speed} m/s</p>
+          <p>
+            Direction: {
+              data.direction !== undefined
+              ? data.direction + " °"
+              : "N/A"
+            }
+          </p>
+          <p>
+            Speed: {
+              data.speed !== undefined
+              ? data.speed + " m/s"
+              : "N/A"
+            }
+          </p>
         </CardText>
       </Card>
     );
@@ -23,15 +42,46 @@ class Wind extends React.Component {
 export default class Meteorology extends React.Component {
 
   render() {
+    var data = this.props.data || {};
+
     return (
-      <Card>
-        <CardHeader title="Meteorology" />
+      <Card
+        className="mission-details-card"
+      >
+        <CardHeader
+          className="mission-details-card-header"
+          title="Meteorology"
+        />
         <CardText>
-          <p>Weather: {this.props.data.weather.verbose_name}</p>
-          <p>Gust: {this.props.data.gust.verbose_name}</p>
-          <p>Turbulence: {this.props.data.turbulence.verbose_name}</p>
-          <p>Cloud base: {this.props.data.cloud_base} m</p>
-          <Wind data={this.props.data.wind} />
+          <p>
+            Weather: {
+              data.weather
+              ? data.weather.verbose_name
+              : "N/A"
+            }
+          </p>
+          <p>
+            Gust: {
+              data.gust
+              ? data.gust.verbose_name
+              : "N/A"
+            }
+          </p>
+          <p>
+            Turbulence: {
+              data.turbulence
+              ? data.turbulence.verbose_name
+              : "N/A"
+            }
+          </p>
+          <p>
+            Cloud base: {
+              data.cloud_base !== undefined
+              ? data.cloud_base + " m"
+              : "N/A"
+            }
+          </p>
+          <Wind data={data.wind} />
         </CardText>
       </Card>
     );

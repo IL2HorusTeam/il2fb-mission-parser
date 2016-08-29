@@ -147,8 +147,18 @@ h3.logo {
   border-left: 1px solid rgb(204, 204, 204);
   padding: 10px;
 }
+.mission-details-card + .mission-details-card {
+  margin-top: 15px;
+}
+.mission-details-card.sub {
+  margin-top: 15px;
+}
+.mission-details-card-header {
+  border-bottom: 1px solid #e8e8e8;
+}
 
 .material-icons.fixation {
   top: 5px;
   padding-right: 5px;
 }
+

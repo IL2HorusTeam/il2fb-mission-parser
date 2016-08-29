@@ -10,37 +10,41 @@ import Radar from './Radar';
 import RespawnTime from './RespawnTime';
 import Scouting from './Scouting';
 
+
 export default class Conditions extends React.Component {
 
   render() {
+    var data = this.props.data || {}
+      , conditions = data.conditions || {};
+
     return (
       <div>
         <LocationLoader
-          value={this.props.data.location_loader}
+          value={data.location_loader}
         />
         <DateTime
-          data={this.props.data.conditions.time_info}
+          data={conditions.time_info}
         />
         <Meteorology
-          data={this.props.data.conditions.meteorology}
+          data={conditions.meteorology}
         />
         <HomeBases
-          data={this.props.data.conditions.home_bases}
+          data={conditions.home_bases}
         />
         <Communication
-          data={this.props.data.conditions.communication}
+          data={conditions.communication}
         />
         <Radar
-          data={this.props.data.conditions.radar}
+          data={conditions.radar}
         />
         <Scouting
-          data={this.props.data.conditions.scouting}
+          data={conditions.scouting}
         />
         <RespawnTime
-          data={this.props.data.conditions.respawn_time}
+          data={conditions.respawn_time}
         />
         <CraterVisibilityMuptipliers
-          data={this.props.data.conditions.crater_visibility_muptipliers}
+          data={conditions.crater_visibility_muptipliers}
         />
       </div>
     );

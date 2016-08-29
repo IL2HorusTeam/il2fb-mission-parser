@@ -12,8 +12,11 @@ class BelligerentScouts extends React.Component {
     });
 
     return (
-      <Card>
+      <Card
+        className="mission-details-card sub"
+      >
         <CardHeader
+          className="mission-details-card-header"
           title={"Scouts for " + this.props.belligerent.verbose_name}
         />
         <CardText>
@@ -31,6 +34,12 @@ class BelligerentScouts extends React.Component {
 class Scouts extends React.Component {
 
   render() {
+    if (!this.props.data) {
+      return (
+        <p>Lists of scout planes are not defined.</p>
+      )
+    }
+
     var belligerentScoutsNodes = this.props.data.map(function(data, i) {
       return (
         <BelligerentScouts
@@ -54,26 +63,35 @@ class Scouts extends React.Component {
 export default class Scouting extends React.Component {
 
   render() {
+    var data = this.props.data || {};
+
     return (
-      <Card>
-        <CardHeader title="Scouting" />
+      <Card
+        className="mission-details-card"
+      >
+        <CardHeader
+          className="mission-details-card-header"
+          title="Scouting"
+        />
         <CardText>
           <Checkbox
             label="Ships can spot enemy planes with their radars"
-            checked={this.props.data.ships_affect_radar}
+            checked={data.ships_affect_radar}
             disabled={true}
           />
           <Checkbox
             label="Selected scout planes can spot ground units"
-            checked={this.props.data.scouts_affect_radar}
+            checked={data.scouts_affect_radar}
             disabled={true}
           />
           <Checkbox
             label="Only scout planes can complete 'recon' targets"
-            checked={this.props.data.only_scouts_complete_targets}
+            checked={data.only_scouts_complete_targets}
             disabled={true}
           />
-          <Scouts data={this.props.data.scouts} />
+          <Scouts
+            data={data.scouts}
+          />
         </CardText>
       </Card>
     );

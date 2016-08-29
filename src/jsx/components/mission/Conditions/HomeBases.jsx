@@ -7,23 +7,30 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 export default class HomeBases extends React.Component {
 
   render() {
+    var data = this.props.data || {};
+
     return (
-      <Card>
-        <CardHeader title="Home bases" />
+      <Card
+        className="mission-details-card"
+      >
+        <CardHeader
+          className="mission-details-card-header"
+          title="Home bases"
+        />
         <CardText>
           <Checkbox
             label="Hide AI aircrafts after landing"
-            checked={this.props.data.hide_ai_aircrafts_after_landing}
+            checked={data.hide_ai_aircrafts_after_landing}
             disabled={true}
           />
           <Checkbox
             label="Hide hostile and unpopulated airfields"
-            checked={this.props.data.hide_unpopulated}
+            checked={data.hide_unpopulated}
             disabled={true}
           />
           <Checkbox
             label="Hide number of players"
-            checked={this.props.data.hide_players_count}
+            checked={data.hide_players_count}
             disabled={true}
           />
         </CardText>

@@ -7,10 +7,21 @@ export default class LocationLoader extends React.Component {
 
   render() {
     return (
-      <Card>
-        <CardHeader title="Location loader" />
+      <Card
+        className="mission-details-card"
+      >
+        <CardHeader
+          className="mission-details-card-header"
+          title="Location loader"
+        />
         <CardText>
-          <code>{this.props.value}</code>
+          <code>
+            {
+              this.props.value
+              ? this.props.value
+              : "N/A"
+            }
+          </code>
         </CardText>
       </Card>
     );

@@ -7,23 +7,28 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 export default class Communication extends React.Component {
 
   render() {
+    var data = this.props.data || {};
+
     return (
-      <Card>
-        <CardHeader title="Communication" />
+      <Card className="mission-details-card">
+        <CardHeader
+          className="mission-details-card-header"
+          title="Communication"
+        />
         <CardText>
           <Checkbox
             label="Tower communication"
-            checked={this.props.data.tower_communication}
+            checked={data.tower_communication}
             disabled={true}
           />
           <Checkbox
             label="Vectoring"
-            checked={this.props.data.vectoring}
+            checked={data.vectoring}
             disabled={true}
           />
           <Checkbox
             label="Radio silence for AI"
-            checked={this.props.data.ai_radio_silence}
+            checked={data.ai_radio_silence}
             disabled={true}
           />
         </CardText>

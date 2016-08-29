@@ -7,13 +7,38 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 class ShipsGroup extends React.Component {
 
   render() {
+    var data = this.props.data || {};
+
     return (
-      <Card>
-        <CardHeader title={this.props.title} />
+      <Card
+        className="mission-details-card sub"
+      >
+        <CardHeader
+          className="mission-details-card-header"
+          title={this.props.title || "N/A"}
+        />
         <CardText>
-          <p>Max range: {this.props.data.max_range} km</p>
-          <p>Min height: {this.props.data.min_height} m</p>
-          <p>Max height: {this.props.data.max_height} m</p>
+          <p>
+            Max range: {
+              data.max_range !== undefined
+              ? data.max_range + " km"
+              : "N/A"
+            }
+          </p>
+          <p>
+            Min height: {
+              data.min_height !== undefined
+              ? data.min_height + " m"
+              : "N/A"
+            }
+          </p>
+          <p>
+            Max height: {
+              data.max_height !== undefined
+              ? data.max_height + " m"
+              : "N/A"
+            }
+          </p>
         </CardText>
       </Card>
     )
@@ -25,15 +50,17 @@ class ShipsGroup extends React.Component {
 class Ships extends React.Component {
 
   render() {
+    var data = this.props.data || {};
+
     return (
       <div>
         <ShipsGroup
           title="Big ships"
-          data={this.props.data.big}
+          data={data.big}
         />
         <ShipsGroup
           title="Small ships"
-          data={this.props.data.small}
+          data={data.small}
         />
       </div>
     )
@@ -45,13 +72,38 @@ class Ships extends React.Component {
 class Scouts extends React.Component {
 
   render() {
+    var data = this.props.data || {};
+
     return (
-      <Card>
-        <CardHeader title="Scouts" />
+      <Card
+        className="mission-details-card sub"
+      >
+        <CardHeader
+          className="mission-details-card-header"
+          title="Scouts"
+        />
         <CardText>
-          <p>Max range: {this.props.data.max_range} km</p>
-          <p>Max height: {this.props.data.max_height} m</p>
-          <p>&alpha; angle: {this.props.data.alpha} °</p>
+          <p>
+            Max range: {
+              data.max_range !== undefined
+              ? data.max_range + " km"
+              : "N/A"
+            }
+          </p>
+          <p>
+            Max height: {
+              data.max_height !== undefined
+              ? data.max_height + " m"
+              : "N/A"
+            }
+          </p>
+          <p>
+            &alpha; angle: {
+              data.alpha !== undefined
+              ? data.alpha + " °"
+              : "N/A"
+            }
+          </p>
         </CardText>
       </Card>
     )
@@ -63,18 +115,35 @@ class Scouts extends React.Component {
 export default class Radar extends React.Component {
 
   render() {
+    var data = this.props.data || {};
+
     return (
-      <Card>
-        <CardHeader title="Radar settings" />
+      <Card
+        className="mission-details-card"
+      >
+        <CardHeader
+          className="mission-details-card-header"
+          title="Radar settings"
+        />
         <CardText>
           <Checkbox
             label="Radar is in advanced mode"
-            checked={this.props.data.advanced_mode}
+            checked={data.advanced_mode}
             disabled={true}
           />
-          <p>Refresh interval: {this.props.data.refresh_interval} sec</p>
-          <Ships data={this.props.data.ships} />
-          <Scouts data={this.props.data.scouts} />
+          <p>
+            Refresh interval: {
+              data.refresh_interval !== undefined
+              ? data.refresh_interval + " sec"
+              : "N/A"
+            }
+          </p>
+          <Ships
+            data={data.ships}
+          />
+          <Scouts
+            data={data.scouts}
+          />
         </CardText>
       </Card>
     );
