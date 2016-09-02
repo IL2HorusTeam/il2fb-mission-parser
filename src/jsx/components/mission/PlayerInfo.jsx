@@ -31,7 +31,7 @@ class WeaponsFixationInfo extends React.Component {
 export default class PlayerInfo extends React.Component {
 
   render() {
-    var data = (this.props.data || {}).player;
+    var data = (this.props.data || {}).player || {};
 
     return (
       <Card
