@@ -13,7 +13,7 @@ export default class CraterVisibilityMuptipliers extends React.Component {
         className="mission-details-card"
       >
         <CardHeader
-          className="mission-details-card-header"
+          className="header"
           title="Crater visibility muptipliers"
         />
         <CardText>

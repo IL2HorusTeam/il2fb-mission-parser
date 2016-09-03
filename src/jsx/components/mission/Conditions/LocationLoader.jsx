@@ -11,7 +11,7 @@ export default class LocationLoader extends React.Component {
         className="mission-details-card"
       >
         <CardHeader
-          className="mission-details-card-header"
+          className="header"
           title="Location loader"
         />
         <CardText>

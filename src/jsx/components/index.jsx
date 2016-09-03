@@ -63,9 +63,7 @@ class Body extends React.Component {
         </Dropzone>
 
         <div className="samples">
-          <a href="#" target="_blank">Get sample mission 1</a>
-          <span className="separator">|</span>
-          <a href="#" target="_blank">Get sample mission 2</a>
+          <a href="#" target="_blank">Get sample mission</a>
         </div>
 
         {

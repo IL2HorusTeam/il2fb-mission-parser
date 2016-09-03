@@ -14,7 +14,7 @@ class Wind extends React.Component {
         className="mission-details-card sub"
       >
         <CardHeader
-          className="mission-details-card-header"
+          className="header"
           title="Wind"
         />
         <CardText>
@@ -49,7 +49,7 @@ export default class Meteorology extends React.Component {
         className="mission-details-card"
       >
         <CardHeader
-          className="mission-details-card-header"
+          className="header"
           title="Meteorology"
         />
         <CardText>

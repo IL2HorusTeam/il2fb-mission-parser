@@ -14,7 +14,7 @@ export default class RespawnTime extends React.Component {
         className="mission-details-card"
       >
         <CardHeader
-          className="mission-details-card-header"
+          className="header"
           title="Respawn time"
         />
         <CardText>

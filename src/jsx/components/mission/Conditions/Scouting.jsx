@@ -2,13 +2,19 @@ import React from "react";
 
 import Checkbox from 'material-ui/Checkbox';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
+import {List, ListItem} from 'material-ui/List';
 
 
 class BelligerentScouts extends React.Component {
 
   render() {
-    var listNodes = this.props.items.map(function(item, i) {
-      return (<li key={i}>{item}</li>);
+    var listItems = this.props.items.map(function(item, i) {
+      return (
+        <ListItem
+          key={i}
+          primaryText={item}
+        />
+      );
     });
 
     return (
@@ -16,13 +22,12 @@ class BelligerentScouts extends React.Component {
         className="mission-details-card sub"
       >
         <CardHeader
-          className="mission-details-card-header"
+          className="header"
           title={"Scouts for " + this.props.belligerent.verbose_name}
+          titleColor={this.props.belligerent.name}
         />
         <CardText>
-          <ul>
-            {listNodes}
-          </ul>
+          <List children={listItems} />
         </CardText>
       </Card>
     )
@@ -70,7 +75,7 @@ export default class Scouting extends React.Component {
         className="mission-details-card"
       >
         <CardHeader
-          className="mission-details-card-header"
+          className="header"
           title="Scouting"
         />
         <CardText>

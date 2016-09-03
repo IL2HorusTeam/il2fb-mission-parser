@@ -12,7 +12,7 @@ export default class Communication extends React.Component {
     return (
       <Card className="mission-details-card">
         <CardHeader
-          className="mission-details-card-header"
+          className="header"
           title="Communication"
         />
         <CardText>

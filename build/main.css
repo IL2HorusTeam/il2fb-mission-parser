@@ -65,12 +65,12 @@ pre.traceback {
 
 h1.logo {
   margin-top: 50px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font: 36px "Oxygen", arial, verdana, sans-serif;
   font-weight: bold; }
 
 h3.logo {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   font: 18px "Oxygen", arial, verdana, sans-serif;
   font-weight: normal;
   font-style: italic; }
@@ -124,8 +124,24 @@ h3.logo {
 .mission-details-card.sub {
   margin-top: 15px; }
 
-.mission-details-card-header {
+.mission-details-card .header {
   border-bottom: 1px solid #e8e8e8; }
+
+.mission-details-card .table .row:last-child {
+  border-bottom: none !important; }
+
+.red {
+  color: red; }
+
+.blue {
+  color: blue; }
+
+.green {
+  color: green; }
+
+.material-icons.route {
+  margin-left: 4px !important;
+  font-size: 20px !important; }
 
 .material-icons.fixation {
   top: 5px;

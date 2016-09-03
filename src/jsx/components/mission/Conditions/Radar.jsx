@@ -14,7 +14,7 @@ class ShipsGroup extends React.Component {
         className="mission-details-card sub"
       >
         <CardHeader
-          className="mission-details-card-header"
+          className="header"
           title={this.props.title || "N/A"}
         />
         <CardText>
@@ -79,7 +79,7 @@ class Scouts extends React.Component {
         className="mission-details-card sub"
       >
         <CardHeader
-          className="mission-details-card-header"
+          className="header"
           title="Scouts"
         />
         <CardText>
@@ -122,7 +122,7 @@ export default class Radar extends React.Component {
         className="mission-details-card"
       >
         <CardHeader
-          className="mission-details-card-header"
+          className="header"
           title="Radar settings"
         />
         <CardText>

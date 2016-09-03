@@ -6,7 +6,7 @@ import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
 
 
-class PageInfoButton extends React.Component {
+class AboutButton extends React.Component {
 
   constructor(props) {
     super(props);
@@ -43,7 +43,7 @@ class PageInfoButton extends React.Component {
           icon={<FontIcon className="material-icons">info_outline</FontIcon>}
         />
         <Dialog
-          title="Page info"
+          title="About"
           actions={actions}
           modal={true}
           open={this.state.open}
@@ -81,7 +81,7 @@ export default class Footer extends React.Component {
     return (
       <footer>
         <div className="footer-buttons">
-          <PageInfoButton />
+          <AboutButton />
           <RaisedButton
             label="Docs"
             icon={<FontIcon className="material-icons">school</FontIcon>}

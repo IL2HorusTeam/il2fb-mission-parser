@@ -41,7 +41,7 @@ export default class PlayerInfo extends React.Component {
           <p>
             Belligerent: {
               data.belligerent
-              ? data.belligerent.verbose_name
+              ? <span className={data.belligerent.name}>{data.belligerent.verbose_name}</span>
               : "N/A"
             }
           </p>
