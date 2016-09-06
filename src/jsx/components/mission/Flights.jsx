@@ -2,12 +2,301 @@ import React from "react";
 
 import Checkbox from 'material-ui/Checkbox';
 import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
+import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import {Table, TableBody} from 'material-ui/Table';
 import {TableHeader, TableHeaderColumn} from 'material-ui/Table';
 import {TableRow, TableRowColumn} from 'material-ui/Table';
+
+
+class RoutePointOptions extends React.Component {
+
+  render() {
+    var data = this.props.data;
+
+    if (data.delay === undefined && data.patrol_cycles === undefined) {
+      return false;
+    }
+
+    var fields = [];
+
+    if (data.patrol_cycles !== undefined) {
+      fields.push(
+        <p>Patrol cycles: {data.patrol_cycles}</p>
+      );
+    }
+
+    if (data.patrol_timeout !== undefined) {
+      fields.push(
+        <p>Patrol timeout: {data.patrol_timeout} min</p>
+      );
+    }
+
+    if (data.delay !== undefined) {
+      fields.push(
+        <p>Delay: {data.delay} min</p>
+      );
+    }
+
+    if (data.spacing !== undefined) {
+      fields.push(
+        <p>Spacing: {data.spacing} m</p>
+      );
+    }
+
+    return (
+      <Card className="mission-details-card">
+        <CardHeader className="header" title="Options" />
+        <CardText>
+          {fields}
+        </CardText>
+      </Card>
+    );
+  }
+
+}
+
+
+class RoutePointPattern extends React.Component {
+
+  render() {
+    var data = this.props.data;
+
+    if (data.pattern_angle === undefined) {
+      return false;
+    }
+
+    return (
+      <Card className="mission-details-card">
+        <CardHeader className="header" title="Pattern" />
+        <CardText>
+          <p>Angle: {data.pattern_angle} °</p>
+          <p>Side size: {data.pattern_side_size} km</p>
+          <p>Altitude difference: {data.pattern_altitude_difference} m</p>
+        </CardText>
+      </Card>
+    );
+  }
+
+}
+
+
+class RoutePointTarget extends React.Component {
+
+  render() {
+    var data = this.props.data;
+
+    if (data.target_id === undefined) {
+      return false;
+    }
+
+    return (
+      <Card className="mission-details-card">
+        <CardHeader className="header" title="Target" />
+        <CardText>
+          <p>Target ID: <code>{data.target_id}</code></p>
+          <p>Index of target's route point: {data.target_route_point}</p>
+        </CardText>
+      </Card>
+    );
+  }
+
+}
+
+
+class RoutePointExtraButton extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {open: false};
+
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+  }
+
+  handleOpen() {
+    this.setState({open: true});
+  }
+
+  handleClose() {
+    this.setState({open: false});
+  }
+
+  render() {
+    var data = this.props.data;
+
+    if (
+      data.delay === undefined
+      && data.patrol_cycles === undefined
+      && data.target_id === undefined
+    ) {
+      return false;
+    }
+
+    const actions = [
+      <FlatButton label="Close" primary={true} onTouchTap={this.handleClose}/>
+    ];
+
+    return (
+      <div>
+        <FlatButton
+          icon={<FontIcon className="material-icons">info_outline</FontIcon>}
+          onTouchTap={this.handleOpen}
+          style={{width: '40px', minWidth: '40px'}}
+        />
+        <Dialog
+          title={"Extra info about route point #" + this.props.index}
+          actions={actions}
+          modal={true}
+          autoScrollBodyContent={true}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+          className="dialog"
+          bodyStyle={{margin: '15px 0 1px'}}
+        >
+          <RoutePointOptions data={data} />
+          <RoutePointPattern data={data} />
+          <RoutePointTarget data={data} />
+        </Dialog>
+      </div>
+    );
+  }
+
+}
+
+
+class FlightRoute extends React.Component {
+
+  render() {
+    var rows = this.props.items.map(function(data, i) {
+      return (
+        <TableRow className="row" hoverable={true} key={i}>
+          <TableRowColumn>
+            {i}
+          </TableRowColumn>
+
+          <TableRowColumn>
+            {data.type.verbose_name}
+          </TableRowColumn>
+
+          <TableRowColumn>
+            {data.pos.x.toFixed(2)}
+          </TableRowColumn>
+
+          <TableRowColumn>
+            {data.pos.y.toFixed(2)}
+          </TableRowColumn>
+
+          <TableRowColumn>
+            {data.pos.z.toFixed(2)}
+          </TableRowColumn>
+
+          <TableRowColumn>
+            {data.speed}
+          </TableRowColumn>
+
+          <TableRowColumn>
+            {data.formation ? data.formation.verbose_name : "default"}
+          </TableRowColumn>
+
+          <TableRowColumn>
+            <FontIcon
+              className="material-icons"
+              color={data.radio_silence ? "green" : "red"}
+            >
+              {data.radio_silence ? "check" : "close"}
+            </FontIcon>
+          </TableRowColumn>
+
+          <TableRowColumn>
+            <RoutePointExtraButton
+              data={data}
+              index={i}
+            />
+          </TableRowColumn>
+
+        </TableRow>
+      );
+    });
+
+    return (
+      <Table className="table">
+        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+          <TableRow>
+            <TableHeaderColumn>#</TableHeaderColumn>
+            <TableHeaderColumn>Type</TableHeaderColumn>
+            <TableHeaderColumn>X</TableHeaderColumn>
+            <TableHeaderColumn>Y</TableHeaderColumn>
+            <TableHeaderColumn>Z</TableHeaderColumn>
+            <TableHeaderColumn>Speed</TableHeaderColumn>
+            <TableHeaderColumn>Formation</TableHeaderColumn>
+            <TableHeaderColumn>Radio silence</TableHeaderColumn>
+            <TableHeaderColumn>Extra</TableHeaderColumn>
+          </TableRow>
+        </TableHeader>
+        <TableBody displayRowCheckbox={false} showRowHover={true}>
+          {rows}
+        </TableBody>
+      </Table>
+    );
+  }
+
+}
+
+
+class ViewFlightRouteButton extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {open: false};
+
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+  }
+
+  handleOpen() {
+    this.setState({open: true});
+  }
+
+  handleClose() {
+    this.setState({open: false});
+  }
+
+  render() {
+    const actions = [
+      <FlatButton
+        label="Close"
+        primary={true}
+        onTouchTap={this.handleClose}
+      />,
+    ];
+
+    return (
+      <div style={this.props.style}>
+        <RaisedButton
+          label="View route"
+          icon={<FontIcon className="material-icons">near_me</FontIcon>}
+          onTouchTap={this.handleOpen}
+        />
+        <Dialog
+          title={"Route of '" + this.props.data.id + "' (" + this.props.data.code + ")"}
+          actions={actions}
+          modal={true}
+          autoScrollBodyContent={true}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+          className="dialog"
+          bodyStyle={{margin: '1px 0'}}
+        >
+          <FlightRoute items={this.props.data.route} />
+        </Dialog>
+      </div>
+    );
+  }
+
+}
 
 
 class FlightAircrafts extends React.Component {
@@ -56,11 +345,7 @@ class FlightAircrafts extends React.Component {
       <Table className="table">
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
           <TableRow>
-            <TableHeaderColumn
-              colSpan="7"
-              tooltip="Aircrafts"
-              style={{textAlign: "center"}}
-            >
+            <TableHeaderColumn colSpan="7" style={{textAlign: "center"}}>
               Aircrafts
             </TableHeaderColumn>
           </TableRow>
@@ -96,10 +381,9 @@ class FlightItem extends React.Component {
           title={"Flight '" + this.props.data.id + "' (" + data.code + ")"}
         />
         <CardText>
-          <RaisedButton
-            label="View route"
+          <ViewFlightRouteButton
             style={{float: 'right', clear: 'both'}}
-            icon={<FontIcon className="material-icons">near_me</FontIcon>}
+            data={data}
           />
           <p>
             Air force: <span className={data.air_force.country.belligerent.name}>{data.air_force.verbose_name}</span>
@@ -143,6 +427,7 @@ class FlightItem extends React.Component {
   }
 
 }
+
 
 class NoFlights extends React.Component {
 

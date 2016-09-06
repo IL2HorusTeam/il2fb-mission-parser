@@ -13,9 +13,7 @@ class ViewUnitRouteButton extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      open: false
-    };
+    this.state = {open: false};
 
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -23,30 +21,22 @@ class ViewUnitRouteButton extends React.Component {
 
   handleOpen() {
     this.setState({open: true});
-  };
+  }
 
   handleClose() {
     this.setState({open: false});
-  };
+  }
 
   render() {
     const actions = [
-      <FlatButton
-        label="Close"
-        primary={true}
-        onTouchTap={this.handleClose}
-      />,
+      <FlatButton label="Close" primary={true} onTouchTap={this.handleClose}/>
     ];
 
     var entries = this.props.data.route.map(function(data, i) {
       return (
-        <TableRow
-          className="row"
-          hoverable={true}
-          key={i}
-        >
+        <TableRow className="row" hoverable={true} key={i}>
           <TableRowColumn>
-            {i + 1}
+            {i}
           </TableRowColumn>
 
           <TableRowColumn>
@@ -100,13 +90,8 @@ class ViewUnitRouteButton extends React.Component {
           className="dialog"
           bodyStyle={{margin: '1px 0'}}
         >
-          <Table
-            className="table"
-          >
-            <TableHeader
-              displaySelectAll={false}
-              adjustForCheckbox={false}
-            >
+          <Table className="table">
+            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
                 <TableHeaderColumn>#</TableHeaderColumn>
                 <TableHeaderColumn>X</TableHeaderColumn>
@@ -117,10 +102,7 @@ class ViewUnitRouteButton extends React.Component {
                 <TableHeaderColumn>Speed</TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody
-              displayRowCheckbox={false}
-              showRowHover={true}
-            >
+            <TableBody displayRowCheckbox={false} showRowHover={true}>
               {entries}
             </TableBody>
           </Table>
@@ -176,7 +158,7 @@ class MovingUnitsGroup extends React.Component {
 
     if (self.props.items) {
       var entries = self.props.items.map(function(data, i) {
-        return self.renderTableEntry(data, i + 1);
+        return self.renderTableEntry(data, i);
       });
     } else {
       var entries = [
