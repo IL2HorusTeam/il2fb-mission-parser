@@ -161,13 +161,8 @@ class MovingUnitsGroup extends React.Component {
 
   render() {
     return (
-      <Card
-        className="mission-details-card"
-      >
-        <CardHeader
-          className="header"
-          title={this.props.title}
-        />
+      <Card className="mission-details-card">
+        <CardHeader className="header" title={this.props.title} />
         <CardText>
           {this.renderTable()}
         </CardText>
@@ -362,7 +357,7 @@ export default class MovingUnits extends React.Component {
 
   render() {
     var list = ((this.props.data || {}).objects || {}).moving_units || []
-      , groups = this.group_by_type(list);
+      , groups = this.groupByType(list);
 
     return (
       <div>
@@ -373,7 +368,7 @@ export default class MovingUnits extends React.Component {
     );
   }
 
-  group_by_type(list) {
+  groupByType(list) {
     var groups = {};
 
     for (var i = 0; i < list.length; ++i) {
