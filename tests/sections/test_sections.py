@@ -45,10 +45,12 @@ class ValuesParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
         lines = [
             "one first",
             "two second",
+            "skin0 $13.JG52_Bf 109E-4_white1.bmp",
         ]
         expected = {
-            "one": "first",
-            "two": "second",
+            'one': "first",
+            'two': "second",
+            'skin0': "$13.JG52_Bf 109E-4_white1.bmp",
         }
         self.assertParser(self.Parser, None, lines, expected)
 

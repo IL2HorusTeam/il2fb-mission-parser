@@ -54,13 +54,13 @@ Output contains a :class:`dict` with ``weather`` element.
   :Output value: original value converted to float number
 
 ``Gust``
-  Number in range ``[0-3]`` which defines strength of wind gusts.
+  Number in range ``[0,8,10,12]`` which defines strength of wind gusts.
 
   :Output path: ``weather.gust``
   :Output type: complex `gust`_ constant
 
 ``Turbulence``
-  Number in range ``[0-4]`` which defines strength of wind turbulence.
+  Number in range ``[0,3,4,5,6]`` which defines strength of wind turbulence.
 
   :Output path: ``weather.turbulence``
   :Output type: complex `turbulence`_ constant

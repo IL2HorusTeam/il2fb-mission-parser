@@ -32,7 +32,7 @@ README = open(os.path.join(__here__, 'README.rst')).read()
 
 setup(
     name='il2fb-mission-parser',
-    version='1.1.0.dev1',
+    version='1.1.0.dev2',
     description="Parse IL-2 FB mission file and produce detailed information "
                 "about mission",
     long_description=README,

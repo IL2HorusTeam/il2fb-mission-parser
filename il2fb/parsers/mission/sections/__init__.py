@@ -145,7 +145,7 @@ class ValuesParser(six.with_metaclass(ABCMeta, SectionParser)):
 
         Splits line into key-value pair and puts it into internal dictionary.
         """
-        key, value = line.strip().split()
+        key, value = line.strip().split(' ', 1)
         self.data.update({key: value})
 
 
