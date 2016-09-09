@@ -19,7 +19,7 @@ class WeatherSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase
             "WindDirection 120.0",
             "WindSpeed 3.0",
             "Gust 0",
-            "Turbulence 4",
+            "Turbulence 6",
         ]
         expected = {
             'weather': {

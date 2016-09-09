@@ -134,7 +134,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "  WindDirection 120.0",
             "  WindSpeed 3.0",
             "  Gust 0",
-            "  Turbulence 4",
+            "  Turbulence 6",
             "[MDS]",
             "  MDS_Radar_SetRadarToAdvanceMode 1",
             "  MDS_Radar_RefreshInterval 0",
