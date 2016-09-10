@@ -9,6 +9,9 @@ import {TableHeader, TableHeaderColumn} from 'material-ui/Table';
 import {TableRow, TableRowColumn} from 'material-ui/Table';
 
 
+const SPEED_COEFFICIENT = 3.6;
+
+
 class ViewUnitRouteButton extends React.Component {
 
   constructor(props) {
@@ -65,7 +68,11 @@ class ViewUnitRouteButton extends React.Component {
           </TableRowColumn>
 
           <TableRowColumn>
-            {data.speed ? data.speed.toFixed(2) : ""}
+            {
+              data.speed !== null
+              ? (data.speed * SPEED_COEFFICIENT).toFixed(2)
+              : ""
+            }
           </TableRowColumn>
         </TableRow>
       );
@@ -94,12 +101,12 @@ class ViewUnitRouteButton extends React.Component {
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
                 <TableHeaderColumn>#</TableHeaderColumn>
-                <TableHeaderColumn>X</TableHeaderColumn>
-                <TableHeaderColumn>Y</TableHeaderColumn>
+                <TableHeaderColumn>X, m</TableHeaderColumn>
+                <TableHeaderColumn>Y, m</TableHeaderColumn>
                 <TableHeaderColumn>Is checkpoint</TableHeaderColumn>
                 <TableHeaderColumn>Delay, min</TableHeaderColumn>
                 <TableHeaderColumn>Section length</TableHeaderColumn>
-                <TableHeaderColumn>Speed</TableHeaderColumn>
+                <TableHeaderColumn>Speed, km/h</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false} showRowHover={true}>

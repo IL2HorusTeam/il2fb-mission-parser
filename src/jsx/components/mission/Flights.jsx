@@ -227,10 +227,10 @@ class FlightRoute extends React.Component {
           <TableRow>
             <TableHeaderColumn>#</TableHeaderColumn>
             <TableHeaderColumn>Type</TableHeaderColumn>
-            <TableHeaderColumn>X</TableHeaderColumn>
-            <TableHeaderColumn>Y</TableHeaderColumn>
-            <TableHeaderColumn>Z</TableHeaderColumn>
-            <TableHeaderColumn>Speed</TableHeaderColumn>
+            <TableHeaderColumn>X, m</TableHeaderColumn>
+            <TableHeaderColumn>Y, m</TableHeaderColumn>
+            <TableHeaderColumn>Z, m</TableHeaderColumn>
+            <TableHeaderColumn>Speed, km/h</TableHeaderColumn>
             <TableHeaderColumn>Formation</TableHeaderColumn>
             <TableHeaderColumn>Radio silence</TableHeaderColumn>
             <TableHeaderColumn>Extra</TableHeaderColumn>
