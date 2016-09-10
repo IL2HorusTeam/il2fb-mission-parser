@@ -260,27 +260,6 @@ class MovingUnitsGroup extends React.Component {
 }
 
 
-class Vehicles extends MovingUnitsGroup {
-
-  static get defaultProps() {
-    return {
-      title: "Vehicles"
-    };
-  }
-
-}
-
-class Trains extends MovingUnitsGroup {
-
-  static get defaultProps() {
-    return {
-      title: "Trains"
-    };
-  }
-
-}
-
-
 class Ships extends MovingUnitsGroup {
 
   static get defaultProps() {
@@ -339,15 +318,23 @@ export default class MovingUnits extends React.Component {
 
   render() {
     var list = ((this.props.data || {}).objects || {}).moving_units || []
-      , groups = this.groupByType(list);
+      , groups = this.groupByType(list)
+      , keys = Object.keys(groups);
 
-    return (
-      <div>
-        <Vehicles items={groups.vehicles} />
-        <Trains items={groups.trains} />
-        <Ships items={groups.ships} />
-      </div>
-    );
+    keys.sort();
+
+    var children = keys.map(function(key, i) {
+      var items = groups[key];
+
+      if (key === "ships") {
+        return <Ships items={items} />;
+      } else {
+        return <MovingUnitsGroup title={key} items={items} />;
+      }
+
+    });
+
+    return <div>{children}</div>;
   }
 
   groupByType(list) {
@@ -357,7 +344,7 @@ export default class MovingUnits extends React.Component {
       var item = list[i]
         , type_key = item.type.value;
 
-      if (type_key in list)
+      if (type_key in groups)
         groups[type_key].push(item);
       else {
         groups[type_key] = [item];

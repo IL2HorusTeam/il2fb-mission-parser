@@ -130,6 +130,9 @@ h3.logo {
 .mission-details-card .header {
   border-bottom: 1px solid #e8e8e8; }
 
+.mission-details-card .header span:first-letter {
+  text-transform: capitalize; }
+
 .mission-details-card .table .row:last-child {
   border-bottom: none !important; }
 
