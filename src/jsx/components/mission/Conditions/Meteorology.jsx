@@ -21,14 +21,14 @@ class Wind extends React.Component {
           <p>
             Direction: {
               data.direction !== undefined
-              ? data.direction + " °"
+              ? data.direction.toFixed(1) + " °"
               : "N/A"
             }
           </p>
           <p>
             Speed: {
               data.speed !== undefined
-              ? data.speed + " m/s"
+              ? data.speed.toFixed(1) + " m/s"
               : "N/A"
             }
           </p>

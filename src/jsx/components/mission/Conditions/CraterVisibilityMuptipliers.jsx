@@ -20,21 +20,21 @@ export default class CraterVisibilityMuptipliers extends React.Component {
           <p>
             Weapon weight &le; 100 kg: {
               data.le_100kg !== undefined
-              ? "×" + data.le_100kg.toFixed(1)
+              ? data.le_100kg.toFixed(1) + " × 80 sec"
               : "N/A"
             }
           </p>
           <p>
             Weapon weight &le; 1000 kg: {
               data.le_1000kg !== undefined
-              ? "×" + data.le_1000kg.toFixed(1)
+              ? data.le_1000kg.toFixed(1) + " × 80 sec"
               : "N/A"
             }
           </p>
           <p>
             Weapon weight &gt; 1000 kg: {
               data.gt_1000kg !== undefined
-              ? "×" + data.gt_1000kg.toFixed(1)
+              ? data.gt_1000kg.toFixed(1) + " × 80 sec"
               : "N/A"
             }
           </p>

@@ -448,17 +448,17 @@ class NoFlights extends React.Component {
 export default class Flights extends React.Component {
 
   render() {
-    var self = this
-      , list = ((self.props.data || {}).objects || {}).flights || [];
+    var items = ((this.props.data || {}).objects || {}).flights || [];
 
-    if (list.length > 0) {
-      var nodes = list.map(function(data, i) {
+    if (items.length > 0) {
+      var children = items.map(function(data, i) {
         return (<FlightItem key={i} data={data} />);
       });
 
-      return (<div>{nodes}</div>);
+      return (<div>{children}</div>);
     } else {
       return (<NoFlights />);
     }
   }
+
 }

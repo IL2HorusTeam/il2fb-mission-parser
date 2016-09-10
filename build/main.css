@@ -60,6 +60,9 @@ pre.traceback {
   font-size: 12px;
   line-height: 15px; }
 
+pre.traceback code {
+  border: none; }
+
 .logo {
   text-align: center; }
 

@@ -34,7 +34,7 @@ body {
   margin: 0 0 110px;
 }
 
-code{
+code {
   padding: 3px;
   font-family: 0.9em $monospace-font-stack;
   color: #518BAB;
@@ -82,6 +82,10 @@ pre.traceback {
   border: 1px solid #ddd;
   font-size: 12px;
   line-height: 15px;
+}
+
+pre.traceback code {
+  border: none;
 }
 
 .logo {

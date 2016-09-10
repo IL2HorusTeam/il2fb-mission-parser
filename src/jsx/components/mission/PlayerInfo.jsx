@@ -48,7 +48,7 @@ export default class PlayerInfo extends React.Component {
           <p>
             Flight ID: {
               (data.flight_id !== undefined) && (data.flight_id !== null)
-              ? data.flight_id
+              ? <code>{data.flight_id}</code>
               : "N/A"
             }
           </p>

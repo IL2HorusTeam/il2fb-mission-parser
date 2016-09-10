@@ -30,7 +30,7 @@ class TimeInfo extends React.Component {
       <p>
         Time: {
           this.props.value
-          ? this.props.value
+          ? this.props.value.slice(0, 5)
           : "N/A"
         }
       </p>
