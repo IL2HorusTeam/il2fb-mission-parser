@@ -85,7 +85,8 @@ h3.logo {
   padding: 1rem 2rem;
   background: rgba(255, 255, 255, 0.1);
   display: block;
-  width: 310px; }
+  width: 380px;
+  text-align: center; }
 
 .dropzone:hover {
   outline: 2px dashed rgba(0, 0, 0, 0.4);
