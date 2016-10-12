@@ -124,6 +124,9 @@ h3.logo {
 .mission-details-card + .mission-details-card {
   margin-top: 15px; }
 
+p + .mission-details-card {
+  margin-top: 15px; }
+
 .mission-details-card.sub {
   margin-top: 15px; }
 
