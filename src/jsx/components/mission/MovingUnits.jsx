@@ -321,24 +321,45 @@ class Ships extends MovingUnitsGroup {
 }
 
 
+class NoMovingUnits extends React.Component {
+
+  render() {
+    return (
+      <Card className="mission-details-card">
+        <CardText>
+          Mission has no moving units.
+        </CardText>
+      </Card>
+    );
+  }
+
+}
+
+
+const groupKeyToComponentsMap = {
+  ships: Ships
+}
+
+
 export default class MovingUnits extends React.Component {
 
   render() {
-    var list = ((this.props.data || {}).objects || {}).moving_units || []
-      , groups = this.groupByType(list)
+    var list = ((this.props.data || {}).objects || {}).moving_units || [];
+
+    if (list.length === 0) {
+      return (<NoMovingUnits />);
+    }
+
+    var groups = this.groupByType(list)
       , keys = Object.keys(groups);
 
     keys.sort();
 
     var children = keys.map(function(key, i) {
-      var items = groups[key];
+      var items = groups[key]
+        , Component = groupKeyToComponentsMap[key] || MovingUnitsGroup;
 
-      if (key === "ships") {
-        return <Ships items={items} />;
-      } else {
-        return <MovingUnitsGroup title={key} items={items} />;
-      }
-
+      return (<Component title={key} items={items} key={i} />);
     });
 
     return <div>{children}</div>;
@@ -360,4 +381,5 @@ export default class MovingUnits extends React.Component {
 
     return groups;
   }
+
 }

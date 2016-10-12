@@ -424,9 +424,8 @@ class NoHomeBases extends React.Component {
   render() {
     return (
       <Card className="mission-details-card">
-        <CardHeader className="header" title="Home bases" />
         <CardText>
-          N/A
+          Mission has no home bases.
         </CardText>
       </Card>
     );

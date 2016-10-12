@@ -434,9 +434,8 @@ class NoFlights extends React.Component {
   render() {
     return (
       <Card className="mission-details-card">
-        <CardHeader className="header" title="Flights" />
         <CardText>
-          N/A
+          Mission has no flights.
         </CardText>
       </Card>
     );
