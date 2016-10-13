@@ -148,7 +148,7 @@ Example of parser result:
                       is_checkpoint=True,
                       delay=10,
                       section_length=2,
-                      speed=3.055555582046509,
+                      speed=11.0,
                    ),
                    GroundRoutePoint(
                       pos=Point2D(21500.00, 41700.00),

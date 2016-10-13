@@ -33,7 +33,7 @@ Output example:
                 is_checkpoint=True,
                 delay=10,
                 section_length=3,
-                speed=3.055555582046509,
+                speed=11.0,
             ),
             GroundRoutePoint(
                 pos=Point2D(21500.00, 41700.00),
@@ -44,7 +44,7 @@ Output example:
                 is_checkpoint=True,
                 delay=0,
                 section_length=3,
-                speed=2.6388890743255615,
+                speed=9.5,
             ),
             GroundRoutePoint(
                 pos=Point2D(60284.10, 59142.93),
@@ -80,7 +80,7 @@ efficient route:
 #. ships tend to follow coastlines and river banks if they come to them close
    enough.
 
-Let's examine a description of a manual waypoint which was created manually.
+Let's examine a description of a waypoint which was created manually by user.
 It has all parameters included::
 
     21380.02 41700.34 120.00 10 2 3.055555582046509
@@ -136,11 +136,14 @@ It has all parameters included::
 ``3.055555582046509``
   The speed of the unit at the current point of the route. This parameter is
   set automatically by full mission editor depending on the unit type.
-  Speed unit is unknown.
+  Multiply value by :attr:`~il2fb.parsers.mission.constants.CHIEF_SPEED_COEFFICIENT`
+  to get speed in ``km/h``.
 
   :Output path: ``speed``
   :Output type: :class:`float`
-  :Output value: original value converted to float number
+  :Output value:
+    original value converted to float number and multiplied by
+    :attr:`~il2fb.parsers.mission.constants.CHIEF_SPEED_COEFFICIENT`.
 
 -----
 
