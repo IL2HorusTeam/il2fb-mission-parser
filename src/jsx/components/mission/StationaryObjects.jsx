@@ -166,21 +166,6 @@ class StationaryObjectsGroup extends React.Component {
 }
 
 
-class NoStationaryObjects extends React.Component {
-
-  render() {
-    return (
-      <Card className="mission-details-card">
-        <CardText>
-          Mission has no stationary objects.
-        </CardText>
-      </Card>
-    );
-  }
-
-}
-
-
 class Artillery extends StationaryObjectsGroup {
 
   static get defaultProps() {
@@ -373,6 +358,21 @@ class Ships extends StationaryObjectsGroup {
 }
 
 
+class NoStationaryObjects extends React.Component {
+
+  render() {
+    return (
+      <Card className="mission-details-card">
+        <CardText>
+          Mission has no stationary objects.
+        </CardText>
+      </Card>
+    );
+  }
+
+}
+
+
 const groupKeyToComponentsMap = {
     artillery: Artillery
   , planes: Aircrafts
@@ -386,7 +386,7 @@ export default class StationaryObjects extends React.Component {
     var list = ((this.props.data || {}).objects || {}).stationary || [];
 
     if (list.length === 0) {
-        return (<NoStationaryObjects />);
+      return (<NoStationaryObjects />);
     }
 
     var groups = this.groupByType(list)
