@@ -63,7 +63,7 @@ class Body extends React.Component {
         </Dropzone>
 
         <div className="samples">
-          <a href="#" target="_blank">Get sample mission</a>
+          <a href="https://raw.githubusercontent.com/IL2HorusTeam/il2fb-mission-parser/gh-pages/examples/demo_sample.mis" target="_blank">Get sample mission</a>
         </div>
 
         {
