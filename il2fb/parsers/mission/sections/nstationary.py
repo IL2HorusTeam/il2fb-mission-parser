@@ -6,7 +6,7 @@ from il2fb.commons.structures import BaseStructure
 
 from ..constants import NULL, IS_STATIONARY_AIRCRAFT_RESTORABLE
 from ..converters import (
-    to_bool, to_skill, to_air_force, to_unit_type, to_belligerent,
+    to_bool, to_skill, to_air_force, to_unit_type, to_belligerent, to_angle,
 )
 from . import CollectingParser
 
@@ -33,10 +33,13 @@ class StationaryArtillery(StationaryObject):
         'awakening_time', 'range', 'skill', 'use_spotter',
     ]
 
-    def __init__(self, id, belligerent, code, pos, rotation_angle, type,
-                 awakening_time, range, skill, use_spotter):
+    def __init__(
+        self, id, belligerent, code, pos, rotation_angle, type, awakening_time,
+        range, skill, use_spotter,
+    ):
         super(StationaryArtillery, self).__init__(
-            id, belligerent, code, pos, rotation_angle, type)
+            id, belligerent, code, pos, rotation_angle, type,
+        )
         self.awakening_time = awakening_time
         self.range = range
         self.skill = skill
@@ -49,11 +52,13 @@ class StationaryAircraft(StationaryObject):
         'show_markings',
     ]
 
-    def __init__(self, id, belligerent, code, pos, rotation_angle, type,
-                 air_force, allows_spawning, is_restorable, skin,
-                 show_markings):
+    def __init__(
+        self, id, belligerent, code, pos, rotation_angle, type, air_force,
+        allows_spawning, is_restorable, skin, show_markings,
+    ):
         super(StationaryAircraft, self).__init__(
-            id, belligerent, code, pos, rotation_angle, type)
+            id, belligerent, code, pos, rotation_angle, type,
+        )
         self.air_force = air_force
         self.allows_spawning = allows_spawning
         self.is_restorable = is_restorable
@@ -66,10 +71,13 @@ class StationaryShip(StationaryObject):
         'awakening_time', 'recharge_time', 'skill',
     ]
 
-    def __init__(self, id, belligerent, code, pos, rotation_angle, type,
-                 awakening_time, recharge_time, skill):
+    def __init__(
+        self, id, belligerent, code, pos, rotation_angle, type, awakening_time,
+        recharge_time, skill,
+    ):
         super(StationaryShip, self).__init__(
-            id, belligerent, code, pos, rotation_angle, type)
+            id, belligerent, code, pos, rotation_angle, type,
+        )
         self.awakening_time = awakening_time
         self.recharge_time = recharge_time
         self.skill = skill
@@ -170,7 +178,7 @@ class NStationarySectionParser(CollectingParser):
             'belligerent': to_belligerent(belligerent),
             'code': self._get_code(object_name),
             'pos': Point2D(*pos),
-            'rotation_angle': float(rotation_angle),
+            'rotation_angle': to_angle(rotation_angle),
             'type': unit_type,
         }
 

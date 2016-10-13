@@ -5,7 +5,9 @@ import unittest
 from il2fb.commons.organization import Belligerents
 from il2fb.commons.spatial import Point2D
 
-from il2fb.parsers.mission.sections.buildings import BuildingsSectionParser, Building
+from il2fb.parsers.mission.sections.buildings import (
+    BuildingsSectionParser, Building,
+)
 
 from ..mixins import StructureTestCaseMixin
 from .mixins import SectionParserTestCaseMixin
@@ -27,9 +29,12 @@ class BuildingTestCase(StructureTestCaseMixin, unittest.TestCase):
         self.assertEqual(repr(instance), "<Building '0_bld'>")
 
 
-class BuildingsSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class BuildingsSectionParserTestCase(
+    SectionParserTestCaseMixin, unittest.TestCase,
+):
     """
     Test ``Buildings`` section parser.
+
     """
 
     def test_valid_data(self):
@@ -43,7 +48,7 @@ class BuildingsSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
                     belligerent=Belligerents.red,
                     code='Tent_Pyramid_US',
                     pos=Point2D(43471.34, 57962.08),
-                    rotation_angle=630.00,
+                    rotation_angle=270.00,
                 ),
             ],
         }

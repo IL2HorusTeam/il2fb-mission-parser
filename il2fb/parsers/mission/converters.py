@@ -6,7 +6,7 @@ import math
 from il2fb.commons import Skills, UnitTypes
 from il2fb.commons.organization import AirForces, Belligerents
 
-from .constants import NULL
+from .constants import NULL, CHIEF_SPEED_COEFFICIENT
 
 
 def to_bool(value):
@@ -55,3 +55,11 @@ def to_time(value):
     time = float(value)
     minutes, hours = math.modf(time)
     return datetime.time(int(hours), int(minutes * 60))
+
+
+def to_speed(value):
+    return round(float(value) * CHIEF_SPEED_COEFFICIENT, 2)
+
+
+def to_angle(value):
+    return round(float(value) % 360, 2)

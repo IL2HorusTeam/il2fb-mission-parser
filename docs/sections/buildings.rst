@@ -27,7 +27,7 @@ Output example:
               belligerent=Belligerents.red,
               code='Tent_Pyramid_US',
               pos=Point2D(43471.34, 57962.08),
-              rotation_angle=630.00,
+              rotation_angle=270.00,
           ),
       ],
   }
@@ -82,7 +82,7 @@ store information about buildings.
 
   :Output path: ``rotation_angle``
   :Output type: :class:`float`
-  :Output value: original value converted to float number
+  :Output value: original value converted to float number and taken modulo 360
 
 
 .. _belligerents: https://github.com/IL2HorusTeam/il2fb-commons/blob/master/il2fb/commons/organization.py#L21

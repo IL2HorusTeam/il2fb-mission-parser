@@ -3,7 +3,7 @@
 from il2fb.commons.spatial import Point2D
 from il2fb.commons.structures import BaseStructure
 
-from ..converters import to_belligerent
+from ..converters import to_belligerent, to_angle
 from . import CollectingParser
 
 
@@ -40,7 +40,7 @@ class BuildingsSectionParser(CollectingParser):
             belligerent=to_belligerent(belligerent),
             code=code,
             pos=Point2D(pos_x, pos_y),
-            rotation_angle=float(rotation_angle),
+            rotation_angle=to_angle(rotation_angle),
         ))
 
     def clean(self):

@@ -31,7 +31,7 @@ Output example:
               id='0_Static',
               code='Wagon1',
               pos=Point2D(152292.72, 89662.80),
-              rotation_angle=360.00,
+              rotation_angle=0.00,
               type=UnitTypes.stationary,
           ),
           StationaryArtillery(
@@ -39,7 +39,7 @@ Output example:
               belligerent=Belligerents.blue,
               code='SdKfz251',
               pos=Point2D(31333.62, 90757.91),
-              rotation_angle=600.29,
+              rotation_angle=240.29,
               type=UnitTypes.artillery,
               awakening_time=0.0,
               range=0,
@@ -65,7 +65,7 @@ Output example:
               code='G5',
               recharge_time=1.4,
               pos=Point2D(83759.05, 115021.15),
-              rotation_angle=360.00,
+              rotation_angle=0.00,
               skill=Skills.ace,
               type=UnitTypes.ship,
               awakening_time=60.0,
@@ -150,7 +150,7 @@ Definition example::
 
   :Output path: ``rotation_angle``
   :Output type: :class:`float`
-  :Output value: original value converted to float number
+  :Output value: original value converted to float number and taken modulo 360
 
 ``0.0``
   This parameter is not used by usual objects. It has a meaning only for

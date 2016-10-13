@@ -28,7 +28,7 @@ Output example:
               code='Fi103_V1_ramp',
               belligerent=Belligerents.blue,
               pos=Point2D(84141.38, 114216.82),
-              rotation_angle=360.00,
+              rotation_angle=0.00,
               delay=60.0,
               count=10,
               period=80.0,
@@ -39,7 +39,7 @@ Output example:
               code='Fi103_V1_ramp',
               belligerent=Belligerents.blue,
               pos=Point2D(84141.38, 114216.82),
-              rotation_angle=360.00,
+              rotation_angle=0.00,
               delay=60.0,
               count=10,
               period=80.0,
@@ -96,7 +96,7 @@ Let's examine the first line.
 
   :Output path: ``rotation_angle``
   :Output type: :class:`float`
-  :Output value: original value converted to float number
+  :Output value: original value converted to float number and taken modulo 360
 
 ``60.0``
   Delay (in minutes): this parameter tells how much a rocket have to wait until

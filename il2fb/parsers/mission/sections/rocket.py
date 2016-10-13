@@ -3,7 +3,7 @@
 from il2fb.commons.spatial import Point2D
 from il2fb.commons.structures import BaseStructure
 
-from ..converters import to_belligerent
+from ..converters import to_belligerent, to_angle
 from . import CollectingParser
 
 
@@ -13,8 +13,10 @@ class Rocket(BaseStructure):
         'period', 'destination',
     ]
 
-    def __init__(self, id, code, belligerent, pos, rotation_angle, delay,
-                 count, period, destination):
+    def __init__(
+        self, id, code, belligerent, pos, rotation_angle, delay, count, period,
+        destination,
+    ):
         self.id = id
         self.code = code
         self.belligerent = belligerent
@@ -33,6 +35,7 @@ class RocketSectionParser(CollectingParser):
     """
     Parses ``Rocket`` section.
     View :ref:`detailed description <rocket-section>`.
+
     """
 
     def check_section_name(self, section_name):
@@ -51,7 +54,7 @@ class RocketSectionParser(CollectingParser):
             code=code,
             belligerent=to_belligerent(belligerent),
             pos=Point2D(*pos),
-            rotation_angle=float(rotation_angle),
+            rotation_angle=to_angle(rotation_angle),
             delay=float(delay),
             count=int(count),
             period=float(period),
