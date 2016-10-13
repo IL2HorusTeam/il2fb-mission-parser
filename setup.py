@@ -21,6 +21,7 @@ def split_requirements(lines):
 
     return requirements, dependencies
 
+
 with open(os.path.join(__here__, 'requirements', 'dist.txt')) as f:
     REQUIREMENTS = [x.strip() for x in f]
     REQUIREMENTS = [x for x in REQUIREMENTS if x and not x.startswith('#')]
@@ -32,9 +33,11 @@ README = open(os.path.join(__here__, 'README.rst')).read()
 
 setup(
     name='il2fb-mission-parser',
-    version='1.1.0.dev2',
-    description="Parse IL-2 FB mission file and produce detailed information "
-                "about mission",
+    version='1.1.0.dev3',
+    description=(
+        "Parse IL-2 FB mission file and produce detailed information about "
+        "mission."
+    ),
     long_description=README,
     keywords=[
         'il2', 'il-2', 'fb', 'forgotten battles', 'parser', 'mission',
