@@ -53,7 +53,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'IL-2 FB Mission Parser'
-copyright = u'2014, Alexander Oblovatniy, Alexander Kamyhin'
+copyright = u'2014-2016, Alexander Oblovatniy, Alexander Kamyhin'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
