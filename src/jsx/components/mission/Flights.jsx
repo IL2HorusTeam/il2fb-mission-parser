@@ -323,19 +323,19 @@ class FlightAircrafts extends React.Component {
           </TableRowColumn>
 
           <TableRowColumn>
-            {data.aircraft_skin || ""}
+            {data.aircraft_skin || "—"}
           </TableRowColumn>
 
           <TableRowColumn>
-            {data.nose_art || ""}
+            {data.nose_art || "—"}
           </TableRowColumn>
 
           <TableRowColumn>
-            {data.pilot_skin || ""}
+            {data.pilot_skin || "—"}
           </TableRowColumn>
 
           <TableRowColumn>
-            {data.spawn_object || ""}
+            {data.spawn_object || "—"}
           </TableRowColumn>
         </TableRow>
       );

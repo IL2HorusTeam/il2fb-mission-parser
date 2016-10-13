@@ -57,18 +57,18 @@ class ViewUnitRouteButton extends React.Component {
           </TableRowColumn>
 
           <TableRowColumn>
-            {data.delay || ""}
+            {data.delay || "—"}
           </TableRowColumn>
 
           <TableRowColumn>
-            {data.section_length || ""}
+            {data.section_length || "—"}
           </TableRowColumn>
 
           <TableRowColumn>
             {
               data.speed !== null
               ? data.speed.toFixed(2)
-              : ""
+              : "—"
             }
           </TableRowColumn>
         </TableRow>
