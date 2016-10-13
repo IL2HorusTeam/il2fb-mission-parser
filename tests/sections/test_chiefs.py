@@ -14,9 +14,12 @@ from ..mixins import StructureTestCaseMixin
 from .mixins import SectionParserTestCaseMixin
 
 
-class ChiefsSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class ChiefsSectionParserTestCase(
+    SectionParserTestCaseMixin, unittest.TestCase,
+):
     """
     Test ``Chiefs`` section parser.
+
     """
 
     def test_valid_data(self):
@@ -74,7 +77,6 @@ class ChiefsSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase)
         self.assertParser(ChiefsSectionParser, 'Chiefs', lines, expected)
 
 
-
 class GroundRoutePointTestCase(StructureTestCaseMixin, unittest.TestCase):
 
     def test_valid_data(self):
@@ -90,10 +92,14 @@ class GroundRoutePointTestCase(StructureTestCaseMixin, unittest.TestCase):
         instance = GroundRoutePoint(**data)
         self.assertEqual(
             repr(instance),
-            "<GroundRoutePoint '21380.02;41700.34'>")
+            "<GroundRoutePoint '21380.02;41700.34'>",
+        )
 
 
-class ChiefRoadSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCase):
+class ChiefRoadSectionParserTestCase(
+    SectionParserTestCaseMixin,
+    unittest.TestCase,
+):
 
     def test_valid_data(self):
         lines = [
@@ -110,7 +116,7 @@ class ChiefRoadSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
                     is_checkpoint=True,
                     delay=10,
                     section_length=3,
-                    speed=3.055555582046509,
+                    speed=11.0,
                 ),
                 GroundRoutePoint(
                     pos=Point2D(21500.00, 41700.00),
@@ -121,7 +127,7 @@ class ChiefRoadSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
                     is_checkpoint=True,
                     delay=0,
                     section_length=3,
-                    speed=2.6388890743255615,
+                    speed=9.5,
                 ),
                 GroundRoutePoint(
                     pos=Point2D(60284.10, 59142.93),
@@ -133,7 +139,12 @@ class ChiefRoadSectionParserTestCase(SectionParserTestCaseMixin, unittest.TestCa
                 ),
             ],
         }
-        self.assertParser(ChiefRoadSectionParser, '0_Chief_Road', lines, expected)
+        self.assertParser(
+            ChiefRoadSectionParser,
+            '0_Chief_Road',
+            lines,
+            expected,
+        )
 
     def test_invalid_section_name(self):
         parser = ChiefRoadSectionParser()

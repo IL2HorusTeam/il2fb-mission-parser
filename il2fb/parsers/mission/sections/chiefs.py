@@ -4,6 +4,7 @@ from il2fb.commons.spatial import Point2D
 from il2fb.commons.structures import BaseStructure
 
 from ..converters import to_belligerent, to_skill, to_unit_type
+from ..constants import CHIEF_SPEED_COEFFICIENT
 from . import CollectingParser
 
 
@@ -98,12 +99,15 @@ class ChiefRoadSectionParser(CollectingParser):
         args = {
             'pos': Point2D(*pos),
         }
+
         is_checkpoint = bool(params)
         args['is_checkpoint'] = is_checkpoint
+
         if is_checkpoint:
             args['delay'] = int(params[0])
             args['section_length'] = int(params[1])
-            args['speed'] = float(params[2])
+            speed = float(params[2]) * CHIEF_SPEED_COEFFICIENT
+            args['speed'] = round(speed, 2)
 
         point = GroundRoutePoint(**args)
         self.data.append(point)

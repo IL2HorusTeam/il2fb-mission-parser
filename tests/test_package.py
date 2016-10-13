@@ -315,7 +315,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                                 is_checkpoint=True,
                                 delay=10,
                                 section_length=3,
-                                speed=3.055555582046509,
+                                speed=11.0,
                             ),
                             GroundRoutePoint(
                                 pos=Point2D(21500.00, 41700.00),
@@ -326,7 +326,7 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
                                 is_checkpoint=True,
                                 delay=0,
                                 section_length=3,
-                                speed=2.6388890743255615,
+                                speed=9.5,
                             ),
                             GroundRoutePoint(
                                 pos=Point2D(60284.10, 59142.93),
