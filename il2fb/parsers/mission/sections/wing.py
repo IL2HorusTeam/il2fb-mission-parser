@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 """
 This module contains parsers which work with sections related to air flights.
 

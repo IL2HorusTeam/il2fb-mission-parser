@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 #
 # IL-2 FB Mission Parser documentation build configuration file, created by
 # sphinx-quickstart on Thu Aug  7 08:41:20 2014.

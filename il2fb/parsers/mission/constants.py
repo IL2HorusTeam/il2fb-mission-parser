@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 IS_STATIONARY_AIRCRAFT_RESTORABLE = '2'
 NULL = 'null'
