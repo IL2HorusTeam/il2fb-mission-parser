@@ -75,4 +75,4 @@ And you can see how it works live on `project's demo page`_.
 
 .. _read the docs: http://il-2-missions-parser.readthedocs.org/en/latest/
 .. _Wiki pages: https://github.com/IL2HorusTeam/il2fb-mission-parser/wiki
-.. _project's demo page: http://il2fb-mission-parser-demo.herokuapp.com/
+.. _project's demo page: http://il2horusteam.github.io/il2fb-mission-parser/

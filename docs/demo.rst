@@ -9,13 +9,9 @@ Demo
 Structure and contents of parser's result are hard to desribe in simple words.
 That's why project's demo page was created.
 
-Demo address: http://il2fb-mission-parser-demo.herokuapp.com
+Demo address: http://il2horusteam.github.io/il2fb-mission-parser/
 
 You can use the demo to check whether the parser can process some mission file.
-Also the demo gives you ability to see the result of parsing in "raw" format
-(``Raw output`` tab). You can use understandable and pretty format either
-(``Mission details`` tab).
-
-Bug reports are created and reported automatically if some errors occur.
+Bug reports are created and reported automatically if some error occurs.
 Reports contain an error message and a link to the mission which caused the
 error. You can `see current open issues here <https://github.com/IL2HorusTeam/il2fb-mission-parser/issues>`_.
