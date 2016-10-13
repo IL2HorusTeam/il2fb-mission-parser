@@ -9,9 +9,6 @@ import {TableHeader, TableHeaderColumn} from 'material-ui/Table';
 import {TableRow, TableRowColumn} from 'material-ui/Table';
 
 
-const SPEED_COEFFICIENT = 3.6;
-
-
 class ViewUnitRouteButton extends React.Component {
 
   constructor(props) {
@@ -70,7 +67,7 @@ class ViewUnitRouteButton extends React.Component {
           <TableRowColumn>
             {
               data.speed !== null
-              ? (data.speed * SPEED_COEFFICIENT).toFixed(2)
+              ? data.speed.toFixed(2)
               : ""
             }
           </TableRowColumn>
