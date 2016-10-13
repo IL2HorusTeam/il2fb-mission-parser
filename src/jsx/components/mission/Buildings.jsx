@@ -80,6 +80,6 @@ export default class Buildings extends React.Component {
           </Table>
         </CardText>
       </Card>
-    )
+    );
   }
 }
