@@ -27,7 +27,7 @@ class GeneralInfo extends React.Component {
           <p>
             Range: {
               data.range !== undefined
-              ? data.range
+              ? data.range + " m"
               : "N/A"
             }
           </p>
@@ -56,14 +56,14 @@ class Position extends React.Component {
           <p>
             X: {
               data.x !== undefined
-              ? data.x.toFixed(2)
+              ? data.x.toFixed(2) + " m"
               : "N/A"
             }
           </p>
           <p>
             Y: {
               data.y !== undefined
-              ? data.y.toFixed(2)
+              ? data.y.toFixed(2) + " m"
               : "N/A"
             }
           </p>
@@ -439,15 +439,15 @@ export default class HomeBases extends React.Component {
   render() {
     var items = ((this.props.data || {}).objects || {}).home_bases || [];
 
-    if (items.length > 0) {
-      var children = items.map(function(data, i) {
-        return (<HomeBaseItem key={i} index={i} data={data} />);
-      });
-
-      return (<div>{children}</div>);
-    } else {
+    if (items.length === 0) {
       return (<NoHomeBases />);
     }
+
+    var children = items.map(function(data, i) {
+      return (<HomeBaseItem key={i} index={i} data={data} />);
+    });
+
+    return (<div>{children}</div>);
   }
 
 }

@@ -121,10 +121,7 @@ h3.logo {
   border-left: 1px solid #cccccc;
   padding: 10px; }
 
-.mission-details-card + .mission-details-card {
-  margin-top: 15px; }
-
-p + .mission-details-card {
+* + .mission-details-card {
   margin-top: 15px; }
 
 .mission-details-card.sub {

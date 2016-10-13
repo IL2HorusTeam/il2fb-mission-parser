@@ -46,11 +46,11 @@ export default class Buildings extends React.Component {
           </TableRowColumn>
 
           <TableRowColumn>
-            {data.pos.x}
+            {data.pos.x.toFixed(2)}
           </TableRowColumn>
 
           <TableRowColumn>
-            {data.pos.y}
+            {data.pos.y.toFixed(2)}
           </TableRowColumn>
 
           <TableRowColumn>

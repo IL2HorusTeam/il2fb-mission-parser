@@ -46,11 +46,11 @@ export default class Rockets extends React.Component {
           </TableRowColumn>
 
           <TableRowColumn>
-            {data.pos.x}
+            {data.pos.x.toFixed(2)}
           </TableRowColumn>
 
           <TableRowColumn>
-            {data.pos.y}
+            {data.pos.y.toFixed(2)}
           </TableRowColumn>
 
           <TableRowColumn>
@@ -72,7 +72,7 @@ export default class Rockets extends React.Component {
           <TableRowColumn>
             {
               data.destination
-              ? data.destination.x
+              ? data.destination.x.toFixed(2)
               : "—"
             }
           </TableRowColumn>
@@ -80,7 +80,7 @@ export default class Rockets extends React.Component {
           <TableRowColumn>
             {
               data.destination
-              ? data.destination.y
+              ? data.destination.y.toFixed(2)
               : "—"
             }
           </TableRowColumn>

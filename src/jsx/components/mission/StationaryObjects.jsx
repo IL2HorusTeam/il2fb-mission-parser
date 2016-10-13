@@ -142,7 +142,7 @@ class StationaryObjectsGroup extends React.Component {
   renderColumnPosX(value, index) {
     return (
       <TableRowColumn key={index}>
-        {value.x}
+        {value.x.toFixed(2)}
       </TableRowColumn>
     );
   }
@@ -150,7 +150,7 @@ class StationaryObjectsGroup extends React.Component {
   renderColumnPosY(value, index) {
     return (
       <TableRowColumn key={index}>
-        {value.y}
+        {value.y.toFixed(2)}
       </TableRowColumn>
     );
   }
