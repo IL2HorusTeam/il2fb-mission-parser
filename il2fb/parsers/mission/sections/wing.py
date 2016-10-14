@@ -10,12 +10,14 @@ http://usmilitary.about.com/cs/airforce/a/aforganization.htm
 Despite inconsistency between section name (Wing) and its contents (list of
 flights), this module was named after section name to keep clear the origin of
 the data.
+
 """
 
 from il2fb.commons.flight import Formations, RoutePointTypes
-from il2fb.commons.organization import AirForces, Regiments
+from il2fb.commons.organization import AirForces
 from il2fb.commons.spatial import Point3D
 from il2fb.commons.structures import BaseStructure
+from il2fb.regiments import Regiments
 
 from ..constants import (
     ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE_ON,
