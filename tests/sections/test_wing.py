@@ -4,8 +4,9 @@ import unittest
 
 from il2fb.commons import Skills
 from il2fb.commons.flight import Formations, RoutePointTypes
-from il2fb.commons.organization import AirForces, Regiments
+from il2fb.commons.organization import AirForces
 from il2fb.commons.spatial import Point3D
+from il2fb.regiments import Regiments
 
 from il2fb.parsers.mission.sections.wing import (
     FlightSectionParser, FlightInfoSectionParser, FlightRouteSectionParser,
