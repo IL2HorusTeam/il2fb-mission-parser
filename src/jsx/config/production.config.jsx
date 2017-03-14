@@ -1,5 +1,5 @@
 var config = {
-  parserURL: 'https://il2fb-demo-services.herokuapp.com/api/mission-parser/parse'
+  parserURL: 'https://oblalex.space:48080/api/mission-parser/parse'
 };
 
 module.exports = config;
