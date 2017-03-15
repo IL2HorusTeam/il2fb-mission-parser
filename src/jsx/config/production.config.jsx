@@ -1,5 +1,5 @@
 var config = {
-  parserURL: 'https://oblalex.space:48080/api/mission-parser/parse'
+  parserURL: 'https://il2.api.oblalex.space/mission-parser/parse'
 };
 
 module.exports = config;
