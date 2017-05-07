@@ -1,5 +1,5 @@
 var config = {
-  parserURL: 'http://127.0.0.1:5000/api/mission-parser/parse'
+  parserURL: 'http://127.0.0.1:5000/parse'
 };
 
 module.exports = config;
