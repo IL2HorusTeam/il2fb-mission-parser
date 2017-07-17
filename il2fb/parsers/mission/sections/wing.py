@@ -179,10 +179,13 @@ class FlightRouteAttackPoint(FlightRoutePoint):
         'target_id', 'target_route_point',
     ]
 
-    def __init__(self, type, pos, speed, formation, radio_silence, target_id,
-                 target_route_point):
+    def __init__(
+        self, type, pos, speed, formation, radio_silence,
+        target_id=None, target_route_point=None,
+    ):
         super(FlightRouteAttackPoint, self).__init__(
-            type, pos, speed, formation, radio_silence)
+            type, pos, speed, formation, radio_silence,
+        )
         self.target_id = target_id
         self.target_route_point = target_route_point
 
@@ -251,6 +254,12 @@ class FlightRouteSectionParser(CollectingParser):
             radio_silence = False
             formation = None
 
+        if (
+            (self.point['type'] is RoutePointTypes.ground_attack) and
+            (self.point_class is None)
+        ):
+            self.point_class = FlightRouteAttackPoint
+
         self.point.update({
             'radio_silence': radio_silence,
             'formation': formation,
@@ -259,8 +268,8 @@ class FlightRouteSectionParser(CollectingParser):
     @staticmethod
     def _is_new_game_version(params):
         return (
-            ROUTE_POINT_RADIO_SILENCE_ON in params
-            or ROUTE_POINT_RADIO_SILENCE_OFF in params
+            (ROUTE_POINT_RADIO_SILENCE_ON in params) or
+            (ROUTE_POINT_RADIO_SILENCE_OFF in params)
         )
 
     @staticmethod
@@ -270,7 +279,7 @@ class FlightRouteSectionParser(CollectingParser):
         except ValueError:
             index = params.index(ROUTE_POINT_RADIO_SILENCE_OFF)
 
-        params, radio_silence, extra = params[:index], params[index], params[index+1:]
+        params, radio_silence, extra = params[:index], params[index], params[index + 1:]
 
         radio_silence = radio_silence == ROUTE_POINT_RADIO_SILENCE_ON
         formation = Formations.get_by_value(extra[0]) if extra else None

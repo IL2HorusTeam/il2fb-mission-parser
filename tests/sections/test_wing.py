@@ -228,7 +228,7 @@ class FlightRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.Test
             "GATTACK 99737.30 79106.06 500.00 300.00 0_Chief 0 &0",
             "GATTACK 74338.61 29746.57 500.00 300.00 4_Static 0 &0",
             "GATTACK 82387.92 51163.75 500.00 300.00 0_Rocket 0 &0",
-            "GATTACK 98720.93 108662.92 250.00 300.00 0_Chief 6",
+            "GATTACK 98720.93 108662.92 250.00 300.00 &0",
 
             "LANDING_104 185304.27 54570.12 0 0 &1",
         ]
@@ -304,8 +304,8 @@ class FlightRouteSectionParserTestCase(SectionParserTestCaseMixin, unittest.Test
                     speed=300.00,
                     formation=None,
                     radio_silence=False,
-                    target_id='0_Chief',
-                    target_route_point=6,
+                    target_id=None,
+                    target_route_point=None,
                 ),
                 FlightRoutePoint(
                     type=RoutePointTypes.landing_straight,
