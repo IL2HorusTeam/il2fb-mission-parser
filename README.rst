@@ -26,7 +26,7 @@ And you can see how it works live on `project's demo page`_.
    :target: https://crate.io/packages/il2fb-mission-parser/
    :alt: Downloands of latest PyPI package
 
-.. |python_versions| image:: https://img.shields.io/badge/Python-2.7,3.4-brightgreen.svg?style=flat
+.. |python_versions| image:: https://img.shields.io/badge/Python-2.7,3.4,3.5,3.6-brightgreen.svg?style=flat
    :alt: Supported versions of Python
 
 .. |docs| image:: https://readthedocs.org/projects/il-2-missions-parser/badge/?version=latest&style=flat

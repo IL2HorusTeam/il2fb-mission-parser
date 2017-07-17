@@ -2,6 +2,7 @@
 
 import datetime
 import os
+import sys
 import tempfile
 import unittest
 
@@ -46,9 +47,14 @@ class MissionParserTestCase(ParserTestCaseMixin, unittest.TestCase):
             "[MAIN]",
             "  foo",
         ]
+        expected_error_message = (
+            "ValueError in line #1 (\"foo\"): need more than 1 value to unpack"
+            if sys.version_info < (3, 5)
+            else "ValueError in line #1 (\"foo\"): not enough values to unpack (expected 2, got 1)"
+        )
         self.assertRaisesWithMessage(
             MissionParsingError,
-            "ValueError in line #1 (\"foo\"): need more than 1 value to unpack",
+            expected_error_message,
             self.parser.parse_stream, lines)
 
     def test_parser_finalization_with_error(self):
