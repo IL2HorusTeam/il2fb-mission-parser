@@ -33,7 +33,7 @@ README = open(os.path.join(__here__, 'README.rst')).read()
 
 setup(
     name='il2fb-mission-parser',
-    version='1.1.1',
+    version='1.1.2',
     description=(
         "Parse IL-2 FB mission file and produce detailed information about "
         "mission."
@@ -61,14 +61,12 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
         'Natural Language :: English',
-        'Operating System :: OS Independent',
+        "Operating System :: Unix",
+        "Operating System :: Microsoft :: Windows",
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Topic :: Software Development :: Libraries',
-    ],
-    platforms=[
-        'any',
     ],
 )
