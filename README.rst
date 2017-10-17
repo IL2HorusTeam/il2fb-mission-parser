@@ -2,11 +2,11 @@
 IL-2 FB Mission Parser
 ======================
 
-|pypi_package| |pypi_downloads| |python_versions| |docs| |license|
+|pypi_package| |python_versions| |docs| |license|
 
-|unix_build| |windows_build| |coverage_status|
+|unix_build| |windows_build| |requirements|
 
-|code_issues| |codeclimate| |codacy| |quality| |health| |requirements|
+|coverage_status| |codeclimate| |codacy| |quality| |health|
 
 
 This is a library for parsing mission files of ``IL-2 Forgotten Battles``. It
@@ -21,10 +21,6 @@ And you can see how it works live on `project's demo page`_.
 
 .. |pypi_package| image:: http://img.shields.io/pypi/v/il2fb-mission-parser.svg?style=flat
    :target: http://badge.fury.io/py/il2fb-mission-parser/
-
-.. |pypi_downloads| image:: http://img.shields.io/pypi/dm/il2fb-mission-parser.svg?style=flat
-   :target: https://crate.io/packages/il2fb-mission-parser/
-   :alt: Downloands of latest PyPI package
 
 .. |python_versions| image:: https://img.shields.io/badge/Python-2.7,3.4,3.5,3.6-brightgreen.svg?style=flat
    :alt: Supported versions of Python
@@ -47,10 +43,6 @@ And you can see how it works live on `project's demo page`_.
 .. |coverage_status| image:: https://codecov.io/github/IL2HorusTeam/il2fb-mission-parser/coverage.svg?branch=master
    :target: https://codecov.io/github/IL2HorusTeam/il2fb-mission-parser?branch=master
    :alt: Test coverage
-
-.. |code_issues| image:: https://www.quantifiedcode.com/api/v1/project/54ed860c1791402f96b7880112e6d166/badge.svg
-   :target: https://www.quantifiedcode.com/app/project/54ed860c1791402f96b7880112e6d166
-   :alt: Code issues
 
 .. |codeclimate| image:: https://codeclimate.com/github/IL2HorusTeam/il2fb-mission-parser/badges/gpa.svg
    :target: https://codeclimate.com/github/IL2HorusTeam/il2fb-mission-parser
