@@ -1,7 +1,10 @@
 # coding: utf-8
 
+from il2fb.commons.exceptions import IL2FBParsingException
 
-class MissionParsingError(Exception):
+
+class MissionParsingError(IL2FBParsingException):
     """
-    Thrown when something bad has happened during parsing of mission file.
+    Raised when parsing of mission file meets unexpected condition.
+
     """
