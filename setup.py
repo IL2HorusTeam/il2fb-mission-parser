@@ -48,6 +48,7 @@ setup(
     author_email='oblovatniy@gmail.com, kamyhin@gmail.com',
     packages=[
         'il2fb.parsers.mission',
+        'il2fb.parsers.mission.sections',
     ],
     namespace_packages=[
         'il2fb',
