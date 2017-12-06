@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from . import ValuesParser
+from il2fb.parsers.mission.sections.base import ValuesParser
 
 
 class RespawnTimeSectionParser(ValuesParser):

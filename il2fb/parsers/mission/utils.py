@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from .constants import COMMENT_MARKERS
+from il2fb.parsers.mission.constants import COMMENT_MARKERS
 
 
 def move_if_present(dst, src, dst_key, src_key=None):

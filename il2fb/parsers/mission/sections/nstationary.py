@@ -4,11 +4,15 @@ from il2fb.commons import UnitTypes
 from il2fb.commons.spatial import Point2D
 from il2fb.commons.structures import BaseStructure
 
-from ..constants import NULL, IS_STATIONARY_AIRCRAFT_RESTORABLE
-from ..converters import (
-    to_bool, to_skill, to_air_force, to_unit_type, to_belligerent, to_angle,
-)
-from . import CollectingParser
+from il2fb.parsers.mission.constants import NULL
+from il2fb.parsers.mission.constants import IS_STATIONARY_AIRCRAFT_RESTORABLE
+from il2fb.parsers.mission.converters import to_air_force
+from il2fb.parsers.mission.converters import to_angle
+from il2fb.parsers.mission.converters import to_belligerent
+from il2fb.parsers.mission.converters import to_bool
+from il2fb.parsers.mission.converters import to_skill
+from il2fb.parsers.mission.converters import to_unit_type
+from il2fb.parsers.mission.sections.base import CollectingParser
 
 
 class StationaryObject(BaseStructure):

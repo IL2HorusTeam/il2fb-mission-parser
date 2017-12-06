@@ -3,8 +3,11 @@
 from il2fb.commons.spatial import Point2D
 from il2fb.commons.structures import BaseStructure
 
-from ..converters import to_belligerent, to_skill, to_unit_type, to_speed
-from . import CollectingParser
+from il2fb.parsers.mission.converters import to_belligerent
+from il2fb.parsers.mission.converters import to_skill
+from il2fb.parsers.mission.converters import to_speed
+from il2fb.parsers.mission.converters import to_unit_type
+from il2fb.parsers.mission.sections.base import CollectingParser
 
 
 class ChiefsSectionParser(CollectingParser):

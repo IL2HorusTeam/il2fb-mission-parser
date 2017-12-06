@@ -2,9 +2,11 @@
 
 from il2fb.commons.spatial import Point2D
 
-from ..constants import WEAPONS_CONTINUATION_MARK
-from ..converters import to_bool, to_belligerent, to_air_force
-from . import CollectingParser
+from il2fb.parsers.mission.constants import WEAPONS_CONTINUATION_MARK
+from il2fb.parsers.mission.converters import to_bool
+from il2fb.parsers.mission.converters import to_belligerent
+from il2fb.parsers.mission.converters import to_air_force
+from il2fb.parsers.mission.sections.base import CollectingParser
 
 
 class BornPlaceSectionParser(CollectingParser):

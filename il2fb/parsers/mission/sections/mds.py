@@ -3,8 +3,9 @@
 
 from il2fb.commons.organization import Belligerents
 
-from ..converters import to_bool
-from . import CollectingParser, ValuesParser
+from il2fb.parsers.mission.converters import to_bool
+from il2fb.parsers.mission.sections.base import CollectingParser
+from il2fb.parsers.mission.sections.base import ValuesParser
 
 
 class MDSSectionParser(ValuesParser):

@@ -2,7 +2,7 @@
 
 import unittest
 
-from il2fb.parsers.mission.sections import (
+from il2fb.parsers.mission.sections.base import (
     SectionParser, ValuesParser, CollectingParser,
 )
 

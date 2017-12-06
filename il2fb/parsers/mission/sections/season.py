@@ -2,7 +2,7 @@
 
 import datetime
 
-from . import ValuesParser
+from il2fb.parsers.mission.sections.base import ValuesParser
 
 
 class SeasonSectionParser(ValuesParser):

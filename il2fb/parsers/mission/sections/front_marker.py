@@ -3,8 +3,8 @@
 from il2fb.commons.spatial import Point2D
 from il2fb.commons.structures import BaseStructure
 
-from ..converters import to_belligerent
-from . import CollectingParser
+from il2fb.parsers.mission.converters import to_belligerent
+from il2fb.parsers.mission.sections.base import CollectingParser
 
 
 class FrontMarker(BaseStructure):

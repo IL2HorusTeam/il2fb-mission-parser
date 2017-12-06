@@ -3,27 +3,32 @@
 import six
 import sys
 
-from .exceptions import MissionParsingError
-from .sections.main import MainSectionParser
-from .sections.season import SeasonSectionParser
-from .sections.weather import WeatherSectionParser
-from .sections.respawn_time import RespawnTimeSectionParser
-from .sections.mds import MDSSectionParser, MDSScoutsSectionParser
-from .sections.chiefs import ChiefsSectionParser, ChiefRoadSectionParser
-from .sections.nstationary import NStationarySectionParser
-from .sections.buildings import BuildingsSectionParser
-from .sections.target import TargetSectionParser
-from .sections.born_place import (
-    BornPlaceSectionParser, BornPlaceAircraftsSectionParser,
-    BornPlaceAirForcesSectionParser,
-)
-from .sections.static_camera import StaticCameraSectionParser
-from .sections.front_marker import FrontMarkerSectionParser
-from .sections.rocket import RocketSectionParser
-from .sections.wing import (
-    FlightSectionParser, FlightInfoSectionParser, FlightRouteSectionParser,
-)
-from .utils import move_if_present, set_if_present, strip_comments
+from il2fb.parsers.mission.exceptions import MissionParsingError
+
+from il2fb.parsers.mission.sections.main import MainSectionParser
+from il2fb.parsers.mission.sections.season import SeasonSectionParser
+from il2fb.parsers.mission.sections.weather import WeatherSectionParser
+from il2fb.parsers.mission.sections.respawn_time import RespawnTimeSectionParser
+from il2fb.parsers.mission.sections.mds import MDSSectionParser
+from il2fb.parsers.mission.sections.mds import MDSScoutsSectionParser
+from il2fb.parsers.mission.sections.chiefs import ChiefsSectionParser
+from il2fb.parsers.mission.sections.chiefs import ChiefRoadSectionParser
+from il2fb.parsers.mission.sections.nstationary import NStationarySectionParser
+from il2fb.parsers.mission.sections.buildings import BuildingsSectionParser
+from il2fb.parsers.mission.sections.target import TargetSectionParser
+from il2fb.parsers.mission.sections.born_place import BornPlaceSectionParser
+from il2fb.parsers.mission.sections.born_place import BornPlaceAircraftsSectionParser
+from il2fb.parsers.mission.sections.born_place import BornPlaceAirForcesSectionParser
+from il2fb.parsers.mission.sections.static_camera import StaticCameraSectionParser
+from il2fb.parsers.mission.sections.front_marker import FrontMarkerSectionParser
+from il2fb.parsers.mission.sections.rocket import RocketSectionParser
+from il2fb.parsers.mission.sections.wing import FlightSectionParser
+from il2fb.parsers.mission.sections.wing import FlightInfoSectionParser
+from il2fb.parsers.mission.sections.wing import FlightRouteSectionParser
+
+from il2fb.parsers.mission.utils import move_if_present
+from il2fb.parsers.mission.utils import set_if_present
+from il2fb.parsers.mission.utils import strip_comments
 
 
 class MissionParser(object):

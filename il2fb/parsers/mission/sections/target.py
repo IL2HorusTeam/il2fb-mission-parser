@@ -3,8 +3,8 @@
 from il2fb.commons.spatial import Point2D
 from il2fb.commons.targets import TargetTypes, TargetPriorities
 
-from ..converters import to_bool
-from . import CollectingParser
+from il2fb.parsers.mission.converters import to_bool
+from il2fb.parsers.mission.sections.base import CollectingParser
 
 
 def to_destruction_level(value):

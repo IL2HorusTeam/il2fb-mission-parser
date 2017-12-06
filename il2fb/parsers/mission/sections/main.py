@@ -2,8 +2,9 @@
 
 from il2fb.commons.weather import Conditions
 
-from ..converters import to_belligerent, to_time
-from . import ValuesParser
+from il2fb.parsers.mission.converters import to_belligerent
+from il2fb.parsers.mission.converters import to_time
+from il2fb.parsers.mission.sections.base import ValuesParser
 
 
 class MainSectionParser(ValuesParser):

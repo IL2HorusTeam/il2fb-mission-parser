@@ -6,7 +6,7 @@ import math
 from il2fb.commons import Skills, UnitTypes
 from il2fb.commons.organization import AirForces, Belligerents
 
-from .constants import NULL, CHIEF_SPEED_COEFFICIENT
+from il2fb.parsers.mission.constants import NULL, CHIEF_SPEED_COEFFICIENT
 
 
 def to_bool(value):

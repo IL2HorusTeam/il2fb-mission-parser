@@ -19,13 +19,13 @@ from il2fb.commons.spatial import Point3D
 from il2fb.commons.structures import BaseStructure
 from il2fb.regiments import Regiments
 
-from ..constants import (
-    ROUTE_POINT_EXTRA_PARAMETERS_MARK, ROUTE_POINT_RADIO_SILENCE_ON,
-    ROUTE_POINT_RADIO_SILENCE_OFF,
-)
-from ..converters import to_skill
-from ..utils import set_if_present
-from . import CollectingParser, ValuesParser
+from il2fb.parsers.mission.constants import ROUTE_POINT_EXTRA_PARAMETERS_MARK
+from il2fb.parsers.mission.constants import ROUTE_POINT_RADIO_SILENCE_ON
+from il2fb.parsers.mission.constants import ROUTE_POINT_RADIO_SILENCE_OFF
+from il2fb.parsers.mission.converters import to_skill
+from il2fb.parsers.mission.utils import set_if_present
+from il2fb.parsers.mission.sections.base import CollectingParser
+from il2fb.parsers.mission.sections.base import ValuesParser
 
 
 class FlightSectionParser(CollectingParser):

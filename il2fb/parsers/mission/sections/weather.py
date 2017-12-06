@@ -2,7 +2,7 @@
 
 from il2fb.commons.weather import Gust, Turbulence
 
-from . import ValuesParser
+from il2fb.parsers.mission.sections.base import ValuesParser
 
 
 class WeatherSectionParser(ValuesParser):
