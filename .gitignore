@@ -38,3 +38,6 @@ nosetests.xml
 .project
 .pydevproject
 .idea
+
+node_modules
+.sass-cache
