@@ -386,7 +386,7 @@ class FlightItem extends React.Component {
             data={data}
           />
           <p>
-            Air force: <span className={data.air_force.country.belligerent.name}>{data.air_force.verbose_name}</span>
+            Air force: <span>{data.air_force.verbose_name}</span>
           </p>
           <p>
             Regiment: {
