@@ -134,7 +134,7 @@ class StationaryObjectsGroup extends React.Component {
   renderColumnBelligerent(value, index) {
     return (
       <TableRowColumn key={index} className={value.name}>
-        {value.verbose_name}
+        {value.verbose_name | value.name}
       </TableRowColumn>
     );
   }
@@ -216,7 +216,7 @@ class Artillery extends StationaryObjectsGroup {
   renderColumnSkill(value, index) {
     return (
       <TableRowColumn key={index}>
-        {value.verbose_name}
+        {(value && value.verbose_name) || "—"}
       </TableRowColumn>
     );
   }
@@ -350,7 +350,7 @@ class Ships extends StationaryObjectsGroup {
   renderColumnSkill(value, index) {
     return (
       <TableRowColumn key={index}>
-        {value.verbose_name}
+        {(value && value.verbose_name) || "—"}
       </TableRowColumn>
     );
   }

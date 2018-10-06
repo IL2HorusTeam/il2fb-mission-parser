@@ -256,7 +256,7 @@ class MovingUnitsGroup extends React.Component {
   renderColumnBelligerent(value, index) {
     return (
       <TableRowColumn key={index} className={value.name}>
-        {value.verbose_name}
+        {value.verbose_name || value.name}
       </TableRowColumn>
     );
   }
@@ -302,7 +302,7 @@ class Ships extends MovingUnitsGroup {
   renderColumnSkill(value, index) {
     return (
       <TableRowColumn key={index}>
-        {value.verbose_name}
+        {(value && value.verbose_name) || "—"}
       </TableRowColumn>
     );
   }
@@ -310,7 +310,7 @@ class Ships extends MovingUnitsGroup {
   renderColumnRechargeTime(value, index) {
     return (
       <TableRowColumn key={index}>
-        {value.toFixed(1)}
+        {(value && value.toFixed(1)) || "—"}
       </TableRowColumn>
     );
   }
