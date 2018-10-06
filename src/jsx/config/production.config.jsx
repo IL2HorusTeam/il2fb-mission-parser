@@ -1,5 +1,5 @@
 var config = {
-  parserURL: 'https://api.il2.oblalex.space/mission-parser/parse'
+  parserURL: 'https://europe-west1-il2-horus-demo-services.cloudfunctions.net/missions-parse'
 };
 
 module.exports = config;
