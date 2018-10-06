@@ -25,6 +25,7 @@
     "dateformat": "~1.0.12",
     "intersperse": "~1.0.0",
     "material-ui": "~0.15.1",
+    "npm": "^6.4.1",
     "react": "~15.1.0",
     "react-addons-update": "~15.1.0",
     "react-dom": "~15.1.0",
