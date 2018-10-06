@@ -6,7 +6,7 @@ IL-2 FB Mission Parser
 
 |unix_build| |windows_build| |requirements|
 
-|coverage_status| |codeclimate| |codacy| |quality| |health|
+|coverage_status| |codeclimate| |quality| |health|
 
 
 This is a library for parsing mission files of ``IL-2 Forgotten Battles``. It
@@ -47,10 +47,6 @@ And you can see how it works live on `project's demo page`_.
 .. |codeclimate| image:: https://codeclimate.com/github/IL2HorusTeam/il2fb-mission-parser/badges/gpa.svg
    :target: https://codeclimate.com/github/IL2HorusTeam/il2fb-mission-parser
    :alt: Code Climate
-
-.. |codacy| image:: https://www.codacy.com/project/badge/4c79f2cb39234620bce5d4c49a54be52
-   :target: https://www.codacy.com/public/IL2HorusTeam/il2fbmissionparser/dashboard
-   :alt: Codacy Code Review
 
 .. |quality| image:: https://scrutinizer-ci.com/g/IL2HorusTeam/il2fb-mission-parser/badges/quality-score.png?b=master&style=flat
    :target: https://scrutinizer-ci.com/g/IL2HorusTeam/il2fb-mission-parser/?branch=master
